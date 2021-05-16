@@ -14,6 +14,9 @@ public class Game{
   private int height = 200;
   private title = "fromClassToGame";
   
+  public boolean exit = false;
+  public boolean testMode = false;
+  
   private JFrame frame;
   
   /**
@@ -64,7 +67,7 @@ public class Game{
     long start = System.currentMillis();
     long previous = start;
     long dt = 0;
-    while(!exit){
+    while(!exit && !testMode){
       start = System.currentMillis();
       long dt = start-previous;
       input();
@@ -100,8 +103,13 @@ public class Game{
   private void dispose(){
     // TODO if needed releae resources !
   }
-    
-  
+   
+  /**
+   * Request the game to exit.
+   */
+  public void requestExit(){
+    this.exit=true;
+  }
   
   public static void main(String[] argc){
     Game game = new Game();
