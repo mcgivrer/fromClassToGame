@@ -1,4 +1,6 @@
 # fromClassToGame
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmcgivrer%2FfromClassToGame.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmcgivrer%2FfromClassToGame?ref=badge_shield)
+
 
 ## Description
 
@@ -23,3 +25,7 @@ $> mvn exec:java
 ```
 
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmcgivrer%2FfromClassToGame.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmcgivrer%2FfromClassToGame?ref=badge_large)
