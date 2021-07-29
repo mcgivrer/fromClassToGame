@@ -23,9 +23,12 @@ public class Game {
 
   private int width = 320;
   private int height = 200;
+  private double scale = 2.0;
+
   private String title = "fromClassToGame";
 
   public Window window;
+  public Render renderer;
 
   public boolean exit = false;
   public boolean testMode = false;
@@ -53,8 +56,8 @@ public class Game {
    * Initialization of the display window and everything the game will need.
    */
   public void initialize() {
-
-    window = new Window(this.title, this.width, this.height);
+    renderer = new Render(this.width, this.height);
+    window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
   }
 
   public void loadDefaultValues() {
@@ -129,7 +132,8 @@ public class Game {
    * Draw the things from the game.
    */
   private void draw() {
-    // TODO draw something !
+    renderer.render();
+    window.draw(renderer.getBuffer());
   }
 
   /**
