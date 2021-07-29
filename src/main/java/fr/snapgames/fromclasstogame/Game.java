@@ -1,11 +1,6 @@
 package fr.snapgames.fromclasstogame;
 
-import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.Point;
 import java.util.ResourceBundle;
-
-import javax.swing.JFrame;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +25,10 @@ public class Game {
   private int height = 200;
   private String title = "fromClassToGame";
 
+  public Window window;
+
   public boolean exit = false;
   public boolean testMode = false;
-
-  private JFrame frame;
 
   /**
    * the mandatory default constructor
@@ -59,19 +54,7 @@ public class Game {
    */
   public void initialize() {
 
-    frame = new JFrame(this.title);
-
-    GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
-    Dimension dim = new Dimension(this.width, this.height);
-
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(dim);
-    frame.setPreferredSize(dim);
-    frame.setMaximumSize(dim);
-    frame.setLocation(new Point((int) (device.getDisplayMode().getWidth() - dim.width) / 2,
-        (int) (device.getDisplayMode().getHeight() - dim.height) / 2));
-    frame.pack();
-    frame.setVisible(true);
+    window = new Window(this.title, this.width, this.height);
   }
 
   public void loadDefaultValues() {
@@ -161,10 +144,6 @@ public class Game {
    */
   public void requestExit() {
     this.exit = true;
-  }
-
-  public JFrame getFrame() {
-    return frame;
   }
 
   public static void main(String[] argc) {
