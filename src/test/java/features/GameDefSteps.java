@@ -13,6 +13,8 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import fr.snapgames.fromclasstogame.Game;
+import fr.snapgames.fromclasstogame.GameObject;
+import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
 
 public class GameDefSteps {
 
@@ -52,13 +54,13 @@ public class GameDefSteps {
 
     @And("a window of (\\d+) x (\\d+) is created")
     public void andAWindowOfIntXIntIsCreated(int w, int h) {
-        assertEquals("The Window width is not set to " + w, w, game.getFrame().getWidth());
-        assertEquals("The Window height is not set to " + h, h, game.getFrame().getHeight());
+        assertEquals("The Window width is not set to " + w, w, game.getWindow().getFrame().getWidth());
+        assertEquals("The Window height is not set to " + h, h, game.getWindow().getFrame().getHeight());
     }
 
     @And("the title is \"([^\"]*)\"")
     public void andTheTitleIsString(String title) {
-        assertEquals("The window title is not set to" + title, title, game.getFrame().getTitle());
+        assertEquals("The window title is not set to" + title, title, game.getWindow().getFrame().getTitle());
     }
 
     @Then("the Game is running")
@@ -84,10 +86,29 @@ public class GameDefSteps {
                 game.run(null);
             }
             fail("Bad argument does not raise exception");
-        } catch (Exception e) {
+        } catch (UnknownArgumentException e) {
             logger.error("Unable to run the game", e);
         }
 
     }
 
+    @Given("I add a GameObject named \"([^\"]*)\" at (\\d+),(\\d+)$")
+    public void givenIAddAGameObjectNamedStringAtIntInt(String name, int x, int y) {
+        GameObject go = new GameObject(name, x, y);
+        game.add(go);
+    }
+
+    @Given("^the \"([^\"]*)\" size is (\\d+) x (\\d+)$")
+    public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
+        GameObject go = game.find(name);
+        go.setSize(w, h);
+    }
+
+    @Then("^the Game has (\\d+) GameObject at window center\\.$")
+    public void thenTheGameHasIntGameObjectAtWindowCenter(int i) {
+        GameObject go = game.getObjectsList().get(0);
+        assertEquals("The Game object list has not the right number of object", i, game.getObjectsList().size());
+        assertEquals("", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
+        assertEquals("", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
+    }
 }
