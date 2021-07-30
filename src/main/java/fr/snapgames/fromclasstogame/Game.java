@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame;
 
+import java.awt.Color;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class Game {
 
   private int width = 320;
   private int height = 200;
-  private double scale = 2.0;
+  private double scale = 1.0;
 
   private String title = "fromClassToGame";
 
@@ -81,6 +82,9 @@ public class Game {
         case "height":
           this.height = Integer.parseInt(values[1]);
           break;
+        case "scale":
+          this.scale = Double.parseDouble(values[1]);
+          break;
         case "title":
           this.title = values[1];
           break;
@@ -92,15 +96,18 @@ public class Game {
 
   /**
    * Entrypoint for the game. can parse the argc from the java command line.
+   * 
+   * @throws UnknownArgumentException
    */
-  public void run(String[] argv) {
-    try {
-      initialize(argv);
-      loop();
-      dispose();
-    } catch (Exception e) {
-      logger.error("Unable to run the game", e);
-    }
+  public void run(String[] argv) throws UnknownArgumentException {
+    initialize(argv);
+    createScene();
+    loop();
+    dispose();
+  }
+
+  private void createScene() {
+    renderer.add(new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(2.0, 2.0).setSize(16.0, 16.0));
   }
 
   /**
@@ -157,8 +164,16 @@ public class Game {
   }
 
   public static void main(String[] argc) {
-    Game game = new Game();
-    game.run(argc);
+    try {
+      Game game = new Game();
+      game.run(argc);
+    } catch (Exception e) {
+      logger.error("Unable to run the game", e);
+    }
+  }
+
+  public Window getWindow() {
+    return window;
   }
 
 }

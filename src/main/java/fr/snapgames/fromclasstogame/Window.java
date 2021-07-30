@@ -32,4 +32,8 @@ public class Window {
         frame.getGraphics().drawImage(img, 0, 0, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(),
                 img.getHeight(), null);
     }
+
+    public JFrame getFrame(){
+        return this.frame;
+    }
 }
