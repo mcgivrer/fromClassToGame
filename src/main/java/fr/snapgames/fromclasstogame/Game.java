@@ -55,7 +55,11 @@ public class Game {
   /**
    * Initialization of the display window and everything the game will need.
    */
-  public void initialize() {
+  public void initialize(String[] argv) {
+
+    loadDefaultValues();
+    parseArgs(argv);
+
     renderer = new Render(this.width, this.height);
     window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
   }
@@ -89,12 +93,14 @@ public class Game {
   /**
    * Entrypoint for the game. can parse the argc from the java command line.
    */
-  public void run(String[] argc) throws UnknownArgumentException {
-    loadDefaultValues();
-    parseArgs(argc);
-    initialize();
-    loop();
-    dispose();
+  public void run(String[] argv) {
+    try {
+      initialize(argv);
+      loop();
+      dispose();
+    } catch (Exception e) {
+      logger.error("Unable to run the game", e);
+    }
   }
 
   /**
@@ -151,12 +157,8 @@ public class Game {
   }
 
   public static void main(String[] argc) {
-    try {
-      Game game = new Game();
-      game.run(argc);
-    } catch (Exception e) {
-      logger.error("Unable to run the game", e);
-    }
+    Game game = new Game();
+    game.run(argc);
   }
 
 }
