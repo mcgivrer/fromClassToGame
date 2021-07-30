@@ -1,11 +1,16 @@
 package fr.snapgames.fromclasstogame;
 
-import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.Point;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.swing.JFrame;
+import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +33,18 @@ public class Game {
 
   private int width = 320;
   private int height = 200;
+  private double scale = 1.0;
   private String title = "fromClassToGame";
+
+  public Window window;
+  public Render renderer = new Render(320, 200);
+  public InputHandler inputHandler;
 
   public boolean exit = false;
   public boolean testMode = false;
 
-  private JFrame frame;
+  Map<String, GameObject> objects = new HashMap<>();
+  List<GameObject> objectsList = new ArrayList<>();
 
   /**
    * the mandatory default constructor
@@ -57,27 +68,21 @@ public class Game {
   /**
    * Initialization of the display window and everything the game will need.
    */
-  public void initialize() {
+  public void initialize(String[] argv) throws UnknownArgumentException {
 
-    frame = new JFrame(this.title);
+    loadDefaultValues();
+    parseArgs(argv);
 
-    GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
-    Dimension dim = new Dimension(this.width, this.height);
-
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(dim);
-    frame.setPreferredSize(dim);
-    frame.setMaximumSize(dim);
-    frame.setLocation(new Point((int) (device.getDisplayMode().getWidth() - dim.width) / 2,
-        (int) (device.getDisplayMode().getHeight() - dim.height) / 2));
-    frame.pack();
-    frame.setVisible(true);
+    renderer = new Render(this.width, this.height);
+    window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
+    inputHandler = new InputHandler(window);
   }
 
   public void loadDefaultValues() {
     defaultConfig = ResourceBundle.getBundle("config");
     this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
     this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
+    this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
     this.title = defaultConfig.getString("game.setup.title");
   }
 
@@ -91,6 +96,9 @@ public class Game {
         case "height":
           this.height = Integer.parseInt(values[1]);
           break;
+        case "scale":
+          this.scale = Double.parseDouble(values[1]);
+          break;
         case "title":
           this.title = values[1];
           break;
@@ -102,13 +110,56 @@ public class Game {
 
   /**
    * Entrypoint for the game. can parse the argc from the java command line.
+   * 
+   * @throws UnknownArgumentException
    */
-  public void run(String[] argc) throws UnknownArgumentException {
-    loadDefaultValues();
-    parseArgs(argc);
-    initialize();
+  public void run(String[] argv) throws UnknownArgumentException {
+    initialize(argv);
+    createScene();
     loop();
     dispose();
+  }
+
+  private void createScene() {
+    Map<String, BufferedImage> images = readResources();
+
+    GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02).setSize(16.0, 16.0)
+        .setImage(images.get("redBall"));
+    for (int i = 0; i < 10; i++) {
+      GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
+          .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05)).setColor(Color.ORANGE).setSize(8, 8)
+          .setImage(images.get("orangeBall"));
+      add(e);
+    }
+    add(player);
+  }
+
+  private Map<String, BufferedImage> readResources() {
+    Map<String, BufferedImage> resources = new HashMap<>();
+    try {
+
+      BufferedImage image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream("images/tiles.png"));
+
+      resources.put("redBall", image.getSubimage(0, 0, 16, 16));
+      resources.put("orangeBall", image.getSubimage(16, 0, 16, 16));
+
+    } catch (IOException e) {
+      logger.error("Unable to read resource", e);
+    }
+    return resources;
+
+  }
+
+  public double rand(double min, double max) {
+    return (Math.random() * (max - min)) + min;
+  }
+
+  public void add(GameObject go) {
+    if (!objects.containsKey(go.name)) {
+      objects.put(go.name, go);
+      objectsList.add(go);
+      renderer.add(go);
+    }
   }
 
   /**
@@ -132,28 +183,38 @@ public class Game {
    * Manage the input
    */
   private void input() {
-    // TODO implement an input management
+    if (inputHandler.getKey(KeyEvent.VK_ESCAPE)) {
+      this.exit = true;
+    }
   }
 
   /**
    * Update all the game mechanism
    */
   private void update(long dt) {
-    // TODO update something
+
+    for (GameObject e : objectsList) {
+      e.update(dt);
+    }
+
   }
 
   /**
    * Draw the things from the game.
    */
   private void draw() {
-    // TODO draw something !
+    renderer.render();
+    window.draw(renderer.getBuffer());
   }
 
   /**
    * Free everything
    */
   private void dispose() {
-    // TODO if needed releae resources !
+    objects.clear();
+    objectsList.clear();
+    renderer.clear();
+    window.close();
   }
 
   /**
@@ -163,10 +224,6 @@ public class Game {
     this.exit = true;
   }
 
-  public JFrame getFrame() {
-    return frame;
-  }
-
   public static void main(String[] argc) {
     try {
       Game game = new Game();
@@ -174,6 +231,22 @@ public class Game {
     } catch (Exception e) {
       logger.error("Unable to run the game", e);
     }
+  }
+
+  public Window getWindow() {
+    return window;
+  }
+
+  public GameObject find(String name) {
+    return objects.get(name);
+  }
+
+  public List<GameObject> getObjectsList() {
+    return objectsList;
+  }
+
+  public Render getRender() {
+    return renderer;
   }
 
 }
