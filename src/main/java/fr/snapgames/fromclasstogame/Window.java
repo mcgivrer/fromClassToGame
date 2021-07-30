@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+import java.awt.event.WindowEvent;
+
 public class Window {
 
     private JFrame frame;
@@ -21,7 +23,6 @@ public class Window {
         frame.setSize(dim);
         frame.setPreferredSize(dim);
         frame.setMaximumSize(dim);
-        frame.addKeyListener(new InputHandler(this));
         frame.setLocation(new Point((int) (device.getDisplayMode().getWidth() - dim.width) / 2,
                 (int) (device.getDisplayMode().getHeight() - dim.height) / 2));
         frame.pack();
@@ -33,7 +34,11 @@ public class Window {
                 img.getHeight(), null);
     }
 
-    public JFrame getFrame(){
+    public JFrame getFrame() {
         return this.frame;
+    }
+
+    public void close() {
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 }
