@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class Game {
 
   public Window window;
   public Render renderer = new Render(320, 200);
+  public InputHandler inputHandler;
 
   public boolean exit = false;
   public boolean testMode = false;
@@ -73,6 +75,7 @@ public class Game {
 
     renderer = new Render(this.width, this.height);
     window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
+    inputHandler = new InputHandler(window);
   }
 
   public void loadDefaultValues() {
@@ -118,13 +121,14 @@ public class Game {
   }
 
   private void createScene() {
-    Map<String,BufferedImage> images = readResources();
+    Map<String, BufferedImage> images = readResources();
 
     GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02).setSize(16.0, 16.0)
         .setImage(images.get("redBall"));
     for (int i = 0; i < 10; i++) {
       GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
-          .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05)).setColor(Color.ORANGE).setSize(8, 8).setImage(images.get("orangeBall"));
+          .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05)).setColor(Color.ORANGE).setSize(8, 8)
+          .setImage(images.get("orangeBall"));
       add(e);
     }
     add(player);
@@ -132,18 +136,19 @@ public class Game {
 
   private Map<String, BufferedImage> readResources() {
     Map<String, BufferedImage> resources = new HashMap<>();
-    try {
-      
-      BufferedImage image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream("images/tiles.png"));
-      
-      resources.put("redBall", image.getSubimage(0, 0, 16, 16));
-      resources.put("orangeBall", image.getSubimage(4, 4, 8, 8));
+    resources.put("redBall", readImage("images/tiles.png", 0, 0, 16, 16));
+    resources.put("orangeBall", readImage("images/tiles.png", 16, 0, 16, 16));
+    return resources;
+  }
 
+  private BufferedImage readImage(String path, int x, int y, int w, int h) {
+    BufferedImage image = null;
+    try {
+      image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream(path)).getSubimage(x, y, w, h);
     } catch (IOException e) {
       logger.error("Unable to read resource", e);
     }
-    return resources;
-
+    return image;
   }
 
   public double rand(double min, double max) {
@@ -179,7 +184,9 @@ public class Game {
    * Manage the input
    */
   private void input() {
-    // TODO implement an input management
+    if (inputHandler.getKey(KeyEvent.VK_ESCAPE)) {
+      this.exit = true;
+    }
   }
 
   /**
@@ -208,6 +215,7 @@ public class Game {
     objects.clear();
     objectsList.clear();
     renderer.clear();
+    window.close();
   }
 
   /**

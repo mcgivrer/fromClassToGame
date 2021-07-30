@@ -1,8 +1,9 @@
-package fr.snapgames.fromclasstogame;
+## Input handler
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+The best way to manage user input, although we already implement something in the Game class, we will create a breand new thing: The `InputHandler`.
+The goal of this class is to capture events, and maintain a buffer of keys state, a boolean buffer.
 
+```java
 public class InputHandler implements KeyListener {
 
     private Window window;
@@ -32,5 +33,7 @@ public class InputHandler implements KeyListener {
     public boolean getKey(int code) {
         return keys[code];
     }
-
 }
+```
+
+All is in this super simple class. `keyPressed` and `keyReleased` are seting true and false the corresponding boolean in the keys buffer.
