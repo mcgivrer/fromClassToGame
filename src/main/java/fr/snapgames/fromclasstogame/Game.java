@@ -55,7 +55,7 @@ public class Game {
   /**
    * Initialization of the display window and everything the game will need.
    */
-  public void initialize(String[] argv) {
+  public void initialize(String[] argv) throws UnknownArgumentException {
 
     loadDefaultValues();
     parseArgs(argv);
