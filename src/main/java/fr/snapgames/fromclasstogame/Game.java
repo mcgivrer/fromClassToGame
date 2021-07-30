@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame;
 
+import java.awt.Color;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
@@ -78,7 +79,7 @@ public class Game {
         case "width":
           this.width = Integer.parseInt(values[1]);
           break;
-          case "height":
+        case "height":
           this.height = Integer.parseInt(values[1]);
           break;
         case "scale":
@@ -100,8 +101,13 @@ public class Game {
    */
   public void run(String[] argv) throws UnknownArgumentException {
     initialize(argv);
+    createScene();
     loop();
     dispose();
+  }
+
+  private void createScene() {
+    renderer.add(new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(2.0, 2.0).setSize(16.0, 16.0));
   }
 
   /**
