@@ -16,6 +16,17 @@ Feature: The game is operating normaly by initializing, then looping unti exit i
     And a window of 320 x 200 is created
     And the title is "MyGame"
     
+  Scenario: The game is started with arguments
+    Given the Game is instantiated
+    When I prepare the arguments
+    And I add argument "width=320"
+    And I add argument "height=200"
+    And I add argument "scale=2.0"
+    And I add argument "title=MyGame"
+    Then the Game is running 
+    And a window of 640 x 400 is created
+    And the title is "MyGame"
+
   Scenario: The game is started with wrong values
     Given the Game is instantiated
     When I prepare the arguments
