@@ -1,12 +1,13 @@
 package fr.snapgames.fromclasstogame;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 public class GameObject {
 
     private static int index = 0;
 
-    public int id;
+    public int id = ++index;
     public String name = "noname_" + id;
 
     public double x;
@@ -18,13 +19,15 @@ public class GameObject {
     public double height;
 
     public Color color;
+    public BufferedImage image;
+    public int priority;
 
     public GameObject(String name, double x, double y) {
         this.name = name;
-        this.id = index++;
         this.x = x;
         this.y = y;
         this.color = Color.GREEN;
+        this.priority = 0;
     }
 
     public void update(long dt) {
@@ -42,9 +45,16 @@ public class GameObject {
         this.dy = dy;
         return this;
     }
+
     public GameObject setSize(double w, double h) {
         this.width = w;
         this.height = h;
         return this;
     }
+
+    public GameObject setImage(BufferedImage image) {
+        this.image = image;
+        return this;
+    }
+
 }
