@@ -23,7 +23,7 @@ public class Game {
 
   private int width = 320;
   private int height = 200;
-  private double scale = 2.0;
+  private double scale = 1.0;
 
   private String title = "fromClassToGame";
 
@@ -78,8 +78,11 @@ public class Game {
         case "width":
           this.width = Integer.parseInt(values[1]);
           break;
-        case "height":
+          case "height":
           this.height = Integer.parseInt(values[1]);
+          break;
+        case "scale":
+          this.scale = Double.parseDouble(values[1]);
           break;
         case "title":
           this.title = values[1];
@@ -92,15 +95,13 @@ public class Game {
 
   /**
    * Entrypoint for the game. can parse the argc from the java command line.
+   * 
+   * @throws UnknownArgumentException
    */
-  public void run(String[] argv) {
-    try {
-      initialize(argv);
-      loop();
-      dispose();
-    } catch (Exception e) {
-      logger.error("Unable to run the game", e);
-    }
+  public void run(String[] argv) throws UnknownArgumentException {
+    initialize(argv);
+    loop();
+    dispose();
   }
 
   /**
@@ -157,8 +158,16 @@ public class Game {
   }
 
   public static void main(String[] argc) {
-    Game game = new Game();
-    game.run(argc);
+    try {
+      Game game = new Game();
+      game.run(argc);
+    } catch (Exception e) {
+      logger.error("Unable to run the game", e);
+    }
+  }
+
+  public Window getWindow() {
+    return window;
   }
 
 }
