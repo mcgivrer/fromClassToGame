@@ -52,13 +52,13 @@ public class GameDefSteps {
 
     @And("a window of (\\d+) x (\\d+) is created")
     public void andAWindowOfIntXIntIsCreated(int w, int h) {
-        assertEquals("The Window width is not set to " + w, w, game.getFrame().getWidth());
-        assertEquals("The Window height is not set to " + h, h, game.getFrame().getHeight());
+        assertEquals("The Window width is not set to " + w, w, game.getWindow().getFrame().getWidth());
+        assertEquals("The Window height is not set to " + h, h, game.getWindow().getFrame().getHeight());
     }
 
     @And("the title is \"([^\"]*)\"")
     public void andTheTitleIsString(String title) {
-        assertEquals("The window title is not set to" + title, title, game.getFrame().getTitle());
+        assertEquals("The window title is not set to" + title, title, game.getWindow().getFrame().getTitle());
     }
 
     @Then("the Game is running")
