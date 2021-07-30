@@ -1,11 +1,11 @@
 package fr.snapgames.fromclasstogame;
 
-import javax.swing.JFrame;
-
-import java.awt.GraphicsDevice;
-import java.awt.image.BufferedImage;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JFrame;
 
 public class Window {
 
@@ -21,6 +21,7 @@ public class Window {
         frame.setSize(dim);
         frame.setPreferredSize(dim);
         frame.setMaximumSize(dim);
+        frame.addKeyListener(new InputHandler(this));
         frame.setLocation(new Point((int) (device.getDisplayMode().getWidth() - dim.width) / 2,
                 (int) (device.getDisplayMode().getHeight() - dim.height) / 2));
         frame.pack();
@@ -31,5 +32,4 @@ public class Window {
         frame.getGraphics().drawImage(img, 0, 0, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(),
                 img.getHeight(), null);
     }
-
 }
