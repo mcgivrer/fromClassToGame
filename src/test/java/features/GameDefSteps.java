@@ -13,6 +13,8 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import fr.snapgames.fromclasstogame.Game;
+import fr.snapgames.fromclasstogame.GameObject;
+import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
 
 public class GameDefSteps {
 
@@ -84,10 +86,29 @@ public class GameDefSteps {
                 game.run(null);
             }
             fail("Bad argument does not raise exception");
-        } catch (Exception e) {
+        } catch (UnknownArgumentException e) {
             logger.error("Unable to run the game", e);
         }
 
     }
 
+    @Given("I add a GameObject named \"([^\"]*)\" at (\\d+),(\\d+)$")
+    public void givenIAddAGameObjectNamedStringAtIntInt(String name, int x, int y) {
+        GameObject go = new GameObject(name, x, y);
+        game.add(go);
+    }
+
+    @Given("^the \"([^\"]*)\" size is (\\d+) x (\\d+)$")
+    public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
+        GameObject go = game.find(name);
+        go.setSize(w, h);
+    }
+
+    @Then("^the Game has (\\d+) GameObject at window center\\.$")
+    public void thenTheGameHasIntGameObjectAtWindowCenter(int i) {
+        GameObject go = game.getObjectsList().get(0);
+        assertEquals("The Game object list has not the right number of object", i, game.getObjectsList().size());
+        assertEquals("", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
+        assertEquals("", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
+    }
 }
