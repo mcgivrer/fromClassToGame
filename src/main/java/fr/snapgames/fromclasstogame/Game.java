@@ -1,7 +1,15 @@
 package fr.snapgames.fromclasstogame;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +33,16 @@ public class Game {
   private int width = 320;
   private int height = 200;
   private double scale = 1.0;
-
   private String title = "fromClassToGame";
 
   public Window window;
-  public Render renderer;
+  public Render renderer = new Render(320, 200);
 
   public boolean exit = false;
   public boolean testMode = false;
+
+  Map<String, GameObject> objects = new HashMap<>();
+  List<GameObject> objectsList = new ArrayList<>();
 
   /**
    * the mandatory default constructor
@@ -69,6 +79,7 @@ public class Game {
     defaultConfig = ResourceBundle.getBundle("config");
     this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
     this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
+    this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
     this.title = defaultConfig.getString("game.setup.title");
   }
 
@@ -107,7 +118,44 @@ public class Game {
   }
 
   private void createScene() {
-    renderer.add(new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(2.0, 2.0).setSize(16.0, 16.0));
+    Map<String,BufferedImage> images = readResources();
+
+    GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02).setSize(16.0, 16.0)
+        .setImage(images.get("redBall"));
+    for (int i = 0; i < 10; i++) {
+      GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
+          .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05)).setColor(Color.ORANGE).setSize(8, 8).setImage(images.get("orangeBall"));
+      add(e);
+    }
+    add(player);
+  }
+
+  private Map<String, BufferedImage> readResources() {
+    Map<String, BufferedImage> resources = new HashMap<>();
+    try {
+      
+      BufferedImage image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream("images/tiles.png"));
+      
+      resources.put("redBall", image.getSubimage(0, 0, 16, 16));
+      resources.put("orangeBall", image.getSubimage(4, 4, 8, 8));
+
+    } catch (IOException e) {
+      logger.error("Unable to read resource", e);
+    }
+    return resources;
+
+  }
+
+  public double rand(double min, double max) {
+    return (Math.random() * (max - min)) + min;
+  }
+
+  public void add(GameObject go) {
+    if (!objects.containsKey(go.name)) {
+      objects.put(go.name, go);
+      objectsList.add(go);
+      renderer.add(go);
+    }
   }
 
   /**
@@ -138,7 +186,11 @@ public class Game {
    * Update all the game mechanism
    */
   private void update(long dt) {
-    // TODO update something
+
+    for (GameObject e : objectsList) {
+      e.update(dt);
+    }
+
   }
 
   /**
@@ -153,7 +205,9 @@ public class Game {
    * Free everything
    */
   private void dispose() {
-    // TODO if needed releae resources !
+    objects.clear();
+    objectsList.clear();
+    renderer.clear();
   }
 
   /**
@@ -174,6 +228,18 @@ public class Game {
 
   public Window getWindow() {
     return window;
+  }
+
+  public GameObject find(String name) {
+    return objects.get(name);
+  }
+
+  public List<GameObject> getObjectsList() {
+    return objectsList;
+  }
+
+  public Render getRender() {
+    return renderer;
   }
 
 }
