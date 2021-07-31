@@ -22,7 +22,7 @@ public class Render {
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        
+
         for (GameObject go : objects) {
             draw(g, go);
         }
@@ -31,15 +31,19 @@ public class Render {
 
     private void draw(Graphics2D g, GameObject go) {
         g.setColor(go.color);
-        if (go.image != null) {
-            g.drawImage(go.image, (int) (go.x), (int) (go.y), null);
-        } else {
-            g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
-        }
-    }
+        String goClazzName = go.getClass().getName();
+        if (GameObject.class.getName().equals(goClazzName)) {
+            if (go.image != null) {
+                g.drawImage(go.image, (int) (go.x), (int) (go.y), null);
+            } else {
+                g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
+            }
+        } else if (TextObject.class.getName().equals(goClazzName)) {
+            TextObject to = (TextObject)go;
+            g.setFont(to.font);
+            g.drawString(to.text, (int)(to.x), (int)(to.y));
 
-    public BufferedImage getBuffer() {
-        return this.buffer;
+        }
     }
 
     public Render add(GameObject go) {
@@ -56,4 +60,7 @@ public class Render {
         objects.clear();
     }
 
+    public BufferedImage getBuffer() {
+        return this.buffer;
+    }
 }

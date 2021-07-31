@@ -3,7 +3,10 @@ package fr.snapgames.fromclasstogame;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,24 +124,43 @@ public class Game {
   }
 
   private void createScene() {
-    Map<String, BufferedImage> images = readResources();
-
+    Map<String, Object> resources = readResources();
+    // add main character (player)
     GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02).setSize(16.0, 16.0)
-        .setImage(images.get("redBall"));
+        .setImage((BufferedImage) resources.get("redBall"));
+    add(player);
+    // Add enemies(enemy_99)
     for (int i = 0; i < 10; i++) {
       GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
           .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05)).setColor(Color.ORANGE).setSize(8, 8)
-          .setImage(images.get("orangeBall"));
+          .setImage((BufferedImage) resources.get("orangeBall"));
       add(e);
     }
-    add(player);
+    // add some fixed text.
+    TextObject text = new TextObject("text", 10, 10).setText("Sample from class to game")
+        .setFont((Font) resources.get("textFont"));
+    add(text);
   }
 
-  private Map<String, BufferedImage> readResources() {
-    Map<String, BufferedImage> resources = new HashMap<>();
+  private Map<String, Object> readResources() {
+    Map<String, Object> resources = new HashMap<>();
     resources.put("redBall", readImage("images/tiles.png", 0, 0, 16, 16));
     resources.put("orangeBall", readImage("images/tiles.png", 16, 0, 16, 16));
+    resources.put("textFont", readFont("fonts/FreePixel.ttf"));
+
     return resources;
+  }
+
+  private Font readFont(String fontPath) {
+    InputStream is = Game.class.getClassLoader().getResourceAsStream(fontPath);
+    Font textFont = null;
+    try {
+      textFont = Font.createFont(Font.TRUETYPE_FONT, is);
+    } catch (FontFormatException | IOException e) {
+      logger.error("Unable to read font", e);
+      e.printStackTrace();
+    }
+    return textFont;
   }
 
   private BufferedImage readImage(String path, int x, int y, int w, int h) {
@@ -146,7 +168,7 @@ public class Game {
     try {
       image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream(path)).getSubimage(x, y, w, h);
     } catch (IOException e) {
-      logger.error("Unable to read resource", e);
+      logger.error("Unable to read image", e);
     }
     return image;
   }
