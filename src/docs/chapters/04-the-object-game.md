@@ -166,3 +166,5 @@ public class Render {
 ```
 
 The `add()` will add a GameObject to the "rendering list", and the `draw()` method will render a the corresponding image (if not null) or draw a rectangle.
+
+So now, calling the `render()` method will parse in the priority sort order all the `GameObject` in the objects list, and draw each of those items.

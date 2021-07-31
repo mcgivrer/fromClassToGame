@@ -136,18 +136,19 @@ public class Game {
 
   private Map<String, BufferedImage> readResources() {
     Map<String, BufferedImage> resources = new HashMap<>();
+    resources.put("redBall", readImage("images/tiles.png", 0, 0, 16, 16));
+    resources.put("orangeBall", readImage("images/tiles.png", 16, 0, 16, 16));
+    return resources;
+  }
+
+  private BufferedImage readImage(String path, int x, int y, int w, int h) {
+    BufferedImage image = null;
     try {
-
-      BufferedImage image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream("images/tiles.png"));
-
-      resources.put("redBall", image.getSubimage(0, 0, 16, 16));
-      resources.put("orangeBall", image.getSubimage(16, 0, 16, 16));
-
+      image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream(path)).getSubimage(x, y, w, h);
     } catch (IOException e) {
       logger.error("Unable to read resource", e);
     }
-    return resources;
-
+    return image;
   }
 
   public double rand(double min, double max) {

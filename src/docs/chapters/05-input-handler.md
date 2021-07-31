@@ -36,4 +36,6 @@ public class InputHandler implements KeyListener {
 }
 ```
 
-All is in this super simple class. `keyPressed` and `keyReleased` are seting true and false the corresponding boolean in the keys buffer.
+All is in this super simple class. `keyPressed` and `keyReleased` are seting true and false the corresponding boolean in the `keys` buffer.
+
+To detect if a specific key has been pressed, just use `getKey(code)` !
