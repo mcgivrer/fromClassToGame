@@ -15,19 +15,17 @@ This project is a journey from a Class to a Game. first commits will set the bas
 ## build
 
 ```bash
-$> mvn clean install
+mvn clean install
 ```
 
 ## test
 
 ```bash
-$> mvn test
+mvn test
 ```
 
 ## run
 
 ```bash
-$> mvn exec:java
+mvn exec:java
 ```
-
-
