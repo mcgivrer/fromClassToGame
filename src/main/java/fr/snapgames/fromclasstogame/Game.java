@@ -1,19 +1,14 @@
 package fr.snapgames.fromclasstogame;
 
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
-import javax.imageio.ImageIO;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +32,12 @@ public class Game {
   private int width = 320;
   private int height = 200;
   private double scale = 1.0;
+  private double FPS = 60;
+  private long realFPS = 60;
+
   private String title = "fromClassToGame";
+
+  private int score = 0;
 
   public Window window;
   public Render renderer = new Render(320, 200);
@@ -53,6 +53,8 @@ public class Game {
    * the mandatory default constructor
    */
   public Game() {
+    renderer = new Render(320, 200);
+    window = new Window("", 320, 200);
   }
 
   /**
@@ -86,27 +88,33 @@ public class Game {
     this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
     this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
     this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
+    this.FPS = Double.parseDouble(defaultConfig.getString("game.setup.fps"));
     this.title = defaultConfig.getString("game.setup.title");
   }
 
-  public void parseArgs(String[] argc) throws UnknownArgumentException {
-    for (String arg : argc) {
-      String[] values = arg.split("=");
-      switch (values[0].toLowerCase()) {
-        case "width":
-          this.width = Integer.parseInt(values[1]);
-          break;
-        case "height":
-          this.height = Integer.parseInt(values[1]);
-          break;
-        case "scale":
-          this.scale = Double.parseDouble(values[1]);
-          break;
-        case "title":
-          this.title = values[1];
-          break;
-        default:
-          throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
+  public void parseArgs(String[] argv) throws UnknownArgumentException {
+    if (argv != null) {
+      for (String arg : argv) {
+        String[] values = arg.split("=");
+        switch (values[0].toLowerCase()) {
+          case "width":
+            this.width = Integer.parseInt(values[1]);
+            break;
+          case "height":
+            this.height = Integer.parseInt(values[1]);
+            break;
+          case "scale":
+            this.scale = Double.parseDouble(values[1]);
+            break;
+          case "fps":
+            this.FPS = Double.parseDouble(values[1]);
+            break;
+          case "title":
+            this.title = values[1];
+            break;
+          default:
+            throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
+        }
       }
     }
   }
@@ -139,6 +147,7 @@ public class Game {
     // add some fixed text.
     TextObject scoreTO = new TextObject("score", 10, 20).setText("00000").setFont(f);
     scoreTO.setColor(Color.WHITE);
+    scoreTO.priority = 10;
     add(scoreTO);
   }
 
@@ -161,12 +170,31 @@ public class Game {
     long start = System.currentTimeMillis();
     long previous = start;
     long dt = 0;
+    long frames = 0;
+    long timeFrame = 0;
+
+    long frameDuration = (long) (1000 / FPS);
     while (!exit && !testMode) {
       start = System.currentTimeMillis();
       dt = start - previous;
       input();
       update(dt);
       draw();
+      frames++;
+      timeFrame += dt;
+      if (timeFrame > 1000) {
+        timeFrame = 0;
+        realFPS = frames;
+        frames = 0;
+      }
+      long elapsed = System.currentTimeMillis() - start;
+      if (elapsed > 0 && elapsed < frameDuration) {
+        try {
+          Thread.sleep(frameDuration - (System.currentTimeMillis() - start));
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
       previous = start;
     }
   }
@@ -188,7 +216,9 @@ public class Game {
     for (GameObject e : objectsList) {
       e.update(dt);
     }
-
+    TextObject scoreTO = (TextObject) objects.get("score");
+    scoreTO.setText(String.format("%05d", score));
+    score++;
   }
 
   /**
@@ -196,7 +226,7 @@ public class Game {
    */
   private void draw() {
     renderer.render();
-    window.draw(renderer.getBuffer());
+    window.draw(realFPS, renderer.getBuffer());
   }
 
   /**
@@ -216,21 +246,22 @@ public class Game {
     this.exit = true;
   }
 
-  public static void main(String[] argc) {
-    try {
-      Game game = new Game();
-      game.run(argc);
-    } catch (Exception e) {
-      logger.error("Unable to run the game", e);
-    }
-  }
-
   public Window getWindow() {
     return window;
   }
 
-  public GameObject find(String name) {
+  public GameObject getGameObject(String name) {
     return objects.get(name);
+  }
+
+  /**
+   * find GameObject filtered on their name according to a filteredName.
+   * 
+   * @param filteredName
+   * @return
+   */
+  public List<GameObject> find(String filteredName) {
+    return objectsList.stream().filter(o -> o.name.contains(filteredName)).collect(Collectors.toList());
   }
 
   public List<GameObject> getObjectsList() {
@@ -241,4 +272,12 @@ public class Game {
     return renderer;
   }
 
+  public static void main(String[] argc) {
+    try {
+      Game game = new Game();
+      game.run(argc);
+    } catch (Exception e) {
+      logger.error("Unable to run the game", e);
+    }
+  }
 }
