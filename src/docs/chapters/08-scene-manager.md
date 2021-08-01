@@ -1,5 +1,5 @@
 ---
-title: FromClass to Game
+title: From a Class to Game
 chapter: 08 - Scene Manager
 author: Frédéric Delorme
 description: A dedicated service to Scenes management.

@@ -59,4 +59,9 @@ public class GameObject {
         return this;
     }
 
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
 }
