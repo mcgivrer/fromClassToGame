@@ -33,4 +33,8 @@ public class InputHandler implements KeyListener {
         return keys[code];
     }
 
+    public void addKeyListener(KeyListener kl) {
+        window.getFrame().addKeyListener(kl);
+    }
+
 }
