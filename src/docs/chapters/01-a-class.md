@@ -1,5 +1,5 @@
 ---
-title: FromClass to Game
+title: From a Class to Game
 chapter: 01 - A Class ?
 author: Frédéric Delorme
 description: CRateing a first class as a Game container.

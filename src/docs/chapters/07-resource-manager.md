@@ -1,5 +1,5 @@
 ---
-title: FromClass to Game
+title: From a Class to Game
 chapter: 07 - Resource Manager
 author: Frédéric Delorme
 description: A dedicated service to resource management.
