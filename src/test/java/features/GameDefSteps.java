@@ -66,7 +66,6 @@ public class GameDefSteps {
     @Then("the Game is running")
     public void thenTheGameIsRunning() {
         try {
-
             if (args != null) {
                 game.run(args);
             } else {
@@ -85,7 +84,6 @@ public class GameDefSteps {
         } catch (UnknownArgumentException e) {
             logger.error("Unable to run the game", e);
         }
-
     }
 
     @Given("I add a GameObject named \"([^\"]*)\" at (\\d+),(\\d+)$")
