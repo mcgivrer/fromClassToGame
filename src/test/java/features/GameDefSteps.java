@@ -26,6 +26,11 @@ public class GameDefSteps {
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
         game = new Game();
+        try {
+            game.initialize(null);
+        } catch (UnknownArgumentException e) {
+            fail("Unable to initialize the game");
+        }
         game.testMode = true;
     }
 
@@ -89,19 +94,20 @@ public class GameDefSteps {
     @Given("I add a GameObject named \"([^\"]*)\" at (\\d+),(\\d+)$")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, int x, int y) {
         GameObject go = new GameObject(name, x, y);
-        game.add(go);
+        game.getSceneManager().getCurrent().add(go);
     }
 
     @Given("^the \"([^\"]*)\" size is (\\d+) x (\\d+)$")
     public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
-        GameObject go = game.getGameObject(name);
+        GameObject go = game.getSceneManager().getCurrent().getGameObject(name);
         go.setSize(w, h);
     }
 
     @Then("^the Game has (\\d+) GameObject at window center\\.$")
     public void thenTheGameHasIntGameObjectAtWindowCenter(int i) {
-        GameObject go = game.getObjectsList().get(0);
-        assertEquals("The Game object list has not the right number of object", i, game.getObjectsList().size());
+        GameObject go = game.getSceneManager().getCurrent().getObjectsList().get(0);
+        assertEquals("The Game object list has not the right number of object", i,
+                game.getSceneManager().getCurrent().getObjectsList().size());
         assertEquals("", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
         assertEquals("", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
     }

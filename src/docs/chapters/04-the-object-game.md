@@ -1,11 +1,12 @@
 ---
-title: FromClass to Game
+title: From a Class to Game
 chapter: 04 - The Game Object
 author: Frédéric Delorme
 description: Implementing a simple Object to manage them'all.
 created: 2021-08-01
 tags: gamedev, gameobject
 ---
+
 ## The Object Game
 
 The GameObject entity will be used by every element in the gae to be renderered, interct with and updated.

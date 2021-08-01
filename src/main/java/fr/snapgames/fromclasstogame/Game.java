@@ -1,14 +1,8 @@
 package fr.snapgames.fromclasstogame;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.awt.event.KeyListener;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +17,7 @@ import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
  * @author Frédéric Delorme<frederic.delorme@gmail.com>
  * @since 0.0.1
  */
-public class Game {
+public class Game implements KeyListener {
 
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
@@ -37,8 +31,6 @@ public class Game {
 
   private String title = "fromClassToGame";
 
-  private int score = 0;
-
   public Window window;
   public Render renderer = new Render(320, 200);
   public InputHandler inputHandler;
@@ -46,15 +38,13 @@ public class Game {
   public boolean exit = false;
   public boolean testMode = false;
 
-  Map<String, GameObject> objects = new HashMap<>();
-  List<GameObject> objectsList = new ArrayList<>();
+  private String scenes = "";
+  private SceneManager sceneManager;
 
   /**
    * the mandatory default constructor
    */
   public Game() {
-    renderer = new Render(320, 200);
-    window = new Window("", 320, 200);
   }
 
   /**
@@ -70,26 +60,15 @@ public class Game {
     height = h;
   }
 
-  /**
-   * Initialization of the display window and everything the game will need.
-   */
-  public void initialize(String[] argv) throws UnknownArgumentException {
-
-    loadDefaultValues();
-    parseArgs(argv);
-
-    renderer = new Render(this.width, this.height);
-    window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
-    inputHandler = new InputHandler(window);
-  }
-
   public void loadDefaultValues() {
     defaultConfig = ResourceBundle.getBundle("config");
+
     this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
     this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
     this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
     this.FPS = Double.parseDouble(defaultConfig.getString("game.setup.fps"));
     this.title = defaultConfig.getString("game.setup.title");
+    this.scenes = defaultConfig.getString("game.setup.scenes");
   }
 
   public void parseArgs(String[] argv) throws UnknownArgumentException {
@@ -120,6 +99,22 @@ public class Game {
   }
 
   /**
+   * Initialization of the display window and everything the game will need.
+   */
+  public void initialize(String[] argv) throws UnknownArgumentException {
+
+    loadDefaultValues();
+    parseArgs(argv);
+
+    renderer = new Render(this.width, this.height);
+    window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
+    inputHandler = new InputHandler(window);
+    inputHandler.addKeyListener(this);
+    sceneManager = new SceneManager(this);
+    sceneManager.initialize(this.scenes.split(","));
+  }
+
+  /**
    * Entrypoint for the game. can parse the argc from the java command line.
    * 
    * @throws UnknownArgumentException
@@ -132,35 +127,7 @@ public class Game {
   }
 
   private void createScene() {
-    // add main character (player)
-    GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02).setSize(16.0, 16.0)
-        .setImage(ResourceManager.getSlicedImage("images/tiles.png", "player", 0, 0, 16, 16));
-    add(player);
-    // Add enemies(enemy_99)
-    for (int i = 0; i < 10; i++) {
-      GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
-          .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05)).setColor(Color.ORANGE).setSize(8, 8)
-          .setImage(ResourceManager.getSlicedImage("images/tiles.png", "orangeBall", 16, 0, 16, 16));
-      add(e);
-    }
-    Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.CENTER_BASELINE, 14);
-    // add some fixed text.
-    TextObject scoreTO = new TextObject("score", 10, 20).setText("00000").setFont(f);
-    scoreTO.setColor(Color.WHITE);
-    scoreTO.priority = 10;
-    add(scoreTO);
-  }
-
-  public double rand(double min, double max) {
-    return (Math.random() * (max - min)) + min;
-  }
-
-  public void add(GameObject go) {
-    if (!objects.containsKey(go.name)) {
-      objects.put(go.name, go);
-      objectsList.add(go);
-      renderer.add(go);
-    }
+    sceneManager.activate("demo");
   }
 
   /**
@@ -203,22 +170,14 @@ public class Game {
    * Manage the input
    */
   private void input() {
-    if (inputHandler.getKey(KeyEvent.VK_ESCAPE)) {
-      this.exit = true;
-    }
+    sceneManager.getCurrent().input();
   }
 
   /**
    * Update all the game mechanism
    */
   private void update(long dt) {
-
-    for (GameObject e : objectsList) {
-      e.update(dt);
-    }
-    TextObject scoreTO = (TextObject) objects.get("score");
-    scoreTO.setText(String.format("%05d", score));
-    score++;
+    sceneManager.getCurrent().update(dt);
   }
 
   /**
@@ -233,8 +192,7 @@ public class Game {
    * Free everything
    */
   private void dispose() {
-    objects.clear();
-    objectsList.clear();
+
     renderer.clear();
     window.close();
   }
@@ -250,24 +208,6 @@ public class Game {
     return window;
   }
 
-  public GameObject getGameObject(String name) {
-    return objects.get(name);
-  }
-
-  /**
-   * find GameObject filtered on their name according to a filteredName.
-   * 
-   * @param filteredName
-   * @return
-   */
-  public List<GameObject> find(String filteredName) {
-    return objectsList.stream().filter(o -> o.name.contains(filteredName)).collect(Collectors.toList());
-  }
-
-  public List<GameObject> getObjectsList() {
-    return objectsList;
-  }
-
   public Render getRender() {
     return renderer;
   }
@@ -279,5 +219,35 @@ public class Game {
     } catch (Exception e) {
       logger.error("Unable to run the game", e);
     }
+  }
+
+  @Override
+  public void keyTyped(KeyEvent e) {
+    // nothing to do now
+  }
+
+  @Override
+  public void keyPressed(KeyEvent e) {
+    // nothing to do now
+
+  }
+
+  @Override
+  public void keyReleased(KeyEvent e) {
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_F11:
+        renderer.saveScreenshot();
+        break;
+      case KeyEvent.VK_ESCAPE:
+        this.exit = true;
+        break;
+      default:
+        break;
+    }
+
+  }
+
+  public SceneManager getSceneManager() {
+    return sceneManager;
   }
 }

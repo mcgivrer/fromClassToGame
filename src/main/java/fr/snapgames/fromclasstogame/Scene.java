@@ -1,5 +1,7 @@
 package fr.snapgames.fromclasstogame;
 
+import java.util.List;
+
 /**
  * The {@link Scene} interface to create a new game state.
  * 
@@ -13,6 +15,14 @@ public interface Scene {
     void initialize(Game g);
 
     void create(Game g);
+
+    void add(GameObject go);
+
+    GameObject getGameObject(String name);
+
+    List<GameObject> find(String filteredName);
+
+    List<GameObject> getObjectsList();
 
     void activate();
 
