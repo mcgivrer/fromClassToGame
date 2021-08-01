@@ -30,7 +30,7 @@ public class Window {
     }
 
     public void draw(BufferedImage img) {
-        frame.getGraphics().drawImage(img, 0, 0, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(),
+        frame.getGraphics().drawImage(img, 0, 30, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(),
                 img.getHeight(), null);
     }
 

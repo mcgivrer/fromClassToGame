@@ -3,7 +3,10 @@ package fr.snapgames.fromclasstogame;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,7 +92,7 @@ public class Game {
   public void parseArgs(String[] argc) throws UnknownArgumentException {
     for (String arg : argc) {
       String[] values = arg.split("=");
-      switch (values[0]) {
+      switch (values[0].toLowerCase()) {
         case "width":
           this.width = Integer.parseInt(values[1]);
           break;
@@ -121,33 +124,22 @@ public class Game {
   }
 
   private void createScene() {
-    Map<String, BufferedImage> images = readResources();
-
+    // add main character (player)
     GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02).setSize(16.0, 16.0)
-        .setImage(images.get("redBall"));
+        .setImage(ResourceManager.getSlicedImage("images/tiles.png", "player", 0, 0, 16, 16));
+    add(player);
+    // Add enemies(enemy_99)
     for (int i = 0; i < 10; i++) {
       GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
           .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05)).setColor(Color.ORANGE).setSize(8, 8)
-          .setImage(images.get("orangeBall"));
+          .setImage(ResourceManager.getSlicedImage("images/tiles.png", "orangeBall", 16, 0, 16, 16));
       add(e);
     }
-    add(player);
-  }
-
-  private Map<String, BufferedImage> readResources() {
-    Map<String, BufferedImage> resources = new HashMap<>();
-    try {
-
-      BufferedImage image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream("images/tiles.png"));
-
-      resources.put("redBall", image.getSubimage(0, 0, 16, 16));
-      resources.put("orangeBall", image.getSubimage(16, 0, 16, 16));
-
-    } catch (IOException e) {
-      logger.error("Unable to read resource", e);
-    }
-    return resources;
-
+    Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.CENTER_BASELINE, 14);
+    // add some fixed text.
+    TextObject scoreTO = new TextObject("score", 10, 20).setText("00000").setFont(f);
+    scoreTO.setColor(Color.WHITE);
+    add(scoreTO);
   }
 
   public double rand(double min, double max) {
