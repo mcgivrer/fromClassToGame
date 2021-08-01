@@ -1,5 +1,5 @@
 ---
-title: FromClass to Game
+title: From a Class to Game
 chapter: 02 - An Input Handler
 author: Frédéric Delorme
 description: Changing for a good way to manage user keyboard input.
