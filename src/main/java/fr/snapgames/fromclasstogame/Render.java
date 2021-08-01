@@ -20,6 +20,7 @@ public class Render {
     public void render() {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
@@ -39,9 +40,9 @@ public class Render {
                 g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
             }
         } else if (TextObject.class.getName().equals(goClazzName)) {
-            TextObject to = (TextObject)go;
+            TextObject to = (TextObject) go;
             g.setFont(to.font);
-            g.drawString(to.text, (int)(to.x), (int)(to.y));
+            g.drawString(to.text, (int) (to.x), (int) (to.y));
 
         }
     }
