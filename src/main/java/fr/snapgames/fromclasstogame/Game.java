@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
  * @author Frédéric Delorme<frederic.delorme@gmail.com>
  * @since 0.0.1
  */
-public class Game {
+public class Game implements KeyListener {
 
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
@@ -53,8 +54,6 @@ public class Game {
    * the mandatory default constructor
    */
   public Game() {
-    renderer = new Render(320, 200);
-    window = new Window("", 320, 200);
   }
 
   /**
@@ -81,6 +80,7 @@ public class Game {
     renderer = new Render(this.width, this.height);
     window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
     inputHandler = new InputHandler(window);
+    inputHandler.addKeyListener(this);
   }
 
   public void loadDefaultValues() {
@@ -204,7 +204,7 @@ public class Game {
    */
   private void input() {
     if (inputHandler.getKey(KeyEvent.VK_ESCAPE)) {
-      this.exit = true;
+
     }
   }
 
@@ -279,5 +279,31 @@ public class Game {
     } catch (Exception e) {
       logger.error("Unable to run the game", e);
     }
+  }
+
+  @Override
+  public void keyTyped(KeyEvent e) {
+    // nothing to do now
+  }
+
+  @Override
+  public void keyPressed(KeyEvent e) {
+    // nothing to do now
+
+  }
+
+  @Override
+  public void keyReleased(KeyEvent e) {
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_F11:
+        renderer.saveScreenshot();
+        break;
+      case KeyEvent.VK_ESCAPE:
+        this.exit = true;
+        break;
+      default:
+        break;
+    }
+
   }
 }

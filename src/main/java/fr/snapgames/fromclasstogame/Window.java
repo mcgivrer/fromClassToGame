@@ -10,7 +10,13 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class Window {
@@ -41,14 +47,11 @@ public class Window {
         if (debugFont == null) {
             debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 8);
         }
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.drawImage(img, 0, 30, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
 
         g.setFont(debugFont);
         g.setColor(Color.ORANGE);
         g.drawString(String.format("FPS:%03d", realFPS), 10, frame.getHeight() - 30);
-
         g.dispose();
     }
 
@@ -59,4 +62,5 @@ public class Window {
     public void close() {
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
+
 }
