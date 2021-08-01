@@ -3,7 +3,8 @@ package fr.snapgames.fromclasstogame;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.GraphicsDevice;
 import java.awt.Insets;
 import java.awt.Point;
@@ -36,17 +37,18 @@ public class Window {
     }
 
     public void draw(long realFPS, BufferedImage img) {
-        Graphics g = frame.getGraphics();
+        Graphics2D g = (Graphics2D) frame.getGraphics();
         if (debugFont == null) {
             debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 8);
         }
-
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.drawImage(img, 0, 30, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
 
         g.setFont(debugFont);
         g.setColor(Color.ORANGE);
         g.drawString(String.format("FPS:%03d", realFPS), 10, frame.getHeight() - 30);
-    
+
         g.dispose();
     }
 

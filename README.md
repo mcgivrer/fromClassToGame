@@ -7,7 +7,6 @@
 [![Known Vulnerabilities](https://snyk.io//test/github/mcgivrer/fromClassToGame/badge.svg?targetFile=pom.xml)](https://snyk.io//test/github/mcgivrer/fromClassToGame?targetFile=pom.xml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/f043107cfc6844f9a05100a7460c3dd4)](https://www.codacy.com/manual/mcgivrer/fromClassToGame?utm_source=github.com&utm_medium=referral&utm_content=mcgivrer/fromClassToGame&utm_campaign=Badge_Coverage)
 
-
 ## Description
 
 This project is a journey from a Class to a Game. first commits will set the basis, and progressivly transform, chapter after chapter, the initial class into a playable game.
@@ -29,3 +28,5 @@ mvn test
 ```bash
 mvn exec:java
 ```
+
+![screenshot](docs/images/../../src/docs/images/capture-01.png "a screenshot of the current sample demo")

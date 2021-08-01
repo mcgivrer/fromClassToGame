@@ -53,6 +53,8 @@ public class Game {
    * the mandatory default constructor
    */
   public Game() {
+    renderer = new Render(320, 200);
+    window = new Window("", 320, 200);
   }
 
   /**
@@ -90,27 +92,29 @@ public class Game {
     this.title = defaultConfig.getString("game.setup.title");
   }
 
-  public void parseArgs(String[] argc) throws UnknownArgumentException {
-    for (String arg : argc) {
-      String[] values = arg.split("=");
-      switch (values[0].toLowerCase()) {
-        case "width":
-          this.width = Integer.parseInt(values[1]);
-          break;
-        case "height":
-          this.height = Integer.parseInt(values[1]);
-          break;
-        case "scale":
-          this.scale = Double.parseDouble(values[1]);
-          break;
-        case "fps":
-          this.FPS = Double.parseDouble(values[1]);
-          break;
-        case "title":
-          this.title = values[1];
-          break;
-        default:
-          throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
+  public void parseArgs(String[] argv) throws UnknownArgumentException {
+    if (argv != null) {
+      for (String arg : argv) {
+        String[] values = arg.split("=");
+        switch (values[0].toLowerCase()) {
+          case "width":
+            this.width = Integer.parseInt(values[1]);
+            break;
+          case "height":
+            this.height = Integer.parseInt(values[1]);
+            break;
+          case "scale":
+            this.scale = Double.parseDouble(values[1]);
+            break;
+          case "fps":
+            this.FPS = Double.parseDouble(values[1]);
+            break;
+          case "title":
+            this.title = values[1];
+            break;
+          default:
+            throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
+        }
       }
     }
   }
