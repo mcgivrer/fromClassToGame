@@ -1,5 +1,5 @@
 ---
-title: FromClass to Game
+title: From a Class to Game
 chapter: 03 - Delegate things
 author: Frédéric Delorme
 description: Addng some specialized service into the game.

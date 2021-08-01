@@ -1,5 +1,5 @@
 ---
-title: FromClass to Game
+title: From a Class to Game
 chapter: 02 - Adding a Structure
 author: Frédéric Delorme
 description: Moving from a simple class to a game structure.
