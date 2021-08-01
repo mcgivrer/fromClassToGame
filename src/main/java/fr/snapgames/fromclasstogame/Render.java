@@ -3,12 +3,20 @@ package fr.snapgames.fromclasstogame;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 public class Render {
 
     private BufferedImage buffer;
+    static int screenShotIndex = 0;
 
     private List<GameObject> objects = new ArrayList<>();
 
@@ -64,4 +72,27 @@ public class Render {
     public BufferedImage getBuffer() {
         return this.buffer;
     }
+
+    /**
+     * Save a screenshot of the current buffer.
+     */
+    public void saveScreenshot() {
+        final String path = this.getClass().getResource("/").getPath().substring(1);
+        Path targetDir = Paths.get(path + "/screenshots");
+        int i = screenShotIndex++;
+        String filename = String.format("%sscreenshots/%s-%d.png",path,java.lang.System.nanoTime(),i);
+
+        try {
+            if (!Files.exists(targetDir)) {
+                Files.createDirectory(targetDir);
+            }
+            File out = new File(filename);
+            ImageIO.write(getBuffer(), "PNG", out);
+
+            System.out.println(String.format("Write screenshot to %s", filename));
+        } catch (IOException e) {
+            System.err.println(String.format("Unable to write screenshot to %s:%s", filename, e.getMessage()));
+        }
+    }
+
 }
