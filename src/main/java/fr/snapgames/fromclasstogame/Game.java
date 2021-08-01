@@ -92,7 +92,7 @@ public class Game {
   public void parseArgs(String[] argc) throws UnknownArgumentException {
     for (String arg : argc) {
       String[] values = arg.split("=");
-      switch (values[0]) {
+      switch (values[0].toLowerCase()) {
         case "width":
           this.width = Integer.parseInt(values[1]);
           break;
@@ -124,53 +124,22 @@ public class Game {
   }
 
   private void createScene() {
-    Map<String, Object> resources = readResources();
     // add main character (player)
     GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02).setSize(16.0, 16.0)
-        .setImage((BufferedImage) resources.get("redBall"));
+        .setImage(ResourceManager.getSlicedImage("images/tiles.png", "player", 0, 0, 16, 16));
     add(player);
     // Add enemies(enemy_99)
     for (int i = 0; i < 10; i++) {
       GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
           .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05)).setColor(Color.ORANGE).setSize(8, 8)
-          .setImage((BufferedImage) resources.get("orangeBall"));
+          .setImage(ResourceManager.getSlicedImage("images/tiles.png", "orangeBall", 16, 0, 16, 16));
       add(e);
     }
+    Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.CENTER_BASELINE, 14);
     // add some fixed text.
-    TextObject text = new TextObject("text", 10, 10).setText("Sample from class to game")
-        .setFont((Font) resources.get("textFont"));
-    add(text);
-  }
-
-  private Map<String, Object> readResources() {
-    Map<String, Object> resources = new HashMap<>();
-    resources.put("redBall", readImage("images/tiles.png", 0, 0, 16, 16));
-    resources.put("orangeBall", readImage("images/tiles.png", 16, 0, 16, 16));
-    resources.put("textFont", readFont("fonts/FreePixel.ttf"));
-
-    return resources;
-  }
-
-  private Font readFont(String fontPath) {
-    InputStream is = Game.class.getClassLoader().getResourceAsStream(fontPath);
-    Font textFont = null;
-    try {
-      textFont = Font.createFont(Font.TRUETYPE_FONT, is);
-    } catch (FontFormatException | IOException e) {
-      logger.error("Unable to read font", e);
-      e.printStackTrace();
-    }
-    return textFont;
-  }
-
-  private BufferedImage readImage(String path, int x, int y, int w, int h) {
-    BufferedImage image = null;
-    try {
-      image = ImageIO.read(Game.class.getClassLoader().getResourceAsStream(path)).getSubimage(x, y, w, h);
-    } catch (IOException e) {
-      logger.error("Unable to read image", e);
-    }
-    return image;
+    TextObject scoreTO = new TextObject("score", 10, 20).setText("00000").setFont(f);
+    scoreTO.setColor(Color.WHITE);
+    add(scoreTO);
   }
 
   public double rand(double min, double max) {

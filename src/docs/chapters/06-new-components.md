@@ -77,10 +77,3 @@ You just have to create a Text Object and add is to the Game objects list:
 
 ```
 
-### Resource Manager
-
-As we now need more that just images to be displayed in our game, we need some other kind of resources like font, sound and so on, we need to add a ResourceManager which work consist in managing all those kind of resources.
-
-(TODO)
-
-And that's It !
