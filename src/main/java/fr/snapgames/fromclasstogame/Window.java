@@ -1,24 +1,30 @@
 package fr.snapgames.fromclasstogame;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GraphicsDevice;
+import java.awt.Insets;
 import java.awt.Point;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import java.awt.event.WindowEvent;
-
 public class Window {
 
     private JFrame frame;
+    private Font debugFont;
 
     public Window(String title, int width, int height) {
         frame = new JFrame(title);
 
         GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
-        Dimension dim = new Dimension(width, height);
-
+        Insets ins = frame.getContentPane().getInsets();
+        Dimension dim = new Dimension(width, height + ins.top);
+        frame.setLayout(null);
+        frame.setLocationByPlatform(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(dim);
         frame.setPreferredSize(dim);
@@ -29,9 +35,19 @@ public class Window {
         frame.setVisible(true);
     }
 
-    public void draw(BufferedImage img) {
-        frame.getGraphics().drawImage(img, 0, 30, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(),
-                img.getHeight(), null);
+    public void draw(long realFPS, BufferedImage img) {
+        Graphics g = frame.getGraphics();
+        if (debugFont == null) {
+            debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 8);
+        }
+
+        g.drawImage(img, 0, 30, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
+
+        g.setFont(debugFont);
+        g.setColor(Color.ORANGE);
+        g.drawString(String.format("FPS:%03d", realFPS), 10, frame.getHeight() - 30);
+    
+        g.dispose();
     }
 
     public JFrame getFrame() {

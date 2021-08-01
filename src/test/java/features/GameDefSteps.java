@@ -20,7 +20,7 @@ public class GameDefSteps {
 
     private static final Logger logger = LoggerFactory.getLogger(GameDefSteps.class);
     private Game game;
-    private String[] args = new String[] {};
+    private String[] args;
     private List<String> argList = new ArrayList<>();
 
     @Given("the Game is instantiated")
@@ -80,11 +80,7 @@ public class GameDefSteps {
     @Then("the Game raises exception")
     public void thenTheGameRaisesException() {
         try {
-            if (args != null) {
-                game.run(args);
-            } else {
-                game.run(null);
-            }
+            game.run(args);
             fail("Bad argument does not raise exception");
         } catch (UnknownArgumentException e) {
             logger.error("Unable to run the game", e);
@@ -100,7 +96,7 @@ public class GameDefSteps {
 
     @Given("^the \"([^\"]*)\" size is (\\d+) x (\\d+)$")
     public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
-        GameObject go = game.find(name);
+        GameObject go = game.getGameObject(name);
         go.setSize(w, h);
     }
 
