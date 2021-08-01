@@ -1,3 +1,11 @@
+---
+title: FromClass to Game
+chapter: 04 - The Game Object
+author: Frédéric Delorme
+description: Implementing a simple Object to manage them'all.
+created: 2021-08-01
+tags: gamedev, gameobject
+---
 ## The Object Game
 
 The GameObject entity will be used by every element in the gae to be renderered, interct with and updated.
@@ -166,3 +174,5 @@ public class Render {
 ```
 
 The `add()` will add a GameObject to the "rendering list", and the `draw()` method will render a the corresponding image (if not null) or draw a rectangle.
+
+So now, calling the `render()` method will parse in the priority sort order all the `GameObject` in the objects list, and draw each of those items.

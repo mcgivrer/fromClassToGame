@@ -1,3 +1,12 @@
+---
+title: FromClass to Game
+chapter: 02 - Adding a Structure
+author: Frédéric Delorme
+description: Moving from a simple class to a game structure.
+created: 2021-08-01
+tags: gamedev, structure, game, loop
+---
+
 ## Adding a Structure
 
 ### Core Game methods
