@@ -1,3 +1,12 @@
+---
+title: FromClass to Game
+chapter: 03 - Delegate things
+author: Frédéric Delorme
+description: Addng some specialized service into the game.
+created: 2021-08-01
+tags: gamedev, structure, input, window, render
+---
+
 ## Delegating things
 
 If we want to produce the game we will be able to code all thing into one class, but we will quickly see that the class will grow very fast according to new things we will add, as enemies, decors, player, and so on. Too much code in one place is a very bad practice.

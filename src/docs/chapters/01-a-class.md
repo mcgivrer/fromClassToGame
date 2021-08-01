@@ -1,3 +1,12 @@
+---
+title: FromClass to Game
+chapter: 01 - A Class ?
+author: Frédéric Delorme
+description: CRateing a first class as a Game container.
+created: 2021-08-01
+tags: gamedev, staring point
+---
+
 ## A Class ?
 
 A class is a pure OOP entity, defning an object, with its own attributes, which can be named characteristics, and its own methods, that we can name actions.
@@ -23,8 +32,8 @@ public class Game{
         Game mc = new Game("This is my Game",320,200);
         mc.run(argv);
     }
-    
+
 }
 ```
 
-Here is a very basic java class to start with.  Let's go !
+Here is a very basic java class to start with. Let's go !

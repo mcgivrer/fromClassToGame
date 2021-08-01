@@ -22,6 +22,8 @@ public class GameObject {
     public BufferedImage image;
     public int priority;
 
+    public double gravity = 0;
+
     public GameObject(String name, double x, double y) {
         this.name = name;
         this.x = x;
@@ -32,7 +34,7 @@ public class GameObject {
 
     public void update(long dt) {
         x += dx * dt;
-        y += dy * dt;
+        y += (dy + gravity) * dt;
     }
 
     public GameObject setColor(Color c) {
