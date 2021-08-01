@@ -1,6 +1,6 @@
 # fromClassToGame
 
-[![fromClassToGame](https://api.travis-ci.com/mcgivrer/fromClassToGame.svg?branch=main&status=passed)](https://travis-ci.org/mcgivrer/fromClassToGame "visit Travis-CI fromClassToGame project build page")
+[![fromClassToGame](https://www.travis-ci.com/mcgivrer/fromClassToGame.svg?branch=main)](https://www.travis-ci.com/mcgivrer/fromClassToGame "visit Travis-CI fromClassToGame project build page")
 [![Java CI with Maven](https://github.com/mcgivrer/fromClassToGame/actions/workflows/maven.yml/badge.svg)](https://github.com/mcgivrer/fromClassToGame/actions/workflows/maven.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/0b6d37e6859d48e99c0493c08efa4d63)](https://www.codacy.com/gh/mcgivrer/fromClassToGame/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mcgivrer/fromClassToGame&amp;utm_campaign=Badge_Grade)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmcgivrer%2FfromClassToGame.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmcgivrer%2FfromClassToGame?ref=badge_shield)
