@@ -26,6 +26,11 @@ public class GameDefSteps {
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
         game = new Game();
+        try {
+            game.initialize(null);
+        } catch (UnknownArgumentException e) {
+            fail("Unable to initialize the game");
+        }
         game.testMode = true;
     }
 

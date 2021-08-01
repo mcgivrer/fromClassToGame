@@ -1,5 +1,5 @@
 ---
-title: FromClass to Game
+title: From a Class to Game
 chapter: 06 - New Components
 author: Frédéric Delorme
 description: Adding some new components to the game framework.
@@ -76,4 +76,3 @@ You just have to create a Text Object and add is to the Game objects list:
     add(text);
 
 ```
-
