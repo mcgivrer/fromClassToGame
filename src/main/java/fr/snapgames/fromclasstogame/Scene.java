@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame;
 
 import java.util.List;
+import java.awt.event.KeyListener;
 
 /**
  * The {@link Scene} interface to create a new game state.
@@ -8,7 +9,7 @@ import java.util.List;
  * @author Frédéric Delorme
  * @since 2021-08-02
  */
-public interface Scene {
+public interface Scene extends KeyListener{
 
     String getName();
 

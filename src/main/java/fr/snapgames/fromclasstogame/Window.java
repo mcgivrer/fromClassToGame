@@ -4,27 +4,25 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.GraphicsDevice;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class Window {
 
     private JFrame frame;
     private Font debugFont;
+    private int debug = 0;
 
     public Window(String title, int width, int height) {
+        setFrame(title, width, height);
+    }
+
+    public Window setFrame(String title, int width, int height) {
         frame = new JFrame(title);
 
         GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
@@ -40,19 +38,22 @@ public class Window {
                 (int) (device.getDisplayMode().getHeight() - dim.height) / 2));
         frame.pack();
         frame.setVisible(true);
+        return this;
     }
 
     public void draw(long realFPS, BufferedImage img) {
         Graphics2D g = (Graphics2D) frame.getGraphics();
         if (debugFont == null) {
-            debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 8);
+            debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 11);
         }
         g.drawImage(img, 0, 30, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
 
-        g.setFont(debugFont);
-        g.setColor(Color.ORANGE);
-        g.drawString(String.format("FPS:%03d", realFPS), 10, frame.getHeight() - 30);
-        g.dispose();
+        if (this.debug > 0) {
+            g.setFont(debugFont);
+            g.setColor(Color.ORANGE);
+            g.drawString(String.format("[ DBG:%1d | FPS:%03d ]", this.debug, realFPS), 10, frame.getHeight() - 20);
+            g.dispose();
+        }
     }
 
     public JFrame getFrame() {
@@ -61,6 +62,10 @@ public class Window {
 
     public void close() {
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+    }
+
+    public void setDebug(int d) {
+        this.debug = d;
     }
 
 }
