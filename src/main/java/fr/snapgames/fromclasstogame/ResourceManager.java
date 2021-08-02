@@ -41,18 +41,22 @@ public class ResourceManager {
         try {
             image = ImageIO.read(ResourceManager.class.getClassLoader().getResourceAsStream(path));
         } catch (IOException e) {
-            logger.error(String.format("Unable to read image %s", path), e);
+            logger.error("Unable to read image {}", path, e);
         }
         return image;
     }
 
     private static BufferedImage readImage(String path, int x, int y, int w, int h) {
+        BufferedImage img = null;
         try {
-            return readImage(path).getSubimage(x, y, w, h);
+            img = readImage(path);
+            if (img != null) {
+                img.getSubimage(x, y, w, h);
+            }
         } catch (NullPointerException npe) {
-            logger.error(String.format("Unable to slice image %s:%d,%d,%,d%", path, x, y, w, h), npe);
+            logger.error("Unable to slice image {}:{},{},{},{}", path, x, y, w, h, npe);
         }
-        return null;
+        return img;
     }
 
     public static Font getFont(String fontPath) {
@@ -82,7 +86,7 @@ public class ResourceManager {
 
     public static BufferedImage getSlicedImage(String imagePath, String internalName, int x, int y, int w, int h) {
         if (resources.containsKey(imagePath + ":" + internalName)) {
-            return (BufferedImage) resources.get(imagePath+":"+internalName);
+            return (BufferedImage) resources.get(imagePath + ":" + internalName);
         } else {
             BufferedImage i = readImage(imagePath, x, y, w, h);
             if (i != null) {

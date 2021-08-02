@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.scenes;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ public class DemoScene implements Scene {
     private Game game;
 
     private int score = 0;
+    private int debug = 0;
 
     @Override
     public String getName() {
@@ -70,7 +72,7 @@ public class DemoScene implements Scene {
     @Override
     public void update(long dt) {
 
-        objectsList.forEach(e->{
+        objectsList.forEach(e -> {
             e.update(dt);
         });
         TextObject scoreTO = (TextObject) objects.get("score");
@@ -123,5 +125,34 @@ public class DemoScene implements Scene {
 
     public double rand(double min, double max) {
         return (Math.random() * (max - min)) + min;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_D:
+                this.debug = this.debug < 5 ? this.debug+1:0;
+                game.getWindow().setDebug(debug);
+                break;
+            case KeyEvent.VK_R:
+                activate();
+                break;
+
+            default:
+                break;
+        }
+
     }
 }
