@@ -10,8 +10,13 @@ public class InputHandler implements KeyListener {
     private boolean[] keys = new boolean[65635];
 
     public InputHandler(Window window) {
+        setWindow(window);
+    }
+
+    public InputHandler setWindow(Window window) {
         this.window = window;
         window.getFrame().addKeyListener(this);
+        return this;
     }
 
     @Override

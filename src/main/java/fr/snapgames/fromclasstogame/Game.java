@@ -2,7 +2,6 @@ package fr.snapgames.fromclasstogame;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,25 +20,16 @@ public class Game implements KeyListener {
 
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
-  private ResourceBundle defaultConfig;
-
-  private int width = 320;
-  private int height = 200;
-  private double scale = 1.0;
-  private double FPS = 60;
   private long realFPS = 60;
 
-  private String title = "fromClassToGame";
-
   public Window window;
-  public Render renderer = new Render(320, 200);
+  public Render renderer = new Render(this).setViewport(320, 200);
   public InputHandler inputHandler;
+  private SceneManager sceneManager;
+  private Configuration configuration;
 
   public boolean exit = false;
   public boolean testMode = false;
-
-  private String scenes = "";
-  private SceneManager sceneManager;
 
   /**
    * the mandatory default constructor
@@ -55,63 +45,28 @@ public class Game implements KeyListener {
    * @param h heigth of the game window
    */
   public Game(String t, int w, int h) {
-    title = t;
-    width = w;
-    height = h;
-  }
-
-  public void loadDefaultValues() {
-    defaultConfig = ResourceBundle.getBundle("config");
-
-    this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
-    this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
-    this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
-    this.FPS = Double.parseDouble(defaultConfig.getString("game.setup.fps"));
-    this.title = defaultConfig.getString("game.setup.title");
-    this.scenes = defaultConfig.getString("game.setup.scenes");
-  }
-
-  public void parseArgs(String[] argv) throws UnknownArgumentException {
-    if (argv != null) {
-      for (String arg : argv) {
-        String[] values = arg.split("=");
-        switch (values[0].toLowerCase()) {
-          case "width":
-            this.width = Integer.parseInt(values[1]);
-            break;
-          case "height":
-            this.height = Integer.parseInt(values[1]);
-            break;
-          case "scale":
-            this.scale = Double.parseDouble(values[1]);
-            break;
-          case "fps":
-            this.FPS = Double.parseDouble(values[1]);
-            break;
-          case "title":
-            this.title = values[1];
-            break;
-          default:
-            throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
-        }
-      }
-    }
+    configuration.title = t;
+    configuration.width = w;
+    configuration.height = h;
   }
 
   /**
    * Initialization of the display window and everything the game will need.
    */
   public void initialize(String[] argv) throws UnknownArgumentException {
+    configuration = new Configuration();
+    configuration.parseArgs(argv);
 
-    loadDefaultValues();
-    parseArgs(argv);
+    renderer = new Render(configuration.width, configuration.height);
 
-    renderer = new Render(this.width, this.height);
-    window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
+    window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
+        (int) (configuration.height * configuration.scale));
+
     inputHandler = new InputHandler(window);
     inputHandler.addKeyListener(this);
+
     sceneManager = new SceneManager(this);
-    sceneManager.initialize(this.scenes.split(","));
+    sceneManager.initialize(configuration.scenes.split(","));
   }
 
   /**
@@ -128,6 +83,7 @@ public class Game implements KeyListener {
 
   private void createScene() {
     sceneManager.activate("demo");
+    inputHandler.addKeyListener(sceneManager.getCurrent());
   }
 
   /**
@@ -140,13 +96,16 @@ public class Game implements KeyListener {
     long frames = 0;
     long timeFrame = 0;
 
-    long frameDuration = (long) (1000 / FPS);
+    long frameDuration = (long) (1000 / configuration.FPS);
+
     while (!exit && !testMode) {
       start = System.currentTimeMillis();
       dt = start - previous;
-      input();
-      update(dt);
-      draw();
+      if (sceneManager.getCurrent() != null) {
+        input();
+        update(dt);
+        draw();
+      }
       frames++;
       timeFrame += dt;
       if (timeFrame > 1000) {
