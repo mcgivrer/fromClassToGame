@@ -54,7 +54,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.30</version>
+      <version>1.7.31</version>
     </dependency>
 
     <!-- tests things -->
@@ -393,7 +393,7 @@
                 <phase>package</phase>
                 <configuration>
                   <executable>pandoc</executable>
-                  <workingDirectory></workingDirectory>
+                  <workingDirectory/>
                   <arguments>
                     <argument>docs/ebook-metadata.yml</argument>
                     <argument>docs/00-introduction.md</argument>
@@ -441,7 +441,7 @@
                 <phase>package</phase>
                 <configuration>
                   <executable>pandoc</executable>
-                  <workingDirectory></workingDirectory>
+                  <workingDirectory/>
                   <arguments>
                     <argument>docs/ebbok-metadata.yml</argument>
                     <argument>docs/00-introduction.md</argument>
