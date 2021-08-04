@@ -22,9 +22,9 @@ public class Game implements KeyListener {
 
   private long realFPS = 60;
 
-  public Window window;
-  public Render renderer = new Render(320, 200);
-  public InputHandler inputHandler;
+  private Window window;
+  private Render renderer = new Render(320, 200);
+  private InputHandler inputHandler;
   private SceneManager sceneManager;
   private Configuration configuration;
 
@@ -88,6 +88,7 @@ public class Game implements KeyListener {
 
   /**
    * the famous main game loop where everything happend.
+   * 
    */
   private void loop() {
     long start = System.currentTimeMillis();
@@ -118,7 +119,8 @@ public class Game implements KeyListener {
         try {
           Thread.sleep(frameDuration - (System.currentTimeMillis() - start));
         } catch (InterruptedException e) {
-          e.printStackTrace();
+          logger.error("The Game Thread has been interrupted");
+          Thread.currentThread().interrupt();
         }
       }
       previous = start;
@@ -152,7 +154,9 @@ public class Game implements KeyListener {
    */
   private void dispose() {
     renderer.clear();
-    window.close();
+    if (!testMode) {
+      window.close();
+    }
   }
 
   /**
