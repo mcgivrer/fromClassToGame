@@ -52,7 +52,9 @@ public class SceneManager {
             }
         }
     }
-
+    public void activate(){
+        activate(game.getConfiguration().defaultScene);
+    }
     /**
      * <p>
      * Activate a specific {@link Scene} from its internal name

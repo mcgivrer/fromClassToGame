@@ -17,6 +17,7 @@ public class Configuration {
     public double FPS = 60;
 
     public String scenes = "";
+    public String defaultScene = "";
 
     public Configuration() {
 
@@ -33,6 +34,7 @@ public class Configuration {
         this.FPS = Double.parseDouble(defaultConfig.getString("game.setup.fps"));
         this.title = defaultConfig.getString("game.setup.title");
         this.scenes = defaultConfig.getString("game.setup.scenes");
+        this.defaultScene = defaultConfig.getString("game.setup.scene.default");
     }
 
     public Configuration parseArgs(String[] argv) throws UnknownArgumentException {
@@ -54,6 +56,9 @@ public class Configuration {
                         break;
                     case "title":
                         this.title = values[1];
+                        break;
+                    case "scene":
+                        this.defaultScene = values[1];
                         break;
                     default:
                         throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
