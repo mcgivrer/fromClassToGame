@@ -51,7 +51,7 @@ public class ResourceManager {
         try {
             img = readImage(path);
             if (img != null) {
-                img.getSubimage(x, y, w, h);
+               return img.getSubimage(x, y, w, h);
             }
         } catch (NullPointerException npe) {
             logger.error("Unable to slice image {}:{},{},{},{}", path, x, y, w, h, npe);
