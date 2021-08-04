@@ -152,7 +152,9 @@ public class Game implements KeyListener {
    */
   private void dispose() {
     renderer.clear();
-    window.close();
+    if (!testMode) {
+      window.close();
+    }
   }
 
   /**
