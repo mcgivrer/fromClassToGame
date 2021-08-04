@@ -9,12 +9,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import fr.snapgames.fromclasstogame.Game;
 import fr.snapgames.fromclasstogame.GameObject;
 import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 public class GameDefSteps {
 
