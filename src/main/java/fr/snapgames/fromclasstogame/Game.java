@@ -82,7 +82,7 @@ public class Game implements KeyListener {
   }
 
   private void createScene() {
-    sceneManager.activate("demo");
+    sceneManager.activate();
     inputHandler.addKeyListener(sceneManager.getCurrent());
   }
 
@@ -151,7 +151,6 @@ public class Game implements KeyListener {
    * Free everything
    */
   private void dispose() {
-
     renderer.clear();
     window.close();
   }
@@ -208,5 +207,9 @@ public class Game implements KeyListener {
 
   public SceneManager getSceneManager() {
     return sceneManager;
+  }
+
+  public Configuration getConfiguration() {
+    return this.configuration;
   }
 }
