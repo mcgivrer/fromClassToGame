@@ -35,6 +35,14 @@ public class Game implements KeyListener {
    * the mandatory default constructor
    */
   public Game() {
+    this("config");
+  }
+
+  /**
+   * A constructure mainly used for test purpose.
+   */
+  public Game(String configPath) {
+    configuration = new Configuration(configPath);
   }
 
   /**
@@ -45,6 +53,7 @@ public class Game implements KeyListener {
    * @param h heigth of the game window
    */
   public Game(String t, int w, int h) {
+    this("config");
     configuration.title = t;
     configuration.width = w;
     configuration.height = h;
@@ -54,7 +63,7 @@ public class Game implements KeyListener {
    * Initialization of the display window and everything the game will need.
    */
   public void initialize(String[] argv) throws UnknownArgumentException {
-    configuration = new Configuration();
+
     configuration.parseArgs(argv);
 
     renderer = new Render(configuration.width, configuration.height);
@@ -78,7 +87,9 @@ public class Game implements KeyListener {
     initialize(argv);
     createScene();
     loop();
-    dispose();
+    if (!testMode) {
+      dispose();
+    }
   }
 
   private void createScene() {
@@ -174,15 +185,6 @@ public class Game implements KeyListener {
     return renderer;
   }
 
-  public static void main(String[] argc) {
-    try {
-      Game game = new Game();
-      game.run(argc);
-    } catch (Exception e) {
-      logger.error("Unable to run the game", e);
-    }
-  }
-
   @Override
   public void keyTyped(KeyEvent e) {
     // nothing to do now
@@ -216,4 +218,14 @@ public class Game implements KeyListener {
   public Configuration getConfiguration() {
     return this.configuration;
   }
+
+  public static void main(String[] argc) {
+    try {
+      Game game = new Game("config");
+      game.run(argc);
+    } catch (Exception e) {
+      logger.error("Unable to run the game", e);
+    }
+  }
+
 }

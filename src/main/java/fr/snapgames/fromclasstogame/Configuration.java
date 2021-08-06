@@ -19,9 +19,9 @@ public class Configuration {
     public String scenes = "";
     public String defaultScene = "";
 
-    public Configuration() {
+    public Configuration(String configurationPath) {
 
-        defaultConfig = ResourceBundle.getBundle("config");
+        defaultConfig = ResourceBundle.getBundle(configurationPath);
         readValuesFromFile();
 
     }

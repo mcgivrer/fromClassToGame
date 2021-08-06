@@ -2,28 +2,15 @@ package fr.snapgames.fromclasstogame.scenes;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import fr.snapgames.fromclasstogame.Game;
 import fr.snapgames.fromclasstogame.GameObject;
 import fr.snapgames.fromclasstogame.ResourceManager;
-import fr.snapgames.fromclasstogame.Scene;
 import fr.snapgames.fromclasstogame.TextObject;
 
-public class DemoScene implements Scene {
-
-    private Map<String, GameObject> objects = new HashMap<>();
-    private List<GameObject> objectsList = new ArrayList<>();
-
-    private Game game;
+public class DemoScene extends AbstractScene {
 
     private int score = 0;
-    private int debug = 0;
 
     @Override
     public String getName() {
@@ -32,7 +19,8 @@ public class DemoScene implements Scene {
 
     @Override
     public void initialize(Game g) {
-        this.game = g;
+        super.initialize(g);
+
         ResourceManager.getFont("fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles.png", "player", 0, 0, 16, 16);
         ResourceManager.getSlicedImage("images/tiles.png", "orangeBall", 16, 0, 16, 16);
@@ -72,87 +60,28 @@ public class DemoScene implements Scene {
     @Override
     public void update(long dt) {
 
-        objectsList.forEach(e -> {
-            e.update(dt);
-        });
+        super.update(dt);
         TextObject scoreTO = (TextObject) objects.get("score");
         scoreTO.setText(String.format("%05d", score));
         score++;
     }
 
     @Override
+    public void dispose() {
+        objects.clear();
+        objectsList.clear();
+    }
+
+    @Override
     public void input() {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void render() {
-
-    }
-
-    @Override
-    public void dispose() {
-        objects.clear();
-        objectsList.clear();
-
-    }
-
-    public void add(GameObject go) {
-        if (!objects.containsKey(go.name)) {
-            objects.put(go.name, go);
-            objectsList.add(go);
-            game.getRender().add(go);
-        }
-    }
-
-    public GameObject getGameObject(String name) {
-        return objects.get(name);
-    }
-
-    /**
-     * find GameObject filtered on their name according to a filteredName.
-     * 
-     * @param filteredName
-     * @return
-     */
-    public List<GameObject> find(String filteredName) {
-        return objectsList.stream().filter(o -> o.name.contains(filteredName)).collect(Collectors.toList());
-    }
-
-    public List<GameObject> getObjectsList() {
-        return objectsList;
-    }
-
-    public double rand(double min, double max) {
-        return (Math.random() * (max - min)) + min;
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_D:
-                this.debug = this.debug < 5 ? this.debug+1:0;
-                game.getWindow().setDebug(debug);
-                break;
-            case KeyEvent.VK_R:
-                activate();
-                break;
-
-            default:
-                break;
-        }
-
-    }
 }
