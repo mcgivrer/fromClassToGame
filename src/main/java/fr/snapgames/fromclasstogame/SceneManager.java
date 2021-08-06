@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,15 +41,19 @@ public class SceneManager {
      */
     public void initialize(String[] sceneClasses) {
         for (String scnClass : sceneClasses) {
-            String[] scn = scnClass.split(":");
-            if (scn.length == 2) {
-                Class<?> s;
-                try {
-                    s = Class.forName(scn[1]);
-                    scenesClasses.put(scn[0], s);
-                } catch (ClassNotFoundException e) {
-                    logger.error("Unable to load class {}", scnClass);
-                }
+            addScene(scnClass);
+        }
+    }
+
+    public void addScene(String scnClass) {
+        String[] scn = scnClass.split(":");
+        if (scn.length == 2) {
+            Class<?> s;
+            try {
+                s = Class.forName(scn[1]);
+                scenesClasses.put(scn[0], s);
+            } catch (ClassNotFoundException e) {
+                logger.error("Unable to load class {}", scnClass);
             }
         }
     }
@@ -112,6 +117,13 @@ public class SceneManager {
 
     public Scene getCurrent() {
         return this.current;
+    }
+
+    public Collection<?> getScenes() {
+        return scenesClasses.values();
+    }
+    public Collection<?> getScenesInstances() {
+        return scenesInstances.values();
     }
 
 }

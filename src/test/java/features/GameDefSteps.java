@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
 
 import fr.snapgames.fromclasstogame.Game;
 import fr.snapgames.fromclasstogame.GameObject;
+import fr.snapgames.fromclasstogame.Scene;
 import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class GameDefSteps {
 
@@ -25,22 +27,17 @@ public class GameDefSteps {
 
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
-        game = new Game();
-        try {
-            game.initialize(null);
-        } catch (UnknownArgumentException e) {
-            fail("Unable to initialize the game");
-        }
+        game = new Game("test-scene");
         game.testMode = true;
     }
 
-    @And("I prepare the arguments")
+    @When("I prepare the arguments")
     public void andIPrepareTheArgument() {
         argList.clear();
         args = new String[] {};
     }
 
-    @And("I add argument \"([^\"]*)\"")
+    @And("I add argument {string}")
     public void andIAddArgumentString(String arg) {
 
         argList.add(arg);
@@ -52,18 +49,13 @@ public class GameDefSteps {
         args[i++] = arg;
     }
 
-    @And("I add argument/value \"([^\"]*)\"=\"([^\"]*)\"")
-    public void andIAddArgValueStringEqString(String arg, String value) {
-        andIAddArgumentString(arg + "=" + value);
-    }
-
-    @And("a window of (\\d+) x (\\d+) is created")
+    @And("a window of {int} x {int} is created")
     public void andAWindowOfIntXIntIsCreated(int w, int h) {
         assertEquals("The Window width is not set to " + w, w, game.getWindow().getFrame().getWidth());
         assertEquals("The Window height is not set to " + h, h, game.getWindow().getFrame().getHeight());
     }
 
-    @And("the title is \"([^\"]*)\"")
+    @And("the window title is {string}")
     public void andTheTitleIsString(String title) {
         assertEquals("The window title is not set to" + title, title, game.getWindow().getFrame().getTitle());
     }
@@ -91,19 +83,23 @@ public class GameDefSteps {
         }
     }
 
-    @Given("I add a GameObject named \"([^\"]*)\" at (\\d+),(\\d+)$")
-    public void givenIAddAGameObjectNamedStringAtIntInt(String name, int x, int y) {
+    @Given("I add a GameObject named {string} at {double},{double}")
+    public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
+        game.getSceneManager().activate();
         GameObject go = new GameObject(name, x, y);
-        game.getSceneManager().getCurrent().add(go);
+        Scene scene = game.getSceneManager().getCurrent();
+
+        scene.add(go);
     }
 
-    @Given("^the \"([^\"]*)\" size is (\\d+) x (\\d+)$")
+    @Given("the {string} size is {int} x {int}")
     public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
-        GameObject go = game.getSceneManager().getCurrent().getGameObject(name);
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = scene.getGameObject(name);
         go.setSize(w, h);
     }
 
-    @Then("^the Game has (\\d+) GameObject at window center\\.$")
+    @Then("the Game has {int} GameObject at window center.")
     public void thenTheGameHasIntGameObjectAtWindowCenter(int i) {
         GameObject go = game.getSceneManager().getCurrent().getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
@@ -111,4 +107,5 @@ public class GameDefSteps {
         assertEquals("", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
         assertEquals("", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
     }
+
 }
