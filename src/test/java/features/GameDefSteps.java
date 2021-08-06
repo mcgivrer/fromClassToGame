@@ -9,12 +9,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import fr.snapgames.fromclasstogame.Game;
 import fr.snapgames.fromclasstogame.GameObject;
+import fr.snapgames.fromclasstogame.Scene;
 import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class GameDefSteps {
 
@@ -25,22 +27,17 @@ public class GameDefSteps {
 
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
-        game = new Game();
-        try {
-            game.initialize(null);
-        } catch (UnknownArgumentException e) {
-            fail("Unable to initialize the game");
-        }
+        game = new Game("test-scene");
         game.testMode = true;
     }
 
-    @And("I prepare the arguments")
+    @When("I prepare the arguments")
     public void andIPrepareTheArgument() {
         argList.clear();
-        args = new String[] {};
+        args = new String[]{};
     }
 
-    @And("I add argument \"([^\"]*)\"")
+    @And("I add argument {string}")
     public void andIAddArgumentString(String arg) {
 
         argList.add(arg);
@@ -52,18 +49,13 @@ public class GameDefSteps {
         args[i++] = arg;
     }
 
-    @And("I add argument/value \"([^\"]*)\"=\"([^\"]*)\"")
-    public void andIAddArgValueStringEqString(String arg, String value) {
-        andIAddArgumentString(arg + "=" + value);
-    }
-
-    @And("a window of (\\d+) x (\\d+) is created")
+    @And("a window of {int} x {int} is created")
     public void andAWindowOfIntXIntIsCreated(int w, int h) {
         assertEquals("The Window width is not set to " + w, w, game.getWindow().getFrame().getWidth());
         assertEquals("The Window height is not set to " + h, h, game.getWindow().getFrame().getHeight());
     }
 
-    @And("the title is \"([^\"]*)\"")
+    @And("the window title is {string}")
     public void andTheTitleIsString(String title) {
         assertEquals("The window title is not set to" + title, title, game.getWindow().getFrame().getTitle());
     }
@@ -73,6 +65,7 @@ public class GameDefSteps {
         try {
             if (args != null) {
                 game.run(args);
+                game.getSceneManager().activate();
             } else {
                 game.run(null);
             }
@@ -91,24 +84,55 @@ public class GameDefSteps {
         }
     }
 
-    @Given("I add a GameObject named \"([^\"]*)\" at (\\d+),(\\d+)$")
-    public void givenIAddAGameObjectNamedStringAtIntInt(String name, int x, int y) {
+    @Given("I add a GameObject named {string} at {double},{double}")
+    public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
         GameObject go = new GameObject(name, x, y);
-        game.getSceneManager().getCurrent().add(go);
+        Scene scene = game.getSceneManager().getCurrent();
+        scene.add(go);
     }
 
-    @Given("^the \"([^\"]*)\" size is (\\d+) x (\\d+)$")
+    @Given("the {string} size is {int} x {int}")
     public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
-        GameObject go = game.getSceneManager().getCurrent().getGameObject(name);
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = scene.getGameObject(name);
         go.setSize(w, h);
     }
 
-    @Then("^the Game has (\\d+) GameObject at window center\\.$")
+    @Then("the Game has {int} GameObject at window center.")
     public void thenTheGameHasIntGameObjectAtWindowCenter(int i) {
         GameObject go = game.getSceneManager().getCurrent().getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
                 game.getSceneManager().getCurrent().getObjectsList().size());
-        assertEquals("", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
-        assertEquals("", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
+        assertEquals("the GameObject is not horizontally centered", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
+        assertEquals("the GameObject is not vertically centered", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
+    }
+
+    @Then("the Game has {int} GameObject\\(s).")
+    public void theGameHasGameObjectS(int nbObjects) {
+        Scene scene = game.getSceneManager().getCurrent();
+        assertEquals("The Scene has not the right number of objects", nbObjects, scene.getObjectsList().size());
+    }
+
+    @And("the {string} GameObject speed is set to \\({double},{double})")
+    public void theGameObjectSpeedIsSetTo(String name, Double dx, Double dy) {
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = scene.getGameObject(name);
+        go.setSpeed(dx, dy);
+    }
+
+    @Then("I update {int} times the scene")
+    public void iUpdateTimesTheScene(int nbUpdate) {
+        Scene scene = game.getSceneManager().getCurrent();
+        for (int i = 0; i < nbUpdate; i++) {
+            scene.update((long) (1000.0 / game.getConfiguration().FPS));
+        }
+    }
+
+    @And("the {string} GameObject is now at \\({double},{double})")
+    public void theGameObjectIsNowAt(String name, Double x, Double y) {
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = scene.getGameObject(name);
+        assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 0.0);
+        assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 0.0);
     }
 }

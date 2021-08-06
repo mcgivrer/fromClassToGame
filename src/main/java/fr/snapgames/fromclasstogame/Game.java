@@ -10,7 +10,7 @@ import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
 
 /**
  * Project: From Class To Game
- *
+ * <p>
  * A First class to build a game attempt.
  *
  * @author Frédéric Delorme<frederic.delorme@gmail.com>
@@ -18,195 +18,213 @@ import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
  */
 public class Game implements KeyListener {
 
-  private static final Logger logger = LoggerFactory.getLogger(Game.class);
+    private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
-  private long realFPS = 60;
+    private long realFPS = 60;
 
-  public Window window;
-  public Render renderer = new Render(320, 200);
-  public InputHandler inputHandler;
-  private SceneManager sceneManager;
-  private Configuration configuration;
+    private Window window;
+    private Render renderer = new Render(320, 200);
+    private InputHandler inputHandler;
+    private SceneManager sceneManager;
+    private Configuration configuration;
 
-  public boolean exit = false;
-  public boolean testMode = false;
+    public boolean exit = false;
+    public boolean testMode = false;
 
-  /**
-   * the mandatory default constructor
-   */
-  public Game() {
-  }
+    /**
+     * the mandatory default constructor
+     */
+    public Game() {
+        this("config");
+    }
 
-  /**
-   * Initialize a game with some attributes.
-   *
-   * @param t title for the game window
-   * @param w width of the game window
-   * @param h heigth of the game window
-   */
-  public Game(String t, int w, int h) {
-    configuration.title = t;
-    configuration.width = w;
-    configuration.height = h;
-  }
+    /**
+     * A constructure mainly used for test purpose.
+     */
+    public Game(String configPath) {
+        configuration = new Configuration(configPath);
+    }
 
-  /**
-   * Initialization of the display window and everything the game will need.
-   */
-  public void initialize(String[] argv) throws UnknownArgumentException {
-    configuration = new Configuration();
-    configuration.parseArgs(argv);
+    /**
+     * Initialize a game with some attributes.
+     *
+     * @param t title for the game window
+     * @param w width of the game window
+     * @param h heigth of the game window
+     */
+    public Game(String t, int w, int h) {
+        this("config");
+        configuration.title = t;
+        configuration.width = w;
+        configuration.height = h;
+    }
 
-    renderer = new Render(configuration.width, configuration.height);
+    /**
+     * Initialization of the display window and everything the game will need.
+     */
+    public void initialize(String[] argv) throws UnknownArgumentException {
 
-    window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
-        (int) (configuration.height * configuration.scale));
+        configuration.parseArgs(argv);
 
-    inputHandler = new InputHandler(window);
-    inputHandler.addKeyListener(this);
+        renderer = new Render(configuration.width, configuration.height);
 
-    sceneManager = new SceneManager(this);
-    sceneManager.initialize(configuration.scenes.split(","));
-  }
+        window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
+                (int) (configuration.height * configuration.scale));
 
-  /**
-   * Entrypoint for the game. can parse the argc from the java command line.
-   * 
-   * @throws UnknownArgumentException
-   */
-  public void run(String[] argv) throws UnknownArgumentException {
-    initialize(argv);
-    createScene();
-    loop();
-    dispose();
-  }
+        inputHandler = new InputHandler(window);
+        inputHandler.addKeyListener(this);
 
-  private void createScene() {
-    sceneManager.activate("demo");
-    inputHandler.addKeyListener(sceneManager.getCurrent());
-  }
+        sceneManager = new SceneManager(this);
+        sceneManager.initialize(configuration.scenes.split(","));
+    }
 
-  /**
-   * the famous main game loop where everything happend.
-   */
-  private void loop() {
-    long start = System.currentTimeMillis();
-    long previous = start;
-    long dt = 0;
-    long frames = 0;
-    long timeFrame = 0;
-
-    long frameDuration = (long) (1000 / configuration.FPS);
-
-    while (!exit && !testMode) {
-      start = System.currentTimeMillis();
-      dt = start - previous;
-      if (sceneManager.getCurrent() != null) {
-        input();
-        update(dt);
-        draw();
-      }
-      frames++;
-      timeFrame += dt;
-      if (timeFrame > 1000) {
-        timeFrame = 0;
-        realFPS = frames;
-        frames = 0;
-      }
-      long elapsed = System.currentTimeMillis() - start;
-      if (elapsed > 0 && elapsed < frameDuration) {
-        try {
-          Thread.sleep(frameDuration - (System.currentTimeMillis() - start));
-        } catch (InterruptedException e) {
-          e.printStackTrace();
+    /**
+     * Entrypoint for the game. can parse the argc from the java command line.
+     *
+     * @throws UnknownArgumentException
+     */
+    public void run(String[] argv) throws UnknownArgumentException {
+        initialize(argv);
+        createScene();
+        loop();
+        if (!testMode) {
+            dispose();
         }
-      }
-      previous = start;
     }
-  }
 
-  /**
-   * Manage the input
-   */
-  private void input() {
-    sceneManager.getCurrent().input();
-  }
-
-  /**
-   * Update all the game mechanism
-   */
-  private void update(long dt) {
-    sceneManager.getCurrent().update(dt);
-  }
-
-  /**
-   * Draw the things from the game.
-   */
-  private void draw() {
-    renderer.render();
-    window.draw(realFPS, renderer.getBuffer());
-  }
-
-  /**
-   * Free everything
-   */
-  private void dispose() {
-
-    renderer.clear();
-    window.close();
-  }
-
-  /**
-   * Request the game to exit.
-   */
-  public void requestExit() {
-    this.exit = true;
-  }
-
-  public Window getWindow() {
-    return window;
-  }
-
-  public Render getRender() {
-    return renderer;
-  }
-
-  public static void main(String[] argc) {
-    try {
-      Game game = new Game();
-      game.run(argc);
-    } catch (Exception e) {
-      logger.error("Unable to run the game", e);
+    private void createScene() {
+        sceneManager.activate();
+        inputHandler.addKeyListener(sceneManager.getCurrent());
     }
-  }
 
-  @Override
-  public void keyTyped(KeyEvent e) {
-    // nothing to do now
-  }
+    /**
+     * the famous main game loop where everything happend.
+     */
+    private void loop() {
+        long start = System.currentTimeMillis();
+        long previous = start;
+        long dt = 0;
+        long frames = 0;
+        long timeFrame = 0;
 
-  @Override
-  public void keyPressed(KeyEvent e) {
-    // nothing to do now
+        long frameDuration = (long) (1000 / configuration.FPS);
 
-  }
+        while (!exit && !testMode) {
+            start = System.currentTimeMillis();
+            dt = start - previous;
+            if (sceneManager.getCurrent() != null) {
+                input();
+                update(dt);
+                draw();
+            }
+            frames++;
+            timeFrame += dt;
+            if (timeFrame > 1000) {
+                timeFrame = 0;
+                realFPS = frames;
+                frames = 0;
+            }
+            long elapsed = System.currentTimeMillis() - start;
+            if (elapsed > 0 && elapsed < frameDuration) {
+                try {
+                    Thread.sleep(frameDuration - (System.currentTimeMillis() - start));
+                } catch (InterruptedException e) {
+                    logger.error("The Game Thread has been interrupted");
+                    Thread.currentThread().interrupt();
+                }
+            }
+            previous = start;
+        }
+    }
 
-  @Override
-  public void keyReleased(KeyEvent e) {
-    switch (e.getKeyCode()) {
-      case KeyEvent.VK_F11:
-        renderer.saveScreenshot();
-        break;
-      case KeyEvent.VK_ESCAPE:
+    /**
+     * Manage the input
+     */
+    private void input() {
+        sceneManager.getCurrent().input();
+    }
+
+    /**
+     * Update all the game mechanism
+     */
+    private void update(long dt) {
+        sceneManager.getCurrent().update(dt);
+    }
+
+    /**
+     * Draw the things from the game.
+     */
+    private void draw() {
+        renderer.render();
+        window.draw(realFPS, renderer.getBuffer());
+    }
+
+    /**
+     * Free everything
+     */
+    private void dispose() {
+        renderer.clear();
+        if (!testMode) {
+            window.close();
+        }
+    }
+
+    /**
+     * Request the game to exit.
+     */
+    public void requestExit() {
         this.exit = true;
-        break;
-      default:
-        break;
     }
 
-  }
+    public Window getWindow() {
+        return window;
+    }
 
-  public SceneManager getSceneManager() {
-    return sceneManager;
-  }
+    public Render getRender() {
+        return renderer;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // nothing to do now
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // nothing to do now
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_F11:
+                renderer.saveScreenshot();
+                break;
+            case KeyEvent.VK_ESCAPE:
+                this.exit = true;
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    public SceneManager getSceneManager() {
+        return sceneManager;
+    }
+
+    public Configuration getConfiguration() {
+        return this.configuration;
+    }
+
+    public static void main(String[] argc) {
+        try {
+            Game game = new Game("config");
+            game.run(argc);
+        } catch (Exception e) {
+            logger.error("Unable to run the game", e);
+        }
+    }
+
 }
