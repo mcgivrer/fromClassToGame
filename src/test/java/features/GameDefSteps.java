@@ -34,7 +34,7 @@ public class GameDefSteps {
     @When("I prepare the arguments")
     public void andIPrepareTheArgument() {
         argList.clear();
-        args = new String[] {};
+        args = new String[]{};
     }
 
     @And("I add argument {string}")
@@ -65,6 +65,7 @@ public class GameDefSteps {
         try {
             if (args != null) {
                 game.run(args);
+                game.getSceneManager().activate();
             } else {
                 game.run(null);
             }
@@ -85,10 +86,8 @@ public class GameDefSteps {
 
     @Given("I add a GameObject named {string} at {double},{double}")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
-        game.getSceneManager().activate();
         GameObject go = new GameObject(name, x, y);
         Scene scene = game.getSceneManager().getCurrent();
-
         scene.add(go);
     }
 
@@ -104,8 +103,36 @@ public class GameDefSteps {
         GameObject go = game.getSceneManager().getCurrent().getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
                 game.getSceneManager().getCurrent().getObjectsList().size());
-        assertEquals("", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
-        assertEquals("", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
+        assertEquals("the GameObject is not horizontally centered", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
+        assertEquals("the GameObject is not vertically centered", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
     }
 
+    @Then("the Game has {int} GameObject\\(s).")
+    public void theGameHasGameObjectS(int nbObjects) {
+        Scene scene = game.getSceneManager().getCurrent();
+        assertEquals("The Scene has not the right number of objects", nbObjects, scene.getObjectsList().size());
+    }
+
+    @And("the {string} GameObject speed is set to \\({double},{double})")
+    public void theGameObjectSpeedIsSetTo(String name, Double dx, Double dy) {
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = scene.getGameObject(name);
+        go.setSpeed(dx, dy);
+    }
+
+    @Then("I update {int} times the scene")
+    public void iUpdateTimesTheScene(int nbUpdate) {
+        Scene scene = game.getSceneManager().getCurrent();
+        for (int i = 0; i < nbUpdate; i++) {
+            scene.update((long) (1000.0 / game.getConfiguration().FPS));
+        }
+    }
+
+    @And("the {string} GameObject is now at \\({double},{double})")
+    public void theGameObjectIsNowAt(String name, Double x, Double y) {
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = scene.getGameObject(name);
+        assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 0.0);
+        assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 0.0);
+    }
 }
