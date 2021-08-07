@@ -1,17 +1,15 @@
 package features;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.snapgames.fromclasstogame.ResourceManager;
+import fr.snapgames.fromclasstogame.*;
 import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.snapgames.fromclasstogame.Game;
-import fr.snapgames.fromclasstogame.GameObject;
-import fr.snapgames.fromclasstogame.Scene;
 import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -86,7 +84,7 @@ public class GameDefSteps {
         }
     }
 
-    @Given("I add a GameObject named {string} at {double},{double}")
+    @Given("I add a GameObject named {string} at \\({double},{double})")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
         GameObject go = new GameObject(name, x, y);
         Scene scene = game.getSceneManager().getCurrent();
@@ -179,5 +177,33 @@ public class GameDefSteps {
     @And("the resources are cleared")
     public void theResourcesAreCleared() {
         ResourceManager.clear();
+    }
+
+    @And("I add a TextObject named {string} at \\({double},{double})")
+    public void iAddATextObjectNamedAt(String name, Double x, Double y) {
+        Scene scene = game.getSceneManager().getCurrent();
+        TextObject to = new TextObject(name, x, y);
+        scene.add(to);
+    }
+
+    @And("the text for {string} is {string}")
+    public void theTextForIs(String name, String text) {
+        Scene scene = game.getSceneManager().getCurrent();
+        TextObject to = (TextObject) scene.getGameObject(name);
+        to.setText(text);
+    }
+
+    @And("the TextObject default color for {string} is White")
+    public void theTextObjectDefaultColorForIsWhite(String name) {
+        Scene scene = game.getSceneManager().getCurrent();
+        TextObject to = (TextObject) scene.getGameObject(name);
+        assertEquals("Default color for Text Object is not White", Color.WHITE, to.color);
+    }
+
+    @Then("the TextObject default font for {string} is null")
+    public void theTextObjectDefaultFontForIsNull(String name) {
+        Scene scene = game.getSceneManager().getCurrent();
+        TextObject to = (TextObject) scene.getGameObject(name);
+        assertTrue("The default TextObject font is not null", to.font == null);
     }
 }
