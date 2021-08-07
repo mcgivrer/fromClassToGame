@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import fr.snapgames.fromclasstogame.Game;
 import fr.snapgames.fromclasstogame.GameObject;
 import fr.snapgames.fromclasstogame.Scene;
+import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
 
 public abstract class AbstractScene implements Scene {
 
@@ -25,13 +26,13 @@ public abstract class AbstractScene implements Scene {
     }
 
     @Override
-    public void create(Game g) {
-
+    public void create(Game g) throws UnknownResource {
+        // will be updated into the implemented scene
     }
 
     @Override
     public void activate() {
-
+        // will be updated into the implemented scene
     }
 
     @Override
@@ -56,7 +57,7 @@ public abstract class AbstractScene implements Scene {
 
     /**
      * find GameObject filtered on their name according to a filteredName.
-     * 
+     *
      * @param filteredName
      * @return
      */
@@ -99,5 +100,4 @@ public abstract class AbstractScene implements Scene {
         }
 
     }
-
 }
