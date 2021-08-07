@@ -1,11 +1,11 @@
 package features;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.snapgames.fromclasstogame.ResourceManager;
+import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +17,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
+import static org.junit.Assert.*;
 
 public class GameDefSteps {
 
@@ -134,5 +136,48 @@ public class GameDefSteps {
         GameObject go = scene.getGameObject(name);
         assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 0.0);
         assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 0.0);
+    }
+
+    @And("The font {string} is added")
+    public void theFontIsAdded(String fontPath) {
+        ResourceManager.getFont(fontPath);
+    }
+
+    @And("The image {string} is added")
+    public void theImageIsAdded(String imagePath) {
+        BufferedImage img = null;
+        try {
+            img = ResourceManager.getImage(imagePath);
+        } catch (UnknownResource e) {
+            assertTrue("Error while getting resource: " + e.getMessage(), img == null);
+        }
+    }
+
+    @Then("the ResourceManager has {int} resources")
+    public void theResourceManagerHasResources(int nbResources) {
+        assertEquals("The number of resources does not match with loaded ones.", nbResources, ResourceManager.getResources().size());
+    }
+
+    @And("The image {string} as {string} is sliced at \\({int},{int}) sizing \\({int},{int})")
+    public void theImageAsIsSlicedAtSizing(String resourcePath, String name, Integer x, Integer y, Integer w, Integer h) {
+        ResourceManager.getSlicedImage(resourcePath, name, x, y, w, h);
+
+    }
+
+    @And("The resulting {string} image sizing \\({int},{int})")
+    public void theResultingImageSizing(String pathAndName, int w, int h) {
+        BufferedImage img = null;
+        try {
+            img = ResourceManager.getImage(pathAndName);
+        } catch (UnknownResource e) {
+            fail("Error n loading resource: " + e.getMessage());
+        }
+        assertEquals("the image resource " + pathAndName + " has not been horizontally sliced correctly", w, img.getWidth());
+        assertEquals("the image resource " + pathAndName + " has not been vertically sliced correctly", h, img.getHeight());
+    }
+
+    @And("the resources are cleared")
+    public void theResourcesAreCleared() {
+        ResourceManager.clear();
     }
 }
