@@ -1,5 +1,7 @@
 package fr.snapgames.fromclasstogame;
 
+import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
+
 import java.util.List;
 import java.awt.event.KeyListener;
 
@@ -15,7 +17,7 @@ public interface Scene extends KeyListener{
 
     void initialize(Game g);
 
-    void create(Game g);
+    void create(Game g) throws UnknownResource;
 
     void add(GameObject go);
 

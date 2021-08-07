@@ -7,6 +7,7 @@ import fr.snapgames.fromclasstogame.Game;
 import fr.snapgames.fromclasstogame.GameObject;
 import fr.snapgames.fromclasstogame.ResourceManager;
 import fr.snapgames.fromclasstogame.TextObject;
+import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
 
 public class DemoScene extends AbstractScene {
 
@@ -27,7 +28,7 @@ public class DemoScene extends AbstractScene {
     }
 
     @Override
-    public void create(Game g) {
+    public void create(Game g) throws UnknownResource {
         // add main character (player)
         GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02)
                 .setSize(16.0, 16.0).setImage(ResourceManager.getImage("images/tiles.png:player"));
