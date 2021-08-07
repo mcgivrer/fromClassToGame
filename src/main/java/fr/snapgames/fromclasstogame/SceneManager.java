@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +89,7 @@ public class SceneManager {
                 this.current = s;
                 s.activate();
 
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException | UnknownResource e) {
                 logger.error("Unable to instantiate class {}", name);
             }
         }

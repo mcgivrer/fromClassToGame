@@ -1,27 +1,26 @@
 package fr.snapgames.fromclasstogame;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
+import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Objects;
 
 public class ResourceManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
     private static Map<String, Object> resources = new HashMap<>();
-    private static String rootPath;
 
     private ResourceManager() {
-        rootPath = ResourceManager.class.getClassLoader().getResource("/").toString();
     }
 
     private static Font readFont(String path) {
@@ -36,12 +35,17 @@ public class ResourceManager {
         return font;
     }
 
-    private static BufferedImage readImage(String path) {
+    private static BufferedImage readImage(String path) throws UnknownResource {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(ResourceManager.class.getClassLoader().getResourceAsStream(path));
+            InputStream is = ResourceManager.class.getClassLoader().getResourceAsStream(path);
+            if (is == null) {
+                throw new UnknownResource(path, null);
+            }
+            image = ImageIO.read(is);
         } catch (IOException e) {
             logger.error("Unable to read image {}", path, e);
+            throw new UnknownResource(path, e);
         }
         return image;
     }
@@ -51,9 +55,9 @@ public class ResourceManager {
         try {
             img = readImage(path);
             if (img != null) {
-               return img.getSubimage(x, y, w, h);
+                return img.getSubimage(x, y, w, h);
             }
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | UnknownResource npe) {
             logger.error("Unable to slice image {}:{},{},{},{}", path, x, y, w, h, npe);
         }
         return img;
@@ -72,7 +76,7 @@ public class ResourceManager {
         return f;
     }
 
-    public static BufferedImage getImage(String imagePath) {
+    public static BufferedImage getImage(String imagePath) throws UnknownResource {
         if (resources.containsKey(imagePath)) {
             return (BufferedImage) resources.get(imagePath);
         } else {
@@ -94,5 +98,14 @@ public class ResourceManager {
             }
             return (BufferedImage) resources.get(imagePath + ":" + internalName);
         }
+    }
+
+    public static Collection<Object> getResources() {
+        return resources.values();
+    }
+
+    public static void clear() {
+        resources.clear();
+
     }
 }
