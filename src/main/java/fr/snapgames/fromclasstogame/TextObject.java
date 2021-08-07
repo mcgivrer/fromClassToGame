@@ -1,6 +1,6 @@
 package fr.snapgames.fromclasstogame;
 
-import java.awt.Font;
+import java.awt.*;
 
 public class TextObject extends GameObject {
 
@@ -9,6 +9,7 @@ public class TextObject extends GameObject {
 
     public TextObject(String name, double x, double y) {
         super(name, x, y);
+        this.color = Color.WHITE;
     }
 
     public TextObject setText(String text) {
