@@ -1,10 +1,11 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core.scenes;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

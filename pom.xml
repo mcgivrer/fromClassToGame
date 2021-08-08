@@ -44,7 +44,7 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <mainClass>fr.snapgames.fromclasstogame.Game</mainClass>
+    <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
   </properties>
 
   <!-- Project Dependencies -->

@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core.entity;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

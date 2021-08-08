@@ -1,4 +1,7 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core.gfx;
+
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
