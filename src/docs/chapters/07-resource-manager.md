@@ -9,16 +9,16 @@ tags: gamedev, resources, image, font
 
 ## Resource Manager
 
-As we now need more that just images to be displayed in our game, we need some other kind of resources like font, sound and so on, we need to add a ResourceManager which work consist in managing all those kind of resources.
+As we now need more that just images to be displayed in our game, we need some other kind of resources like font, sound and so on, we need to add a ResourceManager which work consist in managing all this kind of resources.
 
 ### Main structure
 
 First we are going to keep in memory all the resources, to retrieve them faster. So let's set a Map to store those `resources`.
-For convient usage, we will also keep a rootPath variable pointing to the `rootPath` of execution class's path.
+For convenient usage, we will also keep a rootPath variable pointing to the `rootPath` of execution class's path.
 
-We will use also a simplified version of the singleton patrtern (only ONE ResourcreManager to be instantiated at a time). The `instance` attribute will keep this singleton on.
+We will use also a simplified version of the singleton pattern (only ONE ResourceManager to be instantiated at a time). The `instance` attribute will keep this singleton on.
 
-As this service will be asingleton and we won't need an instantiation, we will use only static attributes and methods.
+As this service will be singleton, and we won't need an instantiation, we will use only static attributes and methods.
 
 ```java
 public class ResourceManager {
@@ -70,7 +70,7 @@ Adding a _5 stars_ service that consists in slicing the image at getting time is
 
 First try to read image in the cache from the already existing `readImage(String)` method. and then Slice the image with the described rectangle with `(x,y,w,h)` where:
 
-- `x` is the horozontal position in the read image,
+- `x` is the horizontal position in the read image,
 - `y` the vertical position in the read image,
 - `w` the width of the image to be sliced,
 - `h` the height of the image to be sliced.
@@ -215,8 +215,5 @@ You can directly modify the get font :
 ```java
 Font myFont = ResourceImage.getFont("fonts/a_font.ttf").defivedFont(14.0);
 ```
-
-
-
 
 And that's It !

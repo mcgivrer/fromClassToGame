@@ -9,11 +9,11 @@ tags: gamedev, scene
 
 ## Extracting the Configuration
 
-As we already seen in the previous chapter, we split and refactor the Game class from beginning. Here is the step whgere
+As we have already seen in the previous chapter, we split and refactor the Game class from beginning. Here is the step where
 we split the configuration management from the main Game class.
 
-The operation is quitly simple, we just have to create a dedicated class, and move all thing about configuration from
-the Game class to thenew Configuration one.
+The operation is quietly simple, we just have to create a dedicated class, and move all thing about configuration from
+the Game class to the new Configuration one.
 
 First let's create the class with its attributes:
 
@@ -130,7 +130,7 @@ You now have a super configuration class you may have to update to add new thing
 
 ### A possible enhancement
 
-If you really want to get an 'infinit' version of the configuration system, you can also move all attributes to a Map,
+If you really want to get an 'infinite' version of the configuration system, you can also move all attributes to a Map,
 and dynamically configure those attributes at Start, and then get there values through the Map get.
 
 The good solution will be to implement an internal HashMap for type dedicated parser according to the attributes you
@@ -138,8 +138,8 @@ want to man,age into your configuration.
 
 Reading the `config.property` file into
 a [`ResourceBundle`](https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.html "see the official ResourceBundle Java documentation")
-, then apply some Interget, Double, String or Boolean parser to each of the values to retrieve default configured one,
-and stoire them into a Value map.
+, then apply some Integer, Double, String or Boolean parser to each of the values to retrieve default configured one,
+and store them into a Value map.
 
 ```java
 public class Configuration {
@@ -161,7 +161,7 @@ public class Configuration {
     // extract default values from Configuration file
     public void readDefaultValues() {...}
 
-    // configuration value accesseur.
+    // configuration value accessor.
     public String getString(String name) {
         return values.get(name);
     }
