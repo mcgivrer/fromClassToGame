@@ -3,7 +3,7 @@ package fr.snapgames.fromclasstogame.core.entity;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-public class GameObject {
+public class GameObject implements Entity {
 
     private static int index = 0;
 
