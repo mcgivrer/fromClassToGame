@@ -5,10 +5,10 @@ import java.awt.Font;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.io.ResourceManager;
-import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 
 public class DemoScene extends AbstractScene {
 
@@ -22,7 +22,10 @@ public class DemoScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
+        // Add a specific Render for the new ScoreObject
+        g.getRender().addRenderHelper(new ScoreRenderHelper());
 
+        // load resources
         ResourceManager.getFont("fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles.png", "player", 0, 0, 16, 16);
         ResourceManager.getSlicedImage("images/tiles.png", "orangeBall", 16, 0, 16, 16);
@@ -43,7 +46,7 @@ public class DemoScene extends AbstractScene {
         }
         Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.CENTER_BASELINE, 14);
         // add some fixed text.
-        TextObject scoreTO = new TextObject("score", 10, 20).setText("00000").setFont(f);
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 20).setScore(score).setFont(f);
         scoreTO.setColor(Color.WHITE);
         scoreTO.priority = 10;
         add(scoreTO);
@@ -63,8 +66,8 @@ public class DemoScene extends AbstractScene {
     public void update(long dt) {
 
         super.update(dt);
-        TextObject scoreTO = (TextObject) objects.get("score");
-        scoreTO.setText(String.format("%05d", score));
+        ScoreObject scoreTO = (ScoreObject) objects.get("score");
+        scoreTO.setScore(score);
         score++;
     }
 
