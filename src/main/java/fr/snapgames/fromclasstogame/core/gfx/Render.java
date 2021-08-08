@@ -87,7 +87,7 @@ public class Render {
         final String path = this.getClass().getResource("/").getPath().substring(1);
         Path targetDir = Paths.get(path + "/screenshots");
         int i = screenShotIndex++;
-        String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
+        String filename = String.format("%sscreenshots/%s-%d.png", path, System.nanoTime(), i);
 
         try {
             if (!Files.exists(targetDir)) {
