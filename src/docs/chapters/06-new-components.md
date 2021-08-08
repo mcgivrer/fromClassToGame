@@ -18,7 +18,7 @@ The `TextObject` will be used to display text on screen. Starting from a standar
 - font : to define which standard font we want to use to display text (see [java.awt.Font](https://docs.oracle.com/javase/8/docs/api/java/awt/Font.html) for details).
 - text : simply s String containing the text to be displayed.
 
-As we already done for the GameObject, we will add as Fluent API a `setFont(Font)` and a `setText(String)` to the existing one.
+As we have already done for the GameObject, we will add as Fluent API a `setFont(Font)` and a `setText(String)` to the existing one.
 
 ```java
 public class TextObect extends GameObject {

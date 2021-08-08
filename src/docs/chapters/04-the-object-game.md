@@ -9,12 +9,12 @@ tags: gamedev, gameobject
 
 ## The Object Game
 
-The GameObject entity will be used by every element in the gae to be renderered, interct with and updated.
+The GameObject entity will be used by every element in the gae to be rendered, interact with and updated.
 This is the how-to manage thing into your game.
 
 ### Physics
 
-Some basic information must be providied to let an object managed by the game; position, speed, and size are the basical ones.
+Some basic information must be provided to let an object managed by the game; position, speed, and size are the basical ones.
 
 ```java
 public class GameObject {
@@ -57,9 +57,9 @@ public class GameObject {
 ```
 
 The `id` is a unique identifier for each `GameObject` instance. The static `index` is the internal counter used to create the `id` value.
-The `name` is defaulty initialized with a `noname_xx` value, where xx is the id value.
+The `name` is default initialized with a `noname_xx` value, where xx is the id value.
 
-And finally as we also need to display those object, and this is mainly the main goal, you need to get `color` for rendering little things. The `priority` attribute will be used to sort all the object befor renderering, managing a depth level between object at rendering time.
+And finally as we also need to display those object, and this is mainly the main goal, you need to get `color` for rendering little things. The `priority` attribute will be used to sort all the object before rendering, managing a depth level between object at rendering time.
 The `image` will be used to render an... image with a `BufferedImage` :)
 If this `image` attributes is null, a rectangle of size `width x height` will be rendered (see the chapter 03 at `Render` class).
 
@@ -100,7 +100,7 @@ This is a code corresponding formula to compute position depending on its speed:
 p1 = p0 + v0*t
 ```
 
-Some other methods are added vor some convience to define easily some properties.
+Some other methods are added vor some convenient to define easily some properties.
 
 OK, now we will need to update :
 
@@ -136,7 +136,7 @@ public class Game {
 }
 ```
 
-A new `add(GameObject)` method will add the GameObject to the Game objects list and a map. The list and the Map are shorcut to easily manage the object into the Game.
+A new `add(GameObject)` method will add the GameObject to the Game objects list and a map. The list and the Map are shortcut to easily manage the object into the Game.
 
 The update method has been modified to update all the objects.
 
@@ -148,7 +148,7 @@ The Render class is now to be updated to draw all those objects.
 
 Let's add some methods.
 
-We need to maintain a list of object to be rendered, and a methd to add one.
+We need to maintain a list of object to be rendered, and a method to add one.
 
 ```java
 public class Render {
@@ -174,6 +174,6 @@ public class Render {
 }
 ```
 
-The `add()` will add a GameObject to the "rendering list", and the `draw()` method will render a the corresponding image (if not null) or draw a rectangle.
+The `add()` will add a GameObject to the "rendering list", and the `draw()` method will render a corresponding image (if not null) or draw a rectangle.
 
 So now, calling the `render()` method will parse in the priority sort order all the `GameObject` in the objects list, and draw each of those items.
