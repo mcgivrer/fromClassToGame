@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.scenes;
+package fr.snapgames.fromclasstogame.core.scenes;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import fr.snapgames.fromclasstogame.Game;
-import fr.snapgames.fromclasstogame.GameObject;
-import fr.snapgames.fromclasstogame.Scene;
-import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 
 public abstract class AbstractScene implements Scene {
 

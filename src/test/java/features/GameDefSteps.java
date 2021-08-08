@@ -5,12 +5,16 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.snapgames.fromclasstogame.*;
-import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

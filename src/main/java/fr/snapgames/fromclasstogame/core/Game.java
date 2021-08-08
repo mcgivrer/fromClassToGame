@@ -1,12 +1,17 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Window;
+import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 
 /**
  * Project: From Class To Game

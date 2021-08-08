@@ -1,6 +1,6 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core.io;
 
-import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

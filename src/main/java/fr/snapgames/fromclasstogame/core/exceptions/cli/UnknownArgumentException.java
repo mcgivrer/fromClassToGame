@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.exceptions;
+package fr.snapgames.fromclasstogame.core.exceptions.cli;
 
 public class UnknownArgumentException extends Exception {
 

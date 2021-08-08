@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core.gfx;
 
 import java.awt.Color;
 import java.awt.Dimension;
