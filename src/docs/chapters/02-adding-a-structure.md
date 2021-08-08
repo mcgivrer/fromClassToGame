@@ -35,10 +35,10 @@ public class Game{
 
 Our game will start with a main entry point: the run(argv) method.
 
-This main method will delegate all the sub rpocessing to other methods:
+This main method will delegate all the sub processing to other methods:
 
 - `initialize(argv)` will get cli parameters to set new values for title, width and height of the game window. more to come in the next chapters.
-- `loop()` is the core processing for our game, this where all will happened.
+- `loop()` is the core processing for our game, this where all will happen.
 
 ### The LOOP
 
@@ -47,7 +47,7 @@ The `loop` method is where player input will be processed and where the game and
 ```java
 public class Game{
     ...
-    // the flag requestin gthe game to exit.
+    // the flag requesting the game to exit.
     private boolean exit = false;
 
     private initialize(String[] argv){}
@@ -75,7 +75,7 @@ So we will need the corresponding methods in our class:
 
 - `input()` will process user input (the player),
 - `update(dt)` will compute position and behavior os objects in the game,
-- and `draw()` will display all the neede object on the game window.
+- and `draw()` will display all the need object on the game window.
 
 You've also certainly noticed the boolean `exit`, used to exit the main loop on user or game request. By default the boolean is `false`, and to request exiting, just set it `true`.
 
@@ -102,7 +102,7 @@ public class Game{
         // please, close the window on exit request
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // defin ethe window Size
+        // define the window Size
         Dimension d = new Dimension(this.width,this.height);
         frame.setPreferredSize(d);
         frame.setMaxSize(d);

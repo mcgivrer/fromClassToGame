@@ -9,9 +9,17 @@
 
 ## Description
 
-This project is a journey from a Class to a Game. first commits will set the basis, and progressivly transform, chapter after chapter, the initial class into a playable game.
+This project is a journey from a Class to a Game. First commits will set the basis, and progressively transform, chapter
+after chapter, the initial class into a playable game.
+
+During the chapters from the `docs/` you will transform the
+simple [`Game`](src/main/java/fr/snapgames/fromclasstogame/core/Game.java "Go and see the Game class") class from
+beginning to a package structured framework with some useful features to support object management and display, and just
+now how to organize the code in a project, using a bit of TDD to develop and refactor
 
 ## build
+
+To build the project, the good maven command is :
 
 ```bash
 mvn clean install
@@ -19,14 +27,19 @@ mvn clean install
 
 ## test
 
+To execute test verification, using a bunch of [cucumber](https://cucumber.io/ "visit the official site") tests :
 ```bash
 mvn test
 ```
 
 ## run
 
+And finally, to run such a beautiful piece of code :
+
 ```bash
 mvn exec:java
 ```
+
+You will get the current display:
 
 ![screenshot](docs/images/../../src/docs/images/capture-01.png "a screenshot of the current sample demo")
