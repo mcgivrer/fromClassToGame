@@ -1,8 +1,5 @@
 package fr.snapgames.fromclasstogame.core.gfx;
 
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.entity.TextObject;
-
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -12,9 +9,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
+
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
 
 public class Render {
 
@@ -22,9 +23,12 @@ public class Render {
     static int screenShotIndex = 0;
 
     private List<GameObject> objects = new ArrayList<>();
+    private Map<String, RenderHelper> renderHelpers = new HashMap<>();
 
     public Render(int width, int height) {
         setViewport(width, height);
+        addRenderHelper(new GameObjectRenderHelper());
+        addRenderHelper(new TextRenderHelper());
     }
 
     public Render setViewport(int w, int h) {
@@ -46,19 +50,13 @@ public class Render {
     }
 
     private void draw(Graphics2D g, GameObject go) {
-        g.setColor(go.color);
         String goClazzName = go.getClass().getName();
-        if (GameObject.class.getName().equals(goClazzName)) {
-            if (go.image != null) {
-                g.drawImage(go.image, (int) (go.x), (int) (go.y), null);
-            } else {
-                g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
-            }
-        } else if (TextObject.class.getName().equals(goClazzName)) {
-            TextObject to = (TextObject) go;
-            g.setFont(to.font);
-            g.drawString(to.text, (int) (to.x), (int) (to.y));
-
+        if (renderHelpers.containsKey(goClazzName)) {
+            RenderHelper rh = renderHelpers.get(goClazzName);
+            rh.draw(g, go);
+        } else {
+            g.setColor(go.color);
+            g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
         }
     }
 
@@ -100,6 +98,10 @@ public class Render {
         } catch (IOException e) {
             System.err.println(String.format("Unable to write screenshot to %s:%s", filename, e.getMessage()));
         }
+    }
+
+    public void addRenderHelper(RenderHelper rh) {
+        renderHelpers.put(rh.getType(), rh);
     }
 
 }
