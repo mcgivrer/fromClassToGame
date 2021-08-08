@@ -15,13 +15,13 @@ The good one consists in creating multiple classes interacting, and having a ded
 
 - `InputHandler` will manager user/player input,
 - `Render` will render object
-- `Window` will support display and dapatation to the host machine,
+- `Window` will support display and adaptation to the host machine,
 - `GameObject` will be the main entity for our game.
 
 ### Input Handler
 
-To be able for the user/plyaer to interact with the game, we will add some 'connection' between the game window and our `Game` class.
-the Java world request to implments some specific method in our classes to intercept Keybopard events: the `KeyListener` interface.
+To be able for the user/player to interact with the game, we will add some 'connection' between the game window and our `Game` class.
+the Java world request to implements some specific method in our classes to intercept Keyboard events: the `KeyListener` interface.
 
 ```java
 public class Game implements KeyListener{
@@ -55,7 +55,7 @@ With those very basic events we will be able to manage keys input. but we need t
     }
 ```
 
-if you run your Game class, you will get some console log output :
+if you run your Game class, you will get some consoles log output :
 
 ```txt
 key pressed: 76
@@ -70,7 +70,7 @@ key released: 72
 
 If we let the **JFrame** into the main `Game` class, we will create to much interaction between the game and the JFrame.
 
-So we need to delegate window manaent to a dedicated object: **Window**.
+So we need to delegate window management to a dedicated object: **Window**.
 
 Extract from the Game `initialize()` method all the `JFrame` initialisation and move it to the `Window()` constructor.
 
@@ -115,9 +115,9 @@ And from the `Game#initialize()` method :
 
 Like for managing input, we are going to create a class to delegate all drawing operation: the `Render` class.
 
-This class has the particularity to draw all visual object to a buffer and will let the window displsay this buffer.
+This class has the particularity to draw all visual object to a buffer and will let the window display this buffer.
 
-So first we will need a class with an image bugffer.
+So first we will need a class with an image buffer.
 
 ```java
     private BufferedImage buffer;
@@ -139,4 +139,4 @@ So first we will need a class with an image bugffer.
     }
 ```
 
-So the class is in charge of creating and maintaing an internal draw buffer. The render() method will first clear this image buffer (with a black color), and will do more thing in the futur chapters.
+So the class is in charge of creating and maintaining an internal draw buffer. The render() method will first clear this image buffer (with a black color), and will do more thing in the future chapters.
