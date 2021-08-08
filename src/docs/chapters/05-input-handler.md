@@ -9,7 +9,7 @@ tags: gamedev, input, keys
 
 ## Input handler
 
-The best way to manage user input, although we already implement something in the Game class, we will create a breand new thing: The `InputHandler`.
+The best way to manage user input, although we already implement something in the Game class, we will create a brand-new thing: The `InputHandler`.
 The goal of this class is to capture events, and maintain a buffer of keys state, a boolean buffer.
 
 ```java
@@ -45,6 +45,6 @@ public class InputHandler implements KeyListener {
 }
 ```
 
-All is in this super simple class. `keyPressed` and `keyReleased` are seting true and false the corresponding boolean in the `keys` buffer.
+All is in this super simple class. `keyPressed` and `keyReleased` are setting true and false the corresponding boolean in the `keys` buffer.
 
 To detect if a specific key has been pressed, just use `getKey(code)` !
