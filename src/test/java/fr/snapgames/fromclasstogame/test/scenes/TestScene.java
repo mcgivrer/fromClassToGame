@@ -1,6 +1,6 @@
 package fr.snapgames.fromclasstogame.test.scenes;
 
-import fr.snapgames.fromclasstogame.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 
 public class TestScene extends AbstractScene {
 

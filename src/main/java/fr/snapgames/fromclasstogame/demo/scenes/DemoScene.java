@@ -1,13 +1,14 @@
-package fr.snapgames.fromclasstogame.scenes;
+package fr.snapgames.fromclasstogame.demo.scenes;
 
 import java.awt.Color;
 import java.awt.Font;
 
-import fr.snapgames.fromclasstogame.Game;
-import fr.snapgames.fromclasstogame.GameObject;
-import fr.snapgames.fromclasstogame.ResourceManager;
-import fr.snapgames.fromclasstogame.TextObject;
-import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 
 public class DemoScene extends AbstractScene {
 

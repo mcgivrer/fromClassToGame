@@ -1,4 +1,6 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core.io;
+
+import fr.snapgames.fromclasstogame.core.gfx.Window;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
