@@ -185,4 +185,38 @@ public class ResourceManager {
 }
 ```
 
+### Usage
+
+Very simple to use it:
+
+* To load an image :
+
+```java
+BufferedImage img = ResourceImage.getImage("images/my_image.png");
+```
+You can also slice an image at reading. The image will be store in the sliced version.
+
+```java
+BufferedImage img = ResourceImage.getSlicedImage("images/my_image.png","myImage",0,0,16,16);
+```
+
+The _my_image.png_ will be sliced at position `0,0` with a size of `16x16`, and will be stored in resource cache as _myImage_.
+
+To retrieve this image later, you will just have to get _images/my_image.png:myImage_.
+
+* To load a font :
+
+```java
+Font myFont = ResourceImage.getFont("fonts/a_font.ttf");
+```
+
+You can directly modify the get font :
+
+```java
+Font myFont = ResourceImage.getFont("fonts/a_font.ttf").defivedFont(14.0);
+```
+
+
+
+
 And that's It !
