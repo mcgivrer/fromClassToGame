@@ -3,11 +3,11 @@ package features;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import fr.snapgames.fromclasstogame.Game;
-import fr.snapgames.fromclasstogame.GameObject;
-import fr.snapgames.fromclasstogame.Scene;
-import fr.snapgames.fromclasstogame.SceneManager;
-import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
+import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 

@@ -1,6 +1,8 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core.scenes;
 
-import fr.snapgames.fromclasstogame.io.exception.UnknownResource;
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 
 import java.util.List;
 import java.awt.event.KeyListener;

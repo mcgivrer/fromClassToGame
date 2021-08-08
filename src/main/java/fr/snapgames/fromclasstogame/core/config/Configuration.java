@@ -1,8 +1,8 @@
-package fr.snapgames.fromclasstogame;
+package fr.snapgames.fromclasstogame.core.config;
 
 import java.util.ResourceBundle;
 
-import fr.snapgames.fromclasstogame.exceptions.UnknownArgumentException;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 
 public class Configuration {
 
