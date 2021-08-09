@@ -8,10 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
@@ -104,4 +101,7 @@ public class Render {
         renderHelpers.put(rh.getType(), rh);
     }
 
+    public Map<String,RenderHelper> getRenderHelpers(){
+        return renderHelpers;
+    }
 }
