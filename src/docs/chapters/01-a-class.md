@@ -4,7 +4,7 @@ chapter: 01 - A Class ?
 author: Frédéric Delorme
 description: Creating a first class as a Game container. 
 created: 2021-08-01 
-tags: gamedev, staring point
+tags: gamedev, starting point
 ---
 
 ## A Class ?
