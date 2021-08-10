@@ -12,7 +12,7 @@ But how a camera is following a target ? Let's have a diagram to explain that.
 _A Camera follows a target in a viewport_
 
 The target, the **player**, at `(x,y)`, is targeted by the **camera** at `(cx,cy)` moving into the **viewport** having
-with x height of `(w,h)`. the `t` **factor**, visualized by s spring on the diagram symbolized the behavior of how the
+with x height of `(w,h)`. The `t` **factor**, visualized by s spring on the diagram symbolized the behavior of how the
 camera will follow the camera, the t is a small delay applied to the camera moves, based on the target moves.
 
 The simple math formula below explains how the t factor is used to compute the camera position:
