@@ -101,7 +101,8 @@ public class Render {
         renderHelpers.put(rh.getType(), rh);
     }
 
-    public Map<String,RenderHelper> getRenderHelpers(){
+    public Map<String, RenderHelper> getRenderHelpers() {
         return renderHelpers;
     }
+
 }
