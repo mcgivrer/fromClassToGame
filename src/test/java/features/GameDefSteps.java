@@ -38,7 +38,7 @@ public class GameDefSteps {
     @When("I prepare the arguments")
     public void andIPrepareTheArgument() {
         argList.clear();
-        args = new String[]{};
+        args = new String[] {};
     }
 
     @And("I add argument {string}")
@@ -50,7 +50,6 @@ public class GameDefSteps {
         for (String a : argList) {
             args[i++] = a;
         }
-        args[i++] = arg;
     }
 
     @And("a window of {int} x {int} is created")
@@ -107,8 +106,10 @@ public class GameDefSteps {
         GameObject go = game.getSceneManager().getCurrent().getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
                 game.getSceneManager().getCurrent().getObjectsList().size());
-        assertEquals("the GameObject is not horizontally centered", game.getRender().getBuffer().getWidth() / 2, go.x, 0.0);
-        assertEquals("the GameObject is not vertically centered", game.getRender().getBuffer().getHeight() / 2, go.y, 0.0);
+        assertEquals("the GameObject is not horizontally centered", game.getRender().getBuffer().getWidth() / 2, go.x,
+                0.0);
+        assertEquals("the GameObject is not vertically centered", game.getRender().getBuffer().getHeight() / 2, go.y,
+                0.0);
     }
 
     @Then("the Game has {int} GameObject\\(s).")
@@ -151,17 +152,19 @@ public class GameDefSteps {
         try {
             img = ResourceManager.getImage(imagePath);
         } catch (UnknownResource e) {
-            assertTrue("Error while getting resource: " + e.getMessage(), img == null);
+            assertNull("Error while getting resource: " + e.getMessage(), img);
         }
     }
 
     @Then("the ResourceManager has {int} resources")
     public void theResourceManagerHasResources(int nbResources) {
-        assertEquals("The number of resources does not match with loaded ones.", nbResources, ResourceManager.getResources().size());
+        assertEquals("The number of resources does not match with loaded ones.", nbResources,
+                ResourceManager.getResources().size());
     }
 
     @And("The image {string} as {string} is sliced at \\({int},{int}) sizing \\({int},{int})")
-    public void theImageAsIsSlicedAtSizing(String resourcePath, String name, Integer x, Integer y, Integer w, Integer h) {
+    public void theImageAsIsSlicedAtSizing(String resourcePath, String name, Integer x, Integer y, Integer w,
+            Integer h) {
         ResourceManager.getSlicedImage(resourcePath, name, x, y, w, h);
 
     }
@@ -174,8 +177,11 @@ public class GameDefSteps {
         } catch (UnknownResource e) {
             fail("Error n loading resource: " + e.getMessage());
         }
-        assertEquals("the image resource " + pathAndName + " has not been horizontally sliced correctly", w, img.getWidth());
-        assertEquals("the image resource " + pathAndName + " has not been vertically sliced correctly", h, img.getHeight());
+        assertNotNull("The extracted image must not be null !!", img);
+        assertEquals("the image resource " + pathAndName + " has not been horizontally sliced correctly", w,
+                img.getWidth());
+        assertEquals("the image resource " + pathAndName + " has not been vertically sliced correctly", h,
+                img.getHeight());
     }
 
     @And("the resources are cleared")
@@ -208,6 +214,6 @@ public class GameDefSteps {
     public void theTextObjectDefaultFontForIsNull(String name) {
         Scene scene = game.getSceneManager().getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
-        assertTrue("The default TextObject font is not null", to.font == null);
+        assertNull("The default TextObject font is not null", to.font);
     }
 }
