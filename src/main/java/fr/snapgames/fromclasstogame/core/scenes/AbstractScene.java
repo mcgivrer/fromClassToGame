@@ -58,6 +58,7 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (!cameras.containsKey(go.name)) {
                 cameras.put(go.name, (Camera) go);
+                game.getRender().setCamera((Camera)go);
             }
             if (activeCamera == null) {
                 activeCamera = (Camera) go;
