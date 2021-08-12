@@ -29,7 +29,7 @@ public class SceneDefSteps extends CommonDefSteps {
     }
 
     @Then("the title is {string}")
-    public void the_title_is(String title) {
+    public void theTitleIs(String title) {
         try {
             game.run(new String[]{"title=" + title});
         } catch (UnknownArgumentException uae) {
@@ -39,33 +39,33 @@ public class SceneDefSteps extends CommonDefSteps {
     }
 
     @Given("I add an Entity named {string} at {double},{double}")
-    public void i_add_an_entity_named_at(String name, Double x, Double y) {
+    public void iAddAnEntityNamedAt(String name, Double x, Double y) {
         GameObject go = new GameObject(name, x, y);
         Scene sc = game.getSceneManager().getCurrent();
         sc.add(go);
     }
 
     @Given("I add a {string} named {string}")
-    public void i_add_a_named(String sceneClassName, String sceneName) {
+    public void iAddANamed(String sceneClassName, String sceneName) {
         SceneManager sc = game.getSceneManager();
         sc.addScene(sceneName + ":" + sceneClassName);
     }
 
     @Then("the SceneManager has {int} scene\\(s)")
-    public void the_scene_manager_has_scene_s(Integer nbScene) {
+    public void theSceneManagerHasScenes(Integer nbScene) {
         SceneManager sc = game.getSceneManager();
         assertEquals("The number of scene does not match the configuration set", nbScene.intValue(),
                 sc.getScenes().size());
     }
 
     @Then("I can activate the scene {string}")
-    public void i_can_activate_the_scene(String sceneName) {
+    public void iCanActivateTheScene(String sceneName) {
         SceneManager sc = game.getSceneManager();
         sc.activate(sceneName);
     }
 
     @Then("I can dispose all scenes.")
-    public void i_can_dispose_all_scenes() {
+    public void iCanDisposeAllScenes() {
         SceneManager sc = game.getSceneManager();
         sc.dispose();
         assertEquals("All scene definition have not been cleared", 0, sc.getScenes().size());
