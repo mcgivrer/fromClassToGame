@@ -1,39 +1,35 @@
 package fr.snapgames.fromclasstogame.core.gfx;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 
 public class Render {
 
     private BufferedImage buffer;
-    static int screenShotIndex = 0;
+    private static int screenShotIndex = 0;
+
+    private Camera camera;
 
     private List<GameObject> objects = new ArrayList<>();
     private Map<String, RenderHelper> renderHelpers = new HashMap<>();
+    private Dimension viewport;
 
     public Render(int width, int height) {
         setViewport(width, height);
         addRenderHelper(new GameObjectRenderHelper());
         addRenderHelper(new TextRenderHelper());
-    }
-
-    public Render setViewport(int w, int h) {
-        this.buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        return this;
     }
 
     public void render() {
@@ -43,9 +39,18 @@ public class Render {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+        if (camera != null) {
+            g.translate(-camera.x, -camera.y);
+        }
+
         for (GameObject go : objects) {
             draw(g, go);
         }
+
+        if (camera != null) {
+            g.translate(camera.x, camera.y);
+        }
+
         g.dispose();
     }
 
@@ -106,6 +111,21 @@ public class Render {
 
     public Map<String, RenderHelper> getRenderHelpers() {
         return renderHelpers;
+    }
+
+    public Render setCamera(Camera c) {
+        camera = c;
+        return this;
+    }
+
+    public Render setViewport(int w, int h) {
+        this.buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        this.viewport = new Dimension(w, h);
+        return this;
+    }
+
+    public Dimension getViewport() {
+        return viewport;
     }
 
 }

@@ -1,5 +1,10 @@
 package features;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
@@ -8,13 +13,9 @@ import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.RenderHelper;
 import fr.snapgames.fromclasstogame.test.entity.TestObject;
-import fr.snapgames.fromclasstogame.test.scenes.TestRenderScene;
-import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
-import static org.junit.Assert.*;
 
 public class RenderHelperStepDefs {
 

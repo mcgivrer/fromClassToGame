@@ -1,9 +1,9 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -14,6 +14,9 @@ public class DemoScene extends AbstractScene {
 
     private int score = 0;
 
+    public DemoScene(Game g){
+        super(g);
+    }
     @Override
     public String getName() {
         return "demo";
@@ -37,6 +40,11 @@ public class DemoScene extends AbstractScene {
         GameObject player = new GameObject("player", 160, 100).setColor(Color.RED).setSpeed(0.02, 0.02)
                 .setSize(16.0, 16.0).setImage(ResourceManager.getImage("images/tiles.png:player"));
         add(player);
+
+        Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(),g.getRender().getBuffer().getHeight());
+        Camera camera = new Camera("cam01").setTarget(player).setTweenFactor(0.05).setViewport( vp );
+        add(camera);
+
         // Add enemies(enemy_99)
         for (int i = 0; i < 10; i++) {
             GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
