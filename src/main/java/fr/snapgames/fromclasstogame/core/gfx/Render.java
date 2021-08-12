@@ -12,12 +12,15 @@ import java.util.*;
 
 import javax.imageio.ImageIO;
 
+import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 
 public class Render {
 
     private BufferedImage buffer;
-    static int screenShotIndex = 0;
+    private static int screenShotIndex = 0;
+
+    private Camera camera;
 
     private List<GameObject> objects = new ArrayList<>();
     private Map<String, RenderHelper> renderHelpers = new HashMap<>();
@@ -28,11 +31,6 @@ public class Render {
         addRenderHelper(new TextRenderHelper());
     }
 
-    public Render setViewport(int w, int h) {
-        this.buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        return this;
-    }
-
     public void render() {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
@@ -40,9 +38,18 @@ public class Render {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+        if (camera != null) {
+            g.translate(-camera.x, -camera.y);
+        }
+
         for (GameObject go : objects) {
             draw(g, go);
         }
+
+        if (camera != null) {
+            g.translate(camera.x, camera.y);
+        }
+
         g.dispose();
     }
 
@@ -101,7 +108,18 @@ public class Render {
         renderHelpers.put(rh.getType(), rh);
     }
 
-    public Map<String,RenderHelper> getRenderHelpers(){
+    public Map<String, RenderHelper> getRenderHelpers() {
         return renderHelpers;
     }
+
+    public Render setCamera(Camera c) {
+        camera = c;
+        return this;
+    }
+
+    public Render setViewport(int w, int h) {
+        this.buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        return this;
+    }
+
 }
