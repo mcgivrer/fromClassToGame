@@ -14,6 +14,9 @@ public class DemoScene extends AbstractScene {
 
     private int score = 0;
 
+    public DemoScene(Game g){
+        super(g);
+    }
     @Override
     public String getName() {
         return "demo";
@@ -84,13 +87,13 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void input() {
-        // TODO Auto-generated method stub
+        // Need to manage some user input
 
     }
 
     @Override
     public void render() {
-        // TODO Auto-generated method stub
+        // if something >new< must be computed at render time ?
 
     }
 

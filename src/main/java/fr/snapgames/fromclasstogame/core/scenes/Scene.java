@@ -42,4 +42,5 @@ public interface Scene extends KeyListener{
 
     void dispose();
 
+    Camera getCamera(String cameraName);
 }

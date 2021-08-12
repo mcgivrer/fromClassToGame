@@ -22,10 +22,9 @@ import io.cucumber.java.en.When;
 
 import static org.junit.Assert.*;
 
-public class GameDefSteps {
+public class GameDefSteps extends CommonDefSteps{
 
     private static final Logger logger = LoggerFactory.getLogger(GameDefSteps.class);
-    private Game game;
     private String[] args;
     private List<String> argList = new ArrayList<>();
 
@@ -151,7 +150,7 @@ public class GameDefSteps {
         try {
             img = ResourceManager.getImage(imagePath);
         } catch (UnknownResource e) {
-            assertTrue("Error while getting resource: " + e.getMessage(), img == null);
+            assertNull("Error while getting resource: " + e.getMessage(), img);
         }
     }
 
@@ -208,6 +207,6 @@ public class GameDefSteps {
     public void theTextObjectDefaultFontForIsNull(String name) {
         Scene scene = game.getSceneManager().getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
-        assertTrue("The default TextObject font is not null", to.font == null);
+        assertNull("The default TextObject font is not null", to.font);
     }
 }
