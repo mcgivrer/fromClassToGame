@@ -1,14 +1,18 @@
 package features;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.RenderHelper;
+import fr.snapgames.fromclasstogame.test.entity.TestObject;
+import fr.snapgames.fromclasstogame.test.scenes.TestRenderScene;
+import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
-import java.util.Collection;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -19,6 +23,7 @@ public class RenderHelperStepDefs {
     @Given("The Game start with default config")
     public void theGameStartWithDefaultConfig() {
         game = new Game("test-render");
+        game.testMode = true;
         try {
             game.run(new String[]{});
         } catch (UnknownArgumentException e) {
@@ -32,9 +37,34 @@ public class RenderHelperStepDefs {
     }
 
     @And("the RenderHelper for {string} is ready")
-    public void theRenderHelperForIsReady(String arg0) {
-        Map<String,RenderHelper> renderHelpers = game.getRender().getRenderHelpers();
-        assertEquals("The GameObject RenderHelper is not defined","GameObject",renderHelpers.get("GameObject").getType());
-        assertEquals("The TextObject RenderHelper is not defined","TextObject",renderHelpers.get("TextObject").getType());
+    public void theRenderHelperForIsReady(String objectName) {
+        Map<String, RenderHelper> renderHelpers = game.getRender().getRenderHelpers();
+        RenderHelper rh = renderHelpers.get(objectName);
+        assertEquals("The '"+objectName+"' RenderHelper is not defined", objectName, rh.getType());
+    }
+
+    @And("I add a new {string} for a {string}")
+    public void iAddANewForA(String className, String EntityName) {
+        try {
+            Class<?> rhc = Class.forName(className);
+            RenderHelper rh = (RenderHelper) rhc.getConstructors()[0].newInstance();
+            Render render =  game.getRender();
+            render.addRenderHelper(rh);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            fail("Unable to add the RenderHelper named " + className + ": " + e.getMessage());
+        }
+    }
+
+    @And("the TestObject named {string} is rendered.")
+    public void theTestObjectNamedIsRendered(String objectName) {
+        Render render =  game.getRender();
+        render.render();
+        TestObject to = (TestObject) game.getSceneManager().getCurrent().getGameObject("test");
+        assertTrue("The TestObject " + objectName + " has not been rendered", to.getFlag());
+    }
+
+    @And("I add a {string} as scene")
+    public void iAddATestScene(String sceneName) {
+        game.getSceneManager().addScene(sceneName);
     }
 }
