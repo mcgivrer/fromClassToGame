@@ -124,8 +124,11 @@ public class Render {
         return this;
     }
 
+<<<<<<< HEAD
     public Dimension getViewport(){
         return viewport;
     }
 
+=======
+>>>>>>> add-camera-object
 }
