@@ -1,13 +1,16 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The {@link SceneManager} is a game states switcher to activate one of the
@@ -37,7 +40,7 @@ public class SceneManager {
      * <li><code>code</code>:<code>class</code></li>
      * <li><code>test</code>:<code>fr.snapgames.fromclasstogame.test.TestScene</code></li>
      * </ul>
-     * 
+     *
      * @param sceneClasses a semicolumn formated String array definig the list of
      *                     scene to be managed.
      */
@@ -59,20 +62,22 @@ public class SceneManager {
             }
         }
     }
-    public void activate(){
+
+    public void activate() {
         activate(game.getConfiguration().defaultScene);
     }
+
     /**
      * <p>
      * Activate a specific {@link Scene} from its internal name
      * {@link Scene#getName()} of the semicolumn delimited String array from the
      * initialize() see {@link SceneManager#initialize(String[])}).
-     * 
+     *
      * <p>
      * The {@link Scene#initialize(Game)} and the {@link Scene#create(Game)} methods
      * will be called if not already initialized. Finally, the
      * {@link Scene#activate()} si called.
-     * 
+     *
      * @param name name of the scene to be activated.
      */
     public void activate(String name) {
@@ -82,15 +87,17 @@ public class SceneManager {
                 if (scenesInstances.containsKey(name)) {
                     s = scenesInstances.get(name);
                 } else {
-                    s = (Scene) scenesClasses.get(name).newInstance();
-                    s.initialize(game);
-                    scenesInstances.put(s.getName(), s);
-                    s.create(game);
+                    Class<?> clazzScene = scenesClasses.get(name);
+                    final Constructor<?> sceneConstructor = clazzScene.getConstructor(new Class[]{Game.class});
+                    s = (Scene) sceneConstructor.newInstance(game);
+                    add(name, s);
                 }
-                this.current = s;
-                s.activate();
+                if (s != null) {
+                    this.current = s;
+                    s.activate();
+                }
 
-            } catch (InstantiationException | IllegalAccessException | UnknownResource e) {
+            } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                 logger.error("Unable to instantiate class {}", name);
             }
         }
@@ -98,12 +105,19 @@ public class SceneManager {
     }
 
     /**
-     * This is an adding possibility to add dynaically a new Scene prgrammatically.
-     * 
+     * This is an adding possibility to add dynamically a new Scene programmatically.
+     *
      * @param s the instance of the {@link Scene} to be added.
      */
-    public void add(Scene s) {
-        scenesInstances.put(s.getName(), s);
+    public void add(String name,Scene s) {
+        try {
+            scenesInstances.put(name, s);
+            scenesClasses.put(name,s.getClass());
+            s.initialize(game);
+            s.create(game);
+        } catch (UnknownResource e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -124,8 +138,12 @@ public class SceneManager {
     public Collection<?> getScenes() {
         return scenesClasses.values();
     }
+
     public Collection<?> getScenesInstances() {
         return scenesInstances.values();
     }
 
+    public Scene getScene(String sceneName) {
+        return scenesInstances.get(sceneName);
+    }
 }

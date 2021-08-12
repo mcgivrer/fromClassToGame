@@ -17,11 +17,15 @@ public class Camera extends GameObject {
 
     public Camera setTarget(GameObject t) {
         target = t;
+        x = 0;
+        y = 0;
         return this;
     }
 
     public Camera setViewport(Dimension v) {
         viewport = v;
+        width = v.width;
+        height = v.height;
         return this;
     }
 
@@ -32,7 +36,10 @@ public class Camera extends GameObject {
 
     @Override
     public void update(long dt) {
-        x += target.x + target.width - (viewport.width * 0.5f - x) * tween * dt;
-        y += target.y + target.height - (viewport.height * 0.5f - y) * tween * dt;
+        // Adding some Math security to avoid infinite values
+        this.x += Math.ceil(
+                (target.x + (target.width) - ((double) (viewport.width) * 0.5f) - this.x) * tween * Math.min(dt, 10));
+        this.y += Math.ceil(
+                (target.y + (target.height) - ((double) (viewport.height) * 0.5f) - this.y) * tween * Math.min(dt, 10));
     }
 }

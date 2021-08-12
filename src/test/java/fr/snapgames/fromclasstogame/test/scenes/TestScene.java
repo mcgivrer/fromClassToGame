@@ -1,28 +1,43 @@
 package fr.snapgames.fromclasstogame.test.scenes;
 
+import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 
+import java.lang.invoke.ConstantCallSite;
+
 public class TestScene extends AbstractScene {
+
+
+    private String name;
+
+    public TestScene(Game g) {
+        super(g);
+        name = "test";
+
+    }
+
+    public TestScene(Game g, String name) {
+        this(g);
+        this.name = name;
+    }
+
 
     @Override
     public String getName() {
 
-        return "test";
+        return name;
     }
 
     @Override
     public void input() {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void render() {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
     }
 
 }

@@ -24,6 +24,10 @@ public abstract class AbstractScene implements Scene {
     protected Game game;
     protected int debug = 0;
 
+    public AbstractScene(Game g) {
+        game = g;
+    }
+
     @Override
     public void initialize(Game g) {
         this.game = g;
@@ -45,18 +49,20 @@ public abstract class AbstractScene implements Scene {
         objectsList.forEach(e -> {
             e.update(dt);
         });
+        if (activeCamera != null) {
+            activeCamera.update(dt);
+        }
     }
 
     public void add(GameObject go) {
-        if (!objects.containsKey(go.name)) {
-            if (go.getClass().equals(Camera.class.getName())) {
-                if (!cameras.containsKey(go.name)) {
-                    cameras.put(go.name, (Camera) go);
-                }
-                if (activeCamera == null) {
-                    activeCamera = (Camera) go;
-                }
+        if (go.getClass().getName().equals(Camera.class.getName())) {
+            if (!cameras.containsKey(go.name)) {
+                cameras.put(go.name, (Camera) go);
             }
+            if (activeCamera == null) {
+                activeCamera = (Camera) go;
+            }
+        } else if (!objects.containsKey(go.name)) {
             objects.put(go.name, go);
             objectsList.add(go);
             game.getRender().add(go);
@@ -114,6 +120,10 @@ public abstract class AbstractScene implements Scene {
 
     public Camera getActiveCamera() {
         return activeCamera;
+    }
+
+    public Camera getCamera(String cameraName) {
+        return cameras.get(cameraName);
     }
 
     public void setActiveCamera(Camera c) {
