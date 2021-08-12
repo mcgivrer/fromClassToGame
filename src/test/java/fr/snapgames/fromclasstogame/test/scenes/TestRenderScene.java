@@ -31,17 +31,17 @@ public class TestRenderScene extends AbstractScene {
 
     @Override
     public void input() {
-        // TODO Auto-generated method stub
+        // Nothing to do there for test only purpose
     }
 
     @Override
     public void render() {
-        // TODO Auto-generated method stub
+        // Nothing to do there for test only purpose
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+        // Nothing to do there for test only purpose
     }
 
 }
