@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 
@@ -16,8 +17,16 @@ public abstract class AbstractScene implements Scene {
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
 
+    protected Map<String, Camera> cameras = new HashMap<>();
+
+    protected Camera activeCamera;
+
     protected Game game;
     protected int debug = 0;
+
+    public AbstractScene(Game g) {
+        game = g;
+    }
 
     @Override
     public void initialize(Game g) {
@@ -40,10 +49,20 @@ public abstract class AbstractScene implements Scene {
         objectsList.forEach(e -> {
             e.update(dt);
         });
+        if (activeCamera != null) {
+            activeCamera.update(dt);
+        }
     }
 
     public void add(GameObject go) {
-        if (!objects.containsKey(go.name)) {
+        if (go.getClass().getName().equals(Camera.class.getName())) {
+            if (!cameras.containsKey(go.name)) {
+                cameras.put(go.name, (Camera) go);
+            }
+            if (activeCamera == null) {
+                activeCamera = (Camera) go;
+            }
+        } else if (!objects.containsKey(go.name)) {
             objects.put(go.name, go);
             objectsList.add(go);
             game.getRender().add(go);
@@ -61,7 +80,9 @@ public abstract class AbstractScene implements Scene {
      * @return
      */
     public List<GameObject> find(String filteredName) {
-        return objectsList.stream().filter(o -> o.name.contains(filteredName)).collect(Collectors.toList());
+        return objectsList.stream().filter(
+                o -> o.name.contains(filteredName)
+        ).collect(Collectors.toList());
     }
 
     public List<GameObject> getObjectsList() {
@@ -75,7 +96,6 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void keyTyped(KeyEvent e) {
         // Can be implemented in the class extending this abstract one.
-
     }
 
     @Override
@@ -93,10 +113,21 @@ public abstract class AbstractScene implements Scene {
             case KeyEvent.VK_R:
                 activate();
                 break;
-
             default:
                 break;
         }
-
     }
+
+    public Camera getActiveCamera() {
+        return activeCamera;
+    }
+
+    public Camera getCamera(String cameraName) {
+        return cameras.get(cameraName);
+    }
+
+    public void setActiveCamera(Camera c) {
+        activeCamera = cameras.get(c.name);
+    }
+
 }

@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 
@@ -29,6 +30,8 @@ public interface Scene extends KeyListener{
 
     List<GameObject> getObjectsList();
 
+    Camera getActiveCamera();
+
     void activate();
 
     void update(long dt);
@@ -39,4 +42,5 @@ public interface Scene extends KeyListener{
 
     void dispose();
 
+    Camera getCamera(String cameraName);
 }
