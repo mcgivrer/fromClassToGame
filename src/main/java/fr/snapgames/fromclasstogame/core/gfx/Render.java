@@ -120,15 +120,12 @@ public class Render {
 
     public Render setViewport(int w, int h) {
         this.buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        this.viewport = new Dimension(w,h);
+        this.viewport = new Dimension(w, h);
         return this;
     }
 
-<<<<<<< HEAD
-    public Dimension getViewport(){
+    public Dimension getViewport() {
         return viewport;
     }
 
-=======
->>>>>>> add-camera-object
 }
