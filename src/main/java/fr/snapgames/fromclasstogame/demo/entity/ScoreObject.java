@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.demo.scenes;
+package fr.snapgames.fromclasstogame.demo.entity;
 
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 
