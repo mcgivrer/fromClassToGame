@@ -8,6 +8,7 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 
 public class DemoScene extends AbstractScene {
