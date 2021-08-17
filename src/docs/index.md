@@ -22,6 +22,7 @@ Starting with a very simple class, we will create a brand new Game, by adding so
 - [New components](chapters/06-new-components.md)
 - [Resource manager](chapters/07-resource-manager.md)
 - [Scene Manager](chapters/08-scene-manager.md)
+- [extract configuration](chapters/extract-configuration.md)
 
 More to come... stay Tuned !
 
