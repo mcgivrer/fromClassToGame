@@ -22,10 +22,9 @@ import io.cucumber.java.en.When;
 
 import static org.junit.Assert.*;
 
-public class GameDefSteps {
+public class GameDefSteps extends CommonDefSteps{
 
     private static final Logger logger = LoggerFactory.getLogger(GameDefSteps.class);
-    private Game game;
     private String[] args;
     private List<String> argList = new ArrayList<>();
 

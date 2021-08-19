@@ -7,10 +7,6 @@ import java.awt.*;
 
 public class TestRenderHelper implements RenderHelper {
 
-    public TestRenderHelper() {
-
-    }
-
     @Override
     public String getType() {
         return TestObject.class.getName();

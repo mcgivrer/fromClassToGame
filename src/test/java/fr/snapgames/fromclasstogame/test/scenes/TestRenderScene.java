@@ -7,6 +7,11 @@ import fr.snapgames.fromclasstogame.test.entity.TestObject;
 
 public class TestRenderScene extends AbstractScene {
 
+    public TestRenderScene(Game g) {
+        super(g);
+    }
+
+
     @Override
     public String getName() {
 
@@ -20,23 +25,23 @@ public class TestRenderScene extends AbstractScene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-        TestObject to = new TestObject("test",0,0);
+        TestObject to = new TestObject("test", 0, 0);
         add(to);
     }
 
     @Override
     public void input() {
-        // TODO Auto-generated method stub
+        // Nothing to do there for test only purpose
     }
 
     @Override
     public void render() {
-        // TODO Auto-generated method stub
+        // Nothing to do there for test only purpose
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+        // Nothing to do there for test only purpose
     }
 
 }

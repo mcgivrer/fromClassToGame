@@ -14,6 +14,9 @@ public class DemoScene extends AbstractScene {
 
     private int score = 0;
 
+    public DemoScene(Game g){
+        super(g);
+    }
     @Override
     public String getName() {
         return "demo";
