@@ -10,6 +10,7 @@ public class TextObject extends GameObject {
     public TextObject(String name, double x, double y) {
         super(name, x, y);
         this.color = Color.WHITE;
+        type = GOType.OTHER;
     }
 
     public TextObject setText(String text) {
