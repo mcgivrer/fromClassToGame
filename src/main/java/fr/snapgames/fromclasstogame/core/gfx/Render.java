@@ -14,8 +14,12 @@ import javax.imageio.ImageIO;
 
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Render {
+
+    private static final Logger logger = LoggerFactory.getLogger(Render.class);
 
     private BufferedImage buffer;
     private static int screenShotIndex = 0;
@@ -23,6 +27,7 @@ public class Render {
     private Camera camera;
 
     private List<GameObject> objects = new ArrayList<>();
+    private List<GameObject> objectsRelativeToCamera = new ArrayList<>();
     private Map<String, RenderHelper> renderHelpers = new HashMap<>();
     private Dimension viewport;
 
@@ -50,6 +55,9 @@ public class Render {
         if (camera != null) {
             g.translate(camera.x, camera.y);
         }
+        for (GameObject go : objectsRelativeToCamera) {
+            draw(g, go);
+        }
 
         g.dispose();
     }
@@ -66,13 +74,21 @@ public class Render {
     }
 
     public Render add(GameObject go) {
-        if (!objects.contains(go)) {
-            objects.add(go);
-            objects.sort((a, b) -> {
-                return a.priority < b.priority ? -1 : 1;
-            });
+        if (go.relativeToCamera) {
+            addAndSortObjectToList(objectsRelativeToCamera, go);
+        } else {
+            addAndSortObjectToList(objects, go);
         }
         return this;
+    }
+
+    private void addAndSortObjectToList(List<GameObject> listObjects, GameObject go) {
+        if (!listObjects.contains(go)) {
+            listObjects.add(go);
+            listObjects.sort((a, b) -> {
+                return a.layer < b.layer ? -1 : a.priority < b.priority ? -1 : 1;
+            });
+        }
     }
 
     public void clear() {
@@ -99,9 +115,9 @@ public class Render {
             File out = new File(filename);
             ImageIO.write(getBuffer(), "PNG", out);
 
-            System.out.println(String.format("Write screenshot to %s", filename));
+            logger.info("Write screenshot to {}", filename);
         } catch (IOException e) {
-            System.err.println(String.format("Unable to write screenshot to %s:%s", filename, e.getMessage()));
+            logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }
     }
 
@@ -127,5 +143,6 @@ public class Render {
     public Dimension getViewport() {
         return viewport;
     }
+
 
 }
