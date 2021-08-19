@@ -3,19 +3,39 @@ package fr.snapgames.fromclasstogame.core.gfx;
 import java.awt.Graphics2D;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GameObjectRenderHelper implements RenderHelper {
+    private static final Logger logger = LoggerFactory.getLogger(GameObjectRenderHelper.class);
 
     @Override
     public void draw(Graphics2D g, Object o) {
         GameObject go = (GameObject) o;
-
-        if (go.image != null) {
-            g.drawImage(go.image, (int) (go.x), (int) (go.y), null);
-        } else {
-            g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
+        switch (go.type) {
+            case POINT:
+                g.setColor(go.color);
+                g.drawLine((int) (go.x), (int) (go.y), (int) (go.x), (int) (go.y));
+                break;
+            case RECTANGLE:
+                g.setColor(go.color);
+                g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
+                break;
+            case CIRCLE:
+                g.setColor(go.color);
+                g.drawArc((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height), 0, 360);
+                break;
+            case IMAGE:
+                if (go.image != null) {
+                    g.drawImage(go.image, (int) (go.x), (int) (go.y), null);
+                } else {
+                    logger.error("GameObject named {} : image attribute is not defined", go.name);
+                }
+                break;
+            default:
+                logger.error("GameObject named {} : type attribute is unknown", go.name);
+                break;
         }
-
     }
 
     @Override
