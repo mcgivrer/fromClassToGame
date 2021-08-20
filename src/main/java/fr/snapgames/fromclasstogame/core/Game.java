@@ -7,6 +7,7 @@ import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class Game implements KeyListener {
 
     public boolean exit = false;
     public boolean testMode = false;
+    private World world;
 
     /**
      * the mandatory default constructor
@@ -72,7 +74,7 @@ public class Game implements KeyListener {
         configuration.parseArgs(argv);
 
         renderer = new Render(configuration.width, configuration.height);
-
+        renderer.setDebugLevel(configuration.debugLevel);
         window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
                 (int) (configuration.height * configuration.scale));
 
@@ -146,13 +148,17 @@ public class Game implements KeyListener {
      * Manage the input
      */
     private void input() {
-        sceneManager.getCurrent().input();
+        sceneManager.getCurrent().input(inputHandler);
     }
 
     /**
      * Update all the game mechanism
      */
     private void update(long dt) {
+
+        if (world != null) {
+            world.update(dt);
+        }
         sceneManager.getCurrent().update(dt);
     }
 
@@ -232,4 +238,12 @@ public class Game implements KeyListener {
         }
     }
 
+    public void setWorld(World world) {
+        this.world = world;
+        this.renderer.setWorld(world);
+    }
+
+    public World getWorld() {
+        return world;
+    }
 }
