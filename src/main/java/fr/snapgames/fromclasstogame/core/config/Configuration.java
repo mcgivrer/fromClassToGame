@@ -19,6 +19,8 @@ public class Configuration {
     public String scenes = "";
     public String defaultScene = "";
 
+    public int debugLevel;
+
     public Configuration(String configurationPath) {
 
         defaultConfig = ResourceBundle.getBundle(configurationPath);
@@ -28,6 +30,7 @@ public class Configuration {
 
     public void readValuesFromFile() {
 
+        this.debugLevel = Integer.parseInt(defaultConfig.getString("game.setup.debugLevel"));
         this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
         this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
         this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
@@ -42,6 +45,9 @@ public class Configuration {
             for (String arg : argv) {
                 String[] values = arg.split("=");
                 switch (values[0].toLowerCase()) {
+                    case "debug":
+                        this.debugLevel = Integer.parseInt(values[1]);
+                        break;
                     case "width":
                         this.width = Integer.parseInt(values[1]);
                         break;
