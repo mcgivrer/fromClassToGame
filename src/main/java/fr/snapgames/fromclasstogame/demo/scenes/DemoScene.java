@@ -1,22 +1,27 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
-import java.awt.*;
-
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
+import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class DemoScene extends AbstractScene {
 
     private int score = 0;
 
-    public DemoScene(Game g){
+    public DemoScene(Game g) {
         super(g);
     }
+
     @Override
     public String getName() {
         return "demo";
@@ -36,27 +41,26 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void create(Game g) throws UnknownResource {
+        g.setWorld(new World(g, 800, 600));
         // add main character (player)
         GameObject player = new GameObject("player", 160, 100)
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
-                .setSpeed(0.02, 0.02)
-                .setSize(16.0, 16.0)
-                .setImage(ResourceManager.getImage("images/tiles.png:player"));
+                .setImage(ResourceManager.getImage("images/tiles.png:player"))
+                .setMaterial(DefaultMaterial.WOOD.getMaterial());
         add(player);
 
-        Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(),g.getRender().getBuffer().getHeight());
-        Camera camera = new Camera("cam01").setTarget(player).setTweenFactor(0.002).setViewport( vp );
+        Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
+        Camera camera = new Camera("cam01").setTarget(player).setTweenFactor(0.02).setViewport(vp);
         add(camera);
 
         // Add enemies(enemy_99)
         for (int i = 0; i < 10; i++) {
             GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
                     .setType(GameObject.GOType.IMAGE)
-                    .setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05))
                     .setColor(Color.ORANGE)
-                    .setSize(8, 8)
-                    .setImage(ResourceManager.getImage("images/tiles.png:orangeBall"));
+                    .setImage(ResourceManager.getImage("images/tiles.png:orangeBall"))
+                    .setMaterial(DefaultMaterial.RUBBER.getMaterial());
             add(e);
         }
         Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.CENTER_BASELINE, 14);
@@ -69,10 +73,10 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void activate() {
-        objects.get("player").setSpeed(0.02, 0.02).setPosition(160, 100);
+        //objects.get("player").setSpeed(0.02, 0.02).setPosition(160, 100);
         find("enemy_").forEach(go -> {
-            go.setPosition(rand(0, 320), rand(0, 200));
-            go.setSpeed(rand(-0.05, 0.05), rand(-0.05, 0.05));
+            go.setPosition(rand(0, game.getWorld().width), rand(0, game.getWorld().height));
+            go.setSpeed(rand(-0.1, 0.1), rand(-0.1, 0.1));
         });
         this.score = 0;
     }
@@ -93,9 +97,29 @@ public class DemoScene extends AbstractScene {
     }
 
     @Override
-    public void input() {
-        // Need to manage some user input
+    public void input(InputHandler inputHandler) {
+        GameObject player = this.getGameObject("player");
+        double speed = 0.0;
+        player.dx = 0.0;
+        player.dy = 0.0;
+        if (inputHandler.getKey(KeyEvent.VK_CONTROL)) {
+            speed = 0.8;
+        } else {
+            speed = 0.2;
+        }
 
+        if (inputHandler.getKey(KeyEvent.VK_UP)) {
+            player.dy = -speed;
+        }
+        if (inputHandler.getKey(KeyEvent.VK_DOWN)) {
+            player.dy = speed;
+        }
+        if (inputHandler.getKey(KeyEvent.VK_LEFT)) {
+            player.dx = -speed;
+        }
+        if (inputHandler.getKey(KeyEvent.VK_RIGHT)) {
+            player.dx = speed;
+        }
     }
 
     @Override
