@@ -2,6 +2,8 @@ package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 
+import java.awt.*;
+
 public class ScoreObject extends TextObject {
 
     private int score;
@@ -9,7 +11,7 @@ public class ScoreObject extends TextObject {
     public ScoreObject(String name, double x, double y) {
         super(name, x, y);
         score = 0;
-        type = GOType.OTHER;
+        this.color = Color.WHITE;
     }
 
     public ScoreObject setScore(int s) {
