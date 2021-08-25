@@ -12,7 +12,6 @@ public class ScoreRenderHelper implements RenderHelper {
         ScoreObject so = (ScoreObject) o;
         g.setFont(so.font);
         g.drawString(so.text, (int) (so.x), (int) (so.y));
-
     }
 
     @Override

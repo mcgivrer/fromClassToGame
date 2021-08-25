@@ -9,6 +9,7 @@ public class ScoreObject extends TextObject {
     public ScoreObject(String name, double x, double y) {
         super(name, x, y);
         score = 0;
+        type = GOType.OTHER;
     }
 
     public ScoreObject setScore(int s) {
