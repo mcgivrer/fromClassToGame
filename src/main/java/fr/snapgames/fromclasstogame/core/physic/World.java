@@ -2,7 +2,9 @@ package fr.snapgames.fromclasstogame.core.physic;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,25 +43,25 @@ public class World {
         if (go.x < 0) {
             go.x = 0;
             if (go.material != null) {
-                go.dx = -go.dx * go.material.bounciness;
+                go.dx = -go.dx * go.material.bouncyness;
             }
         }
         if (go.y < 0) {
             go.y = 0;
             if (go.material != null) {
-                go.dy = -go.dy * go.material.bounciness;
+                go.dy = -go.dy * go.material.bouncyness;
             }
         }
         if (go.x + go.width > width) {
             go.x = width - go.width;
             if (go.material != null) {
-                go.dx = -go.dx * go.material.bounciness;
+                go.dx = -go.dx * go.material.bouncyness;
             }
         }
         if (go.y + go.height > height) {
             go.y = height - go.height;
             if (go.material != null) {
-                go.dy = -go.dy * go.material.bounciness;
+                go.dy = -go.dy * go.material.bouncyness;
             }
         }
     }
