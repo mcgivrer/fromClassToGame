@@ -38,6 +38,11 @@ public class Material {
 
     private final String name;
 
+    public double bounciness;
+    public double dynFriction;
+    public double staticFriction;
+    public double density;
+
     public Material(String name, double b, double df, double sf, double d) {
         this.name = name;
         this.bounciness = b;
@@ -46,8 +51,5 @@ public class Material {
         this.density = d;
     }
 
-    public double bounciness;
-    public double dynFriction;
-    public double staticFriction;
-    public double density;
+
 }
