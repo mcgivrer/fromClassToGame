@@ -33,8 +33,11 @@ public class World {
 
     private void update(GameObject go, long dt) {
         if (!go.relativeToCamera) {
+            go.dx = go.dx*go.material.staticFriction;
+            go.dy = (go.dy + go.gravity + (gravity*0.11))*go.material.staticFriction;
+
             go.x += go.dx * dt;
-            go.y += (go.dy + go.gravity + (gravity*0.11)) * dt;
+            go.y += go.dy * dt;
             verifyGameConstraint(go);
         }
     }
@@ -43,25 +46,25 @@ public class World {
         if (go.x < 0) {
             go.x = 0;
             if (go.material != null) {
-                go.dx = -go.dx * go.material.bouncyness;
+                go.dx = -go.dx * go.material.bounciness;
             }
         }
         if (go.y < 0) {
             go.y = 0;
             if (go.material != null) {
-                go.dy = -go.dy * go.material.bouncyness;
+                go.dy = -go.dy * go.material.bounciness;
             }
         }
         if (go.x + go.width > width) {
             go.x = width - go.width;
             if (go.material != null) {
-                go.dx = -go.dx * go.material.bouncyness;
+                go.dx = -go.dx * go.material.bounciness;
             }
         }
         if (go.y + go.height > height) {
             go.y = height - go.height;
             if (go.material != null) {
-                go.dy = -go.dy * go.material.bouncyness;
+                go.dy = -go.dy * go.material.bounciness;
             }
         }
     }

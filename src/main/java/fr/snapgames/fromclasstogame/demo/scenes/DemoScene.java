@@ -100,8 +100,6 @@ public class DemoScene extends AbstractScene {
     public void input(InputHandler inputHandler) {
         GameObject player = this.getGameObject("player");
         double speed = 0.0;
-        player.dx = 0.0;
-        player.dy = 0.0;
         if (inputHandler.getKey(KeyEvent.VK_CONTROL)) {
             speed = 0.8;
         } else {
