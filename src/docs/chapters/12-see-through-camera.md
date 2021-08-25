@@ -1,3 +1,12 @@
+---
+title: From a Class to Game 
+chapter: 12 - See through a Camera
+author: Frédéric Delorme
+description: Adding a Camera to the scene will allow you to move in as you want, and follow a target.
+created: 2021-08-01 
+tags: gamedev, camera, target
+---
+
 ## See through a Camera
 
 In every game, there is a critic chapter about how the "camera" is managed. But what does this means exactly ?
