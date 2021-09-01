@@ -9,6 +9,7 @@ import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 
 import java.awt.*;

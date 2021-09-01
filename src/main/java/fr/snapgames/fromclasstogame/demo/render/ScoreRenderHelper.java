@@ -3,7 +3,7 @@ package fr.snapgames.fromclasstogame.demo.render;
 import java.awt.Graphics2D;
 
 import fr.snapgames.fromclasstogame.core.gfx.RenderHelper;
-import fr.snapgames.fromclasstogame.demo.scenes.ScoreObject;
+import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 
 public class ScoreRenderHelper implements RenderHelper {
 

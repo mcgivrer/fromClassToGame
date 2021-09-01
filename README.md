@@ -13,8 +13,8 @@ This project is a journey from a Class to a Game. First commits will set the bas
 after chapter, the initial class into a playable game.
 
 During the chapters from the `docs/` you will transform the
-simple [`Game`](src/main/java/fr/snapgames/fromclasstogame/core/Game.java "Go and see the Game class") class from
-beginning to a package structured framework with some useful features to support object management and display, and just
+simple [`Game`](https://github.com/mcgivrer/fromClassToGame/blob/7c621c4aaa11f327e8f7b83eedfbcff306bc606a/src/main/java/fr/snapgames/fromclasstogame/Game.java "Go and see where all begin with the Game class") class from
+beginning to a package structured [framework](https://github.com/mcgivrer/fromClassToGame/tree/main/src/main/java/fr/snapgames/fromclasstogame/core "See the current core package structure") with some useful features to support object management and display, and just
 now how to organize the code in a project, using a bit of TDD to develop and refactor
 
 ## build
