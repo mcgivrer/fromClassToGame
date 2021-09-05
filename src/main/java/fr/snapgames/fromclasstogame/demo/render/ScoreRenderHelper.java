@@ -10,6 +10,7 @@ public class ScoreRenderHelper implements RenderHelper {
     @Override
     public void draw(Graphics2D g, Object o) {
         ScoreObject so = (ScoreObject) o;
+        g.setColor(so.color);
         g.setFont(so.font);
         g.drawString(so.text, (int) (so.x), (int) (so.y));
     }
