@@ -71,4 +71,7 @@ public class PhysicEngine {
         this.objects.add(go);
     }
 
+    public World getWorld() {
+        return world;
+    }
 }

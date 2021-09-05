@@ -76,8 +76,11 @@ public class Game implements KeyListener {
 
         renderer = new Render(configuration.width, configuration.height);
         renderer.setDebugLevel(configuration.debugLevel);
+
         window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
                 (int) (configuration.height * configuration.scale));
+
+        pe = new PhysicEngine(this);
 
         inputHandler = new InputHandler(window);
         inputHandler.addKeyListener(this);
