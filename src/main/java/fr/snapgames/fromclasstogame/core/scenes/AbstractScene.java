@@ -63,8 +63,8 @@ public abstract class AbstractScene implements Scene {
             objects.put(go.name, go);
             objectsList.add(go);
             game.getRender().add(go);
-            if (game.getWorld() != null) {
-                game.getWorld().add(go);
+            if (game.getPhysicEngine() != null) {
+                game.getPhysicEngine().add(go);
             }
         }
     }
