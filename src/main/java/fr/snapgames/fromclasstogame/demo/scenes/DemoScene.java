@@ -75,7 +75,7 @@ public class DemoScene extends AbstractScene {
     public void activate() {
         //objects.get("player").setSpeed(0.02, 0.02).setPosition(160, 100);
         find("enemy_").forEach(go -> {
-            go.setPosition(rand(0, game.getWorld().width), rand(0, game.getWorld().height));
+            go.setPosition(rand(0, game.getPhysicEngine().getWorld().width), rand(0, game.getPhysicEngine().getWorld().height));
             go.setSpeed(rand(-0.1, 0.1), rand(-0.1, 0.1));
         });
         this.score = 0;
