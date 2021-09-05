@@ -1,15 +1,17 @@
 ---
-title: From a Class to Game
-chapter: 13 - A Basic Physic Engine
-author: Frédéric Delorme
-description: Adding a Camera to the scene will allow you to move in as you want, and follow a target.
-created: 2021-08-01
+title: From a Class to Game 
+chapter: 13 - A Basic Physic Engine 
+author: Frédéric Delorme 
+description: Adding a Camera to the scene will allow you to move in as you want, and follow a target. 
+created: 2021-08-01 
 tags: gamedev, camera, target
 ---
 
 ## A Basic Physic Engine
 
-The BPE[^1] is very basic one using only position and speed to move object. The mechanic formula we will use in the computation of object moves will take only in account the velocity and th e current positio nof an oibject to compute its own next position.
+The BPE[^1] is very basic one using only position and speed to move object. The mechanic formula we will use in the
+computation of object moves will take only in account the velocity and th e current positio nof an oibject to compute
+its own next position.
 
 ```Math
 p_1 = p_0 + v_0 * t
@@ -37,7 +39,8 @@ Where:
 - `f` is the friction, when the object collide something, the velocity is reduced according to this factor.
   [^1]: The **B**asic **P**hysic **E**ngine will be named BPE.
 
-and to get a real break effect on the object according to the friction, we will recompute the velocity with this attenuation factor:
+and to get a real break effect on the object according to the friction, we will recompute the velocity with this
+attenuation factor:
 
 ```Math
 v_1 = v_0 * b * f
@@ -57,7 +60,10 @@ p_1 = p_0 + (v_1 + g) * t
 
 the `g` gravity factor is a force.
 
-In a next chapter we will enhanced this physic and mechnanic computation engine with a new bundle of forces that can be added at any time to a [`GameObject`](../../../src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java "go a see code for the GameObject class").
+In a next chapter we will enhanced this physic and mechnanic computation engine with a new bundle of forces that can be
+added at any time to
+a [`GameObject`](../../../src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java "go a see code for the GameObject class")
+.
 
 ### Some C0D3 ?
 
@@ -65,61 +71,81 @@ The implementation of such engine can be dne throught mulitple solution. We will
 
 First we are going to define a `World` where our `GameObject` will freely evolve.
 
-And to our existing GameIObject we are going to add the new attributes we discovered through our math formula, but not directly, we will add a new dimention to our design: a `Material`.
+And to our existing GameIObject we are going to add the new attributes we discovered through our math formula, but not
+directly, we will add a new dimention to our design: a `Material`.
 
-This class will provide all information about physc and mechanic characteristics our engine will need to compute next position.
+This class will provide all information about physc and mechanic characteristics our engine will need to compute next
+position.
 
 first thing first, the `World` object.
 
 ### World
 
-the `World` class will provide some basic information about the world our object will moved on: `gravity` is our first one.
+the `World` class will provide some basic information about the world our object will moved on: `gravity` is our first
+one. Its also define the limit size of the game world with a width and height.
 
 ```java
-public class World{
+public class World {
     private double gravity;
-
+    private double width;
+    private double height;
 }
 ```
 
 ### Material
 
-The Material Object will contains, as seen before, the all attributes needed by our engine to compute next object position.
+Our `GameoObject`s must contain some physic attributes. And to be able to set the same value on multiple object, we will
+introduce a man in the middle: the `Material`. The `Material` class will contain, as seen before, all the attributes
+needed by our engine to compute next object position.
 
 ```java
-public class Material{
+public class Material {
     private String name;
-    private double bouncyness;
-    private double friction;
+  public double bounciness;
+  public double friction;
 }
 ```
 
-We need a `name` for this material, and as the formula gives us the characteristics, wee need to add `bouncyness` and `friction` attribtues.
+We need a `name` for this material, and as the formula gives us the characteristics, we need to add `bouncyness`
+and `friction` attributes.
 
 Ok, we have our needed info. let's dive into computation:
 
-our GameObject will be updated iwth this new material attribute:
+Our `GameObject`  position and speed will be updated with these new `Material` attribute:
 
 ```java
 public class GameObject {
-    ...
-    public Material material;
+  ...
+    public double mass = 0.0;
     public double contact = 0.0;
-    ...
+    public Material material;
+  ...
 }
 ```
 
-And the World object will copute the GameObject postionaccording to wll those parameters:
+## Computation into the Engine
+
+The `PhysicEngine` class will compute the `GameObject`'s position according to those parameters:
 
 ```java
-public class World{
-    private double gravity;
-
-    public void update(GameObject go, double dt){
-        go.dx = go.dx * (go.contact * go.material.
-        friction * go.material.bouncyness);
-        go.x += go.x * (go.dx + this.gravity) * dt;
-    }
+public class PhysicEngine {
+  public Game game;
+  public World world;
+  public List<GameObject> objects = new ArrayList<>();
+  
+  public PhysicEngine(Game g) {
+    this.game = g;
+  }
+  
+  public void update(GameObject go, double dt) {
+    go.dx = go.dx * (go.contact * go.material.
+            friction * go.material.bouncyness);
+    go.x += go.x * (go.dx + this.gravity) * dt;
+  }
+  
+  public void add(GameObject go) {
+      this.objects.add(go);
+  }
 }
 ```
 
@@ -130,10 +156,19 @@ To get a better simulation, we will need to distinguish 2 kind of friction:
 - the static one, happening on the floor,
 - the dynamic one for objects collision.
 
+#### Upgrading Material
+
 So our Material will provide such new attributes in place of the old friction :
 
+
+- `bouncyness` is the "spring" factor of our object, it's its capability to throw energy reacting a to hit with another
+  object,
+- `dynFriction` is the ratio of energy lost while the object bump into another,
+- `staticFriction` is a friction ratio when object bump into static object.
+- `density` is the physic material density.
+
 ```java
-public class Material{
+public class Material {
     private String name;
     private double bouncyness;
     private double staticFriction;
@@ -143,8 +178,27 @@ public class Material{
 
 and the World update method formula will be updated with that:
 
-TODO explain updated formula.
+#### PhysicEngine update
 
-### The Default material
+So now, the `PhysicEngine#update(double)` must be updated was following:
 
-TODO create the Default Material builder enum to manager default values for standard materials like wood, rock, rubber, water, air.
+```java
+public class PhysicEngine {
+  ...
+  public void update(double dt) {
+    if (!go.relativeToCamera) {
+      go.dx = go.dx * go.material.staticFriction;
+      go.dy = (go.dy + go.gravity + (world.gravity * 0.11)) * go.material.staticFriction * 1 / go.mass;
+
+      go.x += go.dx * dt;
+      go.y += go.dy * dt;
+    }
+  }
+  ...
+}
+```
+
+#### The Default materials
+
+TODO create the Default Material builder enum to manager default values for standard materials like wood, rock, rubber,
+water, air.
