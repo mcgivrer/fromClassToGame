@@ -11,6 +11,7 @@ public class ScoreRenderHelper implements RenderHelper {
     public void draw(Graphics2D g, Object o) {
         double maxBorderWidth = 2;
         ScoreObject so = (ScoreObject) o;
+        g.setColor(so.color);
         g.setFont(so.font);
         drawBorder(g, maxBorderWidth, so);
         g.setColor(so.color);
