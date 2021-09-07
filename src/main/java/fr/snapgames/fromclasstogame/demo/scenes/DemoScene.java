@@ -86,8 +86,8 @@ public class DemoScene extends AbstractScene {
 
         super.update(dt);
         ScoreObject scoreTO = (ScoreObject) objects.get("score");
-        scoreTO.setScore(score);
         score++;
+        scoreTO.setScore(score);
     }
 
     @Override
