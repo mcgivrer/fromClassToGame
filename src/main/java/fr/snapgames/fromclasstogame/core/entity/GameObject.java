@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 
 public class GameObject implements Entity {
 
+    public double mass = 1;
+
     public enum GOType {
         POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
     }
