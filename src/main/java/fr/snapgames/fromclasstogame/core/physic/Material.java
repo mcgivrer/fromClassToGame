@@ -13,7 +13,7 @@ import java.util.Map;
  * Static     Density : 0.0  Restitution : 0.0
  */
 public class Material {
-    // TODO edit the factor for this default materials
+    
     public enum DefaultMaterial {
         ROCK(new Material("rock", 0.6, 1, 1, 1)),
         WOOD(new Material("wood", 0.1, 0.69, 0.69, 0.3)),
@@ -21,7 +21,8 @@ public class Material {
         RUBBER(new Material("rubber", 0.8, 1, 1, 0.3)),
         GLASS(new Material("glass", 0.4, 1, 1, 1)),
         ICE(new Material("ice", 0.1, 0.1, 1, 1)),
-        AIR(new Material("air", 1, 1, 1, 1));
+        AIR(new Material("air", 1, 1, 1, 1)),
+        STATIC(new Material("static", 0, 0, 0, 0));
 
         private Material material;
 
