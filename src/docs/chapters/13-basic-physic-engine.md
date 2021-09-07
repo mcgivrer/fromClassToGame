@@ -116,9 +116,18 @@ public class World{
     private double gravity;
 
     public void update(GameObject go, double dt){
-        go.dx = go.dx * (go.contact * go.material.
-        friction * go.material.bouncyness);
-        go.x += go.x * (go.dx + this.gravity) * dt;
+        if (!go.relativeToCamera) {
+            // relative Speed on horizontal axe
+            go.dx = go.dx*go.material.staticFriction;
+            // relative Speed on vertical axe
+            go.dy = (go.dy + go.gravity + (gravity*0.11))*go.material.staticFriction;
+            // new position on horizontal axe
+            go.x += go.dx * dt;
+            // new position on vertical axe
+            go.y += go.dy * dt;
+            // does the object go out of the viewport ?
+            verifyGameConstraint(go);
+        }
     }
 }
 ```

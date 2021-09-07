@@ -8,11 +8,7 @@ import java.awt.image.BufferedImage;
 public class GameObject implements Entity {
 
     public enum GOType {
-        POINT,
-        RECTANGLE,
-        CIRCLE,
-        IMAGE,
-        OTHER
+        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
     }
 
     private static int index = 0;
@@ -40,6 +36,8 @@ public class GameObject implements Entity {
     public double gravity = 0;
 
     public Material material;
+
+    public int mass = 1;
 
     public GameObject(String name, double x, double y) {
         this.name = name;
