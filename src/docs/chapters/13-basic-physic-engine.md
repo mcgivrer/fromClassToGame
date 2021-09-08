@@ -101,8 +101,8 @@ needed by our engine to compute next object position.
 ```java
 public class Material {
     private String name;
-  public double bounciness;
-  public double friction;
+    public double bounciness;
+    public double friction;
 }
 ```
 
@@ -115,11 +115,11 @@ Our `GameObject`  position and speed will be updated with these new `Material` a
 
 ```java
 public class GameObject {
-  ...
+    //...
     public double mass = 0.0;
     public double contact = 0.0;
     public Material material;
-  ...
+    //...
 }
 ```
 
@@ -129,23 +129,23 @@ The `PhysicEngine` class will compute the `GameObject`'s position according to t
 
 ```java
 public class PhysicEngine {
-  public Game game;
-  public World world;
-  public List<GameObject> objects = new ArrayList<>();
-  
-  public PhysicEngine(Game g) {
-    this.game = g;
-  }
-  
-  public void update(GameObject go, double dt) {
-    go.dx = go.dx * (go.contact * go.material.
-            friction * go.material.bouncyness);
-    go.x += go.x * (go.dx + this.gravity) * dt;
-  }
-  
-  public void add(GameObject go) {
-      this.objects.add(go);
-  }
+    public Game game;
+    public World world;
+    public List<GameObject> objects = new ArrayList<>();
+
+    public PhysicEngine(Game g) {
+        this.game = g;
+    }
+
+    public void update(GameObject go, double dt) {
+        go.dx = go.dx * (go.contact * go.material.
+                friction * go.material.bouncyness);
+        go.x += go.x * (go.dx + this.gravity) * dt;
+    }
+
+    public void add(GameObject go) {
+        this.objects.add(go);
+    }
 }
 ```
 
@@ -159,7 +159,6 @@ To get a better simulation, we will need to distinguish 2 kind of friction:
 #### Upgrading Material
 
 So our Material will provide such new attributes in place of the old friction :
-
 
 - `bouncyness` is the "spring" factor of our object, it's its capability to throw energy reacting a to hit with another
   object,
@@ -184,21 +183,92 @@ So now, the `PhysicEngine#update(double)` must be updated was following:
 
 ```java
 public class PhysicEngine {
-  ...
-  public void update(double dt) {
-    if (!go.relativeToCamera) {
-      go.dx = go.dx * go.material.staticFriction;
-      go.dy = (go.dy + go.gravity + (world.gravity * 0.11)) * go.material.staticFriction * 1 / go.mass;
+    //...
 
-      go.x += go.dx * dt;
-      go.y += go.dy * dt;
+    public void update(double dt) {
+        if (!go.relativeToCamera) {
+            go.dx = go.dx * go.material.staticFriction;
+            go.dy = (go.dy + go.gravity + (world.gravity * 0.11)) * go.material.staticFriction * 1 / go.mass;
+
+            go.x += go.dx * dt;
+            go.y += go.dy * dt;
+        }
     }
-  }
-  ...
+    //...
 }
 ```
 
 #### The Default materials
 
-TODO create the Default Material builder enum to manager default values for standard materials like wood, rock, rubber,
-water, air.
+Materials are so difficult to create, we need some references. According to some web reference, we can find some and use
+them as is.
+
+- For `density rubber`,
+  see [Densities of Miscellaneous Solids](http://www.engineeringtoolbox.com/density-solids-d_1265.html).
+- For `friction table`, see [Coefficient of Friction](http://engineershandbook.com/Tables/frictioncoefficients.htm).
+- For `rubber restitution`, see [Coefficients of Restitution](http://hypertextbook.com/facts/2006/restitution.shtml).
+
+But for our own usage, we are going to use the following table:
+
+| Description | Density | Restitution |
+|:------------|:-------:|:-----------:|
+| Rock        |   0.6   | 0.1         |
+| Wood        |   0.3   | 0.2         |
+| Metal       |   1.2   | 0.05        |
+| BouncyBall  |   0.3   | 0.8         |
+| SuperBall   |   0.3   | 0.95        |
+| Pillow      |   0.1   | 0.2         |
+| Static      |   0.0   | 0.0         |
+
+So to generate the Material, we will use an Enumeration:
+
+```java
+public enum DefaultMaterial {
+    ROCK(new Material("rock", 0.6, 1, 1, 1)),
+    WOOD(new Material("wood", 0.1, 0.69, 0.69, 0.3)),
+    METAL(new Material("metal", 0.05, 1, 1, 1.2)),
+    RUBBER(new Material("rubber", 0.8, 1, 1, 0.3)),
+    GLASS(new Material("glass", 0.4, 1, 1, 1)),
+    ICE(new Material("ice", 0.1, 0.1, 1, 1)),
+    AIR(new Material("air", 1, 1, 1, 1));
+
+    private Material material;
+
+    DefaultMaterial(Material m) {
+        this.material = m;
+    }
+
+    public Material getMaterial() {
+        return this.material;
+    }
+}
+```
+
+So to get one of the default Material:
+
+```java
+class MyScene {
+  //...
+  public void create(Game g) {
+    // creating a GameObject
+    GameObject player = new GameObject("player", 160, 100)
+      .setType(GameObject.GOType.IMAGE)
+      .setColor(Color.RED)
+      .setImage(
+        ResourceManager
+          .getImage("images/tiles.png:player"))
+      // setting the material
+      .setMaterial(DefaultMaterial.WOOD.getMaterial());
+    add(player);
+  }
+  //...
+}
+```
+
+So the last line is getting one of the preset material. Here is another usage:
+
+```java
+  Material wood = DefaultMaterial.WOOD.getMaterial();
+```
+
+And that's all !

@@ -67,6 +67,15 @@ public class Game implements KeyListener {
         configuration.height = h;
     }
 
+    public static void main(String[] argc) {
+        try {
+            Game game = new Game("config");
+            game.run(argc);
+        } catch (Exception e) {
+            logger.error("Unable to run the game", e);
+        }
+    }
+
     /**
      * Initialization of the display window and everything the game will need.
      */
@@ -231,15 +240,6 @@ public class Game implements KeyListener {
 
     public Configuration getConfiguration() {
         return this.configuration;
-    }
-
-    public static void main(String[] argc) {
-        try {
-            Game game = new Game("config");
-            game.run(argc);
-        } catch (Exception e) {
-            logger.error("Unable to run the game", e);
-        }
     }
 
     public Game setWorld(World world) {
