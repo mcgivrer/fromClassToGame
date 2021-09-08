@@ -67,6 +67,16 @@ public class Game implements KeyListener {
         configuration.height = h;
     }
 
+
+    public static void main(String[] argc) {
+        try {
+            Game game = new Game("config");
+            game.run(argc);
+        } catch (Exception e) {
+            logger.error("Unable to run the game", e);
+        }
+    }
+
     /**
      * Initialization of the display window and everything the game will need.
      */
@@ -158,7 +168,7 @@ public class Game implements KeyListener {
     /**
      * Update all the game mechanism
      */
-    private void update(long dt) {
+    public void update(long dt) {
 
         if (pe != null) {
             pe.update(dt);
@@ -233,14 +243,6 @@ public class Game implements KeyListener {
         return this.configuration;
     }
 
-    public static void main(String[] argc) {
-        try {
-            Game game = new Game("config");
-            game.run(argc);
-        } catch (Exception e) {
-            logger.error("Unable to run the game", e);
-        }
-    }
 
     public Game setWorld(World world) {
         this.pe.setWorld(world);

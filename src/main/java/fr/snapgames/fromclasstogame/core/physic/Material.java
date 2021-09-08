@@ -22,7 +22,8 @@ public class Material {
         GLASS(new Material("glass", 0.4, 1, 1, 1)),
         ICE(new Material("ice", 0.1, 0.1, 1, 1)),
         AIR(new Material("air", 1, 1, 1, 1)),
-        STATIC(new Material("static", 0, 0, 0, 0));
+        STATIC(new Material("static", 0, 0, 0, 0)),
+        NEUTRAL(new Material("neutral", 1, 1, 1, 1));
 
         private Material material;
 
