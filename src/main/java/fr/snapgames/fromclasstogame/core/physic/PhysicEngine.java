@@ -32,11 +32,16 @@ public class PhysicEngine {
     private void update(GameObject go, long dt) {
         if (!go.relativeToCamera) {
             go.dx = go.dx * go.material.staticFriction;
-            go.dy = (go.dy + go.gravity + (world.gravity * 0.11)) * go.material.staticFriction * 1 / go.mass;
+            go.dy = (go.dy + go.gravity + (world.gravity * 0.11))
+                    * go.material.staticFriction * 1 / go.mass;
 
             go.x += go.dx * dt;
             go.y += go.dy * dt;
             verifyGameConstraint(go);
+
+            if (go.bbox != null) {
+                go.bbox.update(go);
+            }
         }
     }
 

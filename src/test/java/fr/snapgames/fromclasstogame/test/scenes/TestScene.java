@@ -1,7 +1,9 @@
 package fr.snapgames.fromclasstogame.test.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 
 
@@ -26,6 +28,11 @@ public class TestScene extends AbstractScene {
     public String getName() {
 
         return name;
+    }
+
+    @Override
+    public void create(Game g) throws UnknownResource {
+        g.setWorld(new World(g, 320, 200));
     }
 
     @Override
