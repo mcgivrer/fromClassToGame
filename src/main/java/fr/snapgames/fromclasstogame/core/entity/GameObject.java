@@ -83,9 +83,10 @@ public class GameObject implements Entity {
         return this;
     }
 
-    public void setPosition(double x, double y) {
+    public GameObject setPosition(double x, double y) {
         this.x = x;
         this.y = y;
+        return this;
     }
 
     public GameObject setPriority(int priority) {
