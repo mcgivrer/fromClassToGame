@@ -10,6 +10,7 @@ public class TextRenderHelper implements RenderHelper {
     public void draw(Graphics2D g, Object go) {
         TextObject to = (TextObject) go;
         g.setFont(to.font);
+        g.setColor(to.color);
         g.drawString(to.text, (int) (to.x), (int) (to.y));
 
     }

@@ -45,10 +45,6 @@ public abstract class AbstractScene implements Scene {
 
     @Override
     public void update(long dt) {
-
-        objectsList.forEach(e -> {
-            e.update(dt);
-        });
         if (activeCamera != null) {
             activeCamera.update(dt);
         }
@@ -58,7 +54,7 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (!cameras.containsKey(go.name)) {
                 cameras.put(go.name, (Camera) go);
-                game.getRender().setCamera((Camera)go);
+                game.getRender().setCamera((Camera) go);
             }
             if (activeCamera == null) {
                 activeCamera = (Camera) go;
@@ -67,6 +63,9 @@ public abstract class AbstractScene implements Scene {
             objects.put(go.name, go);
             objectsList.add(go);
             game.getRender().add(go);
+            if (game.getPhysicEngine() != null) {
+                game.getPhysicEngine().add(go);
+            }
         }
     }
 

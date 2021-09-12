@@ -4,6 +4,7 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.io.InputHandler;
 
 import java.util.List;
 import java.awt.event.KeyListener;
@@ -36,7 +37,7 @@ public interface Scene extends KeyListener{
 
     void update(long dt);
 
-    void input();
+    void input(InputHandler inputHandler);
 
     void render();
 

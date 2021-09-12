@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,9 @@ public class Render {
     private List<GameObject> objectsRelativeToCamera = new ArrayList<>();
     private Map<String, RenderHelper> renderHelpers = new HashMap<>();
     private Dimension viewport;
+    private Color debugColor = Color.ORANGE;
+    private int debug = 0;
+    private World world;
 
     public Render(int width, int height) {
         setViewport(width, height);
@@ -47,7 +51,7 @@ public class Render {
         if (camera != null) {
             g.translate(-camera.x, -camera.y);
         }
-
+        renderWorld(g, world);
         for (GameObject go : objects) {
             draw(g, go);
         }
@@ -60,6 +64,22 @@ public class Render {
         }
 
         g.dispose();
+    }
+
+    private void renderWorld(Graphics2D g, World w) {
+        if (w != null && debug > 0) {
+            g.setColor(Color.BLUE);
+            for (int x = 0; x < w.width; x += 16) {
+                g.drawRect(x, 0, (int) 16, (int) w.height);
+            }
+            for (int y = 0; y < w.height; y += 16) {
+                if (y + 16 < w.height) {
+                    g.drawRect(0, y, (int) w.width, 16);
+                }
+            }
+            g.setColor(debugColor);
+            g.drawRect(0, 0, (int) w.width, (int) w.height);
+        }
     }
 
     private void draw(Graphics2D g, GameObject go) {
@@ -145,4 +165,19 @@ public class Render {
     }
 
 
+    public Graphics2D getGraphics() {
+        return (Graphics2D) buffer.getGraphics();
+    }
+
+    public Color getDebugColor() {
+        return this.debugColor;
+    }
+
+    public void setWorld(World w) {
+        this.world = w;
+    }
+
+    public void setDebugLevel(int dl) {
+        this.debug = dl;
+    }
 }
