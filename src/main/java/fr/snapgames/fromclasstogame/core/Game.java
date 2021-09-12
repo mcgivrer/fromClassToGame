@@ -7,6 +7,8 @@ import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
+import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,7 @@ public class Game implements KeyListener {
     private InputHandler inputHandler;
     private SceneManager sceneManager;
     private Configuration configuration;
+    private PhysicEngine pe;
 
     public boolean exit = false;
     public boolean testMode = false;
@@ -64,6 +67,15 @@ public class Game implements KeyListener {
         configuration.height = h;
     }
 
+    public static void main(String[] argc) {
+        try {
+            Game game = new Game("config");
+            game.run(argc);
+        } catch (Exception e) {
+            logger.error("Unable to run the game", e);
+        }
+    }
+
     /**
      * Initialization of the display window and everything the game will need.
      */
@@ -72,9 +84,12 @@ public class Game implements KeyListener {
         configuration.parseArgs(argv);
 
         renderer = new Render(configuration.width, configuration.height);
+        renderer.setDebugLevel(configuration.debugLevel);
 
         window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
                 (int) (configuration.height * configuration.scale));
+
+        pe = new PhysicEngine(this);
 
         inputHandler = new InputHandler(window);
         inputHandler.addKeyListener(this);
@@ -146,13 +161,17 @@ public class Game implements KeyListener {
      * Manage the input
      */
     private void input() {
-        sceneManager.getCurrent().input();
+        sceneManager.getCurrent().input(inputHandler);
     }
 
     /**
      * Update all the game mechanism
      */
     private void update(long dt) {
+
+        if (pe != null) {
+            pe.update(dt);
+        }
         sceneManager.getCurrent().update(dt);
     }
 
@@ -223,13 +242,13 @@ public class Game implements KeyListener {
         return this.configuration;
     }
 
-    public static void main(String[] argc) {
-        try {
-            Game game = new Game("config");
-            game.run(argc);
-        } catch (Exception e) {
-            logger.error("Unable to run the game", e);
-        }
+    public Game setWorld(World world) {
+        this.pe.setWorld(world);
+        this.renderer.setWorld(world);
+        return this;
     }
 
+    public PhysicEngine getPhysicEngine() {
+        return pe;
+    }
 }
