@@ -14,17 +14,19 @@ Starting with a very simple class, we will create a brand new Game, by adding so
 
 ## chapters
 
-- [A class ?](chapters/01-a-class.md)
-- [Adding a structure](chapters/02-addind-a-structure.md)
-- [Delegate things](chapters/03-delegate-things.md)
-- [the Object Game](chapters/04-the-object-game.md)
-- [Input Handler](chapters/05-input-handler.md)
-- [New components](chapters/06-new-components.md)
-- [Resource manager](chapters/07-resource-manager.md)
-- [Scene Manager](chapters/08-scene-manager.md)
-- [extract configuration](chapters/extract-configuration.md)
-- [refactoring packages](chapters/refactoring-packages.md)
-- [Score and Render Helpers](chapters/score-and-render-helpers.md)
+1. [A class ?](chapters/01-a-class.md)
+2. [Adding a structure](chapters/02-addind-a-structure.md)
+3. [Delegate things](chapters/03-delegate-things.md)
+4. [the Object Game](chapters/04-the-object-game.md)
+5. [Input Handler](chapters/05-input-handler.md)
+6. [New components](chapters/06-new-components.md)
+7. [Resource manager](chapters/07-resource-manager.md)
+8. [Scene Manager](chapters/08-scene-manager.md)
+9. [extract configuration](chapters/extract-configuration.md)
+10. [refactoring packages](chapters/refactoring-packages.md)
+11. [Score and Render Helpers](chapters/score-and-render-helpers.md)
+12. [See through a Camera](chapters/see-through-camera.md)
+13. [Chapter Title](chapters/chapter-title.md) 
 
 More to come... stay Tuned !
 
