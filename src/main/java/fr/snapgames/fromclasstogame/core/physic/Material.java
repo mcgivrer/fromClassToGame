@@ -18,7 +18,7 @@ public class Material {
         ROCK(new Material("rock", 0.6, 1, 1, 1)),
         WOOD(new Material("wood", 0.1, 0.69, 0.69, 0.3)),
         METAL(new Material("metal", 0.05, 1, 1, 1.2)),
-        RUBBER(new Material("rubber", 0.8, 1, 1, 0.3)),
+        RUBBER(new Material("rubber", 0.8, 0.88, 0.98, 0.3)),
         GLASS(new Material("glass", 0.4, 1, 1, 1)),
         ICE(new Material("ice", 0.1, 0.1, 1, 1)),
         AIR(new Material("air", 1, 1, 1, 1)),

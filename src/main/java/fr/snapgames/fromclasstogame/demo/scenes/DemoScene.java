@@ -42,8 +42,8 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getFont("fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
-        ResourceManager.getSlicedImage("images/tiles.png", "player", 0, 0, 16, 16);
-        ResourceManager.getSlicedImage("images/tiles.png", "orangeBall", 16, 0, 16, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "player", 8*16, 48, 16, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9*16, 48, 16, 16);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class DemoScene extends AbstractScene {
         GameObject player = new GameObject("player", 160, 100)
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
-                .setImage(ResourceManager.getImage("images/tiles.png:player"))
-                .setMaterial(DefaultMaterial.WOOD.getMaterial());
+                .setImage(ResourceManager.getImage("images/tiles01.png:player"))
+                .setMaterial(DefaultMaterial.ROCK.getMaterial());
         add(player);
 
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
@@ -67,7 +67,7 @@ public class DemoScene extends AbstractScene {
             GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200))
                     .setType(GameObject.GOType.IMAGE)
                     .setColor(Color.ORANGE)
-                    .setImage(ResourceManager.getImage("images/tiles.png:orangeBall"))
+                    .setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial());
             add(e);
         }
