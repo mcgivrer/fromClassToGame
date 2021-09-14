@@ -167,7 +167,7 @@ public class Game implements KeyListener {
     /**
      * Update all the game mechanism
      */
-    private void update(long dt) {
+    public void update(long dt) {
 
         if (pe != null) {
             pe.update(dt);
