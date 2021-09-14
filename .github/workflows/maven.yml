@@ -13,7 +13,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -22,4 +21,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build with Maven
+
       run: mvn --file pom.xml -Pcodecoverage -B package "-Djava.awt.headless=true"  
+      env:  
+        CUCUMBER_PUBLISH_TOKEN: c31ffecc-9b74-4445-9817-60ec7f923927
