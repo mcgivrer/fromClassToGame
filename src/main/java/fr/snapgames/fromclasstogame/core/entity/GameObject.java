@@ -1,20 +1,16 @@
 package fr.snapgames.fromclasstogame.core.entity;
 
 import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class GameObject implements Entity {
 
-    public double mass = 1;
 
     public enum GOType {
-        POINT,
-        RECTANGLE,
-        CIRCLE,
-        IMAGE,
-        OTHER
+        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
     }
 
     private static int index = 0;
@@ -30,6 +26,8 @@ public class GameObject implements Entity {
     public double width;
     public double height;
 
+    public BoundingBox bbox;
+
     public GOType type = GOType.RECTANGLE;
 
     public Color color;
@@ -42,6 +40,7 @@ public class GameObject implements Entity {
     public double gravity = 0;
 
     public Material material;
+    public double mass = 1;
 
     public GameObject(String name, double x, double y) {
         this.name = name;
@@ -84,9 +83,10 @@ public class GameObject implements Entity {
         return this;
     }
 
-    public void setPosition(double x, double y) {
+    public GameObject setPosition(double x, double y) {
         this.x = x;
         this.y = y;
+        return this;
     }
 
     public GameObject setPriority(int priority) {

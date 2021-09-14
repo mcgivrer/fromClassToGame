@@ -9,7 +9,6 @@ Feature: The game has scene with different types of GameObject.
     And the "player" size is 16 x 16
     Then the Game has 1 GameObject at window center.
 
-
   Scenario: The Game has multiple GameObjects
     Given the Game is instantiated
     And the Game is running
