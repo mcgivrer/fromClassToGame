@@ -127,7 +127,9 @@ public class GameDefSteps extends CommonDefSteps{
     public void iUpdateTimesTheScene(int nbUpdate) {
         Scene scene = game.getSceneManager().getCurrent();
         for (int i = 0; i < nbUpdate; i++) {
-            scene.update((long) (1000.0 / game.getConfiguration().FPS));
+            long dt = (long) (1000.0 / game.getConfiguration().FPS);
+            scene.update(dt);
+            game.getPhysicEngine().update(dt);
         }
     }
 
