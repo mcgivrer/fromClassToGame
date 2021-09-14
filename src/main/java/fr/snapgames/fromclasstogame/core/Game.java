@@ -67,7 +67,6 @@ public class Game implements KeyListener {
         configuration.height = h;
     }
 
-
     public static void main(String[] argc) {
         try {
             Game game = new Game("config");
@@ -242,7 +241,6 @@ public class Game implements KeyListener {
     public Configuration getConfiguration() {
         return this.configuration;
     }
-
 
     public Game setWorld(World world) {
         this.pe.setWorld(world);
