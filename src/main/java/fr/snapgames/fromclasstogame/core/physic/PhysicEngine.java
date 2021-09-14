@@ -26,6 +26,7 @@ public class PhysicEngine {
 
     private void update(GameObject go, long dt) {
         if (!go.relativeToCamera) {
+
             double friction = go.material != null ? go.material.staticFriction : 1;
             go.dx = go.dx * friction;
             double gravity = world != null ? world.gravity : 0;
@@ -33,7 +34,12 @@ public class PhysicEngine {
 
             go.x += go.dx * dt;
             go.y += go.dy * dt;
+          
             verifyGameConstraint(go);
+
+            if (go.bbox != null) {
+                go.bbox.update(go);
+            }
         }
     }
 
