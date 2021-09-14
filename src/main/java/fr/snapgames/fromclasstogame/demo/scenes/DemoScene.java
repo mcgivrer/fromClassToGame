@@ -48,7 +48,7 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-        g.setWorld(new World(g, 800, 600));
+        g.setWorld(new World(800, 600));
         // add main character (player)
         GameObject player = new GameObject("player", 160, 100)
                 .setType(GameObject.GOType.IMAGE)
