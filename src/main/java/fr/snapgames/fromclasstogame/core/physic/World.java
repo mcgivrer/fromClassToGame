@@ -1,13 +1,6 @@
 package fr.snapgames.fromclasstogame.core.physic;
 
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class World {
-
 
     public double width;
     public double height;
@@ -19,9 +12,9 @@ public class World {
         this.height = height;
     }
 
+
     public World setGravity(double g) {
         this.gravity = g;
         return this;
     }
-
 }
