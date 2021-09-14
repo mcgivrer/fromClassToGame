@@ -34,8 +34,8 @@ public class TestScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
 
         super.create(g);
-        World w = new World(800,600);
-        w.setGravity(0.0);
+        World w = new World(g, 800,600);
+        //w.setGravity(0.0);
         g.setWorld(w);
     }
 
