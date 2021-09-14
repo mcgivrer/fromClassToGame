@@ -1,17 +1,15 @@
 ---
-title: From a Class to Game 
-chapter: 13 - A Basic Physic Engine 
-author: Frédéric Delorme 
-description: Adding a Camera to the scene will allow you to move in as you want, and follow a target. 
-created: 2021-08-01 
+title: From a Class to Game
+chapter: 13 - A Basic Physic Engine
+author: Frédéric Delorme
+description: Adding a Camera to the scene will allow you to move in as you want, and follow a target.
+created: 2021-08-01
 tags: gamedev, camera, target
 ---
 
 ## A Basic Physic Engine
 
-The BPE[^1] is very basic one using only position and speed to move object. The mechanic formula we will use in the
-computation of object moves will take only in account the velocity and th e current positio nof an oibject to compute
-its own next position.
+The BPE[^1] is very basic one using only position and speed to move object. The mechanic formula we will use in the computation of object moves will take only in account the velocity and th e current positio nof an oibject to compute its own next position.
 
 ```Math
 p_1 = p_0 + v_0 * t
@@ -39,8 +37,7 @@ Where:
 - `f` is the friction, when the object collide something, the velocity is reduced according to this factor.
   [^1]: The **B**asic **P**hysic **E**ngine will be named BPE.
 
-and to get a real break effect on the object according to the friction, we will recompute the velocity with this
-attenuation factor:
+and to get a real break effect on the object according to the friction, we will recompute the velocity with this attenuation factor:
 
 ```Math
 v_1 = v_0 * b * f
@@ -60,10 +57,7 @@ p_1 = p_0 + (v_1 + g) * t
 
 the `g` gravity factor is a force.
 
-In a next chapter we will enhanced this physic and mechnanic computation engine with a new bundle of forces that can be
-added at any time to
-a [`GameObject`](../../../src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java "go a see code for the GameObject class")
-.
+In a next chapter we will enhanced this physic and mechnanic computation engine with a new bundle of forces that can be added at any time to a [`GameObject`](../../../src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java "go a see code for the GameObject class").
 
 ### Some C0D3 ?
 
@@ -71,50 +65,45 @@ The implementation of such engine can be dne throught mulitple solution. We will
 
 First we are going to define a `World` where our `GameObject` will freely evolve.
 
-And to our existing GameIObject we are going to add the new attributes we discovered through our math formula, but not
-directly, we will add a new dimention to our design: a `Material`.
+And to our existing GameIObject we are going to add the new attributes we discovered through our math formula, but not directly, we will add a new dimention to our design: a `Material`.
 
-This class will provide all information about physc and mechanic characteristics our engine will need to compute next
-position.
+This class will provide all information about physc and mechanic characteristics our engine will need to compute next position.
 
 first thing first, the `World` object.
 
 ### World
 
-the `World` class will provide some basic information about the world our object will moved on: `gravity` is our first
-one. Its also define the limit size of the game world with a width and height.
+the `World` class will provide some basic information about the world our object will moved on: `gravity` is our first one.
 
 ```java
-public class World {
+public class World{
     private double gravity;
-    private double width;
-    private double height;
+
 }
 ```
 
 ### Material
 
-Our `GameoObject`s must contain some physic attributes. And to be able to set the same value on multiple object, we will
-introduce a man in the middle: the `Material`. The `Material` class will contain, as seen before, all the attributes
-needed by our engine to compute next object position.
+The Material Object will contains, as seen before, the all attributes needed by our engine to compute next object position.
 
 ```java
-public class Material {
+public class Material{
     private String name;
-    public double bounciness;
-    public double friction;
+    private double bouncyness;
+    private double friction;
+
 }
 ```
 
-We need a `name` for this material, and as the formula gives us the characteristics, we need to add `bouncyness`
-and `friction` attributes.
+We need a `name` for this material, and as the formula gives us the characteristics, wee need to add `bouncyness` and `friction` attribtues.
 
 Ok, we have our needed info. let's dive into computation:
 
-Our `GameObject`  position and speed will be updated with these new `Material` attribute:
+our GameObject will be updated iwth this new material attribute:
 
 ```java
 public class GameObject {
+
     //...
     public double mass = 0.0;
     public double contact = 0.0;
@@ -123,9 +112,7 @@ public class GameObject {
 }
 ```
 
-## Computation into the Engine
-
-The `PhysicEngine` class will compute the `GameObject`'s position according to those parameters:
+And the World object will copute the GameObject postionaccording to wll those parameters:
 
 ```java
 public class PhysicEngine {
@@ -156,8 +143,6 @@ To get a better simulation, we will need to distinguish 2 kind of friction:
 - the static one, happening on the floor,
 - the dynamic one for objects collision.
 
-#### Upgrading Material
-
 So our Material will provide such new attributes in place of the old friction :
 
 - `bouncyness` is the "spring" factor of our object, it's its capability to throw energy reacting a to hit with another
@@ -167,7 +152,7 @@ So our Material will provide such new attributes in place of the old friction :
 - `density` is the physic material density.
 
 ```java
-public class Material {
+public class Material{
     private String name;
     private double bouncyness;
     private double staticFriction;
@@ -198,7 +183,7 @@ public class PhysicEngine {
 }
 ```
 
-#### The Default materials
+### The Default material
 
 Materials are so difficult to create, we need some references. According to some web reference, we can find some and use
 them as is.

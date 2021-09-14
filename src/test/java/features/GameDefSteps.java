@@ -10,6 +10,8 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,7 +129,10 @@ public class GameDefSteps extends CommonDefSteps{
     public void iUpdateTimesTheScene(int nbUpdate) {
         Scene scene = game.getSceneManager().getCurrent();
         for (int i = 0; i < nbUpdate; i++) {
-            scene.update((long) (1000.0 / game.getConfiguration().FPS));
+            long dt = (long) (1000.0 / game.getConfiguration().FPS);
+
+            scene.update(dt);
+            game.getPhysicEngine().update(dt);
         }
     }
 
@@ -135,8 +140,8 @@ public class GameDefSteps extends CommonDefSteps{
     public void theGameObjectIsNowAt(String name, Double x, Double y) {
         Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
-        assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 0.0);
-        assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 0.0);
+        assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 10.0);
+        assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 10.0);
     }
 
     @And("The font {string} is added")
@@ -208,5 +213,13 @@ public class GameDefSteps extends CommonDefSteps{
         Scene scene = game.getSceneManager().getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
         assertNull("The default TextObject font is not null", to.font);
+    }
+
+    @And("the Entity {string} as {string} Material")
+    public void theEntityAsMaterial(String entityName, String materialTypeName) {
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject e = scene.getGameObject(entityName);
+        // TODO parse materialTypeName to use the right DefaultMaterial.
+        e.material = Material.DefaultMaterial.WOOD.getMaterial();
     }
 }
