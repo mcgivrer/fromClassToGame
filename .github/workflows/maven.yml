@@ -20,12 +20,7 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Install dependencies
-      env:  
-        DISPLAY: ':99.0'
-      run: sudo apt install -y xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 xdotool
     - name: Build with Maven
       run: mvn --file pom.xml -Pcodecoverage -B package "-Djava.awt.headless=true"  
       env:  
-        DISPLAY: ':99.0'
         CUCUMBER_PUBLISH_TOKEN: c31ffecc-9b74-4445-9817-60ec7f923927
