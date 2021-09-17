@@ -31,11 +31,6 @@ public class PhysicEngine extends System {
         objects.clear();
     }
 
-    public PhysicEngine setWorld(World w) {
-        this.world = w;
-        return this;
-    }
-
     public void update(long dt) {
         for (GameObject go : objects) {
             update(go, dt);
@@ -44,12 +39,15 @@ public class PhysicEngine extends System {
 
     private void update(GameObject go, long dt) {
         if (!go.relativeToCamera) {
-            go.dx = go.dx * go.material.staticFriction;
-            go.dy = (go.dy + go.gravity + (world.gravity * 0.11))
-                    * go.material.staticFriction * 1 / go.mass;
+
+            double friction = go.material != null ? go.material.staticFriction : 1;
+            go.dx = go.dx * friction;
+            double gravity = world != null ? world.gravity : 0;
+            go.dy = (go.dy + go.gravity + (gravity * 0.11)) * friction * 1 / go.mass;
 
             go.x += go.dx * dt;
             go.y += go.dy * dt;
+          
             verifyGameConstraint(go);
 
             if (go.bbox != null) {
@@ -59,29 +57,22 @@ public class PhysicEngine extends System {
     }
 
     private void verifyGameConstraint(GameObject go) {
+        double bounciness = go.material != null ? go.material.bounciness : 0.0;
         if (go.x < 0) {
             go.x = 0;
-            if (go.material != null) {
-                go.dx = -go.dx * go.material.bounciness;
-            }
+            go.dx = -go.dx * bounciness;
         }
         if (go.y < 0) {
             go.y = 0;
-            if (go.material != null) {
-                go.dy = -go.dy * go.material.bounciness;
-            }
+            go.dy = -go.dy * bounciness;
         }
         if (go.x + go.width > world.width) {
             go.x = world.width - go.width;
-            if (go.material != null) {
-                go.dx = -go.dx * go.material.bounciness;
-            }
+            go.dx = -go.dx * bounciness;
         }
         if (go.y + go.height > world.height) {
             go.y = world.height - go.height;
-            if (go.material != null) {
-                go.dy = -go.dy * go.material.bounciness;
-            }
+            go.dy = -go.dy * bounciness;
         }
     }
 
@@ -91,5 +82,10 @@ public class PhysicEngine extends System {
 
     public World getWorld() {
         return world;
+    }
+
+    public PhysicEngine setWorld(World w) {
+        this.world = w;
+        return this;
     }
 }

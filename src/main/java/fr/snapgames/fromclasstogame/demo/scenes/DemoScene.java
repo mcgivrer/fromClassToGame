@@ -48,7 +48,7 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-        g.setWorld(new World(g, 800, 600));
+        g.setWorld(new World(800, 600));
         // add main character (player)
         GameObject player = new GameObject("player", 160, 100)
                 .setType(GameObject.GOType.IMAGE)
@@ -126,8 +126,8 @@ public class DemoScene extends AbstractScene {
 
         super.update(dt);
         ScoreObject scoreTO = (ScoreObject) objects.get("score");
-        scoreTO.setScore(score);
         score++;
+        scoreTO.setScore(score);
     }
 
     @Override

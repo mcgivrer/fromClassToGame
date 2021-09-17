@@ -1,7 +1,9 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,23 +18,32 @@ import java.util.Map;
  * different state of a game, from the Title scree, to the Menu and the Invenrty
  * or the PLay screen.
  */
-public class SceneManager {
+public class SceneManager extends System {
     private final static Logger logger = LoggerFactory.getLogger(SceneManager.class);
 
     Map<String, Class<?>> scenesClasses = new HashMap<>();
     Map<String, Scene> scenesInstances = new HashMap<>();
 
-    private Game game;
-
     private Scene current;
 
     public SceneManager(Game g) {
-        this.game = g;
+        super(g);
+    }
+
+    @Override
+    public String getName() {
+        return SceneManager.class.getName();
+    }
+
+    @Override
+    public int initialize(Configuration config) {
+        initialize(config.scenes.split(","));
+        return 0;
     }
 
     /**
      * <p>
-     * Intialize classes from a simple String array.
+     * Initialize classes from a simple String array.
      * <p>
      * Each string are purposed to provide a name and a class with its full path:
      * <ul>
@@ -108,10 +119,10 @@ public class SceneManager {
      *
      * @param s the instance of the {@link Scene} to be added.
      */
-    public void add(String name,Scene s) {
+    public void add(String name, Scene s) {
         try {
             scenesInstances.put(name, s);
-            scenesClasses.put(name,s.getClass());
+            scenesClasses.put(name, s.getClass());
             s.initialize(game);
             s.create(game);
         } catch (UnknownResource e) {
