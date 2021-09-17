@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.core.system;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -55,6 +56,12 @@ public class SystemManager {
 
     public static Collection<System> getSystems() {
         return systemInstances.values();
+    }
+
+    public static void configure(Configuration config) {
+        systemInstances.entrySet().stream().forEach(e -> {
+            e.getValue().initialize(config);
+        });
     }
 
     public static void dispose() {

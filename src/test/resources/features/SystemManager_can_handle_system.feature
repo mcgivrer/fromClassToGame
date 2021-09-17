@@ -16,6 +16,13 @@ Feature: The System Manager can handle Systems
     And I remove "features.system.TestSystem"
     Then I can't get the "features.system.TestSystem" as System
 
+  Scenario: I initialize all systems
+    When I create a SystemManager
+    And I add a new "features.system.TestSystem"
+    And I add a new "features.system.TestSystem2"
+    And I initialize SystemManager
+    Then all the Systems are ready.
+
   Scenario: at end of service, all system will be disposed.
     When I create a SystemManager
     And I add a new "features.system.TestSystem"
