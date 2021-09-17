@@ -58,7 +58,10 @@ public class DemoScene extends AbstractScene {
         add(player);
 
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
-        Camera camera = new Camera("cam01").setTarget(player).setTweenFactor(0.02).setViewport(vp);
+        Camera camera = new Camera("cam01")
+                .setTarget(player)
+                .setTweenFactor(0.02)
+                .setViewport(vp);
         add(camera);
 
 
@@ -109,7 +112,6 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void activate() {
-        //objects.get("player").setSpeed(0.02, 0.02).setPosition(160, 100);
         find("enemy_").forEach(go ->
                 go.setPosition(
                                 rand(0, game.getPhysicEngine().getWorld().width),
