@@ -1,21 +1,34 @@
 package fr.snapgames.fromclasstogame.core.physic;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.system.System;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class PhysicEngine {
-
-    public Game game;
+public class PhysicEngine extends System {
 
     public World world;
 
-    public List<GameObject> objects = new ArrayList<>();
+    @Override
+    public String getName() {
+        return "PhysicEngine";
+    }
 
     public PhysicEngine(Game g) {
-        this.game = g;
+        super(g);
+    }
+
+    @Override
+    public int initialize(Configuration config) {
+        objects = new ArrayList<>();
+        return 1;
+    }
+
+    @Override
+    public void dispose() {
+        objects.clear();
     }
 
     public void update(long dt) {

@@ -12,6 +12,7 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.RenderHelper;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.test.entity.TestObject;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -41,7 +42,7 @@ public class RenderHelperStepDefs {
     public void theRenderHelperForIsReady(String objectName) {
         Map<String, RenderHelper> renderHelpers = game.getRender().getRenderHelpers();
         RenderHelper rh = renderHelpers.get(objectName);
-        assertEquals("The '"+objectName+"' RenderHelper is not defined", objectName, rh.getType());
+        assertEquals("The '" + objectName + "' RenderHelper is not defined", objectName, rh.getType());
     }
 
     @And("I add a new {string} for a {string}")
@@ -49,7 +50,7 @@ public class RenderHelperStepDefs {
         try {
             Class<?> rhc = Class.forName(className);
             RenderHelper rh = (RenderHelper) rhc.getConstructors()[0].newInstance();
-            Render render =  game.getRender();
+            Render render = (Render) SystemManager.get(Render.class);
             render.addRenderHelper(rh);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             fail("Unable to add the RenderHelper named " + className + ": " + e.getMessage());
@@ -58,7 +59,8 @@ public class RenderHelperStepDefs {
 
     @And("the TestObject named {string} is rendered.")
     public void theTestObjectNamedIsRendered(String objectName) {
-        Render render =  game.getRender();
+
+        Render render = (Render)SystemManager.get(Render.class);
         render.render();
         TestObject to = (TestObject) game.getSceneManager().getCurrent().getGameObject("test");
         assertTrue("The TestObject " + objectName + " has not been rendered", to.getFlag());
