@@ -131,7 +131,7 @@ public class Render extends System {
      * Save a screenshot of the current buffer.
      */
     public void saveScreenshot() {
-        final String path = this.getClass().getResource("/").getPath().substring(1);
+        final String path = this.getClass().getResource("/").getPath();
         Path targetDir = Paths.get(path + "/screenshots");
         int i = screenShotIndex++;
         String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
