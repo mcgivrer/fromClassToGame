@@ -10,6 +10,7 @@ import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ public class Game implements KeyListener {
     private long realFPS = 60;
 
     private Window window;
-    private Render renderer = new Render(320, 200);
+    private Render renderer;
     private InputHandler inputHandler;
     private SceneManager sceneManager;
     private Configuration configuration;
@@ -80,22 +81,29 @@ public class Game implements KeyListener {
      * Initialization of the display window and everything the game will need.
      */
     public void initialize(String[] argv) throws UnknownArgumentException {
-
+        SystemManager.initialize(this);
         configuration.parseArgs(argv);
 
-        renderer = new Render(configuration.width, configuration.height);
+        SystemManager.add(Render.class);
+        SystemManager.add(PhysicEngine.class);
+        SystemManager.add(InputHandler.class);
+        SystemManager.add(SceneManager.class);
+
+        SystemManager.configure(configuration);
+
+        renderer = (Render) SystemManager.get(Render.class);
         renderer.setDebugLevel(configuration.debugLevel);
 
         window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
                 (int) (configuration.height * configuration.scale));
 
-        pe = new PhysicEngine(this);
+        pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
 
-        inputHandler = new InputHandler(window);
+        inputHandler = (InputHandler) SystemManager.get(InputHandler.class);
+        inputHandler.setWindow(window);
         inputHandler.addKeyListener(this);
 
-        sceneManager = new SceneManager(this);
-        sceneManager.initialize(configuration.scenes.split(","));
+        sceneManager = (SceneManager) SystemManager.get(SceneManager.class);
     }
 
     /**
@@ -187,10 +195,10 @@ public class Game implements KeyListener {
      * Free everything
      */
     private void dispose() {
-        renderer.clear();
         if (!testMode) {
             window.close();
         }
+        SystemManager.dispose();
     }
 
     /**

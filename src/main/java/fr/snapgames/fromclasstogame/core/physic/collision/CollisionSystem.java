@@ -2,7 +2,7 @@ package fr.snapgames.fromclasstogame.core.physic.collision;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
-import fr.snapgames.fromclasstogame.core.physic.System;
+import fr.snapgames.fromclasstogame.core.system.System;
 
 /**
  * The {@link CollisionSystem} will provide mechanism to detect collision between
@@ -11,6 +11,11 @@ import fr.snapgames.fromclasstogame.core.physic.System;
  * `BoundingBox` can have multiple shapes,and basically would be Rectangle, Circle or Ellipse, and Points.
  */
 public class CollisionSystem extends System {
+
+    @Override
+    public String getName() {
+        return "CollisionSystem";
+    }
 
     public CollisionSystem(Game g) {
         super(g);

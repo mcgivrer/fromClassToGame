@@ -1,18 +1,36 @@
 package fr.snapgames.fromclasstogame.core.io;
 
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
+import fr.snapgames.fromclasstogame.core.system.System;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class InputHandler implements KeyListener {
+public class InputHandler extends System implements KeyListener {
 
     private Window window;
 
     private boolean[] keys = new boolean[65635];
 
-    public InputHandler(Window window) {
-        setWindow(window);
+    @Override
+    public String getName() {
+        return InputHandler.class.getName();
+    }
+
+    public InputHandler(Game g) {
+        super(g);
+    }
+
+    @Override
+    public int initialize(Configuration config) {
+        return 0;
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
     public InputHandler setWindow(Window window) {

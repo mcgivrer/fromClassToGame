@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.core.physic;
+package fr.snapgames.fromclasstogame.core.system;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
@@ -24,6 +24,8 @@ public abstract class System {
     protected Game game;
 
     protected List<GameObject> objects = new ArrayList<>();
+
+    public abstract String getName();
 
     public System(Game g) {
         this.game = g;

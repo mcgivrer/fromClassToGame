@@ -1,5 +1,15 @@
 package fr.snapgames.fromclasstogame.core.gfx;
 
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.Camera;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.World;
+import fr.snapgames.fromclasstogame.core.system.System;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,18 +17,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-import fr.snapgames.fromclasstogame.core.entity.Camera;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.physic.World;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class Render {
+public class Render extends System {
 
     private static final Logger logger = LoggerFactory.getLogger(Render.class);
 
@@ -27,7 +31,6 @@ public class Render {
 
     private Camera camera;
 
-    private List<GameObject> objects = new ArrayList<>();
     private List<GameObject> objectsRelativeToCamera = new ArrayList<>();
     private Map<String, RenderHelper> renderHelpers = new HashMap<>();
     private Dimension viewport;
@@ -35,10 +38,15 @@ public class Render {
     private int debug = 0;
     private World world;
 
-    public Render(int width, int height) {
-        setViewport(width, height);
+    public Render(Game g) {
+        super(g);
+    }
+
+    public int initialize(Configuration config) {
+        setViewport(config.width, config.height);
         addRenderHelper(new GameObjectRenderHelper());
         addRenderHelper(new TextRenderHelper());
+        return 0;
     }
 
     public void render() {
@@ -126,7 +134,7 @@ public class Render {
         final String path = this.getClass().getResource("/").getPath().substring(1);
         Path targetDir = Paths.get(path + "/screenshots");
         int i = screenShotIndex++;
-        String filename = String.format("%sscreenshots/%s-%d.png", path, System.nanoTime(), i);
+        String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
 
         try {
             if (!Files.exists(targetDir)) {
@@ -179,5 +187,16 @@ public class Render {
 
     public void setDebugLevel(int dl) {
         this.debug = dl;
+    }
+
+    @Override
+    public String getName() {
+        return Render.class.getName();
+    }
+
+    @Override
+    public void dispose() {
+        objects.clear();
+        objectsRelativeToCamera.clear();
     }
 }
