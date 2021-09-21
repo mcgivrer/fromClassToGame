@@ -48,7 +48,7 @@ public class Game implements KeyListener {
     }
 
     /**
-     * A constructure mainly used for test purpose.
+     * A constructor mainly used for test purpose.
      */
     public Game(String configPath) {
         configuration = new Configuration(configPath);
