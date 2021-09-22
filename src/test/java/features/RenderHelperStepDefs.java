@@ -3,7 +3,7 @@ package features;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.gfx.RenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
@@ -45,7 +45,7 @@ public class RenderHelperStepDefs {
         assertEquals("The '" + objectName + "' RenderHelper is not defined", objectName, rh.getType());
     }
 
-    @And("I add a new {string} for a {string}")
+    @And("I add a new RenderHelper {string} for a {string}")
     public void iAddANewForA(String className, String EntityName) {
         try {
             Class<?> rhc = Class.forName(className);
@@ -71,5 +71,11 @@ public class RenderHelperStepDefs {
     public void iAddATestScene(String sceneName) {
         SceneManager sm = (SceneManager) SystemManager.get(SceneManager.class);
         sm.addScene(sceneName);
+    }
+
+    @And("I add a TestObject named {string}")
+    public void iAddATestObjectNamed(String arg0) {
+        Scene sc = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        sc.add(new TestObject("test",0,0));
     }
 }
