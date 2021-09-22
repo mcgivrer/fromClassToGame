@@ -208,14 +208,6 @@ public class Game implements KeyListener {
         this.exit = true;
     }
 
-    public Window getWindow() {
-        return window;
-    }
-
-    public Render getRender() {
-        return renderer;
-    }
-
     @Override
     public void keyTyped(KeyEvent e) {
         // nothing to do now
@@ -242,21 +234,32 @@ public class Game implements KeyListener {
 
     }
 
-    public SceneManager getSceneManager() {
-        return sceneManager;
-    }
-
-    public Configuration getConfiguration() {
-        return this.configuration;
-    }
-
     public Game setWorld(World world) {
         this.pe.setWorld(world);
         this.renderer.setWorld(world);
         return this;
     }
 
-    public PhysicEngine getPhysicEngine() {
-        return pe;
+    public SceneManager getSceneManager() {
+        return
+                (SceneManager) SystemManager.get(SceneManager.class);
     }
+
+    public Configuration getConfiguration() {
+        return this.configuration;
+    }
+
+
+    public PhysicEngine getPhysicEngine() {
+        return (PhysicEngine) SystemManager.get(PhysicEngine.class);
+    }
+
+    public Window getWindow() {
+        return window;
+    }
+
+    public Render getRender() {
+        return (Render) SystemManager.get(Render.class);
+    }
+
 }
