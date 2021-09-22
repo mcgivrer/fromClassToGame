@@ -34,4 +34,8 @@ public abstract class System {
     public abstract int initialize(Configuration config);
 
     public abstract void dispose();
+
+    public boolean isReady(){
+        return true;
+    }
 }

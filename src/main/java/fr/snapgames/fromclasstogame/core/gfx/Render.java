@@ -4,6 +4,9 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
@@ -198,5 +201,10 @@ public class Render extends System {
     public void dispose() {
         objects.clear();
         objectsRelativeToCamera.clear();
+    }
+
+    @Override
+    public boolean isReady() {
+        return renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
     }
 }
