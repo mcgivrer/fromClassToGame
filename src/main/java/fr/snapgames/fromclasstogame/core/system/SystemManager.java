@@ -59,7 +59,7 @@ public class SystemManager {
     }
 
     public static void configure(Configuration config) {
-        systemInstances.entrySet().stream().forEach(e -> {
+        systemInstances.entrySet().forEach(e -> {
             e.getValue().initialize(config);
         });
     }
