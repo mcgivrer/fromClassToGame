@@ -1,20 +1,20 @@
 package fr.snapgames.fromclasstogame.core;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.physic.World;
+import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * Project: From Class To Game
@@ -27,18 +27,16 @@ import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException
 public class Game implements KeyListener {
 
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
-
+    public boolean exit = false;
+    public boolean testMode = false;
     private long realFPS = 60;
-
     private Window window;
     private Render renderer;
     private InputHandler inputHandler;
     private SceneManager sceneManager;
     private Configuration configuration;
+    private CollisionSystem cs;
     private PhysicEngine pe;
-
-    public boolean exit = false;
-    public boolean testMode = false;
 
     /**
      * the mandatory default constructor
@@ -49,6 +47,8 @@ public class Game implements KeyListener {
 
     /**
      * A constructor mainly used for test purpose.
+     *
+     * @param configPath path to the configuration properties file
      */
     public Game(String configPath) {
         configuration = new Configuration(configPath);
@@ -59,7 +59,7 @@ public class Game implements KeyListener {
      *
      * @param t title for the game window
      * @param w width of the game window
-     * @param h heigth of the game window
+     * @param h height of the game window
      */
     public Game(String t, int w, int h) {
         this("config");
@@ -88,6 +88,7 @@ public class Game implements KeyListener {
         SystemManager.add(PhysicEngine.class);
         SystemManager.add(InputHandler.class);
         SystemManager.add(SceneManager.class);
+        SystemManager.add(CollisionSystem.class);
 
         SystemManager.configure(configuration);
 
@@ -98,7 +99,7 @@ public class Game implements KeyListener {
                 (int) (configuration.height * configuration.scale));
 
         pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
-
+        cs = (CollisionSystem) SystemManager.get(CollisionSystem.class);
         inputHandler = (InputHandler) SystemManager.get(InputHandler.class);
         inputHandler.setWindow(window);
         inputHandler.addKeyListener(this);
@@ -126,7 +127,7 @@ public class Game implements KeyListener {
     }
 
     /**
-     * the famous main game loop where everything happend.
+     * the famous main game loop where everything happened.
      */
     private void loop() {
         long start = System.currentTimeMillis();
