@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.core.system;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -68,6 +69,24 @@ public class SystemManager {
         systemInstances.entrySet().stream().forEach(e -> {
             e.getValue().dispose();
             systemInstances.remove(e.getKey());
+        });
+    }
+
+    public static void add(GameObject o) {
+        systemInstances.entrySet().forEach(e -> {
+            e.getValue().add(o);
+        });
+    }
+
+    public static void remove(GameObject o) {
+        systemInstances.entrySet().forEach(e -> {
+            e.getValue().remove(o);
+        });
+    }
+
+    public static void clearObjects() {
+        systemInstances.entrySet().forEach(e -> {
+            e.getValue().clearObjects();
         });
     }
 }

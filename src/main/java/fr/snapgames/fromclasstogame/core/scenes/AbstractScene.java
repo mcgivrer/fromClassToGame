@@ -1,16 +1,17 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.Camera;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.entity.Camera;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 
 public abstract class AbstractScene implements Scene {
 
@@ -62,10 +63,7 @@ public abstract class AbstractScene implements Scene {
         } else if (!objects.containsKey(go.name)) {
             objects.put(go.name, go);
             objectsList.add(go);
-            game.getRender().add(go);
-            if (game.getPhysicEngine() != null) {
-                game.getPhysicEngine().add(go);
-            }
+            SystemManager.add(go);
         }
     }
 

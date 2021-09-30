@@ -25,17 +25,33 @@ public abstract class System {
 
     protected List<GameObject> objects = new ArrayList<>();
 
-    public abstract String getName();
-
     public System(Game g) {
         this.game = g;
     }
+
+    public abstract String getName();
 
     public abstract int initialize(Configuration config);
 
     public abstract void dispose();
 
-    public boolean isReady(){
+    public boolean isReady() {
         return true;
+    }
+
+    public void add(GameObject o) {
+        if (!objects.contains(o)) {
+            objects.add(o);
+        }
+    }
+
+    public void clearObjects() {
+        objects.clear();
+    }
+
+    public void remove(GameObject o) {
+        if (objects.contains(o)) {
+            objects.remove(o);
+        }
     }
 }

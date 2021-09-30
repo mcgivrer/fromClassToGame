@@ -104,13 +104,13 @@ public class Render extends System {
         }
     }
 
-    public Render add(GameObject go) {
+
+    public void add(GameObject go) {
         if (go.relativeToCamera) {
             addAndSortObjectToList(objectsRelativeToCamera, go);
         } else {
             addAndSortObjectToList(objects, go);
         }
-        return this;
     }
 
     private void addAndSortObjectToList(List<GameObject> listObjects, GameObject go) {
