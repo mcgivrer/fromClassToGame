@@ -4,6 +4,9 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
@@ -101,13 +104,13 @@ public class Render extends System {
         }
     }
 
-    public Render add(GameObject go) {
+
+    public void add(GameObject go) {
         if (go.relativeToCamera) {
             addAndSortObjectToList(objectsRelativeToCamera, go);
         } else {
             addAndSortObjectToList(objects, go);
         }
-        return this;
     }
 
     private void addAndSortObjectToList(List<GameObject> listObjects, GameObject go) {
@@ -131,7 +134,7 @@ public class Render extends System {
      * Save a screenshot of the current buffer.
      */
     public void saveScreenshot() {
-        final String path = this.getClass().getResource("/").getPath().substring(1);
+        final String path = this.getClass().getResource("/").getPath();
         Path targetDir = Paths.get(path + "/screenshots");
         int i = screenShotIndex++;
         String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
@@ -198,5 +201,10 @@ public class Render extends System {
     public void dispose() {
         objects.clear();
         objectsRelativeToCamera.clear();
+    }
+
+    @Override
+    public boolean isReady() {
+        return renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
     }
 }

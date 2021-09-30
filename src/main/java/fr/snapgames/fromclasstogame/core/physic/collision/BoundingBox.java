@@ -5,12 +5,6 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 public class BoundingBox {
 
-    public enum BoundingBoxType {
-        POINT,
-        RECTANGLE,
-        CIRCLE,
-        ELLIPSE;
-    }
 
     BoundingBoxType type;
     Vector2d position;
@@ -31,4 +25,23 @@ public class BoundingBox {
         }
 
     }
+
+    public boolean intersect(BoundingBox b) {
+        boolean result = false;
+        switch (type) {
+            case RECTANGLE:
+                result = position.x - b.position.x < shape.width - b.shape.width;
+                result &= position.y - b.position.y < shape.height - b.shape.height;
+                break;
+        }
+        return result;
+    }
+
+    public enum BoundingBoxType {
+        POINT,
+        RECTANGLE,
+        CIRCLE,
+        ELLIPSE;
+    }
+
 }

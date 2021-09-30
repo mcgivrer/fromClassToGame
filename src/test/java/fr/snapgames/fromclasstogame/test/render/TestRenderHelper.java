@@ -1,6 +1,6 @@
 package fr.snapgames.fromclasstogame.test.render;
 
-import fr.snapgames.fromclasstogame.core.gfx.RenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.test.entity.TestObject;
 
 import java.awt.*;
