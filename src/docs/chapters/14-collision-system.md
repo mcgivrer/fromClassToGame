@@ -1,6 +1,10 @@
 ---
-title: From a Class to Game chapter: 14 - Collision System author: Frédéric Delorme description: Adding a Camera to the
-scene will allow you to move in as you want, and follow a target. created: 2021-09-08 tags: gamedev, camera, target
+title: From a Class to Game 
+chapter: 14 - Collision System 
+author: Frédéric Delorme 
+description: Adding a Camera to the scene will allow you to move in as you want, and follow a target. 
+created: 2021-09-08 
+tags: gamedev, camera, target
 ---
 
 ## Collision System
