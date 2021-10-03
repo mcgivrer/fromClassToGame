@@ -1,24 +1,20 @@
 package fr.snapgames.fromclasstogame.core.config;
 
-import java.util.ResourceBundle;
-
 import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
+
+import java.util.ResourceBundle;
 
 public class Configuration {
 
-    private ResourceBundle defaultConfig;
-
+    private final ResourceBundle defaultConfig;
+    public String levelPath;
     public String title = "fromClassToGame";
-
     public int width = 320;
     public int height = 200;
     public double scale = 1.0;
-
     public double FPS = 60;
-
     public String scenes = "";
     public String defaultScene = "";
-
     public int debugLevel;
 
     public Configuration(String configurationPath) {
@@ -38,6 +34,7 @@ public class Configuration {
         this.title = defaultConfig.getString("game.setup.title");
         this.scenes = defaultConfig.getString("game.setup.scenes");
         this.defaultScene = defaultConfig.getString("game.setup.scene.default");
+        this.levelPath = defaultConfig.getString("game.setup.levels.defaultPath");
     }
 
     public Configuration parseArgs(String[] argv) throws UnknownArgumentException {
@@ -65,6 +62,9 @@ public class Configuration {
                         break;
                     case "scene":
                         this.defaultScene = values[1];
+                        break;
+                    case "level":
+                        this.levelPath = values[1];
                         break;
                     default:
                         throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
