@@ -92,6 +92,7 @@ public class DemoScene extends AbstractScene {
         heart.mass = 0;
         heart.priority = 10;
         add(heart);
+
         GameObject star = new GameObject("*", 288, 20)
                 .setType(GameObject.GOType.IMAGE)
                 .setImage(ResourceManager.getImage("images/tiles01.png:*"))

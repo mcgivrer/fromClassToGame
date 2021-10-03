@@ -76,7 +76,7 @@ public class PhysicEngine extends System {
         }
     }
 
-    public void add(GameObject go) {
+    public void addToPipeline(GameObject go) {
         this.objects.add(go);
     }
 

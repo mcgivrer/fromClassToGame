@@ -47,5 +47,13 @@ public class SystemManagerStepDefs implements En {
         Then("all the systems are disposed and free", () -> {
             assertTrue("",SystemManager.getSystems().isEmpty());
         });
+        And("I initialize SystemManager", () -> {
+            SystemManager.initialize(game);
+        });
+        Then("all the Systems are ready", () -> {
+            for (System system : SystemManager.getSystems()) {
+                assertTrue("The system "+system.getName()+"was not ready",system.isReady());
+            }
+        });
     }
 }

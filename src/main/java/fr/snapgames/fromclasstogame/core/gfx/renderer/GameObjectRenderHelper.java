@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.core.gfx;
+package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import java.awt.Graphics2D;
 
