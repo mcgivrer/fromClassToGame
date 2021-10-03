@@ -10,14 +10,15 @@ public class TileMapLoader extends System {
     /**
      * the default file path to the level files
      */
-    private String defaultLvlFilePath;
+    private static  String defaultLvlFilePath;
 
     public TileMapLoader(Game g) {
         super(g);
     }
 
     public static TileMap load(String fileName) {
-        TileMap tm;
+        TileMap tm = null;
+
 
         return tm;
     }
