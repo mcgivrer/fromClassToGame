@@ -1,7 +1,5 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
-import fr.snapgames.fromclasstogame.core.gfx.RenderHelper;
-import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 import fr.snapgames.fromclasstogame.demo.entity.TextValueObject;
 
 import java.awt.*;

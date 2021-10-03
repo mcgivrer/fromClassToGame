@@ -21,7 +21,7 @@ Feature: The System Manager can handle Systems
     And I add a new "features.system.TestSystem"
     And I add a new "features.system.TestSystem2"
     And I initialize SystemManager
-    Then all the Systems are ready.
+    Then all the Systems are ready
 
   Scenario: at end of service, all system will be disposed.
     When I create a SystemManager

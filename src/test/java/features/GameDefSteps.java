@@ -35,7 +35,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
-        game = new Game("test-scene");
+         game = new Game("test-scene");
         game.testMode = true;
     }
 
@@ -73,7 +73,7 @@ public class GameDefSteps extends CommonDefSteps {
         try {
             if (args != null) {
                 game.run(args);
-                ((SceneManager) SystemManager.get(SceneManager.class)).activate();
+                //((SceneManager) SystemManager.get(SceneManager.class)).activate();
             } else {
                 game.run(null);
             }
@@ -95,7 +95,8 @@ public class GameDefSteps extends CommonDefSteps {
     @Given("I add a GameObject named {string} at \\({double},{double})")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
         GameObject go = new GameObject(name, x, y);
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        SceneManager sm =((SceneManager) SystemManager.get(SceneManager.class));
+        Scene scene = sm.getCurrent();
         scene.add(go);
     }
 

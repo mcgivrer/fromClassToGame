@@ -11,7 +11,8 @@ Feature: Render and the Render Helpers
   Scenario: I can add a new RenderHelper
     Given The Game start with default config
     Given the Render is ready
-    And I add a new "fr.snapgames.fromclasstogame.test.render.TestRenderHelper" for a "fr.snapgames.fromclasstogame.test.entity.TestObject"
+    And I add a TestObject named "test"
+    And I add a new RenderHelper "fr.snapgames.fromclasstogame.test.render.TestRenderHelper" for a "fr.snapgames.fromclasstogame.test.entity.TestObject"
     Then the RenderHelper for "fr.snapgames.fromclasstogame.test.entity.TestObject" is ready
     And the TestObject named "test" is rendered.
 
