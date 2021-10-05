@@ -76,7 +76,7 @@ public class Window {
     public void switchFullScreen() {
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice device = env.getDefaultScreenDevice();
-        if (!fullscreen && frame.isActive() && device.isFullScreenSupported()) {
+        if (!fullscreen && device.isFullScreenSupported()) {
             device.setFullScreenWindow(frame);
             fullscreen = true;
         } else {
