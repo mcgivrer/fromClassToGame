@@ -223,8 +223,11 @@ public class Game implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_F11:
+            case KeyEvent.VK_F3:
                 renderer.saveScreenshot();
+                break;
+            case KeyEvent.VK_F11:
+                window.switchFullScreen();
                 break;
             case KeyEvent.VK_ESCAPE:
                 this.exit = true;
@@ -242,8 +245,7 @@ public class Game implements KeyListener {
     }
 
     public SceneManager getSceneManager() {
-        return
-                (SceneManager) SystemManager.get(SceneManager.class);
+        return this.sceneManager;
     }
 
     public Configuration getConfiguration() {
