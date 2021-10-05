@@ -27,7 +27,7 @@ public class WindowDefSteps implements En {
             win.switchFullScreen();
         });
         Then("the window is in fullscreen mode", () -> {
-            Thread.sleep(500);
+            Thread.sleep(100);
             assertTrue("The window has net been set to windowed mode", win.isFullScreen());
         });
     }
