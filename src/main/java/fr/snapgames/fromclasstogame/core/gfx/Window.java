@@ -89,5 +89,4 @@ public class Window {
     public boolean isFullScreen() {
         return fullscreen;
     }
-
 }
