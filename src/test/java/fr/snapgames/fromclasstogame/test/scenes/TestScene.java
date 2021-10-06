@@ -32,9 +32,8 @@ public class TestScene extends AbstractScene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-
         super.create(g);
-        World w = new World( 800,600);
+        World w = new World(800, 600);
         w.setGravity(0.0);
         g.setWorld(w);
     }
