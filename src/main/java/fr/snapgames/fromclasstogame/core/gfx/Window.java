@@ -19,6 +19,7 @@ public class Window {
     private Font debugFont;
     private int debug = 0;
     private boolean fullscreen;
+    private boolean closed;
 
     public Window(String title, int width, int height) {
         setFrame(title, width, height);
@@ -63,7 +64,17 @@ public class Window {
     }
 
     public void close() {
-        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        close(false);
+    }
+
+    public void close(boolean testMode) {
+        if (!testMode) {
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+
+        } else {
+            frame.setVisible(false);
+        }
+        closed = true;
     }
 
     public void setDebug(int d) {
@@ -88,5 +99,9 @@ public class Window {
 
     public boolean isFullScreen() {
         return fullscreen;
+    }
+
+    public boolean isClosed() {
+        return closed;
     }
 }

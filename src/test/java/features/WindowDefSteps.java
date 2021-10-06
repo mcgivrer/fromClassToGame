@@ -5,6 +5,7 @@
 
 package features;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import fr.snapgames.fromclasstogame.core.gfx.Window;
@@ -29,6 +30,12 @@ public class WindowDefSteps implements En {
         Then("the window is in fullscreen mode", () -> {
             Thread.sleep(100);
             assertTrue("The window has net been set to windowed mode", win.isFullScreen());
+        });
+        When("I request to close the window", () -> {
+            win.close(true);
+        });
+        Then("the window is closed", () -> {
+            assertTrue("The window has not been closed", win.isClosed());
         });
     }
 }
