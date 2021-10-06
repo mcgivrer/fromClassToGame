@@ -14,6 +14,8 @@ public class Configuration {
     public int height = 200;
     public double scale = 1.0;
 
+    public Double gravity = 0.0;
+
     public double FPS = 60;
 
     public String scenes = "";
@@ -38,6 +40,7 @@ public class Configuration {
         this.title = defaultConfig.getString("game.setup.title");
         this.scenes = defaultConfig.getString("game.setup.scenes");
         this.defaultScene = defaultConfig.getString("game.setup.scene.default");
+        this.gravity = Double.parseDouble(defaultConfig.getString("game.setup.world.gravity"));
     }
 
     public Configuration parseArgs(String[] argv) throws UnknownArgumentException {
