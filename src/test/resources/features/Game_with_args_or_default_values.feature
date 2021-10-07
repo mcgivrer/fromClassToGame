@@ -3,13 +3,13 @@ Feature: The game is running with arguments
   The Game class is started normally by initializing with arguments or default values.
 
   Scenario: The game is started with default values
-    Given the Game is instantiated with "default-scene"
+    Given the Game is instantiated
     Then the Game is running
     And a window of 320 x 200 is created
     And the window title is "test"
 
   Scenario Outline: The game is started without arguments but no scale
-    Given the Game is instantiated with "default-scene"
+    Given the Game is instantiated
     When I prepare the arguments
     And I add argument "width=<width>"
     And I add argument "height=<height>"
@@ -27,7 +27,7 @@ Feature: The game is running with arguments
 
 
   Scenario: The game is started with a wrong argument
-    Given the Game is instantiated with "default-scene"
+    Given the Game is instantiated
     When I prepare the arguments
     And I add argument "arg=unknown"
     Then the Game raises exception
