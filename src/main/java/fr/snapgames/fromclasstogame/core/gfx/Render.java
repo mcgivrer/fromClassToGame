@@ -205,6 +205,6 @@ public class Render extends System {
 
     @Override
     public boolean isReady() {
-        return !renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
+        return renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
     }
 }

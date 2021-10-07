@@ -52,7 +52,7 @@ public class SystemManagerStepDefs implements En {
         });
         Then("all the Systems are ready", () -> {
             for (System system : SystemManager.getSystems()) {
-                assertTrue("The system "+system.getName()+" was not ready",system.isReady());
+                assertTrue("The system "+system.getName()+"was not ready",system.isReady());
             }
         });
     }
