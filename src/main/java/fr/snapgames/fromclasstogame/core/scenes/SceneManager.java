@@ -74,7 +74,8 @@ public class SceneManager extends System {
     }
 
     public void activate() {
-        activate(game.getConfiguration().defaultScene);
+        String defaultScene = game.getConfiguration().defaultScene;
+        activate(defaultScene);
     }
 
     /**
