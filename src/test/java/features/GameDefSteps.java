@@ -34,9 +34,12 @@ public class GameDefSteps extends CommonDefSteps {
     private String[] args;
     private List<String> argList = new ArrayList<>();
 
-    @Given("the Game is instantiated")
-    public void givenTheGameIsInstantiated() {
-         game = new Game("test-scene");
+    SceneManager sm;
+
+    @Given("the Game is instantiated with {string}")
+    public void givenTheGameIsInstantiated(String configFile) {
+        game = null;
+        game = new Game(configFile);
         game.testMode = true;
     }
 
@@ -72,12 +75,9 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("the Game is running")
     public void thenTheGameIsRunning() {
         try {
-            if (args != null) {
-                game.run(args);
-                //((SceneManager) SystemManager.get(SceneManager.class)).activate();
-            } else {
-                game.run(null);
-            }
+            game.run(args);
+            sm = game.getSceneManager();
+            sm.activate();
         } catch (Exception e) {
             logger.error("Unable to run the game", e);
         }
@@ -96,13 +96,13 @@ public class GameDefSteps extends CommonDefSteps {
     @Given("I add a GameObject named {string} at \\({double},{double})")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
         GameObject go = new GameObject(name, x, y);
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = sm.getCurrent();
         scene.add(go);
     }
 
     @Given("the {string} size is {int} x {int}")
     public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         GameObject go = scene.getGameObject(name);
         go.setSize(w, h);
     }
@@ -120,19 +120,20 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Then("the Game has {int} GameObject\\(s).")
     public void theGameHasGameObjectS(int nbObjects) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         assertEquals("The Scene has not the right number of objects", nbObjects, scene.getObjectsList().size());
     }
 
     @And("the {string} GameObject speed is set to \\({double},{double})")
     public void theGameObjectSpeedIsSetTo(String name, Double dx, Double dy) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         GameObject go = scene.getGameObject(name);
         go.setSpeed(dx, dy);
     }
 
     @Then("I update {int} times the scene")
     public void iUpdateTimesTheScene(int nbUpdate) {
+        Scene scene = sm.getCurrent();
         for (int i = 0; i < nbUpdate; i++) {
             long dt = (long) (1000.0 / game.getConfiguration().FPS);
             game.update(dt);
@@ -141,7 +142,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @And("the {string} GameObject is now at \\({double},{double})")
     public void theGameObjectIsNowAt(String name, Double x, Double y) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         GameObject go = scene.getGameObject(name);
         assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 10.0);
         assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 10.0);
@@ -192,37 +193,44 @@ public class GameDefSteps extends CommonDefSteps {
 
     @And("I add a TextObject named {string} at \\({double},{double})")
     public void iAddATextObjectNamedAt(String name, Double x, Double y) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         TextObject to = new TextObject(name, x, y);
         scene.add(to);
     }
 
     @And("the text for {string} is {string}")
     public void theTextForIs(String name, String text) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
         to.setText(text);
     }
 
     @And("the TextObject default color for {string} is White")
     public void theTextObjectDefaultColorForIsWhite(String name) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
         assertEquals("Default color for Text Object is not White", Color.WHITE, to.color);
     }
 
     @Then("the TextObject default font for {string} is null")
     public void theTextObjectDefaultFontForIsNull(String name) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
         assertNull("The default TextObject font is not null", to.font);
     }
 
     @And("the Entity {string} as {string} Material")
     public void theEntityAsMaterial(String entityName, String materialTypeName) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = sm.getCurrent();
         GameObject e = scene.getGameObject(entityName);
         // TODO parse materialTypeName to use the right DefaultMaterial.
         e.material = Material.DefaultMaterial.WOOD.getMaterial();
+    }
+
+    @And("I set a World of \\({double},{double}) units with gravity of {double}")
+    public void iAddADefaultWorldContainer(double width, double height, double gravity) {
+        World w = new World(width, height);
+        w.setGravity(gravity);
+        game.getPhysicEngine().setWorld(w);
     }
 }
