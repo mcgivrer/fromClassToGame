@@ -1,19 +1,20 @@
 package fr.snapgames.fromclasstogame.core;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.physic.World;
+import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * Project: From Class To Game
@@ -26,18 +27,16 @@ import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException
 public class Game implements KeyListener {
 
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
-
+    public boolean exit = false;
+    public boolean testMode = false;
     private long realFPS = 60;
-
     private Window window;
-    private Render renderer = new Render(320, 200);
+    private Render renderer;
     private InputHandler inputHandler;
     private SceneManager sceneManager;
     private Configuration configuration;
+    private CollisionSystem cs;
     private PhysicEngine pe;
-
-    public boolean exit = false;
-    public boolean testMode = false;
 
     /**
      * the mandatory default constructor
@@ -47,7 +46,9 @@ public class Game implements KeyListener {
     }
 
     /**
-     * A constructure mainly used for test purpose.
+     * A constructor mainly used for test purpose.
+     *
+     * @param configPath path to the configuration properties file
      */
     public Game(String configPath) {
         configuration = new Configuration(configPath);
@@ -58,7 +59,7 @@ public class Game implements KeyListener {
      *
      * @param t title for the game window
      * @param w width of the game window
-     * @param h heigth of the game window
+     * @param h height of the game window
      */
     public Game(String t, int w, int h) {
         this("config");
@@ -66,7 +67,6 @@ public class Game implements KeyListener {
         configuration.width = w;
         configuration.height = h;
     }
-
 
     public static void main(String[] argc) {
         try {
@@ -81,22 +81,30 @@ public class Game implements KeyListener {
      * Initialization of the display window and everything the game will need.
      */
     public void initialize(String[] argv) throws UnknownArgumentException {
-
+        SystemManager.initialize(this);
         configuration.parseArgs(argv);
 
-        renderer = new Render(configuration.width, configuration.height);
+        SystemManager.add(Render.class);
+        SystemManager.add(PhysicEngine.class);
+        SystemManager.add(InputHandler.class);
+        SystemManager.add(SceneManager.class);
+        SystemManager.add(CollisionSystem.class);
+
+        SystemManager.configure(configuration);
+
+        renderer = (Render) SystemManager.get(Render.class);
         renderer.setDebugLevel(configuration.debugLevel);
 
         window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
                 (int) (configuration.height * configuration.scale));
 
-        pe = new PhysicEngine(this);
-
-        inputHandler = new InputHandler(window);
+        pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
+        cs = (CollisionSystem) SystemManager.get(CollisionSystem.class);
+        inputHandler = (InputHandler) SystemManager.get(InputHandler.class);
+        inputHandler.setWindow(window);
         inputHandler.addKeyListener(this);
 
-        sceneManager = new SceneManager(this);
-        sceneManager.initialize(configuration.scenes.split(","));
+        sceneManager = (SceneManager) SystemManager.get(SceneManager.class);
     }
 
     /**
@@ -119,7 +127,7 @@ public class Game implements KeyListener {
     }
 
     /**
-     * the famous main game loop where everything happend.
+     * the famous main game loop where everything happened.
      */
     private void loop() {
         long start = System.currentTimeMillis();
@@ -188,10 +196,10 @@ public class Game implements KeyListener {
      * Free everything
      */
     private void dispose() {
-        renderer.clear();
         if (!testMode) {
             window.close();
         }
+        SystemManager.dispose();
     }
 
     /**
@@ -199,14 +207,6 @@ public class Game implements KeyListener {
      */
     public void requestExit() {
         this.exit = true;
-    }
-
-    public Window getWindow() {
-        return window;
-    }
-
-    public Render getRender() {
-        return renderer;
     }
 
     @Override
@@ -223,8 +223,11 @@ public class Game implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_F11:
+            case KeyEvent.VK_F3:
                 renderer.saveScreenshot();
+                break;
+            case KeyEvent.VK_F11:
+                window.switchFullScreen();
                 break;
             case KeyEvent.VK_ESCAPE:
                 this.exit = true;
@@ -235,8 +238,14 @@ public class Game implements KeyListener {
 
     }
 
+    public Game setWorld(World world) {
+        this.pe.setWorld(world);
+        this.renderer.setWorld(world);
+        return this;
+    }
+
     public SceneManager getSceneManager() {
-        return sceneManager;
+        return this.sceneManager;
     }
 
     public Configuration getConfiguration() {
@@ -244,13 +253,16 @@ public class Game implements KeyListener {
     }
 
 
-    public Game setWorld(World world) {
-        this.pe.setWorld(world);
-        this.renderer.setWorld(world);
-        return this;
+    public PhysicEngine getPhysicEngine() {
+        return (PhysicEngine) SystemManager.get(PhysicEngine.class);
     }
 
-    public PhysicEngine getPhysicEngine() {
-        return pe;
+    public Window getWindow() {
+        return window;
     }
+
+    public Render getRender() {
+        return (Render) SystemManager.get(Render.class);
+    }
+
 }

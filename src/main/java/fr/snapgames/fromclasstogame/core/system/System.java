@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.core.physic;
+package fr.snapgames.fromclasstogame.core.system;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
@@ -29,7 +29,29 @@ public abstract class System {
         this.game = g;
     }
 
+    public abstract String getName();
+
     public abstract int initialize(Configuration config);
 
     public abstract void dispose();
+
+    public boolean isReady() {
+        return true;
+    }
+
+    public void add(GameObject o) {
+        if (!objects.contains(o)) {
+            objects.add(o);
+        }
+    }
+
+    public void clearObjects() {
+        objects.clear();
+    }
+
+    public void remove(GameObject o) {
+        if (objects.contains(o)) {
+            objects.remove(o);
+        }
+    }
 }

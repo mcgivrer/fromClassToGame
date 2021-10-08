@@ -42,4 +42,4 @@ mvn exec:java
 
 You will get the current display:
 
-![screenshot](docs/images/../../src/docs/images/capture-01.png "a screenshot of the current sample demo")
+![screenshot-001](docs/images/../../src/docs/images/capture-001.png "a screenshot of the current sample demo")

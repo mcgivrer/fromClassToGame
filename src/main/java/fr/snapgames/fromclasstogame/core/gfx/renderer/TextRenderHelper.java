@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.core.gfx;
+package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import java.awt.Graphics2D;
 
@@ -12,7 +12,6 @@ public class TextRenderHelper implements RenderHelper {
         g.setFont(to.font);
         g.setColor(to.color);
         g.drawString(to.text, (int) (to.x), (int) (to.y));
-
     }
 
     @Override
