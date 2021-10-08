@@ -140,3 +140,74 @@ So first we will need a class with an image buffer.
 ```
 
 So the class is in charge of creating and maintaining an internal draw buffer. The render() method will first clear this image buffer (with a black color), and will do more thing in the future chapters.
+
+### extending things
+
+To rise this simple Window, we are going to add some fancy features like:
+
+- Saving a window capture to a file ins JPG or PNG file format,
+- Switching the Window display from a windowed mode to a full screen mode.
+
+These 2 features are really easy to implement. The capture mode can be implemented using the ImageIO capabilities into the `Render` class, the mod switching will be managed into the `Window` class.
+
+#### Screen capture
+
+First of all, get the default path where to save screenshots.
+Then build the `screenshots` directory, and finally, copy the BufferedImage to a PNG file.
+
+```java
+class Render {
+    ...
+
+    public void saveScreenshot() {
+        final String path = this.getClass().getResource("/").getPath();
+        Path targetDir = Paths.get(path + "/screenshots");
+        int i = screenShotIndex++;
+        String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
+
+        try {
+            if (!Files.exists(targetDir)) {
+                Files.createDirectory(targetDir);
+            }
+            File out = new File(filename);
+            ImageIO.write(getBuffer(), "PNG", out);
+
+            logger.info("Write screenshot to {}", filename);
+        } catch (IOException e) {
+            logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
+        }
+    }
+    ...
+}
+```
+
+#### Mode switching
+
+The window mode is the default JFrame behavior, so nothing to do with that, just use `JFrame#setVisible()` capability.
+
+But yo activate the full screen mode, we need to gather some graphic device information:
+
+```java
+class Window {
+    ...
+    boolean fullscreen;
+    ...
+    public void switchFullScreen() {
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = env.getDefaultScreenDevice();
+        if (!fullscreen && frame.isActive() && device.isFullScreenSupported()) {
+            device.setFullScreenWindow(frame);
+            fullscreen = true;
+        } else {
+            device.setFullScreenWindow(null);
+            frame.setVisible(true);
+            fullscreen = false;
+        }
+    }
+}
+```
+
+So first get the default `GraphicsEnvironment` to retrieve the current active `GraphicsDevice`.
+then use this `GraphicsDevice` to make our JFrame the content of this device.
+
+Switching back to the Windowed mode will consists in removeing the `JFrame` from the current device content, and set a `setVisible()` on our frame.

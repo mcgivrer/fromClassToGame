@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 
@@ -17,6 +18,7 @@ public class Window {
     private JFrame frame;
     private Font debugFont;
     private int debug = 0;
+    private boolean fullscreen;
 
     public Window(String title, int width, int height) {
         setFrame(title, width, height);
@@ -68,4 +70,23 @@ public class Window {
         this.debug = d;
     }
 
+    /**
+     * Switching from windowed to fullscreen.
+     */
+    public void switchFullScreen() {
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = env.getDefaultScreenDevice();
+        if (!fullscreen && device.isFullScreenSupported()) {
+            device.setFullScreenWindow(frame);
+            fullscreen = true;
+        } else {
+            device.setFullScreenWindow(null);
+            frame.setVisible(true);
+            fullscreen = false;
+        }
+    }
+
+    public boolean isFullScreen() {
+        return fullscreen;
+    }
 }

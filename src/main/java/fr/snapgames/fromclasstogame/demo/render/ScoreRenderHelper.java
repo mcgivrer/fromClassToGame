@@ -2,7 +2,8 @@ package fr.snapgames.fromclasstogame.demo.render;
 
 import java.awt.*;
 
-import fr.snapgames.fromclasstogame.core.gfx.RenderHelper;
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 
 public class ScoreRenderHelper implements RenderHelper {
@@ -18,7 +19,7 @@ public class ScoreRenderHelper implements RenderHelper {
         g.drawString(so.text, (int) (so.x), (int) (so.y));
     }
 
-    private void drawBorder(Graphics2D g, double maxBorderWidth, ScoreObject so) {
+    protected void drawBorder(Graphics2D g, double maxBorderWidth, TextObject so) {
         // draw black border
         g.setColor(Color.BLACK);
         for (double x = so.x - maxBorderWidth; x < so.x + maxBorderWidth; x++) {
