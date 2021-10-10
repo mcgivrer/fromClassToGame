@@ -1,31 +1,32 @@
 package features;
 
-import java.awt.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ResourceManager;
-import fr.snapgames.fromclasstogame.core.entity.TextObject;
-import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.physic.Material;
-import fr.snapgames.fromclasstogame.core.physic.World;
-import fr.snapgames.fromclasstogame.core.scenes.Scene;
-import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
-import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
+import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
-import static org.junit.Assert.*;
 
 public class GameDefSteps extends CommonDefSteps {
 
@@ -95,14 +96,13 @@ public class GameDefSteps extends CommonDefSteps {
     @Given("I add a GameObject named {string} at \\({double},{double})")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
         GameObject go = new GameObject(name, x, y);
-        SceneManager sm =((SceneManager) SystemManager.get(SceneManager.class));
-        Scene scene = sm.getCurrent();
+        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
         scene.add(go);
     }
 
     @Given("the {string} size is {int} x {int}")
     public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
         go.setSize(w, h);
     }
@@ -120,31 +120,28 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Then("the Game has {int} GameObject\\(s).")
     public void theGameHasGameObjectS(int nbObjects) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         assertEquals("The Scene has not the right number of objects", nbObjects, scene.getObjectsList().size());
     }
 
     @And("the {string} GameObject speed is set to \\({double},{double})")
     public void theGameObjectSpeedIsSetTo(String name, Double dx, Double dy) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
         go.setSpeed(dx, dy);
     }
 
     @Then("I update {int} times the scene")
     public void iUpdateTimesTheScene(int nbUpdate) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
         for (int i = 0; i < nbUpdate; i++) {
             long dt = (long) (1000.0 / game.getConfiguration().FPS);
-
-            scene.update(dt);
-            game.getPhysicEngine().update(dt);
+            game.update(dt);
         }
     }
 
     @And("the {string} GameObject is now at \\({double},{double})")
     public void theGameObjectIsNowAt(String name, Double x, Double y) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
         assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 10.0);
         assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 10.0);
@@ -195,35 +192,35 @@ public class GameDefSteps extends CommonDefSteps {
 
     @And("I add a TextObject named {string} at \\({double},{double})")
     public void iAddATextObjectNamedAt(String name, Double x, Double y) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         TextObject to = new TextObject(name, x, y);
         scene.add(to);
     }
 
     @And("the text for {string} is {string}")
     public void theTextForIs(String name, String text) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
         to.setText(text);
     }
 
     @And("the TextObject default color for {string} is White")
     public void theTextObjectDefaultColorForIsWhite(String name) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
         assertEquals("Default color for Text Object is not White", Color.WHITE, to.color);
     }
 
     @Then("the TextObject default font for {string} is null")
     public void theTextObjectDefaultFontForIsNull(String name) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         TextObject to = (TextObject) scene.getGameObject(name);
         assertNull("The default TextObject font is not null", to.font);
     }
 
     @And("the Entity {string} as {string} Material")
     public void theEntityAsMaterial(String entityName, String materialTypeName) {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         GameObject e = scene.getGameObject(entityName);
         // TODO parse materialTypeName to use the right DefaultMaterial.
         e.material = Material.DefaultMaterial.WOOD.getMaterial();
