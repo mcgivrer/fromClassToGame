@@ -6,10 +6,11 @@ import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException
 
 public class Configuration {
 
-    private ResourceBundle defaultConfig;
+    public ResourceBundle defaultConfig;
 
     public String title = "fromClassToGame";
 
+    public int defaultScreen;
     public int width = 320;
     public int height = 200;
     public double scale = 1.0;
@@ -33,10 +34,12 @@ public class Configuration {
     public void readValuesFromFile() {
 
         this.debugLevel = Integer.parseInt(defaultConfig.getString("game.setup.debugLevel"));
+        this.defaultScreen = Integer.parseInt(defaultConfig.getString("game.setup.screen"));
         this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
         this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
         this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
         this.FPS = Double.parseDouble(defaultConfig.getString("game.setup.fps"));
+
         this.title = defaultConfig.getString("game.setup.title");
         this.scenes = defaultConfig.getString("game.setup.scenes");
         this.defaultScene = defaultConfig.getString("game.setup.scene.default");
@@ -68,6 +71,9 @@ public class Configuration {
                         break;
                     case "scene":
                         this.defaultScene = values[1];
+                        break;
+                    case "screen":
+                        this.defaultScreen = Integer.parseInt(values[1]);
                         break;
                     default:
                         throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
