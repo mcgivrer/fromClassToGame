@@ -2,7 +2,6 @@ package features;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import io.cucumber.java8.En;
-import org.junit.Assert;
 
 import java.util.Arrays;
 import java.util.HashMap;
