@@ -23,6 +23,8 @@ public class PhysicEngine extends System {
     @Override
     public int initialize(Configuration config) {
         objects = new ArrayList<>();
+        world = new World(config.width, config.height);
+        world.setGravity(config.gravity);
         return 1;
     }
 
@@ -47,7 +49,7 @@ public class PhysicEngine extends System {
 
             go.x += go.dx * dt;
             go.y += go.dy * dt;
-          
+
             verifyGameConstraint(go);
 
             if (go.bbox != null) {
