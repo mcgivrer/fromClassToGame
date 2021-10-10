@@ -183,4 +183,13 @@ public class Configuration {
     }
 }
 ```
+### Evolution
+
+The Configuration class will integrate progressively more and 
+more parameters to be set and loaded from the properties file.
+
+The best way to add new attributes to the configuration will be to add 
+some helpers on definition and on parsing vaue, but also on help side.
+Requesting from the CLI, you would get a well formated and documented 
+help bout possible parameters and their values.
 
