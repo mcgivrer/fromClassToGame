@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-package fr.snapgames.fromclasstogame.core.config.cli;
+package fr.snapgames.fromclasstogame.core.config.cli.exception;
 
 public class ArgumentUnknownException extends Exception {
 

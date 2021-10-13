@@ -5,11 +5,13 @@
 
 package fr.snapgames.fromclasstogame.core.config.cli;
 
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-
-import fr.snapgames.fromclasstogame.core.Game;
 
 public class CliManager {
     @SuppressWarnings("unused")
@@ -25,7 +27,7 @@ public class CliManager {
     public void add(ArgParser<?> ap) {
         argParsers.put(ap.getName(), ap);
         configParsers.put(ap.getConfigKey(), ap);
-        System.out.print("add cli parser for " + ap.getDescription());
+        System.out.println("add cli parser for " + ap.getDescription());
     }
 
     public void parse(String[] args) {
@@ -48,8 +50,10 @@ public class CliManager {
             if (ap.getShortKey().equals(itemValue[0]) || ap.getLongKey().equals(itemValue[0])) {
                 if (ap.validate(itemValue[1])) {
                     values.put(ap.getName(), ap.getValue());
+
+                    System.out.println("- " + ap.getDescription());
                 } else {
-                    System.err.print(ap.getErrorMessage(null));
+                    System.err.println(ap.getErrorMessage(null));
                 }
             }
         }
@@ -68,13 +72,18 @@ public class CliManager {
     }
 
     public void parse(ResourceBundle configFile) {
-        while (configFile.getKeys().hasMoreElements()) {
-            String k = configFile.getKeys().nextElement();
+        Enumeration<String> configItems = configFile.getKeys();
+        while (configItems.hasMoreElements()) {
+            String k = configItems.nextElement();
             ArgParser<?> ap = configParsers.get(k);
-            if(ap.validate(configFile.getString(k))){
-                values.put(ap.getName(), ap.getValue());
-            }else{
-                System.err.print(String.format("The key %s is unknown",k));
+            String configItemValue = configFile.getString(k);
+            if (ap.validate(configItemValue)) {
+                String name = ap.getName();
+                Object value = ap.getValue();
+                values.put(name, value);
+                System.out.println("- " + ap.getName() + ":" + ap.getValue() + " (" + ap.getDescription() + ")");
+            } else {
+                System.err.print(String.format("The key %s is unknown", k));
             }
         }
     }
