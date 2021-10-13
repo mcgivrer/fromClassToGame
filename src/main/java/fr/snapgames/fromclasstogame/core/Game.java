@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.core;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
@@ -80,7 +81,7 @@ public class Game implements KeyListener {
     /**
      * Initialization of the display window and everything the game will need.
      */
-    public void initialize(String[] argv) throws UnknownArgumentException {
+    public void initialize(String[] argv) throws ArgumentUnknownException {
         SystemManager.initialize(this);
         configuration.parseArgs(argv);
 
@@ -112,7 +113,7 @@ public class Game implements KeyListener {
      *
      * @throws UnknownArgumentException
      */
-    public void run(String[] argv) throws UnknownArgumentException {
+    public void run(String argv[]) throws ArgumentUnknownException {
         initialize(argv);
         createScene();
         loop();

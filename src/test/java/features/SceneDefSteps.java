@@ -1,11 +1,11 @@
 package features;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
-import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -13,7 +13,8 @@ import io.cucumber.java.en.Then;
 
 import java.awt.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SceneDefSteps extends CommonDefSteps {
 
@@ -22,7 +23,7 @@ public class SceneDefSteps extends CommonDefSteps {
         game = new Game(configFile);
         try {
             game.initialize(null);
-        } catch (UnknownArgumentException e) {
+        } catch (ArgumentUnknownException e) {
             e.printStackTrace();
         }
         game.testMode = true;
@@ -32,7 +33,7 @@ public class SceneDefSteps extends CommonDefSteps {
     public void theTitleIs(String title) {
         try {
             game.run(new String[]{"title=" + title});
-        } catch (UnknownArgumentException uae) {
+        } catch (ArgumentUnknownException uae) {
             fail("Uknown Argument");
         }
 

@@ -1,7 +1,7 @@
 package features;
 
 import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
+import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
@@ -27,7 +27,7 @@ public class RenderHelperStepDefs {
         game.testMode = true;
         try {
             game.run(new String[]{});
-        } catch (UnknownArgumentException e) {
+        } catch (ArgumentUnknownException e) {
             fail("Unable to start Game");
         }
     }
