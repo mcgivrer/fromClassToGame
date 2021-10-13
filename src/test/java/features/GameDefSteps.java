@@ -34,7 +34,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
-         game = new Game("test-scene");
+        game = new Game("test-scene");
         game.testMode = true;
     }
 
@@ -48,12 +48,11 @@ public class GameDefSteps extends CommonDefSteps {
     public void andIAddArgumentString(String arg) {
 
         argList.add(arg);
-        args = new String[argList.size() + 1];
+        args = new String[argList.size()];
         int i = 0;
         for (String a : argList) {
             args[i++] = a;
         }
-        args[i++] = arg;
     }
 
     @And("a window of {int} x {int} is created")

@@ -24,7 +24,7 @@ public class SceneDefSteps extends CommonDefSteps {
         try {
             game.initialize(null);
         } catch (ArgumentUnknownException e) {
-            e.printStackTrace();
+            System.err.println("Error parsing args " + e.getMessage());
         }
         game.testMode = true;
     }

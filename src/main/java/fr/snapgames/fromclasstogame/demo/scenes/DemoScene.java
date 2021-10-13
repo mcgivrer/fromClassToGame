@@ -51,9 +51,12 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         g.setWorld(new World(800, 600));
         // add main character (player)
-        GameObject player = new GameObject("player", 160, 100).setType(GameObject.GOType.IMAGE).setColor(Color.RED)
+        GameObject player = new GameObject("player", 160, 100)
+                .setType(GameObject.GOType.IMAGE)
+                .setColor(Color.RED)
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
-                .setMaterial(DefaultMaterial.ROCK.getMaterial());
+                .setMaterial(DefaultMaterial.WOOD.getMaterial())
+                .setMass(10);
         add(player);
 
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
@@ -62,9 +65,12 @@ public class DemoScene extends AbstractScene {
 
         // Add enemies(enemy_99)
         for (int i = 0; i < 10; i++) {
-            GameObject e = new GameObject("enemy_" + i, rand(0, 320), rand(0, 200)).setType(GameObject.GOType.IMAGE)
-                    .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
-                    .setMaterial(DefaultMaterial.RUBBER.getMaterial());
+            GameObject e = new GameObject("enemy_" + i, 0, 0)
+                    .setType(GameObject.GOType.IMAGE)
+                    .setColor(Color.ORANGE)
+                    .setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
+                    .setMaterial(DefaultMaterial.RUBBER.getMaterial())
+                    .setMass(rand(-8, 13));
             add(e);
         }
         Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.BOLD, 14);
@@ -94,16 +100,21 @@ public class DemoScene extends AbstractScene {
         lifeTO.setColor(Color.WHITE);
         lifeTO.priority = 12;
         add(lifeTO);
+        randomizeEnemies();
     }
 
     @Override
     public void activate() {
+        randomizeEnemies();
+        this.score = 0;
+    }
+
+    private void randomizeEnemies() {
         find("enemy_").forEach(go -> go
                 .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
                         rand(0, game.getPhysicEngine().getWorld().height))
-                .setVelocity(new Vector2d(rand(-0.1, 0.1), rand(-0.1, 0.1)))
-                );
-        this.score = 0;
+                .setAcceleration(new Vector2d(rand(-40, 40), 0.0))
+        );
     }
 
     @Override
@@ -125,25 +136,29 @@ public class DemoScene extends AbstractScene {
     public void input(InputHandler inputHandler) {
         GameObject player = this.getGameObject("player");
         double speed = 0.0;
+        double speedStep = 2;
         if (inputHandler.getKey(KeyEvent.VK_CONTROL)) {
-            speed = 0.8;
+            speed = speedStep * 4;
         } else if (inputHandler.getKey(KeyEvent.VK_SHIFT)) {
-            speed = 0.4;
+            speed = speedStep * 2;
         } else {
-            speed = 0.2;
+            speed = speedStep;
         }
 
         if (inputHandler.getKey(KeyEvent.VK_UP)) {
-            player.velocity.y = -2 * speed;
+            player.acceleration.y = -14 * speed;
         }
         if (inputHandler.getKey(KeyEvent.VK_DOWN)) {
-            player.velocity.y = speed;
+            player.acceleration.y = speed;
         }
         if (inputHandler.getKey(KeyEvent.VK_LEFT)) {
-            player.velocity.x = -speed;
+            player.acceleration.x = -speed;
         }
         if (inputHandler.getKey(KeyEvent.VK_RIGHT)) {
-            player.velocity.x = speed;
+            player.acceleration.x = speed;
+        }
+        if (inputHandler.getKey(KeyEvent.VK_G)) {
+            game.getPhysicEngine().getWorld().gravity.y = -game.getPhysicEngine().getWorld().gravity.y;
         }
     }
 

@@ -10,7 +10,7 @@ Feature: The configuration is loaded from a properties file
     And the default game height is 200
     And the default game scale is 1
     And the default screen is -1
-    And the default world gravity is 0.981
+    And the default world gravity is 0.0,-0.981
     And the scene "test1" is "fr.snapgames.fromclasstogame.test.scenes.TestScene"
     And the scene "test2" is "fr.snapgames.fromclasstogame.test.scenes.TestScene"
     And the scene "test3" is "fr.snapgames.fromclasstogame.test.scenes.TestScene"

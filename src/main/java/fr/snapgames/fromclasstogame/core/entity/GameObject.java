@@ -116,4 +116,9 @@ public class GameObject implements Entity {
         return this;
     }
 
+    public GameObject setMass(double mass){
+        this.mass = mass;
+        return this;
+    }
+
 }
