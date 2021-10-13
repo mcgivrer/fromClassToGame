@@ -1,6 +1,7 @@
 package features;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import io.cucumber.java8.En;
 
 import java.util.Arrays;
@@ -35,8 +36,9 @@ public class ConfigurationStepdefs implements En {
         And("the default screen is {int}", (Integer screenId) -> {
             assertEquals("the default scale has not been set to " + screenId, screenId, config.defaultScreen, 0.1);
         });
-        And("the default world gravity is {double}", (Double gravity) -> {
-            assertEquals("the default scale has not been set to " + gravity, gravity, config.gravity, 0.1);
+        And("the default world gravity is {double},{double}", (Double gravityX, Double gravityY) -> {
+            Vector2d vG = new Vector2d(gravityX, gravityY);
+            assertEquals("the default gravity has not been set to (" + gravityX + "," + gravityY + ")", vG, config.gravity);
         });
         And("the scene {string} is {string}", (String name, String className) -> {
             String[] scenes = config.scenes.split(",");

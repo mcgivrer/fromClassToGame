@@ -40,23 +40,39 @@ public class PhysicEngine extends System {
     }
 
     private void update(GameObject go, long dt) {
+        double dtCorrected = dt * 0.01;
         if (!go.relativeToCamera) {
 
             // Acceleration is not already used in velocity & position computation
+            Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
+            go.acceleration = go.acceleration.add(gravity.multiply(-1)).add(new Vector2d(0, go.mass));
+
+            // Compute velocity
             double friction = go.material != null ? go.material.staticFriction : 1;
-            go.velocity.x = go.velocity.x * friction;
-            double gravity = world != null ? world.gravity : 0;
-            go.velocity.y = (go.velocity.y + go.gravity + (gravity * 0.11)) * friction * 1 / go.mass;
+            double dynFriction = go.material != null ? go.material.dynFriction : 1;
+            go.velocity = go.velocity.add(go.acceleration.multiply(dtCorrected).multiply(friction).multiply(dynFriction));
 
-            go.position.x += go.velocity.x * dt;
-            go.position.y += go.velocity.y * dt;
+            // Compute position
+            go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
+            go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
 
+
+            // test World space constrained
             verifyGameConstraint(go);
 
+            // update Bounding box for this GameObject.
             if (go.bbox != null) {
                 go.bbox.update(go);
             }
         }
+    }
+
+    private double ceilValue(double x, double ceil) {
+        return Math.copySign((Math.abs(x) < ceil ? 0 : x), x);
+    }
+
+    private double ceilMinMaxValue(double x, double min, double max) {
+        return ceilValue(Math.copySign((Math.abs(x) > max ? max : x), x), min);
     }
 
     private void verifyGameConstraint(GameObject go) {
