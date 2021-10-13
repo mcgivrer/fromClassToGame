@@ -22,7 +22,5 @@ public interface ArgParser<T> {
 
     public T getDefaultValue();
 
-    public void parseFromConfigFile(String line);
-
     public String getConfigKey();
 }
