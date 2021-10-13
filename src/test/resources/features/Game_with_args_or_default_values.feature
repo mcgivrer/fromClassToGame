@@ -20,10 +20,10 @@ Feature: The game is running with arguments
     And the window title is "<title>"
 
     Examples:
-      | title  | scale | width | height | win_width | win_height |
-      | test_1 | 1.0   | 320   | 200    | 320       | 200        |
-      | test_2 | 1.0   | 640   | 400    | 640       | 400        |
-      | test_3 | 2.0   | 320   | 200    | 640       | 400        |
+      | title | scale | width | height | win_width | win_height |
+      | testA | 1.0   | 320   | 200    | 320       | 200        |
+      | testB | 1.0   | 640   | 400    | 640       | 400        |
+      | testC | 2.0   | 320   | 200    | 640       | 400        |
 
 
   Scenario: The game is started with a wrong argument
