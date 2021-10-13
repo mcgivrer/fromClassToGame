@@ -12,13 +12,6 @@ public class StringArgParser extends AbstractArgParser<String> {
     }
 
     @Override
-    public void parseFromConfigFile(String line) {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    @Override
     public boolean validate(String strValue) {
         Optional<String> valueMightBeNull = Optional.of(strValue);
         if (valueMightBeNull.isPresent()) {

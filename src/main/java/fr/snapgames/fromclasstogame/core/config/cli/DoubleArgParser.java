@@ -8,7 +8,7 @@ package fr.snapgames.fromclasstogame.core.config.cli;
 public class DoubleArgParser extends AbstractArgParser<Double> {
 
     public DoubleArgParser(String name, String shortKey, String longKey, String description, String configKey,
-            Double defaultValue) {
+                           Double defaultValue) {
         super(name, description, shortKey, longKey, configKey);
         setDefaultValue(defaultValue);
     }
@@ -33,11 +33,4 @@ public class DoubleArgParser extends AbstractArgParser<Double> {
         Double i = Double.parseDouble(strValue);
         return i;
     }
-
-    @Override
-    public void parseFromConfigFile(String line) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

@@ -28,7 +28,7 @@ public class Configuration {
 
     public Configuration(String configurationPath) {
 
-        cm = new CliManager(null);
+        cm = new CliManager();
         defaultConfig = ResourceBundle.getBundle(configurationPath);
         initializeArgParser();
         readValuesFromFile();

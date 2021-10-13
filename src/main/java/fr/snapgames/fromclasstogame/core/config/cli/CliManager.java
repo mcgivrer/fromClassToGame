@@ -14,14 +14,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class CliManager {
-    @SuppressWarnings("unused")
-    private Game game;
     private Map<String, ArgParser<?>> argParsers = new HashMap<>();
     private Map<String, ArgParser<?>> configParsers = new HashMap<>();
     private Map<String, Object> values = new HashMap<>();
 
-    public CliManager(Game g) {
-        this.game = g;
+    public CliManager() {
     }
 
     public void add(ArgParser<?> ap) {

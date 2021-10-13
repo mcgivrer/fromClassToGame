@@ -35,10 +35,4 @@ public class IntegerArgParser extends AbstractArgParser<Integer> {
         int value = Integer.parseInt(strValue);
         return value;
     }
-
-    @Override
-    public void parseFromConfigFile(String line) {
-
-    }
-
 }
