@@ -11,7 +11,7 @@ public class TextRenderHelper implements RenderHelper {
         TextObject to = (TextObject) go;
         g.setFont(to.font);
         g.setColor(to.color);
-        g.drawString(to.text, (int) (to.x), (int) (to.y));
+        g.drawString(to.text, (int) (to.position.x), (int) (to.position.y));
     }
 
     @Override

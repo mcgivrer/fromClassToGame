@@ -16,14 +16,14 @@ public class ScoreRenderHelper implements RenderHelper {
         g.setFont(so.font);
         drawBorder(g, maxBorderWidth, so);
         g.setColor(so.color);
-        g.drawString(so.text, (int) (so.x), (int) (so.y));
+        g.drawString(so.text, (int) (so.position.x), (int) (so.position.y));
     }
 
     protected void drawBorder(Graphics2D g, double maxBorderWidth, TextObject so) {
         // draw black border
         g.setColor(Color.BLACK);
-        for (double x = so.x - maxBorderWidth; x < so.x + maxBorderWidth; x++) {
-            for (double y = so.y - maxBorderWidth; y < so.y + maxBorderWidth; y++) {
+        for (double x = so.position.x - maxBorderWidth; x < so.position.x + maxBorderWidth; x++) {
+            for (double y = so.position.y - maxBorderWidth; y < so.position.y + maxBorderWidth; y++) {
                 g.drawString(so.text, (int) (x), (int) (y));
             }
         }

@@ -20,6 +20,7 @@ import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
@@ -114,8 +115,8 @@ public class GameDefSteps extends CommonDefSteps {
         GameObject go = sm.getCurrent().getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
                 sm.getCurrent().getObjectsList().size());
-        assertEquals("the GameObject is not horizontally centered", render.getBuffer().getWidth() / 2, go.x, 0.0);
-        assertEquals("the GameObject is not vertically centered", render.getBuffer().getHeight() / 2, go.y, 0.0);
+        assertEquals("the GameObject is not horizontally centered", render.getBuffer().getWidth() / 2, go.position.x, 0.0);
+        assertEquals("the GameObject is not vertically centered", render.getBuffer().getHeight() / 2, go.position.y, 0.0);
     }
 
     @Then("the Game has {int} GameObject\\(s).")
@@ -128,7 +129,7 @@ public class GameDefSteps extends CommonDefSteps {
     public void theGameObjectSpeedIsSetTo(String name, Double dx, Double dy) {
         Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
-        go.setSpeed(dx, dy);
+        go.setVelocity(new Vector2d(dx, dy));
     }
 
     @Then("I update {int} times the scene")
@@ -143,8 +144,8 @@ public class GameDefSteps extends CommonDefSteps {
     public void theGameObjectIsNowAt(String name, Double x, Double y) {
         Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
-        assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 10.0);
-        assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 10.0);
+        assertEquals("the GameObject " + name + " is not horizontally centered", x, go.position.x, 10.0);
+        assertEquals("the GameObject " + name + " is not vertically centered", y, go.position.y, 10.0);
     }
 
     @And("The font {string} is added")

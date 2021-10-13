@@ -8,10 +8,10 @@ public class Box {
     public double height;
 
     public void update(GameObject go) {
-        x = go.x;
-        y = go.y;
+        x = go.position.x;
+        y = go.position.y;
         width = go.width;
-        height = go.y;
+        height = go.height;
     }
 
     public boolean collide(Box b) {
