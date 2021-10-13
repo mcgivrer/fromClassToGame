@@ -2,6 +2,7 @@ package features;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import io.cucumber.java8.En;
 import org.junit.Assert;
 
@@ -25,10 +26,16 @@ public class PhysicEngineStepDefs implements En {
         Then("the PhysicEngine default world height is {double}", (Double height) -> {
             Assert.assertEquals("The world height is not set to " + height, height, pe.getWorld().height, 0.0);
         });
-        Then("the PhysicEngine default world gravity is {double}", (Double g) -> {
-            Assert.assertEquals("The world gravity is not set to " + g, g, pe.getWorld().gravity, 0.0);
+        And("the PhysicEngine default world gravity is {double},{double}", (Double vx, Double vy) -> {
+            Vector2d vg = new Vector2d(vx, vy);
+            Assert.assertEquals("The world gravity is not set to " + vg.toString(), vg, pe.getWorld().gravity);
         });
 
+        /*
+                    Vector2d vg = new Vector2d(vx, vy);
+            Assert.assertEquals("The world gravity is not set to " + vg.toString(), vg, pe.getWorld().gravity);
+
+         */
     }
 
 }
