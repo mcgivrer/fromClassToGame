@@ -42,13 +42,14 @@ public class PhysicEngine extends System {
     private void update(GameObject go, long dt) {
         if (!go.relativeToCamera) {
 
+            // Acceleration is not already used in velocity & position computation
             double friction = go.material != null ? go.material.staticFriction : 1;
-            go.dx = go.dx * friction;
+            go.velocity.x = go.velocity.x * friction;
             double gravity = world != null ? world.gravity : 0;
-            go.dy = (go.dy + go.gravity + (gravity * 0.11)) * friction * 1 / go.mass;
+            go.velocity.y = (go.velocity.y + go.gravity + (gravity * 0.11)) * friction * 1 / go.mass;
 
-            go.x += go.dx * dt;
-            go.y += go.dy * dt;
+            go.position.x += go.velocity.x * dt;
+            go.position.y += go.velocity.y * dt;
 
             verifyGameConstraint(go);
 
@@ -60,21 +61,21 @@ public class PhysicEngine extends System {
 
     private void verifyGameConstraint(GameObject go) {
         double bounciness = go.material != null ? go.material.bounciness : 0.0;
-        if (go.x < 0) {
-            go.x = 0;
-            go.dx = -go.dx * bounciness;
+        if (go.position.x < 0) {
+            go.position.x = 0;
+            go.velocity.x = -go.velocity.x * bounciness;
         }
-        if (go.y < 0) {
-            go.y = 0;
-            go.dy = -go.dy * bounciness;
+        if (go.position.y < 0) {
+            go.position.y = 0;
+            go.velocity.y = -go.velocity.y * bounciness;
         }
-        if (go.x + go.width > world.width) {
-            go.x = world.width - go.width;
-            go.dx = -go.dx * bounciness;
+        if (go.position.x + go.width > world.width) {
+            go.position.x = world.width - go.width;
+            go.velocity.x = -go.velocity.x * bounciness;
         }
-        if (go.y + go.height > world.height) {
-            go.y = world.height - go.height;
-            go.dy = -go.dy * bounciness;
+        if (go.position.y + go.height > world.height) {
+            go.position.y = world.height - go.height;
+            go.velocity.y = -go.velocity.y * bounciness;
         }
     }
 
