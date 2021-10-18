@@ -111,7 +111,7 @@ public class Game implements KeyListener {
     /**
      * Entrypoint for the game. can parse the argc from the java command line.
      *
-     * @throws UnknownArgumentException
+     * @throws ArgumentUnknownException
      */
     public void run(String argv[]) throws ArgumentUnknownException {
         initialize(argv);

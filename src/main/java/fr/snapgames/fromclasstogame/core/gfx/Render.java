@@ -60,7 +60,7 @@ public class Render extends System {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         if (camera != null) {
-            g.translate(-camera.x, -camera.y);
+            g.translate(-camera.position.x, -camera.position.y);
         }
         renderWorld(g, world);
         for (GameObject go : objects) {
@@ -68,7 +68,7 @@ public class Render extends System {
         }
 
         if (camera != null) {
-            g.translate(camera.x, camera.y);
+            g.translate(camera.position.x, camera.position.y);
         }
         for (GameObject go : objectsRelativeToCamera) {
             draw(g, go);
@@ -100,7 +100,7 @@ public class Render extends System {
             rh.draw(g, go);
         } else {
             g.setColor(go.color);
-            g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
+            g.drawRect((int) (go.position.x), (int) (go.position.y), (int) (go.width), (int) (go.height));
         }
     }
 
