@@ -10,8 +10,10 @@ import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 import fr.snapgames.fromclasstogame.demo.entity.TextValueObject;
+import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
 
@@ -35,16 +37,19 @@ public class DemoScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
-        // Add a specific Render for the new ScoreObject
-        g.getRender().addRenderHelper(new ScoreRenderHelper());
-        g.getRender().addRenderHelper(new TextValueRenderHelper());
-
-        // load resources
+        // Load resources
         ResourceManager.getFont("fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
+
+        // Add a specific Render for the new ScoreObject
+        g.getRender().addRenderHelper(new ScoreRenderHelper());
+        g.getRender().addRenderHelper(new TextValueRenderHelper());
+        g.getRender().addRenderHelper(new LifeRenderHelper());
+
+        // load resources
     }
 
     @Override
@@ -76,30 +81,20 @@ public class DemoScene extends AbstractScene {
         Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.BOLD, 14);
 
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 20).setScore(score).setFont(f)
-                .relativeToCamera(true).setLayer(1);
-        scoreTO.setColor(Color.WHITE);
-        scoreTO.priority = 10;
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4)
+                .setScore(score)
+                .setFont(f)
+                .relativeToCamera(true)
+                .setLayer(1)
+                .setColor(Color.WHITE)
+                .setPriority(10);
         add(scoreTO);
 
-        GameObject heart = new GameObject("heart", 280, 10).setType(GameObject.GOType.IMAGE)
-                .setImage(ResourceManager.getImage("images/tiles01.png:heart")).relativeToCamera(true).setLayer(1);
-        heart.mass = 0;
-        heart.priority = 10;
-        add(heart);
-
-        GameObject star = new GameObject("*", 288, 20).setType(GameObject.GOType.IMAGE)
-                .setImage(ResourceManager.getImage("images/tiles01.png:*")).relativeToCamera(true);
-        star.mass = 0;
-        star.priority = 10;
-        add(star);
-
-        // add Life counter text.
-        TextValueObject lifeTO = (TextValueObject) new TextValueObject("life", 292, 24).setValue(life).setFont(f)
-                .relativeToCamera(true).setLayer(1);
-        lifeTO.setColor(Color.WHITE);
-        lifeTO.priority = 12;
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4)
+                .setLive(life)
+                .relativeToCamera(true);
         add(lifeTO);
+
         randomizeEnemies();
     }
 
