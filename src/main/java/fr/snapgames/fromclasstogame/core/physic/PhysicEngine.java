@@ -71,10 +71,6 @@ public class PhysicEngine extends System {
         return Math.copySign((Math.abs(x) < ceil ? 0 : x), x);
     }
 
-    private double ceilMaxValue(double x, double ceil) {
-        return Math.copySign((Math.abs(x) > ceil ? ceil : x), x);
-    }
-
     private double ceilMinMaxValue(double x, double min, double max) {
         return ceilValue(Math.copySign((Math.abs(x) > max ? max : x), x), min);
     }
