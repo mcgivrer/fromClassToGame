@@ -16,6 +16,7 @@ public class Vector2dArgParser extends AbstractArgParser<Vector2d> {
             String description,
             String configKey,
             Vector2d defaultValue) {
+
         super(name, description, shortKey, longKey, configKey);
         setDefaultValue(defaultValue);
     }
@@ -43,6 +44,7 @@ public class Vector2dArgParser extends AbstractArgParser<Vector2d> {
             String vals[] = str.split(",");
             double vX = Double.parseDouble(vals[0]);
             double vY = Double.parseDouble(vals[1]);
+
             v = new Vector2d(vX, vY);
         } else {
             System.err.println("name=" + name + ", strValue=" + strValue + " => " + v);
