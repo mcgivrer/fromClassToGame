@@ -40,6 +40,7 @@ public class Render extends System {
     private Color debugColor = Color.ORANGE;
     private int debug = 0;
     private World world;
+    private boolean renderScreenshot = false;
 
     public Render(Game g) {
         super(g);
@@ -75,6 +76,10 @@ public class Render extends System {
         }
 
         g.dispose();
+        if (renderScreenshot) {
+            saveScreenshot();
+            renderScreenshot = false;
+        }
     }
 
     private void renderWorld(Graphics2D g, World w) {
@@ -133,8 +138,9 @@ public class Render extends System {
     /**
      * Save a screenshot of the current buffer.
      */
-    public void saveScreenshot() {
-        final String path = this.getClass().getResource("/").getPath();
+    private void saveScreenshot() {
+        final String path = this.getClass().getResource("/").getPath().substring(1);
+
         Path targetDir = Paths.get(path + "/screenshots");
         int i = screenShotIndex++;
         String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
@@ -206,5 +212,9 @@ public class Render extends System {
     @Override
     public boolean isReady() {
         return !renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
+    }
+
+    public void requestScreenShot() {
+        renderScreenshot = true;
     }
 }
