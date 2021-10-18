@@ -81,13 +81,18 @@ public class DemoScene extends AbstractScene {
         Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.BOLD, 14);
 
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4).setScore(score).setFont(f)
-                .relativeToCamera(true).setLayer(1);
-        scoreTO.setColor(Color.WHITE);
-        scoreTO.priority = 10;
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4)
+                .setScore(score)
+                .setFont(f)
+                .relativeToCamera(true)
+                .setLayer(1)
+                .setColor(Color.WHITE)
+                .setPriority(10);
         add(scoreTO);
 
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4).setLive(5).relativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4)
+                .setLive(life)
+                .relativeToCamera(true);
         add(lifeTO);
 
         randomizeEnemies();
