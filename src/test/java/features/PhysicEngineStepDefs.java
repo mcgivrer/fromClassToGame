@@ -17,6 +17,7 @@ public class PhysicEngineStepDefs implements En {
         Given("the Configuration is loaded from {string}",
                 (String cfgFile) -> config = new Configuration(cfgFile));
 
+
         When("the PhysicEngine is created", () -> {
             pe = new PhysicEngine(null);
             pe.initialize(config);
@@ -34,5 +35,4 @@ public class PhysicEngineStepDefs implements En {
                     assertEquals("The world gravity is not set to " + vg, vg, pe.getWorld().gravity);
                 });
     }
-
 }

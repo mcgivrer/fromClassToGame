@@ -1,11 +1,14 @@
 package fr.snapgames.fromclasstogame.core.entity;
 
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameObject implements Entity {
 
@@ -40,6 +43,8 @@ public class GameObject implements Entity {
 
     public Material material;
     public double mass = 1;
+
+    public List<Behavior> behaviors = new ArrayList<>();
 
     public GameObject(String name, double x, double y) {
         this.name = name;
@@ -121,4 +126,9 @@ public class GameObject implements Entity {
         return this;
     }
 
+    public GameObject add(Behavior b) {
+        assert (behaviors.contains(b));
+        behaviors.add(b);
+        return this;
+    }
 }
