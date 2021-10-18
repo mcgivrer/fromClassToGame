@@ -1,17 +1,13 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
-import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 
-import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.nio.charset.StandardCharsets;
 
 public class ScoreRenderHelper implements RenderHelper {
 
@@ -58,7 +54,6 @@ public class ScoreRenderHelper implements RenderHelper {
      */
     private void drawScore(Graphics2D g, String score, int x, int y) {
         byte c[] = score.getBytes(StandardCharsets.US_ASCII);
-        ;
         for (int pos = 0; pos < score.length(); pos++) {
             int v = c[pos];
             drawFig(g, v - 48, x + (pos * 8), y);

@@ -1,16 +1,12 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
-import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.nio.charset.StandardCharsets;
 
 public class LifeRenderHelper implements RenderHelper {
 
@@ -38,7 +34,6 @@ public class LifeRenderHelper implements RenderHelper {
 
     @Override
     public void draw(Graphics2D g, Object o) {
-        double maxBorderWidth = 2;
         LifeObject so = (LifeObject) o;
         g.setColor(so.color);
         drawLife(g, so.value, (int) (so.position.x), (int) (so.position.y));
