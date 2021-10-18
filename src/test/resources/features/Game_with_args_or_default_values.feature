@@ -9,7 +9,7 @@ Feature: The game is running with arguments
     And the window title is "test"
 
   Scenario Outline: The game is started without arguments but no scale
-    Given the Game is instantiated
+    Given the Game is instantiated with config "no-scene"
     When I prepare the arguments
     And I add argument "width=<width>"
     And I add argument "height=<height>"
@@ -20,10 +20,10 @@ Feature: The game is running with arguments
     And the window title is "<title>"
 
     Examples:
-      | title | scale | width | height | win_width | win_height |
-      | testA | 1.0   | 320   | 200    | 320       | 200        |
-      | testB | 1.0   | 640   | 400    | 640       | 400        |
-      | testC | 2.0   | 320   | 200    | 640       | 400        |
+      | title  | scale | width | height | win_width | win_height |
+      | first  | 1.0   | 320   | 200    | 320       | 200        |
+      | second | 1.0   | 640   | 400    | 640       | 400        |
+      | third  | 2.0   | 320   | 200    | 640       | 400        |
 
 
   Scenario: The game is started with a wrong argument
