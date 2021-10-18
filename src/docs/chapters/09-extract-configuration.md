@@ -1,9 +1,9 @@
 ---
-title: From a Class to Game 
-chapter: 09 - Extracting the Configuration 
-author: Frédéric Delorme 
-description: A dedicated service to Scenes management. 
-created: 2021-08-01 
+title: From a Class to Game
+chapter: 09 - Extracting the Configuration
+author: Frédéric Delorme
+description: A dedicated service to Scenes management.
+created: 2021-08-01
 tags: gamedev, scene
 ---
 
@@ -184,3 +184,215 @@ public class Configuration {
 }
 ```
 
+### Evolution
+
+The Configuration class will integrate progressively more and
+more parameters to be set and loaded from the properties file.
+
+The best way to add new attributes to the configuration will be to add
+some helpers on definition and on parsing vaue, but also on help side.
+Requesting from the CLI, you would get a well formated and documented
+help bout possible parameters and their values.
+
+You would get some `ArgParser` interface and a `CLIManager` to support those parser.
+
+#### the IArgParser interface
+
+```java
+public interface IArgParser<T> {
+    public boolean validate(String strValue);
+    public T getValue();
+    public String getShortKey();
+    public String getLongKey();
+    public String getName();
+    public String getDescription();
+    public String getErrorMessage(Object[] args);
+    public T getDefaultValue();
+}
+```
+
+In this interface, the main intersting thing are name and description,
+useful to generate the help on the cli. Name will be the `name` of the parameter, and `description` will help understanding its usage.
+
+An abstract class will provide a default implmentation for all parsers.
+
+```java
+public abstract class ArgParser<T> implements IArgParser<T> {
+
+    public String name;
+    public String shortKey;
+    public String longKey;
+    public Class<?> type;
+    public T value;
+    public T defaultValue;
+    public String description;
+    public String errorMessage;
+
+    protected ArgParser() {
+
+    }
+
+    protected ArgParser(String name, String shortKey, String longKey, String description) {
+        this.name = name;
+        this.shortKey = shortKey;
+        this.longKey = longKey;
+        this.defaultValue = defaultValue;
+        this.description = description;
+    }
+
+    public abstract T parse(String strValue);
+
+    public abstract boolean validate(String strValue);
+
+    /**
+     * @return the longKey
+     */
+    public String getLongKey() {
+        return longKey;
+    }
+
+    @Override
+    public T getDefaultValue() {
+        return defaultValue;
+    }
+
+    @Override
+    public String getDescription() {
+        return String.format("[%s/%s] : %s ( default:%s )",shortKey,longKey,description,defaultValue);
+    }
+
+    @Override
+    public String getErrorMessage(Object[] args) {
+        return String.format(errorMessage, args);
+    }
+
+    @Override
+    public String getShortKey() {
+        return shortKey;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public T getValue(){
+        return value;
+    }
+}
+```
+
+And the CLIManager will be used to parse command line interface parameters, but also to provide the help text.
+
+```java
+public class CliManager {
+  @SuppressWarnings("unused")
+  private Game game;
+  private Map<String, IArgParser<?>> argParsers = new HashMap<>();
+  private Map<String, Object> values = new HashMap<>();
+  public CliManager(Game g) {
+    this.game = g;
+  }
+  public void add(IArgParser<?> ap) {
+    argParsers.put(ap.getName(), ap);
+    log.debug("add cli parser for " + ap.getDescription());
+  }
+  public void parse(String[] args) {
+    for (String arg : args) {
+      if (arg.equals("h") || arg.equals("help")) {
+        System.out.println("\n\nCommand Usage:\n--------------");
+        for (IArgParser<?> ap : argParsers.values()) {
+          System.out.println("- " + ap.getDescription());
+        }
+        System.exit(0);
+      } else {
+        parseArguments(arg);
+      }
+    }
+  }
+  private void parseArguments(String arg) {
+    String[] itemValue = arg.split("=");
+    for (IArgParser<?> ap : argParsers.values()) {
+      if (ap.getShortKey().equals(itemValue[0]) || ap.getLongKey().equals(itemValue[0])) {
+        if (ap.validate(itemValue[1])) {
+          values.put(ap.getName(), ap.getValue());
+        } else {
+          log.error(ap.getErrorMessage(null));
+        }
+      }
+    }
+  }
+  public Object getValue(String key) throws ArgumentUnknownException {
+    if (values.containsKey(key)) {
+      return values.get(key);
+    } else {
+      return argParsers.get(key).getDefaultValue();
+    }
+  }
+  public boolean isExists(String key) {
+    return values.containsKey(key);
+  }
+}
+```
+
+#### Implementing a parser
+
+An Integer parameter will have to parse int values.
+
+```java
+public class IntArgParser extends ArgParser<Integer>{
+
+    public IntArgParser() {
+        super();
+    }
+    public IntArgParser(
+        String name, 
+        String shortKey, 
+        String longKey, 
+        int defaultValue, 
+        int min, 
+        int max,
+        String description, 
+        String errorMessage) {
+            super(name, shortKey, longKey, defaultValue, min, max, description, errorMessage);
+    }
+    @Override
+    public boolean validate(String strValue) {
+        value = defaultValue;
+        try {
+            value = parse(strValue);
+            if ((min != null && value < min) || (max != null && value > max)) {
+                errorMessage += String.format(
+                        "value for %s must be between %s and %s. Value has been limited to min/max", name, min, max,
+                        defaultValue);
+                value = (value < min ? min : (value > max ? max : value));
+            }
+        } catch (Exception e) {
+            value = defaultValue;
+            errorMessage += String.format("value %s for argument %s is not possible.reset to default Value %s",
+                    strValue, name, defaultValue);
+            return false;
+        }
+        return true;
+    }
+    @Override
+    public Integer parse(String strValue) {6
+        int value  = Integer.parseInt(strValue);
+        return value;
+    }
+}
+```
+
+The same way to implement Boolean, Double and Float will be used.
+
+- `BooleanArgParser` will parse a boolean value parameter,
+- `DoubleArgParser` will parse a double value parameter,
+- `FloatArgParser` will parse a float value parameter.
+
+And specific one will be
+
+- `IntArrayArgParser` will parse a list of int values parameter.9
+
+And a final pass would provide a way to load/save those parameter to a configuration file.
+
+But this is another story !
