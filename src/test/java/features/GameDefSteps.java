@@ -88,7 +88,7 @@ public class GameDefSteps extends CommonDefSteps {
     @Given("I add a GameObject named {string} at \\({double},{double})")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
         GameObject go = new GameObject(name, x, y);
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         scene.add(go);
     }
 
@@ -116,11 +116,18 @@ public class GameDefSteps extends CommonDefSteps {
         assertEquals("The Scene has not the right number of objects", nbObjects, scene.getObjectsList().size());
     }
 
-    @And("the {string} GameObject speed is set to \\({double},{double})")
-    public void theGameObjectSpeedIsSetTo(String name, Double dx, Double dy) {
+    @And("the {string} GameObject velocity is set to \\({double},{double})")
+    public void theGameObjectVelocityIsSetTo(String name, Double dx, Double dy) {
         Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
         go.setVelocity(new Vector2d(dx, dy));
+    }
+
+    @And("the {string} GameObject acceleration is set to \\({double},{double})")
+    public void theGameObjectAccelerationIsSetTo(String name, Double dx, Double dy) {
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = scene.getGameObject(name);
+        go.setAcceleration(new Vector2d(dx, dy));
     }
 
     @Then("I update {int} times the scene")
@@ -135,8 +142,8 @@ public class GameDefSteps extends CommonDefSteps {
     public void theGameObjectIsNowAt(String name, Double x, Double y) {
         Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
-        assertEquals("the GameObject " + name + " is not horizontally centered", x, go.position.x, 10.0);
-        assertEquals("the GameObject " + name + " is not vertically centered", y, go.position.y, 10.0);
+        assertEquals("the GameObject " + name + " is not horizontally centered", x, Math.ceil(go.position.x), 1.0);
+        assertEquals("the GameObject " + name + " is not vertically centered", y, Math.ceil(go.position.y), 1.0);
     }
 
     @And("The font {string} is added")
