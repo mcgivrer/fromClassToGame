@@ -393,6 +393,6 @@ And specific one will be
 
 - `IntArrayArgParser` will parse a list of int values parameter.9
 
-And a final pass would provide a way to load/save those parameter to a configuration file.
+And a final pass would provide a way to load/save those parameters to a configuration file.
 
 But this is another story !

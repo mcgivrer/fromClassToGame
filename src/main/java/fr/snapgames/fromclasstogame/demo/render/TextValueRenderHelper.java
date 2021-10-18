@@ -14,7 +14,7 @@ public class TextValueRenderHelper extends ScoreRenderHelper {
         g.setFont(so.font);
         drawBorder(g, maxBorderWidth, so);
         g.setColor(so.color);
-        g.drawString(so.text, (int) (so.x), (int) (so.y));
+        g.drawString(so.text, (int) (so.position.x), (int) (so.position.y));
     }
 
     @Override

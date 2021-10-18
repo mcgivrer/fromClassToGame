@@ -5,7 +5,6 @@
 
 package fr.snapgames.fromclasstogame.core.config.cli;
 
-import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 
 import java.util.Enumeration;
@@ -27,32 +26,38 @@ public class CliManager {
         System.out.println("add cli parser for " + ap.getDescription());
     }
 
-    public void parse(String[] args) {
-        for (String arg : args) {
-            if (arg.equals("h") || arg.equals("help")) {
-                System.out.println("\n\nCommand Usage:\n--------------");
-                for (ArgParser<?> ap : argParsers.values()) {
-                    System.out.println("- " + ap.getDescription());
+    public void parse(String[] args) throws ArgumentUnknownException {
+        if (args != null) {
+            for (String arg : args) {
+                if (arg.equals("h") || arg.equals("help")) {
+                    System.out.println("\n\nCommand Usage:\n--------------");
+                    for (ArgParser<?> ap : argParsers.values()) {
+                        System.out.println("- " + ap.getDescription());
+                    }
+                    System.exit(0);
+                } else {
+                    parseArguments(arg);
                 }
-                System.exit(0);
-            } else {
-                parseArguments(arg);
             }
         }
     }
 
-    private void parseArguments(String arg) {
+    private void parseArguments(String arg) throws ArgumentUnknownException {
         String[] itemValue = arg.split("=");
+        boolean argUnknown=true;
         for (ArgParser<?> ap : argParsers.values()) {
             if (ap.getShortKey().equals(itemValue[0]) || ap.getLongKey().equals(itemValue[0])) {
                 if (ap.validate(itemValue[1])) {
                     values.put(ap.getName(), ap.getValue());
-
+                    argUnknown = false;
                     System.out.println("- " + ap.getDescription());
                 } else {
                     System.err.println(ap.getErrorMessage(null));
                 }
             }
+        }
+        if(argUnknown){
+            throw new ArgumentUnknownException("Argument %s unknown",arg);
         }
     }
 

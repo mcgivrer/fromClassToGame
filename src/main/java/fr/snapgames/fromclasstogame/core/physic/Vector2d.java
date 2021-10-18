@@ -6,6 +6,8 @@
  */
 package fr.snapgames.fromclasstogame.core.physic;
 
+import java.util.Objects;
+
 /**
  * Internal Class to manipulate simple Vector2D.
  *
@@ -117,4 +119,16 @@ public class Vector2d {
         return this.x * v1.x + this.y * v1.y;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vector2d)) return false;
+        Vector2d vector2d = (Vector2d) o;
+        return Double.compare(vector2d.x, x) == 0 && Double.compare(vector2d.y, y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 }
