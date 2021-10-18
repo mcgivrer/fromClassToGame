@@ -69,12 +69,7 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("the Game is running")
     public void thenTheGameIsRunning() {
         try {
-            if (args != null) {
-                game.run(args);
-                //((SceneManager) SystemManager.get(SceneManager.class)).activate();
-            } else {
-                game.run(null);
-            }
+            game.run(args);
         } catch (Exception e) {
             logger.error("Unable to run the game", e);
         }
@@ -221,5 +216,11 @@ public class GameDefSteps extends CommonDefSteps {
         GameObject e = scene.getGameObject(entityName);
         // TODO parse materialTypeName to use the right DefaultMaterial.
         e.material = Material.DefaultMaterial.WOOD.getMaterial();
+    }
+
+    @Given("the Game is instantiated with config {string}")
+    public void theGameIsInstantiatedWithConfig(String configFileName) {
+        game = new Game(configFileName);
+        game.testMode = true;
     }
 }

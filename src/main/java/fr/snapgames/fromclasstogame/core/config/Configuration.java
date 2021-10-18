@@ -79,7 +79,7 @@ public class Configuration {
                 "gravity",
                 "define the default game gravity",
                 "game.setup.world.gravity",
-                new Vector2d(0,-0.981)));
+                new Vector2d(0, -0.981)));
         cm.add(new IntegerArgParser("display",
                 "di",
                 "display",
@@ -103,23 +103,28 @@ public class Configuration {
     public void readValuesFromFile() {
         try {
             cm.parse(defaultConfig);
-            this.debugLevel = (Integer) cm.getValue("debug");
-            this.title = (String) cm.getValue("title");
-            this.width = (Integer) cm.getValue("width");
-            this.height = (Integer) cm.getValue("height");
-            this.scale = (Double) cm.getValue("scale");
-            this.defaultScreen = (Integer) cm.getValue("display");
-            this.FPS = (Integer) cm.getValue("FPS");
-            this.defaultScene = (String) cm.getValue("scene");
-            this.scenes = (String) cm.getValue("scenes");
-            this.gravity = (Vector2d) cm.getValue("gravity");
+            getValuesFromCM();
         } catch (ArgumentUnknownException e) {
             System.err.println("unable to parse configuration : " + e.getMessage());
         }
     }
 
+    private void getValuesFromCM() throws ArgumentUnknownException {
+        this.debugLevel = (Integer) cm.getValue("debug");
+        this.title = (String) cm.getValue("title");
+        this.width = (Integer) cm.getValue("width");
+        this.height = (Integer) cm.getValue("height");
+        this.scale = (Double) cm.getValue("scale");
+        this.defaultScreen = (Integer) cm.getValue("display");
+        this.FPS = (Integer) cm.getValue("FPS");
+        this.defaultScene = (String) cm.getValue("scene");
+        this.scenes = (String) cm.getValue("scenes");
+        this.gravity = (Vector2d) cm.getValue("gravity");
+    }
+
     public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
         cm.parse(argv);
+        getValuesFromCM();
         return this;
     }
 }
