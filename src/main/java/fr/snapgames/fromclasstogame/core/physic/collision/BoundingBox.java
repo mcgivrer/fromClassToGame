@@ -14,8 +14,8 @@ public class BoundingBox {
     Vector2d[] points;
 
     public void update(GameObject go) {
-        position.x = go.x;
-        position.y = go.y;
+        position.x = go.position.x;
+        position.y = go.position.y;
         switch (type) {
             case RECTANGLE:
                 shape.update(go);

@@ -8,10 +8,7 @@ package fr.snapgames.fromclasstogame.core.config.cli;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class CliManager {
     private Map<String, ArgParser<?>> argParsers = new HashMap<>();
@@ -28,15 +25,17 @@ public class CliManager {
     }
 
     public void parse(String[] args) {
-        for (String arg : args) {
-            if (arg.equals("h") || arg.equals("help")) {
-                System.out.println("\n\nCommand Usage:\n--------------");
-                for (ArgParser<?> ap : argParsers.values()) {
-                    System.out.println("- " + ap.getDescription());
+        if (args != null) {
+            for (String arg : args) {
+                if (arg.equals("h") || arg.equals("help")) {
+                    System.out.println("\n\nCommand Usage:\n--------------");
+                    for (ArgParser<?> ap : argParsers.values()) {
+                        System.out.println("- " + ap.getDescription());
+                    }
+                    System.exit(0);
+                } else {
+                    parseArguments(arg);
                 }
-                System.exit(0);
-            } else {
-                parseArguments(arg);
             }
         }
     }
