@@ -7,5 +7,5 @@ Feature: PhysicEngine can be configured
     When the PhysicEngine is created
     Then the PhysicEngine default world width is 320
     And the PhysicEngine default world height is 200
-    And the PhysicEngine default world gravity is 0.981
+    And the PhysicEngine default world gravity is 0.0,-0.981
     

@@ -2,6 +2,8 @@ package fr.snapgames.fromclasstogame.core.config;
 
 import fr.snapgames.fromclasstogame.core.config.cli.*;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.util.ResourceBundle;
 
@@ -17,7 +19,7 @@ public class Configuration {
     public int height = 200;
     public double scale = 1.0;
 
-    public Double gravity = 0.0;
+    public Vector2d gravity = new Vector2d(0.0, 0.0);
 
     public double FPS = 60;
 
@@ -73,12 +75,12 @@ public class Configuration {
                 "set the frame per second (25-60)",
                 "game.setup.fps",
                 60));
-        cm.add(new DoubleArgParser("gravity",
+        cm.add(new Vector2dArgParser("gravity",
                 "g",
                 "gravity",
                 "define the default game gravity",
                 "game.setup.world.gravity",
-                0.981));
+                new Vector2d(0, -0.981)));
         cm.add(new IntegerArgParser("display",
                 "di",
                 "display",
@@ -102,23 +104,28 @@ public class Configuration {
     public void readValuesFromFile() {
         try {
             cm.parse(defaultConfig);
-            this.debugLevel = (Integer) cm.getValue("debug");
-            this.title = (String) cm.getValue("title");
-            this.width = (Integer) cm.getValue("width");
-            this.height = (Integer) cm.getValue("height");
-            this.scale = (Double) cm.getValue("scale");
-            this.defaultScreen = (Integer) cm.getValue("display");
-            this.FPS = (Integer) cm.getValue("FPS");
-            this.defaultScene = (String) cm.getValue("scene");
-            this.scenes = (String) cm.getValue("scenes");
-            this.gravity = (Double) cm.getValue("gravity");
+            getValuesFromCM();
         } catch (ArgumentUnknownException e) {
             System.err.println("unable to parse configuration : " + e.getMessage());
         }
     }
 
+    private void getValuesFromCM() throws ArgumentUnknownException {
+        this.debugLevel = (Integer) cm.getValue("debug");
+        this.title = (String) cm.getValue("title");
+        this.width = (Integer) cm.getValue("width");
+        this.height = (Integer) cm.getValue("height");
+        this.scale = (Double) cm.getValue("scale");
+        this.defaultScreen = (Integer) cm.getValue("display");
+        this.FPS = (Integer) cm.getValue("FPS");
+        this.defaultScene = (String) cm.getValue("scene");
+        this.scenes = (String) cm.getValue("scenes");
+        this.gravity = (Vector2d) cm.getValue("gravity");
+    }
+
     public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
         cm.parse(argv);
+        getValuesFromCM();
         return this;
     }
 }

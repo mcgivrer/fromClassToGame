@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.core.entity;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
 import java.awt.Color;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameObject implements Entity {
-
 
     public enum GOType {
         POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
@@ -21,10 +21,9 @@ public class GameObject implements Entity {
     public int id = ++index;
     public String name = "noname_" + id;
 
-    public double x;
-    public double y;
-    public double dx;
-    public double dy;
+    public Vector2d position = new Vector2d();
+    public Vector2d velocity = new Vector2d();
+    public Vector2d acceleration = new Vector2d();
 
     public double width;
     public double height;
@@ -49,8 +48,7 @@ public class GameObject implements Entity {
 
     public GameObject(String name, double x, double y) {
         this.name = name;
-        this.x = x;
-        this.y = y;
+        setPosition(x, y);
         this.color = Color.GREEN;
         this.priority = 0;
         this.layer = 1;
@@ -70,12 +68,6 @@ public class GameObject implements Entity {
         return this;
     }
 
-    public GameObject setSpeed(double dx, double dy) {
-        this.dx = dx;
-        this.dy = dy;
-        return this;
-    }
-
     public GameObject setSize(double w, double h) {
         this.width = w;
         this.height = h;
@@ -89,8 +81,23 @@ public class GameObject implements Entity {
     }
 
     public GameObject setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
+        this.position.x = x;
+        this.position.y = y;
+        return this;
+    }
+
+    public GameObject setPosition(Vector2d position) {
+        this.position = position;
+        return this;
+    }
+
+    public GameObject setVelocity(Vector2d velocity) {
+        this.velocity = velocity;
+        return this;
+    }
+
+    public GameObject setAcceleration(Vector2d acceleration) {
+        this.acceleration = acceleration;
         return this;
     }
 
@@ -111,6 +118,11 @@ public class GameObject implements Entity {
 
     public GameObject setMaterial(Material mat) {
         this.material = mat;
+        return this;
+    }
+
+    public GameObject setMass(double mass){
+        this.mass = mass;
         return this;
     }
 
