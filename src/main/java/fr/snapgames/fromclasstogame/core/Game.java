@@ -224,7 +224,7 @@ public class Game implements KeyListener {
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_F3:
-                renderer.saveScreenshot();
+                renderer.requestScreenShot();
                 break;
             case KeyEvent.VK_F11:
                 window.switchFullScreen();
