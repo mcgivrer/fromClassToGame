@@ -6,6 +6,7 @@
 package fr.snapgames.fromclasstogame.core.config.cli;
 
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 
 import java.util.Enumeration;
 import java.util.HashMap;

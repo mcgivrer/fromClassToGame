@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.core.config;
 
 import fr.snapgames.fromclasstogame.core.config.cli.*;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.util.ResourceBundle;
