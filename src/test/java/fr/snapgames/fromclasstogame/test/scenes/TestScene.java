@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame.test.scenes;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 
@@ -34,7 +35,7 @@ public class TestScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         super.create(g);
         World w = new World(800, 600);
-        w.setGravity(0.0);
+        w.setGravity(new Vector2d(0.0, 0.0));
         g.setWorld(w);
     }
 
