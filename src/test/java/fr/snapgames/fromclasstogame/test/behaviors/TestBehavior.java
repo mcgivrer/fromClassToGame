@@ -7,7 +7,7 @@ import fr.snapgames.fromclasstogame.core.io.InputHandler;
 
 public class TestBehavior implements Behavior {
     @Override
-    public void input(InputHandler ih) {
+    public void input(GameObject go, InputHandler ih) {
         System.out.println("- input from behavior TestBehavior");
     }
 

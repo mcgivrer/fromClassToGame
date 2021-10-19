@@ -4,6 +4,7 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 
 import java.awt.event.KeyEvent;
@@ -126,6 +127,16 @@ public abstract class AbstractScene implements Scene {
 
     public void setActiveCamera(Camera c) {
         activeCamera = cameras.get(c.name);
+    }
+
+    public void input(InputHandler ih) {
+        objects.forEach((k, o) -> {
+            if (!o.behaviors.isEmpty()) {
+                o.behaviors.forEach(b -> {
+                    b.input(o, ih);
+                });
+            }
+        });
     }
 
 }
