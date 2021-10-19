@@ -8,9 +8,12 @@ import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameObject implements Entity {
+
 
     public enum GOType {
         POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
@@ -43,6 +46,8 @@ public class GameObject implements Entity {
 
     public Material material;
     public double mass = 1;
+
+    protected Map<String, Object> attributes = new HashMap<>();
 
     public List<Behavior> behaviors = new ArrayList<>();
 
@@ -121,7 +126,7 @@ public class GameObject implements Entity {
         return this;
     }
 
-    public GameObject setMass(double mass){
+    public GameObject setMass(double mass) {
         this.mass = mass;
         return this;
     }
@@ -130,5 +135,18 @@ public class GameObject implements Entity {
         assert (behaviors.contains(b));
         behaviors.add(b);
         return this;
+    }
+
+    public GameObject addAttribute(String attrName, Object attrValue) {
+        this.attributes.put(attrName, attrValue);
+        return this;
+    }
+
+    public Object getAttribute(String name) {
+        return attributes.get(name);
+    }
+
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 }
