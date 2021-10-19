@@ -10,15 +10,19 @@ import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.demo.InventorySelectorBehavior;
+import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 import fr.snapgames.fromclasstogame.demo.entity.TextValueObject;
+import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 public class DemoScene extends AbstractScene {
 
@@ -43,11 +47,17 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
+        // inventory
+        ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selector", 5 * 16, 3 * 16, 17, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
+        // inventory objects item.
+        ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
 
         // Add a specific Render for the new ScoreObject
         g.getRender().addRenderHelper(new ScoreRenderHelper());
         g.getRender().addRenderHelper(new TextValueRenderHelper());
         g.getRender().addRenderHelper(new LifeRenderHelper());
+        g.getRender().addRenderHelper(new InventoryRenderHelper());
 
         // load resources
     }
@@ -95,6 +105,23 @@ public class DemoScene extends AbstractScene {
                 .relativeToCamera(true);
         add(lifeTO);
 
+        BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
+        GameObject key = new GameObject("key", 0, 0)
+                .setImage(keyImg)
+                .addAttribute("inventory", keyImg);
+
+        InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
+                vp.getWidth() - 2,
+                vp.getHeight() - 4)
+                .setNbPlace(4)
+                .setSelectedIndex(1)
+                .relativeToCamera(true)
+                .add(new InventorySelectorBehavior());
+
+        // add a first object (a key !)
+        inventory.add(key);
+        add(inventory);
+
         randomizeEnemies();
     }
 
@@ -129,6 +156,7 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void input(InputHandler inputHandler) {
+        super.input(inputHandler);
         GameObject player = this.getGameObject("player");
         double speed = 0.0;
         double speedStep = 2;
