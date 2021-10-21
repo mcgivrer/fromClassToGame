@@ -10,11 +10,10 @@ import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
-import fr.snapgames.fromclasstogame.demo.InventorySelectorBehavior;
+import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
-import fr.snapgames.fromclasstogame.demo.entity.TextValueObject;
 import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
@@ -30,13 +29,9 @@ public class DemoScene extends AbstractScene {
     private int life = 5;
 
     public DemoScene(Game g) {
-        super(g);
+        super(g,"demo");
     }
 
-    @Override
-    public String getName() {
-        return "demo";
-    }
 
     @Override
     public void initialize(Game g) {
@@ -66,7 +61,7 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         g.setWorld(new World(800, 600));
         // add main character (player)
-        GameObject player = new GameObject("player", 160, 100)
+        GameObject player = new GameObject("player", new Vector2d(160, 100))
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
@@ -79,21 +74,11 @@ public class DemoScene extends AbstractScene {
         add(camera);
 
         // Add enemies(enemy_99)
-        for (int i = 0; i < 10; i++) {
-            GameObject e = new GameObject("enemy_" + i, 0, 0)
-                    .setType(GameObject.GOType.IMAGE)
-                    .setColor(Color.ORANGE)
-                    .setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
-                    .setMaterial(DefaultMaterial.RUBBER.getMaterial())
-                    .setMass(rand(-8, 13));
-            add(e);
-        }
-        Font f = ResourceManager.getFont("fonts/FreePixel.ttf").deriveFont(Font.BOLD, 14);
+        generateEnemies();
 
         // add score display.
         ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4)
                 .setScore(score)
-                .setFont(f)
                 .relativeToCamera(true)
                 .setLayer(1)
                 .setColor(Color.WHITE)
@@ -123,6 +108,18 @@ public class DemoScene extends AbstractScene {
         add(inventory);
 
         randomizeEnemies();
+    }
+
+    private void generateEnemies() throws UnknownResource {
+        for (int i = 0; i < 10; i++) {
+            GameObject e = new GameObject("enemy_" + i, new Vector2d(0, 0))
+                    .setType(GameObject.GOType.IMAGE)
+                    .setColor(Color.ORANGE)
+                    .setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
+                    .setMaterial(DefaultMaterial.RUBBER.getMaterial())
+                    .setMass(rand(-8, 13));
+            add(e);
+        }
     }
 
     @Override

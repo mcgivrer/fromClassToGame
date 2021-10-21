@@ -6,6 +6,8 @@
 package fr.snapgames.fromclasstogame.core.config.cli;
 
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -13,6 +15,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class CliManager {
+    private static final Logger logger = LoggerFactory.getLogger(CliManager.class);
+
     private Map<String, ArgParser<?>> argParsers = new HashMap<>();
     private Map<String, ArgParser<?>> configParsers = new HashMap<>();
     private Map<String, Object> values = new HashMap<>();
@@ -23,7 +27,7 @@ public class CliManager {
     public void add(ArgParser<?> ap) {
         argParsers.put(ap.getName(), ap);
         configParsers.put(ap.getConfigKey(), ap);
-        System.out.println("add cli parser for " + ap.getDescription());
+        logger.debug("add cli parser for '{}'", ap.getDescription());
     }
 
     public void parse(String[] args) throws ArgumentUnknownException {
@@ -44,20 +48,20 @@ public class CliManager {
 
     private void parseArguments(String arg) throws ArgumentUnknownException {
         String[] itemValue = arg.split("=");
-        boolean argUnknown=true;
+        boolean argUnknown = true;
         for (ArgParser<?> ap : argParsers.values()) {
             if (ap.getShortKey().equals(itemValue[0]) || ap.getLongKey().equals(itemValue[0])) {
                 if (ap.validate(itemValue[1])) {
                     values.put(ap.getName(), ap.getValue());
                     argUnknown = false;
-                    System.out.println("- " + ap.getDescription());
+                    logger.debug("- {}", ap.getDescription());
                 } else {
-                    System.err.println(ap.getErrorMessage(null));
+                    logger.error(ap.getErrorMessage(null));
                 }
             }
         }
-        if(argUnknown){
-            throw new ArgumentUnknownException("Argument %s unknown",arg);
+        if (argUnknown) {
+            throw new ArgumentUnknownException("Argument %s unknown", arg);
         }
     }
 
@@ -83,9 +87,9 @@ public class CliManager {
                 String name = ap.getName();
                 Object value = ap.getValue();
                 values.put(name, value);
-                System.out.println("- " + ap.getName() + ":" + ap.getValue() + " (" + ap.getDescription() + ")");
+                logger.info("- " + ap.getName() + ":" + ap.getValue() + " (" + ap.getDescription() + ")");
             } else {
-                System.err.print(String.format("The key %s is unknown", k));
+                logger.error("The key {} is unknown", k);
             }
         }
     }

@@ -67,6 +67,7 @@ public class SceneManager extends System {
             try {
                 s = Class.forName(scn[1]);
                 scenesClasses.put(scn[0], s);
+                logger.info("Add Scene {} as {}", scn[0], scn[1]);
             } catch (ClassNotFoundException e) {
                 logger.error("Unable to load class {}", scnClass);
             }
@@ -98,6 +99,11 @@ public class SceneManager extends System {
             } else {
                 s = instantiateScene(name);
             }
+            if (s != null) {
+                this.current = s;
+                s.activate();
+            }
+
             setCurrent(s);
         }
 
