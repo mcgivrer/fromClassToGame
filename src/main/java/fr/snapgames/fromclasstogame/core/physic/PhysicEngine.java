@@ -55,8 +55,7 @@ public class PhysicEngine extends System {
             // Compute position
             go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
             go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
-
-
+           
             // test World space constrained
             verifyGameConstraint(go);
 
