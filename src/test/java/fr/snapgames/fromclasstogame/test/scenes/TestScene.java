@@ -10,25 +10,12 @@ import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 
 public class TestScene extends AbstractScene {
 
-
-    private String name;
-
     public TestScene(Game g) {
-        super(g);
-        name = "test";
-
+        super(g, "test");
     }
 
     public TestScene(Game g, String name) {
-        this(g);
-        this.name = name;
-    }
-
-
-    @Override
-    public String getName() {
-
-        return name;
+        super(g, name);
     }
 
     @Override

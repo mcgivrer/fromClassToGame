@@ -9,7 +9,6 @@ Feature: The InventoryObject intends to manage a limited set of items
 
   Scenario: add an object to the inventory
     Given an InventoryObject "my_inventory" is created
-    And I create a new GameObject "item1"
-    And I add an attribute "inventory" to GameObject "item1"
-    And I add the GameObject "item1" to the InventoryObject "my_inventory"
-    Then the InventoryObject "my_inventory" has one Item.
+    And I create a new GameObject "item1" with an attribute "inventory"
+    And I add the GameObject "item1" to InventoryObject "my_inventory"
+    Then the InventoryObject "my_inventory" has 1 Item.

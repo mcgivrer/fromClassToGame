@@ -51,8 +51,18 @@ public class GameObject implements Entity {
 
     public List<Behavior> behaviors = new ArrayList<>();
 
+    public GameObject(String objectName) {
+        this.name = objectName;
+    }
+
+    public GameObject(String objectName, Vector2d position) {
+        this.name = objectName;
+        setPosition(position);
+    }
+
+    @Deprecated
     public GameObject(String name, double x, double y) {
-        this.name = name;
+        this(name);
         setPosition(x, y);
         this.color = Color.GREEN;
         this.priority = 0;
@@ -132,8 +142,9 @@ public class GameObject implements Entity {
     }
 
     public GameObject add(Behavior b) {
-        assert (behaviors.contains(b));
-        behaviors.add(b);
+        if (!behaviors.contains(b)) {
+            behaviors.add(b);
+        }
         return this;
     }
 

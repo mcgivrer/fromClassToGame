@@ -21,7 +21,7 @@ import java.awt.event.KeyListener;
  * <p>
  * A First class to build a game attempt.
  *
- * @author Frédéric Delorme<frederic.delorme@gmail.com>
+ * @author Frédéric Delorme
  * @since 0.0.1
  */
 public class Game implements KeyListener {
@@ -51,6 +51,7 @@ public class Game implements KeyListener {
      * @param configPath path to the configuration properties file
      */
     public Game(String configPath) {
+        logger.info("** > Create Game [@ {}]", System.currentTimeMillis());
         configuration = new Configuration(configPath);
     }
 
@@ -105,6 +106,8 @@ public class Game implements KeyListener {
         inputHandler.addKeyListener(this);
 
         sceneManager = (SceneManager) SystemManager.get(SceneManager.class);
+        logger.info("** > Game initialized at {}", System.currentTimeMillis());
+
     }
 
     /**
@@ -113,12 +116,14 @@ public class Game implements KeyListener {
      * @throws ArgumentUnknownException
      */
     public void run(String argv[]) throws ArgumentUnknownException {
+        logger.info("** > Start Game run execution at [@ {}]", System.currentTimeMillis());
         initialize(argv);
         createScene();
         loop();
         if (!testMode) {
             dispose();
         }
+        logger.info("** > End Game run execution at [@ {}]", System.currentTimeMillis());
     }
 
     private void createScene() {
@@ -200,6 +205,8 @@ public class Game implements KeyListener {
             window.close();
         }
         SystemManager.dispose();
+        logger.info("** > Game disposed all dependencies [@ {}]", System.currentTimeMillis());
+
     }
 
     /**
@@ -207,6 +214,7 @@ public class Game implements KeyListener {
      */
     public void requestExit() {
         this.exit = true;
+        logger.info("** > User Request to quit the game");
     }
 
     @Override
@@ -251,7 +259,6 @@ public class Game implements KeyListener {
     public Configuration getConfiguration() {
         return this.configuration;
     }
-
 
     public PhysicEngine getPhysicEngine() {
         return (PhysicEngine) SystemManager.get(PhysicEngine.class);
