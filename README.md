@@ -25,20 +25,23 @@ Added some valuable features like:
 
 -  A Core `Game` class,
 -  A standard central `GameObject`,
--  Add `ResourceManager` service,
--  Add `SceneManager` service,
--  Add `SystemManager` and convert any service to System,
+-  an `InputHandler` to capture player interaction
+-  A `ResourceManager` service,
+-  A `SceneManager` service,
+-  A `SystemManager` and convert any service to `System` interface,
 -  Implement a `Render` upon Graphics2D and `RenderHelper`,
--  Add some fancy other objects like `TextObject`, `LifeObject` or `ScoreObject`,
--  Add a `PhysicEngine` to compute more realistic moves,
--  Add `Behavior` capability to GameObject,
--  Add `attributes` to GameObject
--  Add `InventoryObject` to manage a player inventory with its own render helper and behavior,
+-  Some fancy other objects like `TextObject`, `LifeObject` or `ScoreObject`,
+-  A `Camera` to move view with following a specific target, 
+-  A `PhysicEngine` to compute more realistic moves,
+-  Some `Behavior` capability to GameObject,
+-  A Map of `attributes` to GameObject
+-  A new `InventoryObject` to manage a player inventory with its own render helper and behavior,
 
 ## More to come
 
--  `CollisionSystem` is a work in progress
--  `TileMap` and all its dependencies (`Tile`, `TileSet` and `TileLayer`) are also work in progress !
+-  A `CollisionSystem` is a work in progress
+-  Some `TileMap` object to display beautiful game level graphic set and all its dependencies (`Tile`, `TileSet` and `TileLayer`) are also work in progress !
+-  A Mouse and Gamepad events integration to rules'em all !
 
 ## Build, Run and See
 
