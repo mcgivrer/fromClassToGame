@@ -65,7 +65,7 @@ public class CliManager {
         }
     }
 
-    public Object getValue(String key) throws ArgumentUnknownException {
+    public Object getValue(String key){
         if (values.containsKey(key)) {
             return values.get(key);
         } else {
@@ -73,7 +73,7 @@ public class CliManager {
         }
     }
 
-    public boolean isExists(String key) {
+    public boolean isExist(String key) {
         return values.containsKey(key);
     }
 

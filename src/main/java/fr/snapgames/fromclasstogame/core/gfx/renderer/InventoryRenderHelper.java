@@ -1,7 +1,7 @@
-package fr.snapgames.fromclasstogame.demo.render;
+package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
+import fr.snapgames.fromclasstogame.core.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
