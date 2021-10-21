@@ -1,11 +1,11 @@
 package features;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
-import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -13,7 +13,8 @@ import io.cucumber.java.en.Then;
 
 import java.awt.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SceneDefSteps extends CommonDefSteps {
 
@@ -22,8 +23,8 @@ public class SceneDefSteps extends CommonDefSteps {
         game = new Game(configFile);
         try {
             game.initialize(null);
-        } catch (UnknownArgumentException e) {
-            e.printStackTrace();
+        } catch (ArgumentUnknownException e) {
+            System.err.println("Error parsing args " + e.getMessage());
         }
         game.testMode = true;
     }
@@ -32,7 +33,7 @@ public class SceneDefSteps extends CommonDefSteps {
     public void theTitleIs(String title) {
         try {
             game.run(new String[]{"title=" + title});
-        } catch (UnknownArgumentException uae) {
+        } catch (ArgumentUnknownException uae) {
             fail("Uknown Argument");
         }
 
@@ -90,10 +91,10 @@ public class SceneDefSteps extends CommonDefSteps {
         Dimension viewport = game.getRender().getViewport();
         Camera cam = game.getSceneManager().getCurrent().getCamera(cameraName);
         GameObject target = game.getSceneManager().getCurrent().getGameObject(targetName);
-        double camX = cam.x + (viewport.width * 0.5) - (target.width);
-        double camY = cam.y + (viewport.height * 0.5) - (target.height);
-        assertEquals("The horizontal camera " + cameraName + " position does not match target " + targetName + " position", target.x, camX, 1);
-        assertEquals("The vertical camera " + cameraName + " position does not match target " + targetName + " position", target.y, camY, 1);
+        double camX = cam.position.x + (viewport.width * 0.5) - (target.width);
+        double camY = cam.position.y + (viewport.height * 0.5) - (target.height);
+        assertEquals("The horizontal camera " + cameraName + " position does not match target " + targetName + " position", target.position.x, camX, 1);
+        assertEquals("The vertical camera " + cameraName + " position does not match target " + targetName + " position", target.position.y, camY, 1);
     }
 
     @And("I add a Scene named {string};")

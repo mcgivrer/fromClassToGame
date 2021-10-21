@@ -1,12 +1,15 @@
 package fr.snapgames.fromclasstogame.core.config;
 
-import java.util.ResourceBundle;
+import fr.snapgames.fromclasstogame.core.config.cli.*;
+import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
-import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
+import java.util.ResourceBundle;
 
 public class Configuration {
 
     public ResourceBundle defaultConfig;
+    public CliManager cm;
 
     public String title = "fromClassToGame";
 
@@ -15,7 +18,7 @@ public class Configuration {
     public int height = 200;
     public double scale = 1.0;
 
-    public Double gravity = 0.0;
+    public Vector2d gravity = new Vector2d(0.0, 0.0);
 
     public double FPS = 60;
 
@@ -26,60 +29,102 @@ public class Configuration {
 
     public Configuration(String configurationPath) {
 
+        cm = new CliManager();
         defaultConfig = ResourceBundle.getBundle(configurationPath);
+        initializeArgParser();
         readValuesFromFile();
 
     }
 
-    public void readValuesFromFile() {
+    private void initializeArgParser() {
 
-        this.debugLevel = Integer.parseInt(defaultConfig.getString("game.setup.debugLevel"));
-        this.defaultScreen = Integer.parseInt(defaultConfig.getString("game.setup.screen"));
-        this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
-        this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
-        this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
-        this.FPS = Double.parseDouble(defaultConfig.getString("game.setup.fps"));
-
-        this.title = defaultConfig.getString("game.setup.title");
-        this.scenes = defaultConfig.getString("game.setup.scenes");
-        this.defaultScene = defaultConfig.getString("game.setup.scene.default");
-        this.gravity = Double.parseDouble(defaultConfig.getString("game.setup.world.gravity"));
+        cm.add(new IntegerArgParser("debug",
+                "dbg",
+                "debug",
+                "set the value for the debug mode (0 to 5)",
+                "game.setup.debugLevel",
+                0));
+        cm.add(new StringArgParser("title",
+                "t",
+                "title",
+                "Define the game window title",
+                "game.setup.title",
+                "title"));
+        cm.add(new IntegerArgParser("width",
+                "w",
+                "width",
+                "default width of the game screen",
+                "game.setup.width",
+                320));
+        cm.add(new IntegerArgParser("height",
+                "h",
+                "height",
+                "default height of the game screen",
+                "game.setup.height",
+                200));
+        cm.add(new DoubleArgParser("scale",
+                "sc",
+                "scale",
+                "default game screen scaling",
+                "game.setup.scale",
+                2.0));
+        cm.add(new IntegerArgParser("FPS",
+                "f",
+                "fps",
+                "set the frame per second (25-60)",
+                "game.setup.fps",
+                60));
+        cm.add(new Vector2dArgParser("gravity",
+                "g",
+                "gravity",
+                "define the default game gravity",
+                "game.setup.world.gravity",
+                new Vector2d(0, -0.981)));
+        cm.add(new IntegerArgParser("display",
+                "di",
+                "display",
+                "set the default display to play the game",
+                "game.setup.screen",
+                0));
+        cm.add(new StringArgParser("scenes",
+                "ss",
+                "scenes",
+                "Define the scene names and classes to initialize the game",
+                "game.setup.scenes",
+                ""));
+        cm.add(new StringArgParser("scene",
+                "sd",
+                "scene",
+                "Define the default scene to start with",
+                "game.setup.scene.default",
+                ""));
     }
 
-    public Configuration parseArgs(String[] argv) throws UnknownArgumentException {
-        if (argv != null) {
-            for (String arg : argv) {
-                String[] values = arg.split("=");
-                switch (values[0].toLowerCase()) {
-                    case "debug":
-                        this.debugLevel = Integer.parseInt(values[1]);
-                        break;
-                    case "width":
-                        this.width = Integer.parseInt(values[1]);
-                        break;
-                    case "height":
-                        this.height = Integer.parseInt(values[1]);
-                        break;
-                    case "scale":
-                        this.scale = Double.parseDouble(values[1]);
-                        break;
-                    case "fps":
-                        this.FPS = Double.parseDouble(values[1]);
-                        break;
-                    case "title":
-                        this.title = values[1];
-                        break;
-                    case "scene":
-                        this.defaultScene = values[1];
-                        break;
-                    case "screen":
-                        this.defaultScreen = Integer.parseInt(values[1]);
-                        break;
-                    default:
-                        throw new UnknownArgumentException(String.format("The argument %s is unknown", arg));
-                }
-            }
+    public void readValuesFromFile() {
+        try {
+            cm.parse(defaultConfig);
+            getValuesFromCM();
+        } catch (ArgumentUnknownException e) {
+            System.err.println("unable to parse configuration : " + e.getMessage());
         }
+    }
+
+    private void getValuesFromCM() throws ArgumentUnknownException {
+        this.debugLevel = (Integer) cm.getValue("debug");
+        this.title = (String) cm.getValue("title");
+        this.width = (Integer) cm.getValue("width");
+        this.height = (Integer) cm.getValue("height");
+        this.scale = (Double) cm.getValue("scale");
+        this.defaultScreen = (Integer) cm.getValue("display");
+        this.FPS = (Integer) cm.getValue("FPS");
+        this.defaultScene = (String) cm.getValue("scene");
+        this.scenes = (String) cm.getValue("scenes");
+        this.gravity = (Vector2d) cm.getValue("gravity");
+    }
+
+    public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
+        cm.parse(argv);
+        getValuesFromCM();
         return this;
     }
 }
