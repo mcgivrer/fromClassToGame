@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 public class InventoryStepDefs {
 
     private TestScene testScene;
-    private GameObject item;
     private InventoryObject inventory;
 
     @Given("an InventoryObject {string} is created")
@@ -30,7 +29,7 @@ public class InventoryStepDefs {
 
     @And("I create a new GameObject {string} with an attribute {string}")
     public void iCreateANewGameObject(String objectName, String attributeName) {
-        item = new GameObject(objectName);
+        GameObject item = new GameObject(objectName);
         item.addAttribute("inventory", new BufferedImage(12, 12, BufferedImage.TYPE_4BYTE_ABGR));
         testScene.add(item);
     }

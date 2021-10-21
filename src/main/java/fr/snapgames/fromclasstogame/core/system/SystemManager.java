@@ -34,10 +34,8 @@ public class SystemManager {
 
     public static System get(Class<? extends System> systemClass) {
         Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
-        if (oSystemInstances.isPresent()) {
-            if (systemInstances.containsKey(systemClass)) {
-                return systemInstances.get(systemClass);
-            }
+        if (oSystemInstances.isPresent() && systemInstances.containsKey(systemClass)) {
+            return systemInstances.get(systemClass);
         }
         return null;
     }
@@ -56,7 +54,10 @@ public class SystemManager {
     }
 
     public static void remove(Class<? extends System> s) {
-        systemInstances.remove(s);
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent()) {
+            systemInstances.remove(s);
+        }
     }
 
     public static Collection<System> getSystems() {
@@ -73,10 +74,13 @@ public class SystemManager {
     }
 
     public static void dispose() {
-        systemInstances.entrySet().stream().forEach(e -> {
-            e.getValue().dispose();
-            systemInstances.remove(e.getKey());
-        });
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent()) {
+            systemInstances.entrySet().stream().forEach(e -> {
+                e.getValue().dispose();
+                systemInstances.remove(e.getKey());
+            });
+        }
     }
 
     public static void add(GameObject o) {
