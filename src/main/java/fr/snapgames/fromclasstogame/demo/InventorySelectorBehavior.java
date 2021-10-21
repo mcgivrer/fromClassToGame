@@ -4,7 +4,7 @@ import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
-import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
+import fr.snapgames.fromclasstogame.core.entity.InventoryObject;
 
 import java.awt.event.KeyEvent;
 

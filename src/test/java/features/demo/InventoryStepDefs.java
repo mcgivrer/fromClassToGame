@@ -1,7 +1,7 @@
-package features;
+package features.demo;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
+import fr.snapgames.fromclasstogame.core.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

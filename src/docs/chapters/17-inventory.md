@@ -17,10 +17,20 @@ Gray ones are the available ones, and gold one is the active one.
 
 ### The InventoryObject
 
-_TODO_
+The inventory object is the main object to manage, contain and display the Items in the current inventory.
+It will contain sub objects, the items, and let the player select one through a maximum number of objects.
+
+> _**NOTE**_<br/>
+> _The capability to reference other GameObjects could be delegated to the GameObject itself in a second step._
+
+the class for the InventoryObject is quietly simple by proposing first an extension of the already existing 
+GameObject, and then adding some internalk attributes:
+
+- nbPlaces : a number of possible available place in the displayed inventory
+- items : the list of GameObject in the inventory,
+- selectedIndex : the current active item.
 
 ### The InventoryRenderHelper
-
 
 _TODO_
  

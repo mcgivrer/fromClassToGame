@@ -10,11 +10,11 @@ import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
-import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
-import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
+import fr.snapgames.fromclasstogame.core.behaviors.InventorySelectorBehavior;
+import fr.snapgames.fromclasstogame.core.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
-import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
@@ -91,13 +91,12 @@ public class DemoScene extends AbstractScene {
         add(lifeTO);
 
         BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
-        GameObject key = new GameObject("key", 0, 0)
+        GameObject key = new GameObject("key", new Vector2d(0,0))
                 .setImage(keyImg)
                 .addAttribute("inventory", keyImg);
 
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
-                vp.getWidth() - 2,
-                vp.getHeight() - 4)
+                new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
                 .setNbPlace(4)
                 .setSelectedIndex(1)
                 .relativeToCamera(true)
