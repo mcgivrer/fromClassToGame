@@ -9,8 +9,8 @@ import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 
 public class TestCameraScene extends AbstractScene {
 
-    public TestCameraScene(Game g){
-        super(g);
+    public TestCameraScene(Game g) {
+        super(g, "camera-scene");
     }
 
 
@@ -30,12 +30,6 @@ public class TestCameraScene extends AbstractScene {
                 .setTarget(target)
                 .setTweenFactor(0.1);
         add(cam02);
-    }
-
-    @Override
-    public String getName() {
-
-        return "testCamera";
     }
 
     @Override
