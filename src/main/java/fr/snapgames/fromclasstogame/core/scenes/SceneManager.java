@@ -67,6 +67,7 @@ public class SceneManager extends System {
             try {
                 s = Class.forName(scn[1]);
                 scenesClasses.put(scn[0], s);
+                logger.info("Add Scene {} as {}", scn[0], scn[1]);
             } catch (ClassNotFoundException e) {
                 logger.error("Unable to load class {}", scnClass);
             }
@@ -100,6 +101,7 @@ public class SceneManager extends System {
                     Class<?> clazzScene = scenesClasses.get(name);
                     final Constructor<?> sceneConstructor = clazzScene.getConstructor(new Class[]{Game.class});
                     s = (Scene) sceneConstructor.newInstance(game);
+                    logger.info("request scene '{}' activation", name);
                     add(name, s);
                 }
                 if (s != null) {

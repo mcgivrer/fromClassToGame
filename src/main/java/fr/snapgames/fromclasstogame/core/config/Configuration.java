@@ -3,10 +3,13 @@ package fr.snapgames.fromclasstogame.core.config;
 import fr.snapgames.fromclasstogame.core.config.cli.*;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ResourceBundle;
 
 public class Configuration {
+    private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
     public ResourceBundle defaultConfig;
     public CliManager cm;
@@ -33,7 +36,7 @@ public class Configuration {
         defaultConfig = ResourceBundle.getBundle(configurationPath);
         initializeArgParser();
         readValuesFromFile();
-
+        logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath, System.currentTimeMillis());
     }
 
     private void initializeArgParser() {
@@ -105,7 +108,7 @@ public class Configuration {
             cm.parse(defaultConfig);
             getValuesFromCM();
         } catch (ArgumentUnknownException e) {
-            System.err.println("unable to parse configuration : " + e.getMessage());
+            logger.error("unable to parse configuration", e);
         }
     }
 

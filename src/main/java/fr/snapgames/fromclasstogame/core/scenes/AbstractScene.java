@@ -6,6 +6,8 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class AbstractScene implements Scene {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
 
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
@@ -23,11 +26,14 @@ public abstract class AbstractScene implements Scene {
 
     protected Camera activeCamera;
 
+    protected String sceneName;
+
     protected Game game;
     protected int debug = 0;
 
-    public AbstractScene(Game g) {
+    public AbstractScene(Game g, String name) {
         game = g;
+        sceneName = name;
     }
 
     @Override
@@ -42,7 +48,7 @@ public abstract class AbstractScene implements Scene {
 
     @Override
     public void activate() {
-        // will be updated into the implemented scene
+        logger.debug("Scene {} activated", this.sceneName);
     }
 
     @Override
@@ -137,6 +143,10 @@ public abstract class AbstractScene implements Scene {
                 });
             }
         });
+    }
+
+    public String getName() {
+        return sceneName;
     }
 
 }
