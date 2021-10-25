@@ -40,41 +40,57 @@ public class PhysicEngine extends System {
     }
 
     private void update(GameObject go, long dt) {
+        double dtCorrected = dt * 0.01;
         if (!go.relativeToCamera) {
 
+            // Acceleration is not already used in velocity & position computation
+            Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
+            go.acceleration = go.acceleration.add(gravity.multiply(-1)).add(new Vector2d(0, go.mass));
+
+            // Compute velocity
             double friction = go.material != null ? go.material.staticFriction : 1;
-            go.dx = go.dx * friction;
-            double gravity = world != null ? world.gravity : 0;
-            go.dy = (go.dy + go.gravity + (gravity * 0.11)) * friction * 1 / go.mass;
+            double dynFriction = go.material != null ? go.material.dynFriction : 1;
+            go.velocity = go.velocity.add(go.acceleration.multiply(dtCorrected).multiply(friction).multiply(dynFriction));
 
-            go.x += go.dx * dt;
-            go.y += go.dy * dt;
-
+            // Compute position
+            go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
+            go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
+           
+            // test World space constrained
             verifyGameConstraint(go);
 
+            // update Bounding box for this GameObject.
             if (go.bbox != null) {
                 go.bbox.update(go);
             }
         }
     }
 
+    private double ceilValue(double x, double ceil) {
+        return Math.copySign((Math.abs(x) < ceil ? 0 : x), x);
+    }
+
+    private double ceilMinMaxValue(double x, double min, double max) {
+        return ceilValue(Math.copySign((Math.abs(x) > max ? max : x), x), min);
+    }
+
     private void verifyGameConstraint(GameObject go) {
         double bounciness = go.material != null ? go.material.bounciness : 0.0;
-        if (go.x < 0) {
-            go.x = 0;
-            go.dx = -go.dx * bounciness;
+        if (go.position.x < 0) {
+            go.position.x = 0;
+            go.velocity.x = -go.velocity.x * bounciness;
         }
-        if (go.y < 0) {
-            go.y = 0;
-            go.dy = -go.dy * bounciness;
+        if (go.position.y < 0) {
+            go.position.y = 0;
+            go.velocity.y = -go.velocity.y * bounciness;
         }
-        if (go.x + go.width > world.width) {
-            go.x = world.width - go.width;
-            go.dx = -go.dx * bounciness;
+        if (go.position.x + go.width > world.width) {
+            go.position.x = world.width - go.width;
+            go.velocity.x = -go.velocity.x * bounciness;
         }
-        if (go.y + go.height > world.height) {
-            go.y = world.height - go.height;
-            go.dy = -go.dy * bounciness;
+        if (go.position.y + go.height > world.height) {
+            go.position.y = world.height - go.height;
+            go.velocity.y = -go.velocity.y * bounciness;
         }
     }
 

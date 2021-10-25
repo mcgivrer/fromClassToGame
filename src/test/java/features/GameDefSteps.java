@@ -1,25 +1,14 @@
 package features;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
-import fr.snapgames.fromclasstogame.core.exceptions.cli.UnknownArgumentException;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
@@ -27,6 +16,15 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class GameDefSteps extends CommonDefSteps {
 
@@ -36,7 +34,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
-         game = new Game("test-scene");
+        game = new Game("test-scene");
         game.testMode = true;
     }
 
@@ -50,12 +48,11 @@ public class GameDefSteps extends CommonDefSteps {
     public void andIAddArgumentString(String arg) {
 
         argList.add(arg);
-        args = new String[argList.size() + 1];
+        args = new String[argList.size()];
         int i = 0;
         for (String a : argList) {
             args[i++] = a;
         }
-        args[i++] = arg;
     }
 
     @And("a window of {int} x {int} is created")
@@ -72,12 +69,7 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("the Game is running")
     public void thenTheGameIsRunning() {
         try {
-            if (args != null) {
-                game.run(args);
-                //((SceneManager) SystemManager.get(SceneManager.class)).activate();
-            } else {
-                game.run(null);
-            }
+            game.run(args);
         } catch (Exception e) {
             logger.error("Unable to run the game", e);
         }
@@ -88,7 +80,7 @@ public class GameDefSteps extends CommonDefSteps {
         try {
             game.run(args);
             fail("Bad argument does not raise exception");
-        } catch (UnknownArgumentException e) {
+        } catch (ArgumentUnknownException e) {
             logger.error("Unable to run the game", e);
         }
     }
@@ -96,7 +88,7 @@ public class GameDefSteps extends CommonDefSteps {
     @Given("I add a GameObject named {string} at \\({double},{double})")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
         GameObject go = new GameObject(name, x, y);
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = game.getSceneManager().getCurrent();
         scene.add(go);
     }
 
@@ -114,8 +106,8 @@ public class GameDefSteps extends CommonDefSteps {
         GameObject go = sm.getCurrent().getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
                 sm.getCurrent().getObjectsList().size());
-        assertEquals("the GameObject is not horizontally centered", render.getBuffer().getWidth() / 2, go.x, 0.0);
-        assertEquals("the GameObject is not vertically centered", render.getBuffer().getHeight() / 2, go.y, 0.0);
+        assertEquals("the GameObject is not horizontally centered", render.getBuffer().getWidth() / 2, go.position.x, 0.0);
+        assertEquals("the GameObject is not vertically centered", render.getBuffer().getHeight() / 2, go.position.y, 0.0);
     }
 
     @Then("the Game has {int} GameObject\\(s).")
@@ -124,11 +116,18 @@ public class GameDefSteps extends CommonDefSteps {
         assertEquals("The Scene has not the right number of objects", nbObjects, scene.getObjectsList().size());
     }
 
-    @And("the {string} GameObject speed is set to \\({double},{double})")
-    public void theGameObjectSpeedIsSetTo(String name, Double dx, Double dy) {
+    @And("the {string} GameObject velocity is set to \\({double},{double})")
+    public void theGameObjectVelocityIsSetTo(String name, Double dx, Double dy) {
         Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
-        go.setSpeed(dx, dy);
+        go.setVelocity(new Vector2d(dx, dy));
+    }
+
+    @And("the {string} GameObject acceleration is set to \\({double},{double})")
+    public void theGameObjectAccelerationIsSetTo(String name, Double dx, Double dy) {
+        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = scene.getGameObject(name);
+        go.setAcceleration(new Vector2d(dx, dy));
     }
 
     @Then("I update {int} times the scene")
@@ -143,8 +142,8 @@ public class GameDefSteps extends CommonDefSteps {
     public void theGameObjectIsNowAt(String name, Double x, Double y) {
         Scene scene = game.getSceneManager().getCurrent();
         GameObject go = scene.getGameObject(name);
-        assertEquals("the GameObject " + name + " is not horizontally centered", x, go.x, 10.0);
-        assertEquals("the GameObject " + name + " is not vertically centered", y, go.y, 10.0);
+        assertEquals("the GameObject " + name + " is not horizontally centered", x, Math.ceil(go.position.x), 1.0);
+        assertEquals("the GameObject " + name + " is not vertically centered", y, Math.ceil(go.position.y), 1.0);
     }
 
     @And("The font {string} is added")
@@ -224,5 +223,11 @@ public class GameDefSteps extends CommonDefSteps {
         GameObject e = scene.getGameObject(entityName);
         // TODO parse materialTypeName to use the right DefaultMaterial.
         e.material = Material.DefaultMaterial.WOOD.getMaterial();
+    }
+
+    @Given("the Game is instantiated with config {string}")
+    public void theGameIsInstantiatedWithConfig(String configFileName) {
+        game = new Game(configFileName);
+        game.testMode = true;
     }
 }

@@ -8,11 +8,12 @@ import io.cucumber.java8.En;
 import static org.junit.Assert.*;
 
 public class SystemManagerStepDefs implements En {
-    Game game = new Game("test-sm");
+    Game game;
     SystemManager sm;
 
     public SystemManagerStepDefs() {
         When("I create a SystemManager", () -> {
+            game = new Game("test-sm");
             sm = SystemManager.initialize(game);
         });
         Then("the SystemManager instance is not null", () -> {
@@ -45,14 +46,14 @@ public class SystemManagerStepDefs implements En {
         });
         And("I terminate the SystemManager", SystemManager::dispose);
         Then("all the systems are disposed and free", () -> {
-            assertTrue("",SystemManager.getSystems().isEmpty());
+            assertTrue("", SystemManager.getSystems().isEmpty());
         });
         And("I initialize SystemManager", () -> {
             SystemManager.initialize(game);
         });
         Then("all the Systems are ready", () -> {
             for (System system : SystemManager.getSystems()) {
-                assertTrue("The system "+system.getName()+"was not ready",system.isReady());
+                assertTrue("The system " + system.getName() + "was not ready", system.isReady());
             }
         });
     }

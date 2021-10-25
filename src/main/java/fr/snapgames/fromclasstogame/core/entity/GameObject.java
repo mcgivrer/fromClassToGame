@@ -1,10 +1,16 @@
 package fr.snapgames.fromclasstogame.core.entity;
 
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameObject implements Entity {
 
@@ -18,10 +24,9 @@ public class GameObject implements Entity {
     public int id = ++index;
     public String name = "noname_" + id;
 
-    public double x;
-    public double y;
-    public double dx;
-    public double dy;
+    public Vector2d position = new Vector2d();
+    public Vector2d velocity = new Vector2d();
+    public Vector2d acceleration = new Vector2d();
 
     public double width;
     public double height;
@@ -42,10 +47,23 @@ public class GameObject implements Entity {
     public Material material;
     public double mass = 1;
 
+    protected Map<String, Object> attributes = new HashMap<>();
+
+    public List<Behavior> behaviors = new ArrayList<>();
+
+    public GameObject(String objectName) {
+        this.name = objectName;
+    }
+
+    public GameObject(String objectName, Vector2d position) {
+        this.name = objectName;
+        setPosition(position);
+    }
+
+    @Deprecated
     public GameObject(String name, double x, double y) {
-        this.name = name;
-        this.x = x;
-        this.y = y;
+        this(name);
+        setPosition(x, y);
         this.color = Color.GREEN;
         this.priority = 0;
         this.layer = 1;
@@ -65,12 +83,6 @@ public class GameObject implements Entity {
         return this;
     }
 
-    public GameObject setSpeed(double dx, double dy) {
-        this.dx = dx;
-        this.dy = dy;
-        return this;
-    }
-
     public GameObject setSize(double w, double h) {
         this.width = w;
         this.height = h;
@@ -84,8 +96,23 @@ public class GameObject implements Entity {
     }
 
     public GameObject setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
+        this.position.x = x;
+        this.position.y = y;
+        return this;
+    }
+
+    public GameObject setPosition(Vector2d position) {
+        this.position = position;
+        return this;
+    }
+
+    public GameObject setVelocity(Vector2d velocity) {
+        this.velocity = velocity;
+        return this;
+    }
+
+    public GameObject setAcceleration(Vector2d acceleration) {
+        this.acceleration = acceleration;
         return this;
     }
 
@@ -109,4 +136,28 @@ public class GameObject implements Entity {
         return this;
     }
 
+    public GameObject setMass(double mass) {
+        this.mass = mass;
+        return this;
+    }
+
+    public GameObject add(Behavior b) {
+        if (!behaviors.contains(b)) {
+            behaviors.add(b);
+        }
+        return this;
+    }
+
+    public GameObject addAttribute(String attrName, Object attrValue) {
+        this.attributes.put(attrName, attrValue);
+        return this;
+    }
+
+    public Object getAttribute(String name) {
+        return attributes.get(name);
+    }
+
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
 }
