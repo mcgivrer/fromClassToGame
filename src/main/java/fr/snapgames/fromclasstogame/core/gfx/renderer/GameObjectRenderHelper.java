@@ -15,19 +15,19 @@ public class GameObjectRenderHelper implements RenderHelper {
         switch (go.type) {
             case POINT:
                 g.setColor(go.color);
-                g.drawLine((int) (go.x), (int) (go.y), (int) (go.x), (int) (go.y));
+                g.drawLine((int) (go.position.x), (int) (go.position.y), (int) (go.position.x), (int) (go.position.y));
                 break;
             case RECTANGLE:
                 g.setColor(go.color);
-                g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
+                g.drawRect((int) (go.position.x), (int) (go.position.y), (int) (go.width), (int) (go.height));
                 break;
             case CIRCLE:
                 g.setColor(go.color);
-                g.drawArc((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height), 0, 360);
+                g.drawArc((int) (go.position.x), (int) (go.position.y), (int) (go.width), (int) (go.height), 0, 360);
                 break;
             case IMAGE:
                 if (go.image != null) {
-                    g.drawImage(go.image, (int) (go.x), (int) (go.y), null);
+                    g.drawImage(go.image, (int) (go.position.x), (int) (go.position.y), null);
                 } else {
                     logger.error("GameObject named {} : image attribute is not defined", go.name);
                 }

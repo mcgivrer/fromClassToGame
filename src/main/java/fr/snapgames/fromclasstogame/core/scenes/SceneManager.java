@@ -67,6 +67,7 @@ public class SceneManager extends System {
             try {
                 s = Class.forName(scn[1]);
                 scenesClasses.put(scn[0], s);
+                logger.info("Add Scene {} as {}", scn[0], scn[1]);
             } catch (ClassNotFoundException e) {
                 logger.error("Unable to load class {}", scnClass);
             }
@@ -93,25 +94,39 @@ public class SceneManager extends System {
     public void activate(String name) {
         if (scenesClasses.containsKey(name)) {
             Scene s;
-            try {
-                if (scenesInstances.containsKey(name)) {
-                    s = scenesInstances.get(name);
-                } else {
-                    Class<?> clazzScene = scenesClasses.get(name);
-                    final Constructor<?> sceneConstructor = clazzScene.getConstructor(new Class[]{Game.class});
-                    s = (Scene) sceneConstructor.newInstance(game);
-                    add(name, s);
-                }
-                if (s != null) {
-                    this.current = s;
-                    s.activate();
-                }
-
-            } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                logger.error("Unable to instantiate class {}", name);
+            if (scenesInstances.containsKey(name)) {
+                s = scenesInstances.get(name);
+            } else {
+                s = instantiateScene(name);
             }
+            if (s != null) {
+                this.current = s;
+                s.activate();
+            }
+
+            setCurrent(s);
         }
 
+    }
+
+    private Scene instantiateScene(String name) {
+        Scene s = null;
+        try {
+            Class<?> clazzScene = scenesClasses.get(name);
+            final Constructor<?> sceneConstructor = clazzScene.getConstructor(new Class[]{Game.class});
+            s = (Scene) sceneConstructor.newInstance(game);
+            add(name, s);
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            logger.error("Unable to instantiate class {}", name);
+        }
+        return s;
+    }
+
+    private void setCurrent(Scene s) {
+        if (s != null) {
+            this.current = s;
+            s.activate();
+        }
     }
 
     /**
@@ -142,6 +157,9 @@ public class SceneManager extends System {
     }
 
     public Scene getCurrent() {
+        if (current == null) {
+            activate();
+        }
         return this.current;
     }
 

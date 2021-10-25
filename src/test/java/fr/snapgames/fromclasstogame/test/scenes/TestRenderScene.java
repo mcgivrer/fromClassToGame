@@ -9,14 +9,7 @@ import fr.snapgames.fromclasstogame.test.entity.TestObject;
 public class TestRenderScene extends AbstractScene {
 
     public TestRenderScene(Game g) {
-        super(g);
-    }
-
-
-    @Override
-    public String getName() {
-
-        return "test";
+        super(g, "render-scene");
     }
 
     @Override

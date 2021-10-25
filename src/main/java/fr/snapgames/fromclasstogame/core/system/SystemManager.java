@@ -7,6 +7,7 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -32,7 +33,8 @@ public class SystemManager {
     }
 
     public static System get(Class<? extends System> systemClass) {
-        if (systemInstances.containsKey(systemClass)) {
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent() && systemInstances.containsKey(systemClass)) {
             return systemInstances.get(systemClass);
         }
         return null;
@@ -52,7 +54,10 @@ public class SystemManager {
     }
 
     public static void remove(Class<? extends System> s) {
-        systemInstances.remove(s);
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent()) {
+            systemInstances.remove(s);
+        }
     }
 
     public static Collection<System> getSystems() {
@@ -60,33 +65,48 @@ public class SystemManager {
     }
 
     public static void configure(Configuration config) {
-        systemInstances.entrySet().forEach(e -> {
-            e.getValue().initialize(config);
-        });
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent()) {
+            systemInstances.entrySet().forEach(e -> {
+                e.getValue().initialize(config);
+            });
+        }
     }
 
     public static void dispose() {
-        systemInstances.entrySet().stream().forEach(e -> {
-            e.getValue().dispose();
-            systemInstances.remove(e.getKey());
-        });
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent()) {
+            systemInstances.entrySet().stream().forEach(e -> {
+                e.getValue().dispose();
+                systemInstances.remove(e.getKey());
+            });
+        }
     }
 
     public static void add(GameObject o) {
-        systemInstances.entrySet().forEach(e -> {
-            e.getValue().add(o);
-        });
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent()) {
+            systemInstances.entrySet().forEach(e -> {
+                e.getValue().add(o);
+            });
+        }
     }
 
     public static void remove(GameObject o) {
-        systemInstances.entrySet().forEach(e -> {
-            e.getValue().remove(o);
-        });
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent()) {
+            systemInstances.entrySet().forEach(e -> {
+                e.getValue().remove(o);
+            });
+        }
     }
 
     public static void clearObjects() {
-        systemInstances.entrySet().forEach(e -> {
-            e.getValue().clearObjects();
-        });
+        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        if (oSystemInstances.isPresent()) {
+            systemInstances.entrySet().forEach(e -> {
+                e.getValue().clearObjects();
+            });
+        }
     }
 }

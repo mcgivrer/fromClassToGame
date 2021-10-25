@@ -1,536 +1,595 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>core</groupId>
-  <artifactId>fromclasstogame</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>FromClassToGame</name>
-  <description>Journey from a simple class to a Game, with the Java language</description>
-  <inceptionYear>2021</inceptionYear>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>core</groupId>
+    <artifactId>fromclasstogame</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>FromClassToGame</name>
+    <description>Journey from a simple class to a Game, with the Java language</description>
+    <inceptionYear>2021</inceptionYear>
 
-  <!-- Authors and Designers -->
-  <contributors>
-    <contributor>
-      <name>Frédéric Delorme</name>
-      <email>frederic.delorme@snapgames.fr</email>
-      <organization>SnapGames</organization>
-      <organizationUrl>https://SnapGames.github.io/</organizationUrl>
-      <timezone>Europe/Paris</timezone>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </contributor>
-  </contributors>
+    <!-- Project License -->
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://raw.githubusercontent.com/mcgivrer/fromClassToGame/main/LICENSE</url>
+        </license>
+    </licenses>
 
-  <!-- Project eco-system definition -->
-  <organization>
-    <url>http://SnapGames.github.io</url>
-    <name>SnapGames</name>
-  </organization>
-  <scm>
-    <url>https://SnapGames.github.io/</url>
-    <connection>scm:git:git@github.com:mcgivrer/fromClassToGame.git</connection>
-    <developerConnection>scm:git:git@github.com/mcgivrer/fromClassToGame.git</developerConnection>
-    <tag>${project.id}-${project.version}</tag>
-  </scm>
-  <issueManagement>
-    <system>Issues tracker</system>
-    <url>https://github.com/mcgivrer/fromClassToGame/issues</url>
-  </issueManagement>
-  <ciManagement>
-    <url>https://travis-ci.org/mcgivrer/mcgivrer/fromClassToGame</url>
-    <system>travis-ci.org</system>
-  </ciManagement>
+    <!-- Authors and Designers -->
+    <contributors>
+        <contributor>
+            <name>Frédéric Delorme</name>
+            <email>frederic.delorme@snapgames.fr</email>
+            <organization>SnapGames</organization>
+            <organizationUrl>https://SnapGames.github.io/</organizationUrl>
+            <timezone>Europe/Paris</timezone>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </contributor>
+    </contributors>
 
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
-  </properties>
+    <!-- Project eco-system definition -->
+    <organization>
+        <url>http://SnapGames.github.io</url>
+        <name>SnapGames</name>
+    </organization>
+    <scm>
+        <url>https://github.com/mcgivrer/fromClassToGame</url>
+        <connection>scm:git:git@github.com:mcgivrer/fromClassToGame.git</connection>
+        <developerConnection>scm:git:https://github.com/mcgivrer/fromClassToGame.git</developerConnection>
+        <tag>${project.id}-${project.version}</tag>
+    </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/mcgivrer/fromClassToGame/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <url>https://github.com/mcgivrer/fromClassToGame/actions/</url>
+        <system>github-actions</system>
+    </ciManagement>
 
-  <!-- Project Dependencies -->
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
+    </properties>
 
-  <dependencies>
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.32</version>
-    </dependency>
+    <!-- Project Dependencies -->
 
-    <!-- tests things -->
-    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.cucumber</groupId>
-      <artifactId>cucumber-junit</artifactId>
-      <version>6.11.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.cucumber</groupId>
-      <artifactId>cucumber-java8</artifactId>
-      <version>6.11.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.cucumber</groupId>
-      <artifactId>cucumber-java</artifactId>
-      <version>6.11.0</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.32</version>
+        </dependency>
 
-  <build>
-    <finalName>${project.artifactId}-${project.version}</finalName>
-    <plugins>
-      <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.1.0</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
+        <!-- LUA Scripting activation -->
 
-      <!-- Compute coverage -->
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.6</version>
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>default-report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+        <!-- https://mvnrepository.com/artifact/org.luaj/luaj-jse -->
+        <dependency>
+            <groupId>org.luaj</groupId>
+            <artifactId>luaj-jse</artifactId>
+            <version>3.0.1</version>
+        </dependency>
 
-      <!-- Sources -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+        <!-- Media -->
+        <!-- https://mvnrepository.com/artifact/com.googlecode.soundlibs/jlayer -->
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>jlayer</artifactId>
+            <version>1.0.1.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.googlecode.soundlibs/mp3spi -->
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>mp3spi</artifactId>
+            <version>1.9.5.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.googlecode.soundlibs/tritonus-share -->
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>tritonus-share</artifactId>
+            <version>0.3.7.4</version>
+        </dependency>
 
-      <!-- Javadoc -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version>
-        <configuration>
-          <javadocVersion>1.8</javadocVersion>
-          <encoding>utf-8</encoding>
-          <stylesheet>maven</stylesheet>
-          <overview>${project.basedir}/README.md</overview>
-          <doclet>ch.raffael.mddoclet.MarkdownDoclet</doclet>
-          <docletArtifact>
-            <groupId>ch.raffael.markdown-doclet</groupId>
-            <artifactId>markdown-doclet</artifactId>
-            <version>1.4</version>
-          </docletArtifact>
-          <useStandardDocletOptions>true</useStandardDocletOptions>
-        </configuration>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
 
-      <!-- Build the minimalist JAR without dependencies (Normal Edition) -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.2</version>
-        <configuration>
-          <archive>
-            <index>true</index>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <mainClass>${mainClass}</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
+        <!-- tests things -->
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>6.11.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java8</artifactId>
+            <version>6.11.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>6.11.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-      <!-- Shaded jar with all dependencies -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.0</version>
-        <configuration>
-          <!-- put your configurations here -->
-          <shadedArtifactAttached>true</shadedArtifactAttached>
-          <shadedClassifierName>shaded</shadedClassifierName>
-          <transformers>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>${mainClass}</mainClass>
-            </transformer>
-            <!--transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-							<resource>src/main/resources/res</resource> <file>server.properties</file>
-							</transformer -->
-          </transformers>
-          <!-- end of config -->
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Release -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
-        <configuration>
-          <useReleaseProfile>false</useReleaseProfile>
-          <releaseProfiles>release</releaseProfiles>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-        </configuration>
-      </plugin>
-
-      <!-- Execution -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <mainClass>${mainClass}</mainClass>
-          <arguments>
-            <!-- to be soon interpreted by a CLI impl.
-            <argument>d=0</argument>
-            <argument>w=320</argument>
-            <argument>h=200</argument>
-            <argument>s=2</argument>
-            -->
-          </arguments>
-        </configuration>
-      </plugin>
-      <!-- Surefire reporting configuration -->
-      <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.1</version>
-        <configuration>
-          <testFailureIgnore>true</testFailureIgnore>
-          <includes>
-            <exclude>**/*BDDTests.java</exclude>
-          </includes>
-        </configuration>
-      </plugin>
-      <!-- Cucumber reporting -->
-      <plugin>
-        <groupId>net.masterthought</groupId>
-        <artifactId>maven-cucumber-reporting</artifactId>
-        <version>2.0.0</version>
-        <executions>
-          <execution>
-            <id>execution</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <projectName>${project.name}</projectName>
-              <outputDirectory>${project.build.directory}/site/cucumber-reports</outputDirectory>
-              <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
-              <skippedFails>true</skippedFails>
-              <buildNumber>4</buildNumber>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
-      <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.9.0</version>
-      </plugin>
-    </plugins>
-  </build>
-
-  <reporting>
-    <plugins>
-      <!-- Generate the tests report -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.22.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.2</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <!-- select non-aggregate reports -->
-              <report>report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <!-- Generate the Release Notes for this version (linked to github issues
-				list) -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <version>2.12.1</version>
-        <configuration>
-          <includeOpenIssues>false</includeOpenIssues>
-          <columnNames>Id,Created,Type,Summary,Reporter,Assignee,Fix Version</columnNames>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>github-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
-
-  <profiles>
-    <profile>
-      <id>codecoverage</id>
-      <activation>
-        <property>
-          <name>env.TRAVIS</name>
-        </property>
-      </activation>
-      <build>
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
-          <!-- Online Code Quality service verification -->
-          <plugin>
-            <groupId>com.gavinmogan</groupId>
-            <artifactId>codacy-maven-plugin</artifactId>
-            <version>1.2.0</version>
-            <configuration>
-              <!--suppress UnresolvedMavenProperty -->
-              <apiToken>${env.CODACY_API_TOKEN}</apiToken>
-              <!--suppress UnresolvedMavenProperty -->
-              <projectToken>${env.CODACY_PROJECT_TOKEN}</projectToken>
-              <coverageReportFile>target/site/jacoco/jacoco.xml</coverageReportFile>
-              <!--suppress UnresolvedMavenProperty -->
-              <commit>${env.TRAVIS_COMMIT}</commit>
-              <codacyApiBaseUrl>https://api.codacy.com</codacyApiBaseUrl>
-              <failOnMissingReportFile>false</failOnMissingReportFile>
-            </configuration>
-            <executions>
-              <execution>
-                <id>post-test</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>coverage</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>doc-epub</id>
-      <build>
-        <plugins>
-          <!-- generate and ebook (EPUB) width docs/ documentation content -->
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.6.0</version>
-            <executions>
-              <execution>
-                <id>pandoc-epub</id>
-                <phase>package</phase>
+            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                  <executable>pandoc</executable>
-                  <workingDirectory/>
-                  <arguments>
-                    <argument>docs/ebook-metadata.yml</argument>
-                    <argument>docs/00-introduction.md</argument>
-                    <argument>docs/01-game.md</argument>
-                    <argument>docs/02-game_object.md</argument>
-                    <argument>docs/03-scene_and_manager_system.md</argument>
-                    <argument>docs/04-renderer.md</argument>
-                    <argument>docs/05-camera.md</argument>
-                    <argument>docs/06-system_manager.md</argument>
-                    <argument>docs/07-behaviors_and_lua_scripts.md</argument>
-                    <argument>docs/08-physic_engine_system.md</argument>
-                    <argument>docs/09-maplevel.md</argument>
-                    <argument>docs/10-the_maven_project.md</argument>
-                    <!--argument>docs/00-.md</argument -->
-                    <argument>--resource-path=docs/</argument>
-                    <argument>--toc</argument>
-                    <argument>--toc-depth=2</argument>
-                    <argument>-t</argument>
-                    <argument>epub3</argument>
-                    <argument>-o</argument>
-                    <argument>target/${project.name}-doc-${project.version}.epub</argument>
-                  </arguments>
+                    <encoding>UTF-8</encoding>
+                    <source>11</source>
+                    <target>11</target>
+                    <release>11</release>
                 </configuration>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>doc-pdf</id>
-      <build>
-        <plugins>
-          <!-- generate PDF width docs/ documentation content -->
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.6.0</version>
-            <executions>
-              <execution>
-                <id>pandoc-pdf</id>
-                <phase>package</phase>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
                 <configuration>
-                  <executable>pandoc</executable>
-                  <workingDirectory/>
-                  <arguments>
-                    <argument>docs/ebbok-metadata.yml</argument>
-                    <argument>docs/00-introduction.md</argument>
-                    <argument>docs/01-game.md</argument>
-                    <argument>docs/02-game_object.md</argument>
-                    <argument>docs/03-scene_and_manager_system.md</argument>
-                    <argument>docs/04-renderer.md</argument>
-                    <argument>docs/05-camera.md</argument>
-                    <argument>docs/06-system_manager.md</argument>
-                    <argument>docs/07-behaviors_and_lua_scripts.md</argument>
-                    <argument>docs/08-physic_engine_system.md</argument>
-                    <argument>docs/09-maplevel.md</argument>
-                    <argument>docs/10-the_maven_project.md</argument>
-                    <!--argument>docs/00-.md</argument -->
-                    <argument>--resource-path=docs/</argument>
-                    <argument>--toc</argument>
-                    <argument>--toc-depth=2</argument>
-                    <argument>--pdf-engine=context</argument>
-                    <!--argument>-t</argument> <argument>pdf</argument -->
-                    <argument>-o</argument>
-                    <argument>target/${project.name}-doc-${project.version}.pdf</argument>
-                    <argument>--template</argument>
-                    <argument>eisvogel</argument>
-                    <argument>--listings</argument>
-                  </arguments>
+                    <encoding>UTF-8</encoding>
                 </configuration>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>create-exe</id>
-      <build>
-        <plugins>
-          <!-- create a Windows EXE -->
-          <!-- https://github.com/lukaszlenart/launch4j-maven-plugin/blob/master/src/main/resources/README.adoc -->
-          <!-- see http://launch4j.sourceforge.net/ -->
-          <plugin>
-            <groupId>com.akathist.maven.plugins.launch4j</groupId>
-            <artifactId>launch4j-maven-plugin</artifactId>
-            <version>1.7.25</version>
-            <executions>
-              <execution>
-                <id>l4j-clui</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>launch4j</goal>
-                </goals>
+            </plugin>
+
+            <!-- Compute coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.6</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
                 <configuration>
-                  <headerType>gui</headerType>
-                  <jar>${project.build.directory}/${project.name}-${project.version}-shaded.jar</jar>
-                  <outfile>${project.build.directory}/${project.name}.exe</outfile>
-                  <downloadUrl>http://java.com/download</downloadUrl>
-                  <classPath>
+                    <encoding>utf-8</encoding>
+                    <stylesheet>maven</stylesheet>
+                    <source>1.8</source>
+                    <javadocVersion>11</javadocVersion>
+                    <show>private</show>
+                    <failOnError>false</failOnError>
+                    <failOnWarnings>false</failOnWarnings>
+                    <linksource>true</linksource>
+                    <overview>${project.basedir}/README.md</overview>
+                    <bottom>
+                        <![CDATA[<em>Copyright © \\${project.inceptionYear} - SnapGames.</em>]]>
+                    </bottom>
+                    <links>
+                        <link>${project.issueManagement.url}</link>
+                        <link>${project.ciManagement.url}</link>
+                        <link>[https://docs.oracle.com/en/java/javase/11/docs/api/]</link>
+                    </links>
+                    <!--doclet>ch.raffael.mddoclet.MarkdownDoclet</doclet>
+                    <docletArtifact>
+                        <groupId>ch.raffael.markdown-doclet</groupId>
+                        <artifactId>markdown-doclet</artifactId>
+                        <version>1.4</version>
+                    </docletArtifact-->
+                    <useStandardDocletOptions>true</useStandardDocletOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Build the minimalist JAR without dependencies (Normal Edition) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>${mainClass}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- Shaded jar with all dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <!-- put your configurations here -->
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <shadedClassifierName>shaded</shadedClassifierName>
+                    <transformers>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>${mainClass}</mainClass>
+                        </transformer>
+                        <!--transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                        <resource>src/main/resources/res</resource> <file>server.properties</file>
+                                        </transformer -->
+                    </transformers>
+                    <!-- end of config -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Release -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+
+            <!-- Execution -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
                     <mainClass>${mainClass}</mainClass>
-                    <preCp>anything</preCp>
-                  </classPath>
-                  <icon>src/main/resources/res/app-icon.ico</icon>
-                  <jre>
-                    <minVersion>1.8.0</minVersion>
-                    <jdkPreference>preferJre</jdkPreference>
-                  </jre>
-                  <versionInfo>
-                    <fileVersion>1.0.0.0</fileVersion>
-                    <txtFileVersion>${project.version}</txtFileVersion>
-                    <fileDescription>${project.name}</fileDescription>
-                    <copyright>${project.inceptionYear} - [author_company_url]</copyright>
-                    <productVersion>1.0.0.0</productVersion>
-                    <txtProductVersion>1.0.0.0</txtProductVersion>
-                    <productName>${project.name}</productName>
-                    <companyName>SnapGames</companyName>
-                    <internalName>${project.name}</internalName>
-                    <originalFilename>${project.name}</originalFilename>
-                  </versionInfo>
+                    <arguments>
+                        <!-- to be soon interpreted by a CLI impl.
+                        <argument>d=0</argument>
+                        <argument>w=320</argument>
+                        <argument>h=200</argument>
+                        <argument>s=2</argument>
+                        -->
+                    </arguments>
                 </configuration>
-              </execution>
-            </executions>
-          </plugin>
+            </plugin>
+            <!-- Surefire reporting configuration -->
+            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <includes>
+                        <exclude>**/*BDDTests.java</exclude>
+                    </includes>
+                    <argLine>
+                        --illegal-access=permit
+                    </argLine>
+                </configuration>
+            </plugin>
+            <!-- Cucumber reporting -->
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>2.0.0</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>${project.name}</projectName>
+                            <outputDirectory>${project.build.directory}/site/cucumber-reports</outputDirectory>
+                            <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
+                            <skippedFails>true</skippedFails>
+                            <buildNumber>4</buildNumber>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.0</version>
+            </plugin>
         </plugins>
-      </build>
-    </profile>
-  </profiles>
+    </build>
+
+    <reporting>
+        <plugins>
+            <!-- Generate the tests report -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.2</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <!-- select non-aggregate reports -->
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <!-- Generate the Release Notes for this version (linked to github issues
+                      list) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <version>2.12.1</version>
+                <configuration>
+                    <includeOpenIssues>false</includeOpenIssues>
+                    <onlyMilestoneIssues>false</onlyMilestoneIssues>
+                    <columnNames>Id,Type,Key,Summary,Assignee,Status,Fix Version</columnNames>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>github-report</report>
+                            <report>changes-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <profiles>
+        <profile>
+            <id>codecoverage</id>
+            <activation>
+                <property>
+                    <name>env.TRAVIS</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- Online Code Quality service verification -->
+                    <plugin>
+                        <groupId>com.gavinmogan</groupId>
+                        <artifactId>codacy-maven-plugin</artifactId>
+                        <version>1.2.0</version>
+                        <configuration>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <apiToken>${env.CODACY_API_TOKEN}</apiToken>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <projectToken>${env.CODACY_PROJECT_TOKEN}</projectToken>
+                            <coverageReportFile>target/site/jacoco/jacoco.xml</coverageReportFile>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <commit>${env.TRAVIS_COMMIT}</commit>
+                            <codacyApiBaseUrl>https://api.codacy.com</codacyApiBaseUrl>
+                            <failOnMissingReportFile>false</failOnMissingReportFile>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>post-test</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>coverage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>doc-epub</id>
+            <build>
+                <plugins>
+                    <!-- generate and ebook (EPUB) width docs/ documentation content -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <id>pandoc-epub</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <executable>pandoc</executable>
+                                    <workingDirectory/>
+                                    <arguments>
+                                        <argument>docs/ebook-metadata.yml</argument>
+                                        <argument>docs/00-introduction.md</argument>
+                                        <argument>docs/01-game.md</argument>
+                                        <argument>docs/02-game_object.md</argument>
+                                        <argument>docs/03-scene_and_manager_system.md</argument>
+                                        <argument>docs/04-renderer.md</argument>
+                                        <argument>docs/05-camera.md</argument>
+                                        <argument>docs/06-system_manager.md</argument>
+                                        <argument>docs/07-behaviors_and_lua_scripts.md</argument>
+                                        <argument>docs/08-physic_engine_system.md</argument>
+                                        <argument>docs/09-maplevel.md</argument>
+                                        <argument>docs/10-the_maven_project.md</argument>
+                                        <!--argument>docs/00-.md</argument -->
+                                        <argument>--resource-path=docs/</argument>
+                                        <argument>--toc</argument>
+                                        <argument>--toc-depth=2</argument>
+                                        <argument>-t</argument>
+                                        <argument>epub3</argument>
+                                        <argument>-o</argument>
+                                        <argument>target/${project.name}-doc-${project.version}.epub</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>doc-pdf</id>
+            <build>
+                <plugins>
+                    <!-- generate PDF width docs/ documentation content -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <id>pandoc-pdf</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <executable>pandoc</executable>
+                                    <workingDirectory/>
+                                    <arguments>
+                                        <argument>docs/ebbok-metadata.yml</argument>
+                                        <argument>docs/00-introduction.md</argument>
+                                        <argument>docs/01-game.md</argument>
+                                        <argument>docs/02-game_object.md</argument>
+                                        <argument>docs/03-scene_and_manager_system.md</argument>
+                                        <argument>docs/04-renderer.md</argument>
+                                        <argument>docs/05-camera.md</argument>
+                                        <argument>docs/06-system_manager.md</argument>
+                                        <argument>docs/07-behaviors_and_lua_scripts.md</argument>
+                                        <argument>docs/08-physic_engine_system.md</argument>
+                                        <argument>docs/09-maplevel.md</argument>
+                                        <argument>docs/10-the_maven_project.md</argument>
+                                        <!--argument>docs/00-.md</argument -->
+                                        <argument>--resource-path=docs/</argument>
+                                        <argument>--toc</argument>
+                                        <argument>--toc-depth=2</argument>
+                                        <argument>--pdf-engine=context</argument>
+                                        <!--argument>-t</argument> <argument>pdf</argument -->
+                                        <argument>-o</argument>
+                                        <argument>target/${project.name}-doc-${project.version}.pdf</argument>
+                                        <argument>--template</argument>
+                                        <argument>eisvogel</argument>
+                                        <argument>--listings</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>create-exe</id>
+            <build>
+                <plugins>
+                    <!-- create a Windows EXE -->
+                    <!-- https://github.com/lukaszlenart/launch4j-maven-plugin/blob/master/src/main/resources/README.adoc -->
+                    <!-- see http://launch4j.sourceforge.net/ -->
+                    <plugin>
+                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                        <artifactId>launch4j-maven-plugin</artifactId>
+                        <version>1.7.21</version>
+                        <executions>
+                            <execution>
+                                <id>l4j-clui</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>launch4j</goal>
+                                </goals>
+                                <configuration>
+                                    <headerType>gui</headerType>
+                                    <jar>${project.build.directory}/${project.name}-${project.version}-shaded.jar</jar>
+                                    <outfile>${project.build.directory}/${project.name}.exe</outfile>
+                                    <downloadUrl>http://java.com/download</downloadUrl>
+                                    <classPath>
+                                        <mainClass>${mainClass}</mainClass>
+                                        <preCp>anything</preCp>
+                                    </classPath>
+                                    <icon>src/main/resources/res/app-icon.ico</icon>
+                                    <jre>
+                                        <minVersion>1.8.0</minVersion>
+                                        <jdkPreference>preferJre</jdkPreference>
+                                    </jre>
+                                    <versionInfo>
+                                        <fileVersion>1.0.0.0</fileVersion>
+                                        <txtFileVersion>${project.version}</txtFileVersion>
+                                        <fileDescription>${project.name}</fileDescription>
+                                        <copyright>${project.inceptionYear} - [author_company_url]</copyright>
+                                        <productVersion>1.0.0.0</productVersion>
+                                        <txtProductVersion>1.0.0.0</txtProductVersion>
+                                        <productName>${project.name}</productName>
+                                        <companyName>SnapGames</companyName>
+                                        <internalName>${project.name}</internalName>
+                                        <originalFilename>${project.name}</originalFilename>
+                                    </versionInfo>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

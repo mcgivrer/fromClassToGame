@@ -40,6 +40,7 @@ public class Render extends System {
     private Color debugColor = Color.ORANGE;
     private int debug = 0;
     private World world;
+    private boolean renderScreenshot = false;
 
     public Render(Game g) {
         super(g);
@@ -60,7 +61,7 @@ public class Render extends System {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         if (camera != null) {
-            g.translate(-camera.x, -camera.y);
+            g.translate(-camera.position.x, -camera.position.y);
         }
         renderWorld(g, world);
         for (GameObject go : objects) {
@@ -68,13 +69,17 @@ public class Render extends System {
         }
 
         if (camera != null) {
-            g.translate(camera.x, camera.y);
+            g.translate(camera.position.x, camera.position.y);
         }
         for (GameObject go : objectsRelativeToCamera) {
             draw(g, go);
         }
 
         g.dispose();
+        if (renderScreenshot) {
+            saveScreenshot();
+            renderScreenshot = false;
+        }
     }
 
     private void renderWorld(Graphics2D g, World w) {
@@ -100,7 +105,7 @@ public class Render extends System {
             rh.draw(g, go);
         } else {
             g.setColor(go.color);
-            g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
+            g.drawRect((int) (go.position.x), (int) (go.position.y), (int) (go.width), (int) (go.height));
         }
     }
 
@@ -133,8 +138,9 @@ public class Render extends System {
     /**
      * Save a screenshot of the current buffer.
      */
-    public void saveScreenshot() {
-        final String path = this.getClass().getResource("/").getPath();
+    private void saveScreenshot() {
+        final String path = this.getClass().getResource("/").getPath().substring(1);
+
         Path targetDir = Paths.get(path + "/screenshots");
         int i = screenShotIndex++;
         String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
@@ -205,6 +211,10 @@ public class Render extends System {
 
     @Override
     public boolean isReady() {
-        return renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
+        return !renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
+    }
+
+    public void requestScreenShot() {
+        renderScreenshot = true;
     }
 }
