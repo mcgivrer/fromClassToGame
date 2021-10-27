@@ -160,7 +160,7 @@ the anode (the screen grid) to excite fluorescent layer in the intern face of th
 And swiping the all surface of the screen has a time cost: to display 25 frame per seconds, we need 16ms to swipe a
 frame.
 
-![The CRT swiping loop](../images/crt.jpg)
+![The CRT swiping loop](images/crt.jpg)
 _The CRT Tube is nothing more than a big bubble light. (3) the cathode emits ions (1) and (2) are anodes, deflecting ion ray to screen, lighting a fluorescent dot._
 
 This is the available time for the CPU to prepare next image !
@@ -169,13 +169,13 @@ So capturing input, moving things and displaying things must be done in 16ms. An
 
 So the main process is a LOOP. that's why we talk about a Game Loop:
 
-![The Famous Game Loop](../images/game-loop.jpg "inspired from Robert Nystrom 'Game programming Patterns'")
+![The Famous Game Loop](images/game-loop.jpg "inspired from Robert Nystrom 'Game programming Patterns'")
 _The method to keep a fixed frame rate_
 
 There is also some advanced version of the Game Loop, where multiple update can be performed between each rendering
 phase, the timer is around the update methods only:
 
-![The advanced method to keep a fixed update rate](../images/game-loop-fixed.jpg "inspired from Robert Nystrom 'Game programming Patterns'")
+![The advanced method to keep a fixed update rate](images/game-loop-fixed.jpg "inspired from Robert Nystrom 'Game programming Patterns'")
 _The advanced method to keep a fixed update rate_
 
 I can only invite you to read the fantastic book from Robert Nystrom for details about

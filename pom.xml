@@ -135,9 +135,8 @@
                 <version>3.8.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>11</source>
-                    <target>11</target>
-                    <release>11</release>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
             <!-- Resource parsing -->
@@ -454,24 +453,32 @@
                         <executions>
                             <execution>
                                 <id>pandoc-epub</id>
-                                <phase>package</phase>
+                                <phase>site</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
                                     <workingDirectory/>
                                     <arguments>
-                                        <argument>docs/theme/ebook-metadata.yml</argument>
-                                        <argument>docs/chapters/00-introduction.md</argument>
-                                        <argument>docs/chapters/01-a-class.md</argument>
-                                        <argument>docs/chapters/02-game_object.md</argument>
-                                        <argument>docs/chapters/03-scene_and_manager_system.md</argument>
-                                        <argument>docs/chapters/04-renderer.md</argument>
-                                        <argument>docs/chapters/05-camera.md</argument>
-                                        <argument>docs/chapters/06-system_manager.md</argument>
-                                        <argument>docs/chapters/07-behaviors_and_lua_scripts.md</argument>
-                                        <argument>docs/chapters/08-physic_engine_system.md</argument>
-                                        <argument>docs/chapters/09-maplevel.md</argument>
-                                        <!--argument>docs/00-.md</argument -->
-                                        <argument>--resource-path=docs/</argument>
+                                        <argument>src/docs/theme/epub-metadata.yml</argument>
+                                        <argument>src/docs/chapters/01-a-class.md</argument>
+                                        <argument>src/docs/chapters/02-adding-a-structure.md</argument>
+                                        <argument>src/docs/chapters/03-delegate-things.md</argument>
+                                        <argument>src/docs/chapters/04-the-object-game.md</argument>
+                                        <argument>src/docs/chapters/05-input-handler.md</argument>
+                                        <argument>src/docs/chapters/06-new-components.md</argument>
+                                        <argument>src/docs/chapters/07-resource-manager.md</argument>
+                                        <argument>src/docs/chapters/08-scene-manager.md</argument>
+                                        <argument>src/docs/chapters/09-extract-configuration.md</argument>
+                                        <argument>src/docs/chapters/10-refactoring-packages.md</argument>
+                                        <argument>src/docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>src/docs/chapters/12-see-through-camera.md</argument>
+                                        <argument>src/docs/chapters/13-basic-physic-engine.md</argument>
+                                        <argument>src/docs/chapters/14-collision-system.md</argument>
+                                        <argument>src/docs/chapters/15-gameobject-and-behaviors.md</argument>
+                                        <argument>src/docs/chapters/16-tilemap-objects.md</argument>
+                                        <argument>src/docs/chapters/17-inventory.md</argument>
+                                        <argument>src/docs/chapters/20-architecture.md</argument>
+                                        <!--argument>src/docs/chapters/*.md</argument-->
+                                        <argument>--resource-path=src/docs/</argument>
                                         <argument>--toc</argument>
                                         <argument>--toc-depth=2</argument>
                                         <argument>-t</argument>

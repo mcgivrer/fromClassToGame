@@ -30,7 +30,7 @@ Starting with a very simple class, we will create a brand new Game, by adding so
 14. [Collision System](chapters/14-collision-system.md)
 15. [GameObject and Behaviors](chapters/15-gameobject-and-behaviors.md)
 16. [TileMap objects](chapters/16-tilemap-objects.md)
-17. [Global Architecture](chapters/100-architecture.md)
+17. [Global Architecture](chapters/20-architecture.md)
 
 More to come... stay Tuned !
 

@@ -17,7 +17,7 @@ first feeling of the player about a game is the behavior of this camera.
 
 But how a camera is following a target ? Let's have a diagram to explain that.
 
-![A Camera in a viewport following a target](../images/camera.jpg)
+![A Camera in a viewport following a target](images/camera.jpg)
 _A Camera follows a target in a viewport_
 
 The target, the **player**, at `(x,y)`, is targeted by the **camera** at `(cx,cy)` moving into the **viewport** having
