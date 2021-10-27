@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.2.0/markdown-it.min.js"
+      integrity="sha512-cTQeM/op796Fp1ZUxfech8gSMLT/HvrXMkRGdGZGQnbwuq/obG0UtcL04eByVa99qJik7WlnlQOr5/Fw5B36aw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="/jquery-3.5.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      referrerpolicy="no-referrer"
+    ></script>
+    <title>From Class to Game</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&family=Source+Code+Pro:wght@300&family=Zen+Kaku+Gothic+New:wght@500&family=Zen+Maru+Gothic:wght@300&display=swap');
+      html > * {
+        margin: 0px;
+        padding: 0px;
+      }
+      body {
+        margin: auto;
+        width: 80%;
+        counter-reset: h1counter;
+        font-family: "Zen Maru Gothic";
+        font-size: 14pt;
+      }
+      .title {
+        font-size: 40pt;
+        font-family: "Oswald";
+      }
+      pre {
+        font-size: 11pt;
+        font-family: "Source Code Pro", Courier, monospace;
+        background-color: #000;
+        color: #fff;
+        padding: 0.5em;
+        width: auto;
+        box-shadow:4px 4px 8px #666;
+      }
+
+      p {
+        text-align: justify;
+        max-width: 1024px;
+      }
+
+      /*---- chapter and heading numbering ----*/
+      h1 {
+        margin-top: 1em;
+        padding-top: 1em;
+        text-transform: uppercase;
+        text-align: start;
+        page-break-before: always;
+        font-family: "Zen Kaku Gothic New";
+      }
+      h2 {
+        margin-top: 1em;
+      }
+      h3 {
+        margin-top: 0.5em;
+      }
+      h1::before {
+        content: "Chapter " counter(h1counter) "\A";
+        counter-reset: h2counter;
+        counter-increment: h1counter;
+        white-space: pre;
+        break-before: always;
+        font-size: 20pt;
+        font-family: "Oswald";
+      }
+      h2:before {
+        content: counter(h2counter) ". ";
+        counter-reset: h3counter;
+        counter-increment: h2counter;
+      }
+      h3:before {
+        content: counter(h2counter) "." counter(h3counter) ". ";
+        counter-reset: h4counter;
+        counter-increment: h3counter;
+      }
+      h4:before {
+        content: counter(h2counter) "." counter(h3counter) "."
+          counter(h4counter) ". ";
+        counter-increment: h4counter;
+      }
+      /*---- Image management ----*/
+      img[alt*="figure"] {
+        margin: auto;
+        padding: auto;
+        box-shadow: 4px 4px 8px black;
+      }
+      img[alt*="medium"] {
+        width: 350px;
+      }
+      @media screen and (min-width: 400px) {
+        img[alt*="large"] {
+          width: 350px;
+        }
+        pre {
+          max-width: 350px;
+        }
+      }
+      @media screen and (min-width: 600px) {
+        img[alt*="large"] {
+          width: 550px;
+        }
+        pre {
+          max-width: 550px;
+        }
+      }
+      @media screen and (min-width: 800px) {
+        img[alt*="large"] {
+          width: 700px;
+        }
+        pre {
+          width: 1024px;
+        }
+      }
+      img[alt*="right"] {
+        float: right;
+      }
+      img[alt*="left"] {
+        float: left;
+      }
+      img[alt*="avatar"] {
+        width: 150px;
+        height: auto;
+        margin-bottom: 100px;
+        margin-top: 0.5em;
+        margin-left: 4em;
+        margin-right: 0em;
+        box-shadow: 4px 4px 8px black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <img src="../images/covers/en-front.svg" alt="cover" />
+    <div class="title">From Class to Game</div>
+    <div class="include">../parts/preface.md</div>
+    <div class="include">../parts/introduction.md</div>
+    <div class="include">../parts/about.md</div>
+    <div class="include">../chapters/01-a-class.md</div>
+    <div class="include">../chapters/02-adding-a-structure.md</div>
+    <div class="include">../chapters/03-delegate-things.md</div>
+    <div class="include">../chapters/04-the-object-game.md</div>
+    <div class="include">../chapters/05-input-handler.md</div>
+    <div class="include">../chapters/06-new-components.md</div>
+    <div class="include">../chapters/07-resource-manager.md</div>
+    <div class="include">../chapters/08-scene-manager.md</div>
+    <div class="include">../chapters/09-extract-configuration.md</div>
+    <div class="include">../chapters/10-refactoring-packages.md</div>
+    <div class="include">../chapters/11-score-and-render-helpers.md</div>
+    <div class="include">../chapters/12-see-through-camera.md</div>
+    <div class="include">../chapters/13-basic-physic-engine.md</div>
+    <div class="include">../chapters/14-collision-system.md</div>
+    <div class="include">../chapters/15-.md</div>
+    <div class="include">../chapters/16-gameobject-and-behaviors.md</div>
+    <div class="include">../chapters/17-inventory.md</div>
+    <div class="include">../chapters/100-architecture.md</div>
+    <div class="include">../parts/license.md</div>
+
+    <script>
+      $(function () {
+        var mdit = window.markdownit();
+        mdit.options.html = true;
+        // Process all div elements of class include.  Follow up with custom callback
+        $("div.include").each(function () {
+          var inc = $(this);
+          // Use contents between div tag as the file to be included from server
+          var filename = inc.html();
+          // Unable to intercept load() contents.  post-process markdown rendering with callback
+          inc.load(filename, function () {
+            inc.html(mdit.render(this.innerHTML));
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

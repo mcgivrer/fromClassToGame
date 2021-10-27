@@ -1,14 +1,4 @@
----
-title: From a Class to Game
-chapter: 16 - Gameobject and Behaviors
-author: Frédéric Delorme
-description: The GameObject's behaviors ar sometimes the same between Object. the Behavior interface will provide a way \
-to share common behaviors between multiple GameObject instances.
-created: 2021-10-18
-tags: gamedev, gameobject, behavior
----
-
-## GameObject and Behaviors
+# GameObject and Behaviors
 
 A GameObject can share some of their behaviors.
 

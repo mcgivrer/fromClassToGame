@@ -195,7 +195,7 @@
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
                     <source>1.8</source>
-                    <javadocVersion>11</javadocVersion>
+                    <javadocVersion>1.8</javadocVersion>
                     <show>private</show>
                     <failOnError>false</failOnError>
                     <failOnWarnings>false</failOnWarnings>

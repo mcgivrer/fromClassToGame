@@ -12,24 +12,31 @@ import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.core.entity.InventoryObject;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DemoScene extends AbstractScene {
+
+    private static Logger logger = LoggerFactory.getLogger(DemoScene.class);
 
     private int score = 0;
     private int life = 5;
 
     public DemoScene(Game g) {
-        super(g,"demo");
+        super(g, "demo");
     }
 
 
@@ -74,7 +81,7 @@ public class DemoScene extends AbstractScene {
         add(camera);
 
         // Add enemies(enemy_99)
-        generateEnemies();
+        generateEnemies(30);
 
         // add score display.
         ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4)
@@ -91,7 +98,7 @@ public class DemoScene extends AbstractScene {
         add(lifeTO);
 
         BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
-        GameObject key = new GameObject("key", new Vector2d(0,0))
+        GameObject key = new GameObject("key", new Vector2d(0, 0))
                 .setImage(keyImg)
                 .addAttribute("inventory", keyImg);
 
@@ -109,10 +116,12 @@ public class DemoScene extends AbstractScene {
         randomizeEnemies();
     }
 
-    private void generateEnemies() throws UnknownResource {
-        for (int i = 0; i < 10; i++) {
+    private void generateEnemies(int nb) throws UnknownResource {
+        for (int i = 0; i < nb; i++) {
             GameObject e = new GameObject("enemy_" + i, new Vector2d(0, 0))
                     .setType(GameObject.GOType.IMAGE)
+                    .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
+                            rand(0, game.getPhysicEngine().getWorld().height))
                     .setColor(Color.ORANGE)
                     .setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial())
@@ -121,18 +130,16 @@ public class DemoScene extends AbstractScene {
         }
     }
 
+    private void randomizeEnemies() {
+        find("enemy_").forEach(go -> go
+                .setAcceleration(new Vector2d(20 + rand(-60, 40), 20 + rand(-60, 40)))
+        );
+    }
+
     @Override
     public void activate() {
         randomizeEnemies();
         this.score = 0;
-    }
-
-    private void randomizeEnemies() {
-        find("enemy_").forEach(go -> go
-                .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
-                        rand(0, game.getPhysicEngine().getWorld().height))
-                .setAcceleration(new Vector2d(rand(-40, 40), 0.0))
-        );
     }
 
     @Override
@@ -176,8 +183,30 @@ public class DemoScene extends AbstractScene {
         if (inputHandler.getKey(KeyEvent.VK_RIGHT)) {
             player.acceleration.x = speed;
         }
-        if (inputHandler.getKey(KeyEvent.VK_G)) {
-            game.getPhysicEngine().getWorld().gravity.y = -game.getPhysicEngine().getWorld().gravity.y;
+    }
+
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        super.keyReleased(e);
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_G:
+                game.getPhysicEngine().getWorld().gravity.y = -game.getPhysicEngine().getWorld().gravity.y;
+                break;
+            case KeyEvent.VK_TAB:
+                try {
+                    generateEnemies(10);
+                } catch (UnknownResource ex) {
+                    logger.error("unable to load resource", e);
+                }
+                break;
+            case KeyEvent.VK_MINUS:
+                objectsList.stream().filter(c -> {
+                    return c.name.startsWith("enemy_");
+                }).collect(Collectors.toList()).forEach(o -> {
+                    SystemManager.remove(o);
+                });
+                break;
         }
     }
 

@@ -1,13 +1,4 @@
----
-title: From a Class to Game
-chapter: 09 - Extracting the Configuration
-author: Frédéric Delorme
-description: A dedicated service to Scenes management.
-created: 2021-08-01
-tags: gamedev, scene
----
-
-## Extracting the Configuration
+# Extracting the Configuration
 
 As we have already seen in the previous chapter, we split and refactor the Game class from beginning. Here is the step where
 we split the configuration management from the main Game class.
@@ -128,7 +119,7 @@ public class SceneManager {
 
 You now have a super configuration class you may have to update to add new things.
 
-### A possible enhancement
+## A possible enhancement
 
 If you really want to get an 'infinite' version of the configuration system, you can also move all attributes to a Map,
 and dynamically configure those attributes at Start, and then get there values through the Map get.
@@ -184,7 +175,7 @@ public class Configuration {
 }
 ```
 
-### Evolution
+## Evolution
 
 The Configuration class will integrate progressively more and
 more parameters to be set and loaded from the properties file.
@@ -196,7 +187,7 @@ help bout possible parameters and their values.
 
 You would get some `ArgParser` interface and a `CLIManager` to support those parser.
 
-#### the IArgParser interface
+### the IArgParser interface
 
 ```java
 public interface IArgParser<T> {
@@ -335,7 +326,7 @@ public class CliManager {
 }
 ```
 
-#### Implementing a parser
+### Implementing a parser
 
 An Integer parameter will have to parse int values.
 
