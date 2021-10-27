@@ -22,15 +22,15 @@ you would get a full play level.
 
 Basically,here is the view of the player :
 
-![The player viewport](../images/tilemap-diagram-1.jpg "ThePLayer viewport")
+![The player viewport](images/tilemap-diagram-1.jpg "ThePLayer viewport")
 
 And some tiles are added to build the level design:
 
-![Some Tiles in the design](../images/tilemap-diagram-2.jpg "Some Tiles in the design")
+![Some Tiles in the design](images/tilemap-diagram-2.jpg "Some Tiles in the design")
 
 But looking at details you will distinguish multiple elements on this view port:
 
-![Tile and Objects](../images/tilemap-diagram-3.jpg "Tiles and Objects")
+![Tile and Objects](images/tilemap-diagram-3.jpg "Tiles and Objects")
 
 1. a simple coin, described by the level tilemap,
 2. a chest containing miraculous artifacts, also described at the tilemap level,
@@ -39,7 +39,7 @@ But looking at details you will distinguish multiple elements on this view port:
 
 And finally, if you look carefully to the level design, it is clearly larger than the simple player viewport display:
 
-![Full level design](../images/tilemap-diagram-4.jpg "Full level design")
+![Full level design](images/tilemap-diagram-4.jpg "Full level design")
 
 You will notice that the already seen tiles from the previous diagram are marked in red,
 and the rest of the full level is not displayed, but clearly described by that tilemap.
