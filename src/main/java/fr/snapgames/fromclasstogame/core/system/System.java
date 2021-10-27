@@ -50,8 +50,6 @@ public abstract class System {
     }
 
     public void remove(GameObject o) {
-        if (objects.contains(o)) {
-            objects.remove(o);
-        }
+        objects.remove(o);
     }
 }
