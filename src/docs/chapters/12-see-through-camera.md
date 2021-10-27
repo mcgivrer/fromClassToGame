@@ -1,13 +1,4 @@
----
-title: From a Class to Game 
-chapter: 12 - See through a Camera
-author: Frédéric Delorme
-description: Adding a Camera to the scene will allow you to move in as you want, and follow a target.
-created: 2021-08-01 
-tags: gamedev, camera, target
----
-
-## See through a Camera
+# See through a Camera
 
 In every game, there is a critic chapter about how the "camera" is managed. But what does this means exactly ?
 
@@ -17,7 +8,8 @@ first feeling of the player about a game is the behavior of this camera.
 
 But how a camera is following a target ? Let's have a diagram to explain that.
 
-![A Camera in a viewport following a target](../images/camera.jpg)
+![figure large](../images/camera.jpg "A Camera in a viewport following a target")
+
 _A Camera follows a target in a viewport_
 
 The target, the **player**, at `(x,y)`, is targeted by the **camera** at `(cx,cy)` moving into the **viewport** having
@@ -50,23 +42,26 @@ class Camera extends GameObject {
 
 Now we can add the `Camera` to the framework and reserve a dedicated processing to this kind of object in term or
 rendering. yes, in this specific case, the `Camera` is not drawn as other object, it is simply moving the point of view
-according to its own position. 
+according to its own position.
 
-### Modifying the Render class
+## Modifying the Render class
 
->_**TODO** modify the Render class_
->- _Add a Camera point of view in the Render process_
->- _Add a method to add a Camera_
->- _Sort and filter objects to split Camera and others_
+> _**TODO** modify the Render class_
+>
+> - _Add a Camera point of view in the Render process_
+> - _Add a method to add a Camera_
+> - _Sort and filter objects to split Camera and others_
 
-### Modify Scene and AbstractScene classes
+## Modify Scene and AbstractScene classes
 
 > **TODO** modify the Scene and the AbstractScene
->- _Add a method to add a camera to the Scene_
->- _Add a list of Camera to the Scene_
->- _Automatically add the Camera from the scene to the Render pipeline._
+>
+> - _Add a method to add a camera to the Scene_
+> - _Add a list of Camera to the Scene_
+> - _Automatically add the Camera from the scene to the Render pipeline._
 
-### Adapt DemoScene class
+## Adapt DemoScene class
 
 > **TODO** modify the DemoScene
->- _Add a Camera to the DemoScene_
+>
+> - _Add a Camera to the DemoScene_

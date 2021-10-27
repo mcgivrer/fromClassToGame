@@ -1,13 +1,4 @@
----
-title: From a Class to Game
-chapter: 02 - An Input Handler
-author: Frédéric Delorme
-description: Changing for a good way to manage user keyboard input.
-created: 2021-08-01
-tags: gamedev, input, keys
----
-
-## Input handler
+# Input handler
 
 The best way to manage user input, although we already implement something in the Game class, we will create a brand-new thing: The `InputHandler`.
 The goal of this class is to capture events, and maintain a buffer of keys state, a boolean buffer.

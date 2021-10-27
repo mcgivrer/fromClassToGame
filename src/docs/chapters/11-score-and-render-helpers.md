@@ -1,13 +1,4 @@
----
-title: From a Class to Game 
-chapter: 11 - Score and Render Helper
-author: Frédéric Delorme
-description: Moving from Text to ScoreObject and adapting Render to support enhancement. 
-created: 2021-08-01 
-tags: gamedev, render, score, renderhelper
----
-
-## Score and RenderHelper
+# Score and RenderHelper
 
 In the previous chapters, the demo scene was displaying some `GameObject`'s and a `TextObject` as a score display. In
 this chapter, we are going to create a new `ScoreObject` to support all the score mechanism. But if we want to render
@@ -21,7 +12,7 @@ This approach is just not possible if our goal consists in providing a kind of g
 So let's refactor the `Render` class to support new mechanism, called delegation, to let it draw all specific object
 with a dedicated utility: a Helper.
 
-### Modifying the Render pipeline
+## Modifying the Render pipeline
 
 First, to let the Render manage all the kind of GameObject, let's introduce an `Entity` interface:
 
@@ -151,7 +142,7 @@ public Render(int width,int height){
         }
 ```
 
-### Adding a ScoreObject
+## Adding a ScoreObject
 
 Let's create a brand new `Entity` : the `ScoreObject` in charge of supporting and rendering the new score information on
 the `DemoScene`.
@@ -200,7 +191,7 @@ public class ScoreRenderHelper implements
 So first the `getType()` will return the concerned Entity type concerned by the `RenderHelper`, and the `draw()` will
 perform the rendering of this new `ScoreObject`.
 
-### Adapt the TextObject rendering
+## Adapt the TextObject rendering
 
 We will have to erform the same thing for the `TextObject` :
 
@@ -222,9 +213,9 @@ public class TextRenderHelper implements RenderHelper {
 
 And that's good now for the `ScoreObject` and its rendering helper.
 
-### the DemoScene
+## the DemoScene
 
-The  `DemoScene` must also be adapted to declare the new `ScoreRenderHelper`; we will do this during
+The `DemoScene` must also be adapted to declare the new `ScoreRenderHelper`; we will do this during
 the `Scene#initialize()` phase :
 
 ```java
@@ -239,4 +230,3 @@ public void initialize(Game g){
 ```
 
 And now let's run this new masterpiece of code !
-
