@@ -4,7 +4,7 @@ import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Project: From Class To Game
@@ -24,7 +23,7 @@ import java.awt.event.KeyListener;
  * @author Frédéric Delorme
  * @since 0.0.1
  */
-public class Game implements KeyListener {
+public class Game implements ActionHandler.ActionListener {
 
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
     public boolean exit = false;
@@ -32,7 +31,7 @@ public class Game implements KeyListener {
     private long realFPS = 60;
     private Window window;
     private Render renderer;
-    private InputHandler inputHandler;
+    private ActionHandler actionHandler;
     private SceneManager sceneManager;
     private Configuration configuration;
     private CollisionSystem cs;
@@ -87,7 +86,7 @@ public class Game implements KeyListener {
 
         SystemManager.add(Render.class);
         SystemManager.add(PhysicEngine.class);
-        SystemManager.add(InputHandler.class);
+        SystemManager.add(ActionHandler.class);
         SystemManager.add(SceneManager.class);
         SystemManager.add(CollisionSystem.class);
 
@@ -101,9 +100,10 @@ public class Game implements KeyListener {
 
         pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
         cs = (CollisionSystem) SystemManager.get(CollisionSystem.class);
-        inputHandler = (InputHandler) SystemManager.get(InputHandler.class);
-        inputHandler.setWindow(window);
-        inputHandler.addKeyListener(this);
+
+        actionHandler = (ActionHandler) SystemManager.get(ActionHandler.class);
+        actionHandler.setWindow(window);
+        actionHandler.add(this);
 
         sceneManager = (SceneManager) SystemManager.get(SceneManager.class);
         logger.info("** > Game initialized at {}", System.currentTimeMillis());
@@ -128,7 +128,7 @@ public class Game implements KeyListener {
 
     private void createScene() {
         sceneManager.activate();
-        inputHandler.addKeyListener(sceneManager.getCurrent());
+        actionHandler.add(sceneManager.getCurrent());
     }
 
     /**
@@ -175,7 +175,7 @@ public class Game implements KeyListener {
      * Manage the input
      */
     private void input() {
-        sceneManager.getCurrent().input(inputHandler);
+        sceneManager.getCurrent().input(actionHandler);
     }
 
     /**
@@ -272,4 +272,8 @@ public class Game implements KeyListener {
         return (Render) SystemManager.get(Render.class);
     }
 
+    @Override
+    public void onAction(ActionHandler.ACTIONS action) {
+        getSceneManager().getCurrent().onAction(action);
+    }
 }

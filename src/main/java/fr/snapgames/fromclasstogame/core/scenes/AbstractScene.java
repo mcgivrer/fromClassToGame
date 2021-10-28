@@ -4,16 +4,14 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstractScene implements Scene {
@@ -74,6 +72,22 @@ public abstract class AbstractScene implements Scene {
         }
     }
 
+    public void remove(GameObject go) {
+        if (go.getClass().getName().equals(Camera.class.getName())) {
+            if (cameras.containsKey(go.name)) {
+                cameras.remove(go.name);
+                game.getRender().setCamera(null);
+            }
+            if (activeCamera.equals(go)) {
+                activeCamera = null;
+            }
+        } else if (objects.containsKey(go.name)) {
+            objects.remove(go.name);
+            objectsList.remove(go);
+            SystemManager.remove(go);
+        }
+    }
+
     public GameObject getGameObject(String name) {
         return objects.get(name);
     }
@@ -115,7 +129,7 @@ public abstract class AbstractScene implements Scene {
                 this.debug = this.debug < 5 ? this.debug + 1 : 0;
                 game.getWindow().setDebug(debug);
                 break;
-            case KeyEvent.VK_R:
+            case KeyEvent.VK_Z:
                 activate();
                 break;
             default:
@@ -135,11 +149,26 @@ public abstract class AbstractScene implements Scene {
         activeCamera = cameras.get(c.name);
     }
 
-    public void input(InputHandler ih) {
+    public void input(ActionHandler ah) {
+        try {
+            objects.forEach((k, o) -> {
+                if (!o.behaviors.isEmpty()) {
+                    o.behaviors.forEach(b -> {
+                        b.input(o, ah);
+                    });
+                }
+            });
+        } catch (ConcurrentModificationException e) {
+            logger.error("Unable to handle input in scene '" + sceneName + "'.");
+        }
+    }
+
+    public void onAction(ActionHandler.ACTIONS a) {
+        logger.debug("Action:" + a);
         objects.forEach((k, o) -> {
             if (!o.behaviors.isEmpty()) {
                 o.behaviors.forEach(b -> {
-                    b.input(o, ih);
+                    b.onAction(o, a);
                 });
             }
         });

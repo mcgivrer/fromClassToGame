@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame.core.system;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -108,5 +109,9 @@ public class SystemManager {
                 e.getValue().clearObjects();
             });
         }
+    }
+
+    public static int getNbObjects() {
+        return get(SceneManager.class).objects.size();
     }
 }

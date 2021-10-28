@@ -3,11 +3,12 @@ package fr.snapgames.fromclasstogame.test.behaviors;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
 
 public class TestBehavior implements Behavior {
     @Override
-    public void input(GameObject go, InputHandler ih) {
+    public void input(GameObject go, ActionHandler ih) {
         System.out.println("- input from behavior TestBehavior");
     }
 
@@ -21,5 +22,10 @@ public class TestBehavior implements Behavior {
     public void render(GameObject go, Render r) {
         System.out.println("- render form behavior TestBehavior");
 
+    }
+
+    @Override
+    public void onAction(GameObject go, ActionHandler.ACTIONS action) {
+        // this behavior has nothing to do with action.
     }
 }
