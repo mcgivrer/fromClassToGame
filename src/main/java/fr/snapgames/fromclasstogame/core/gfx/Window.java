@@ -1,15 +1,12 @@
 package fr.snapgames.fromclasstogame.core.gfx;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.Insets;
-import java.awt.Point;
+import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
+
+import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 
@@ -25,6 +22,7 @@ public class Window {
     }
 
     public Window setFrame(String title, int width, int height) {
+
         frame = new JFrame(title);
 
         GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
@@ -40,11 +38,14 @@ public class Window {
                 (int) (device.getDisplayMode().getHeight() - dim.height) / 2));
         frame.pack();
         frame.setVisible(true);
+        frame.createBufferStrategy(2);
         return this;
     }
 
     public void draw(long realFPS, BufferedImage img) {
-        Graphics2D g = (Graphics2D) frame.getGraphics();
+        BufferStrategy bs = frame.getBufferStrategy();
+        Graphics2D g = (Graphics2D) bs.getDrawGraphics();
+
         if (debugFont == null) {
             debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 11);
         }
@@ -53,10 +54,18 @@ public class Window {
         if (this.debug > 0) {
             g.setFont(debugFont);
             g.setColor(Color.ORANGE);
-            g.drawString(String.format("[ DBG:%1d | FPS:%03d ]", this.debug, realFPS), 10, frame.getHeight() - 20);
+            int nbObjs = SystemManager.getNbObjects();
+            double gravity = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.y;
+            g.drawString(
+                    String.format("[ DBG:%1d | FPS:%03d | nbObj:%03d | g: %1.3f ]",
+                            this.debug, realFPS, nbObjs, gravity),
+                    10,
+                    frame.getHeight() - 20);
             g.dispose();
         }
+        bs.show();
     }
+
 
     public JFrame getFrame() {
         return this.frame;

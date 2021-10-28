@@ -94,7 +94,7 @@ public class Vector2d {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("(").append(x).append(",").append(y).append(")");
+        builder.append(String.format("(%05.1f,%05.1f)", x, y));
         return builder.toString();
     }
 

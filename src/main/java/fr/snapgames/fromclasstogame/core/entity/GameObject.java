@@ -27,6 +27,7 @@ public class GameObject implements Entity {
     public Vector2d position = new Vector2d();
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
+    private int debug;
 
     public double width;
     public double height;
@@ -141,6 +142,15 @@ public class GameObject implements Entity {
         return this;
     }
 
+    public GameObject setDebug(int d) {
+        this.debug = d;
+        return this;
+    }
+
+    public int getDebug() {
+        return this.debug;
+    }
+
     public GameObject add(Behavior b) {
         if (!behaviors.contains(b)) {
             behaviors.add(b);
@@ -160,4 +170,9 @@ public class GameObject implements Entity {
     public Map<String, Object> getAttributes() {
         return attributes;
     }
+
+    public static int getIndex() {
+        return index;
+    }
+
 }
