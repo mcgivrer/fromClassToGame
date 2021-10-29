@@ -6,20 +6,20 @@ import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.InputHandler;
 
-public class TestBehavior implements Behavior {
+public class TestBehavior implements Behavior<GameObject> {
     @Override
-    public void input(GameObject go, ActionHandler ih) {
+    public void onInput(GameObject go, ActionHandler ih) {
         System.out.println("- input from behavior TestBehavior");
     }
 
     @Override
-    public void update(GameObject go, long dt) {
+    public void onUpdate(GameObject go, long dt) {
         System.out.println("- update from behavior TestBehavior");
 
     }
 
     @Override
-    public void render(GameObject go, Render r) {
+    public void onRender(GameObject go, Render r) {
         System.out.println("- render form behavior TestBehavior");
 
     }

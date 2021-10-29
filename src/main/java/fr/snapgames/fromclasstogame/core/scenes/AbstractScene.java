@@ -1,11 +1,11 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,7 @@ public abstract class AbstractScene implements Scene {
 
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
+    protected List<Behavior<Scene>> behaviors = new ArrayList<>();
 
     protected Map<String, Camera> cameras = new HashMap<>();
 
@@ -154,7 +155,7 @@ public abstract class AbstractScene implements Scene {
             objects.forEach((k, o) -> {
                 if (!o.behaviors.isEmpty()) {
                     o.behaviors.forEach(b -> {
-                        b.input(o, ah);
+                        b.onInput(o, ah);
                     });
                 }
             });

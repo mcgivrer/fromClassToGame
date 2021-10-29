@@ -29,7 +29,7 @@ import java.util.Optional;
  *     .add(new PlayerActionBehavior());
  * </pre>
  */
-public class PlayerActionBehavior implements Behavior {
+public class PlayerActionBehavior implements Behavior<GameObject> {
 
 
     private double accelStep;
@@ -45,7 +45,7 @@ public class PlayerActionBehavior implements Behavior {
     }
 
     @Override
-    public void input(GameObject go, ActionHandler ih) {
+    public void onInput(GameObject go, ActionHandler ih) {
         touching = go.getAttributes().containsKey("touching") ? (boolean) go.getAttribute("touching") : false;
         if (ih.get(KeyEvent.VK_LEFT)) {
             go.acceleration.x = -accel;
@@ -60,12 +60,12 @@ public class PlayerActionBehavior implements Behavior {
     }
 
     @Override
-    public void update(GameObject go, long dt) {
+    public void onUpdate(GameObject go, long dt) {
 
     }
 
     @Override
-    public void render(GameObject go, Render r) {
+    public void onRender(GameObject go, Render r) {
 
     }
 
