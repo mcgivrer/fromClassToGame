@@ -9,9 +9,9 @@ import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 
 import java.awt.event.KeyEvent;
 
-public class InventorySelectorBehavior implements Behavior {
+public class InventorySelectorBehavior implements Behavior<GameObject> {
     @Override
-    public void input(GameObject go, ActionHandler ih) {
+    public void onInput(GameObject go, ActionHandler ih) {
         InventoryObject io = (InventoryObject) go;
         testKey(ih, io, KeyEvent.VK_1, 0, 1);
         testKey(ih, io, KeyEvent.VK_2, 1, 2);
@@ -27,12 +27,12 @@ public class InventorySelectorBehavior implements Behavior {
     }
 
     @Override
-    public void update(GameObject go, long dt) {
+    public void onUpdate(GameObject go, long dt) {
         // this behavior has nothing on update side
     }
 
     @Override
-    public void render(GameObject go, Render r) {
+    public void onRender(GameObject go, Render r) {
         // this behavior has nothing on render side
     }
 
