@@ -1,17 +1,8 @@
----
-title: From a Class to Game
-chapter: 07 - Resource Manager
-author: Frédéric Delorme
-description: A dedicated service to resource management.
-created: 2021-08-01
-tags: gamedev, resources, image, font
----
-
-## Resource Manager
+# Resource Manager
 
 As we now need more that just images to be displayed in our game, we need some other kind of resources like font, sound and so on, we need to add a ResourceManager which work consist in managing all this kind of resources.
 
-### Main structure
+## Main structure
 
 First we are going to keep in memory all the resources, to retrieve them faster. So let's set a Map to store those `resources`.
 For convenient usage, we will also keep a rootPath variable pointing to the `rootPath` of execution class's path.
@@ -34,7 +25,7 @@ public class ResourceManager {
 }
 ```
 
-### Reading image
+## Reading image
 
 ```java
 public class ResourceManager {
@@ -100,7 +91,7 @@ And a trick to keep the image in cache memory, using an `internalName` added to 
     }
 ```
 
-### Read a Font
+## Read a Font
 
 ```java
 public class ResourceManager {
@@ -185,7 +176,7 @@ public class ResourceManager {
 }
 ```
 
-### Usage
+## Usage
 
 Very simple to use it:
 

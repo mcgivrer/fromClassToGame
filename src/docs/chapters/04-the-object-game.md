@@ -1,18 +1,9 @@
----
-title: From a Class to Game
-chapter: 04 - The Game Object
-author: Frédéric Delorme
-description: Implementing a simple Object to manage them'all.
-created: 2021-08-01
-tags: gamedev, gameobject
----
-
-## The Object Game
+# The Object Game
 
 The GameObject entity will be used by every element in the gae to be rendered, interact with and updated.
 This is the how-to manage thing into your game.
 
-### Physics
+## Physics
 
 Some basic information must be provided to let an object managed by the game; position, speed, and size are the basical ones.
 
@@ -107,7 +98,7 @@ OK, now we will need to update :
 - The `Game` class to support a bunch of `GameObject`'s,
 - the `Render` class to let it draw the `GameObject`.
 
-### The Game
+## The Game
 
 ```java
 public class Game {
@@ -142,7 +133,7 @@ The update method has been modified to update all the objects.
 
 The `update(long)` method will perform a call to all the `GameObject.update(long)` method.
 
-### Render
+## Render
 
 The Render class is now to be updated to draw all those objects.
 

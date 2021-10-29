@@ -1,5 +1,10 @@
 package fr.snapgames.fromclasstogame.core;
 
+import java.awt.event.KeyEvent;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
@@ -10,10 +15,6 @@ import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.event.KeyEvent;
 
 /**
  * Project: From Class To Game

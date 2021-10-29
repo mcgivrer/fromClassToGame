@@ -1,13 +1,12 @@
 package fr.snapgames.fromclasstogame.demo.behaviors;
 
+import java.awt.event.KeyEvent;
+
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
-
-import java.awt.event.KeyEvent;
 
 public class InventorySelectorBehavior implements Behavior<GameObject> {
     @Override

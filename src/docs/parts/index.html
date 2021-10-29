@@ -16,20 +16,20 @@
     ></script>
     <title>From Class to Game</title>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&family=Source+Code+Pro:wght@300&family=Zen+Kaku+Gothic+New:wght@500&family=Zen+Maru+Gothic:wght@300&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200&family=Source+Code+Pro:wght@300&family=Zen+Kaku+Gothic+New:wght@500&family=Zen+Maru+Gothic:wght@300&display=swap");
       html > * {
         margin: 0px;
         padding: 0px;
       }
       body {
-        margin: auto;
-        width: 80%;
+        padding: 0em;
+        margin: 0em;
         counter-reset: h1counter;
         font-family: "Zen Maru Gothic";
         font-size: 14pt;
       }
       .title {
-        font-size: 60pt;
+        font-size: 40pt;
         font-family: "Oswald";
       }
       pre {
@@ -39,8 +39,9 @@
         color: #fff;
         padding: 0.5em;
         width: auto;
-        box-shadow:4px 4px 8px #666;
+        box-shadow: 4px 4px 8px #666;
       }
+
       p {
         text-align: justify;
         max-width: 1024px;
@@ -54,6 +55,10 @@
         text-align: start;
         page-break-before: always;
         font-family: "Zen Kaku Gothic New";
+      }
+      .nonumber h1:before {
+        content: "";
+        counter-reset: h1counter;
       }
       h2 {
         margin-top: 1em;
@@ -124,6 +129,9 @@
       img[alt*="left"] {
         float: left;
       }
+      img[alt*="screenshot"] {
+        width: 120px;
+      }
       img[alt*="avatar"] {
         width: 150px;
         height: auto;
@@ -133,35 +141,51 @@
         margin-right: 0em;
         box-shadow: 4px 4px 8px black;
       }
+      nav {
+        padding: 0em;
+        margin: 0em 1em;
+        width: 10em;
+        float: left;
+      }
+      nav > * {
+        font-size: 0.8em;
+      }
+      nav ul {
+        margin-left: 0em;
+      }
+      .container {
+        margin-left:12em;
+        width:40em
+      }
     </style>
   </head>
 
   <body>
-    <img src="../images/covers/en-front.svg" alt="cover" />
-    <div class="title">From Class to Game</div>
-    <div class="include">../parts/preface.md</div>
-    <div class="include">../parts/introduction.md</div>
-    <div class="include">../parts/about.md</div>
-    <div class="include">../chapters/01-a-class.md</div>
-    <div class="include">../chapters/02-adding-a-structure.md</div>
-    <div class="include">../chapters/03-delegate-things.md</div>
-    <div class="include">../chapters/04-the-object-game.md</div>
-    <div class="include">../chapters/05-input-handler.md</div>
-    <div class="include">../chapters/06-new-components.md</div>
-    <div class="include">../chapters/07-resource-manager.md</div>
-    <div class="include">../chapters/08-scene-manager.md</div>
-    <div class="include">../chapters/09-extract-configuration.md</div>
-    <div class="include">../chapters/10-refactoring-packages.md</div>
-    <div class="include">../chapters/11-score-and-render-helpers.md</div>
-    <div class="include">../chapters/12-see-through-camera.md</div>
-    <div class="include">../chapters/13-basic-physic-engine.md</div>
-    <div class="include">../chapters/14-collision-system.md</div>
-    <div class="include">../chapters/15-.md</div>
-    <div class="include">../chapters/16-gameobject-and-behaviors.md</div>
-    <div class="include">../chapters/17-inventory.md</div>
-    <div class="include">../chapters/100-architecture.md</div>
-    <div class="include">../parts/license.md</div>
-
+    <nav><div class="include nonumber">../index.md</div></nav>
+    <div class="container">
+      <div class="include">../parts/preface.md</div>
+      <div class="include">../parts/introduction.md</div>
+      <div class="include">../parts/about.md</div>
+      <div class="include">../chapters/01-a-class.md</div>
+      <div class="include">../chapters/02-adding-a-structure.md</div>
+      <div class="include">../chapters/03-delegate-things.md</div>
+      <div class="include">../chapters/04-the-object-game.md</div>
+      <div class="include">../chapters/05-input-handler.md</div>
+      <div class="include">../chapters/06-new-components.md</div>
+      <div class="include">../chapters/07-resource-manager.md</div>
+      <div class="include">../chapters/08-scene-manager.md</div>
+      <div class="include">../chapters/09-extract-configuration.md</div>
+      <div class="include">../chapters/10-refactoring-packages.md</div>
+      <div class="include">../chapters/11-score-and-render-helpers.md</div>
+      <div class="include">../chapters/12-see-through-camera.md</div>
+      <div class="include">../chapters/13-basic-physic-engine.md</div>
+      <div class="include">../chapters/14-collision-system.md</div>
+      <div class="include">../chapters/15-.md</div>
+      <div class="include">../chapters/16-gameobject-and-behaviors.md</div>
+      <div class="include">../chapters/17-inventory.md</div>
+      <div class="include">../chapters/20-architecture.md</div>
+      <div class="include">../parts/license.md</div>
+    </div>
     <script>
       $(function () {
         var mdit = window.markdownit();

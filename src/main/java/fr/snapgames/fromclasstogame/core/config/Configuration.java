@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame.core.config;
 
+
 import fr.snapgames.fromclasstogame.core.config.cli.*;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
@@ -13,10 +14,9 @@ public class Configuration {
 
     public ResourceBundle defaultConfig;
     public CliManager cm;
-
+    public String levelPath;
     public String title = "fromClassToGame";
 
-    public int defaultScreen;
     public int width = 320;
     public int height = 200;
     public double scale = 1.0;
@@ -24,9 +24,9 @@ public class Configuration {
     public Vector2d gravity = new Vector2d(0.0, 0.0);
 
     public double FPS = 60;
-
     public String scenes = "";
     public String defaultScene = "";
+    public int defaultScreen = 0;
 
     public int debugLevel;
 
@@ -111,6 +111,7 @@ public class Configuration {
             logger.error("unable to parse configuration", e);
         }
     }
+
 
     private void getValuesFromCM() throws ArgumentUnknownException {
         this.debugLevel = (Integer) cm.getValue("debug");
