@@ -1,11 +1,6 @@
----
-title: From a Class to Game chapter: 14 - Collision System author: Frédéric Delorme description: Adding a Camera to the
-scene will allow you to move in as you want, and follow a target. created: 2021-09-08 tags: gamedev, camera, target
----
+# Collision System
 
-## Collision System
-
-### Introduction
+## Introduction
 
 When in a game multiple objects are moving on screen, it often happened there are colliding together.
 The `CollisionSystem` intends to provide events on collision, and a mechanism to respond to such event.
@@ -14,7 +9,7 @@ To let Collision detection works, there are a bunch of way to encapsulate the co
 algorithm are well known: Axis-Aligned Bounding Box, Oriented Bounding Box, and the shape of the bjects can be POINT,
 CIRCLE, ELLIPSE or RECTANGLE.
 
-### BoundingBox ?
+## BoundingBox ?
 
 A bounding box is a box containing the object the engine must manage, and delimiting the edges of this object.
 Collission detection between 2 objects is process against the respective bounding box of those objects:
@@ -66,7 +61,7 @@ And detecting collision between Bounding bow will rely on the collision test bet
 ### Rectangular bounding box
 
 ```text
-  (x1,y1)  w1
+ (x1,y1)  w1
      O--------+
      |  ****  | shape1
      | ****** |

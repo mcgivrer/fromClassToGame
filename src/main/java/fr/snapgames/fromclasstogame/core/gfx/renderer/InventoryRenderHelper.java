@@ -1,15 +1,14 @@
-package fr.snapgames.fromclasstogame.demo.render;
+package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
-import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
-import fr.snapgames.fromclasstogame.core.io.ResourceManager;
-
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 
 public class InventoryRenderHelper implements RenderHelper {
     private BufferedImage selector;

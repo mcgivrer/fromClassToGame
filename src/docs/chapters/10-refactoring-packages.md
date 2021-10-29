@@ -1,13 +1,4 @@
----
-title: From a Class to Game 
-chapter: 10 - Refactoring packages 
-author: Frédéric Delorme 
-description: Reorganizing classes for next evolution. 
-created: 2021-08-01 
-tags: gamedev, packages
----
-
-## Refactoring packages
+# Refactoring packages
 
 As far as we go, the code start having multiple classes with dedicated roles.
 It's now time to organize our work through java package to isolate and document through some
