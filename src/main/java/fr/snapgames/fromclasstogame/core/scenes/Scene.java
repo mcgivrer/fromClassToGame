@@ -5,6 +5,7 @@ import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 
 import java.util.List;
@@ -41,11 +42,13 @@ public interface Scene extends ActionHandler.ActionListener {
 
     void onAction(ActionHandler.ACTIONS action);
 
-    void render();
+    void render(Render render);
 
     void dispose();
 
     Camera getCamera(String cameraName);
 
     List<Behavior<Scene>> getBehaviors();
+
+    Game getGame();
 }
