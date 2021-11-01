@@ -1,5 +1,17 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.util.List;
+
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.TileMapRenderHelper;
+import fr.snapgames.fromclasstogame.core.io.TileMapLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -27,6 +39,7 @@ public class DemoScene extends AbstractScene {
 
     private int score = 0;
     private int life = 5;
+    TileMapLoader tmLoader;
 
     public DemoScene(Game g) {
         super(g,"demo");
@@ -53,20 +66,29 @@ public class DemoScene extends AbstractScene {
         g.getRender().addRenderHelper(new TextValueRenderHelper());
         g.getRender().addRenderHelper(new LifeRenderHelper());
         g.getRender().addRenderHelper(new InventoryRenderHelper());
+        g.getRender().addRenderHelper(new TileMapRenderHelper());
 
-        // load resources
+        tmLoader = new TileMapLoader(game);
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
-        g.setWorld(new World(800, 600));
+        g.setWorld(new World(40 * 16, 25 * 16));
         // add main character (player)
+        Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.96, 0.997);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
-                .setMaterial(DefaultMaterial.WOOD.getMaterial())
-                .setMass(10);
+                .setMaterial(m)
+                .setMass(10)
+                .setDebug(1)
+                .addAttribute("jumping", false)
+                .addAttribute("accelStep", 10.0)
+                .addAttribute("jumpAccel", -20.0)
+                .addAttribute("maxHorizontalVelocity", 20.0)
+                .addAttribute("maxVerticalVelocity", 30.0)
+                .add(new PlayerActionBehavior());
         add(player);
 
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
@@ -91,33 +113,35 @@ public class DemoScene extends AbstractScene {
         add(lifeTO);
 
         BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
-        GameObject key = new GameObject("key", 0, 0)
-                .setImage(keyImg)
-                .addAttribute("inventory", keyImg);
 
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
-                vp.getWidth() - 2,
-                vp.getHeight() - 4)
-                .setNbPlace(4)
-                .setSelectedIndex(1)
-                .relativeToCamera(true)
-                .add(new InventorySelectorBehavior());
+                new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4)).setNbPlace(4).setSelectedIndex(1)
+                .relativeToCamera(true).add(new InventorySelectorBehavior());
 
         // add a first object (a key !)
+        GameObject key = new GameObject("key", new Vector2d(0, 0)).setImage(keyImg).addAttribute("inventory", keyImg);
         inventory.add(key);
         add(inventory);
 
-        randomizeEnemies();
+        // add a TileMap object
+        TileMap tm = tmLoader.load("levels/lvl0101.properties");
+        add(tm);
+
+        randomizeFilteredGameObject("enemy_");
     }
 
     private void generateEnemies() throws UnknownResource {
         for (int i = 0; i < 10; i++) {
             GameObject e = new GameObject("enemy_" + i, new Vector2d(0, 0))
                     .setType(GameObject.GOType.IMAGE)
-                    .setColor(Color.ORANGE)
-                    .setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
-                    .setMaterial(DefaultMaterial.RUBBER.getMaterial())
-                    .setMass(rand(-8, 13));
+                    .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
+                            rand(0, game.getPhysicEngine().getWorld().height))
+                    .setSize(8, 8)
+                    .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
+                    .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(rand(-8, 13)).setLayer(10)
+                    .setPriority(i);
+
+            randomizePosAndAccGameObject(e);
             add(e);
         }
     }
@@ -136,9 +160,20 @@ public class DemoScene extends AbstractScene {
         );
     }
 
+    private GameObject randomizeAccelerationAndFrictionAndBounciness(
+            GameObject go,
+            double accFactorX,
+            double accFactorY,
+            double dynFriction,
+            double bounciness) {
+        Material m = go.material;
+        m.dynFriction = rand(dynFriction - 0.1, dynFriction + 0.1);
+        m.bounciness = rand(bounciness - 0.1, bounciness + 0.1);
+        return go.setAcceleration(new Vector2d(rand(-accFactorX, accFactorX), rand(-accFactorY, accFactorY)));
+    }
+
     @Override
     public void update(long dt) {
-
         super.update(dt);
         ScoreObject scoreTO = (ScoreObject) objects.get("score");
         score++;
@@ -152,21 +187,43 @@ public class DemoScene extends AbstractScene {
     }
 
     @Override
-    public void input(InputHandler inputHandler) {
-        super.input(inputHandler);
-        GameObject player = this.getGameObject("player");
-        double speed = 0.0;
-        double speedStep = 2;
-        if (inputHandler.getKey(KeyEvent.VK_CONTROL)) {
-            speed = speedStep * 4;
-        } else if (inputHandler.getKey(KeyEvent.VK_SHIFT)) {
-            speed = speedStep * 2;
-        } else {
-            speed = speedStep;
+    public void keyPressed(KeyEvent e) {
+        super.keyPressed(e);
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_S:
+                find("enemy_").forEach(o -> {
+                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
+                });
+                break;
+            default:
+                break;
         }
 
-        if (inputHandler.getKey(KeyEvent.VK_UP)) {
-            player.acceleration.y = -14 * speed;
+    @Override
+    public void keyReleased(KeyEvent e) {
+        super.keyReleased(e);
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_PAGE_UP:
+                try {
+                    generateEnemies(10);
+                } catch (UnknownResource ex) {
+                    logger.error("Unable to generate enemies", ex);
+                }
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                removeEnemies(10);
+                break;
+            case KeyEvent.VK_S:
+                find("enemy_").forEach(o -> {
+                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
+                });
+                break;
+            case KeyEvent.VK_G:
+                Vector2d g = game.getPhysicEngine().getWorld().gravity.multiply(-1);
+                game.getPhysicEngine().getWorld().setGravity(g);
+                break;
+            default:
+                break;
         }
         if (inputHandler.getKey(KeyEvent.VK_DOWN)) {
             player.acceleration.y = speed;
