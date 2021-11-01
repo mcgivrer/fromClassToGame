@@ -15,13 +15,13 @@ public class PhysicEngine extends System {
 
     private World world;
 
-    @Override
-    public String getName() {
-        return "PhysicEngine";
-    }
-
     public PhysicEngine(Game g) {
         super(g);
+    }
+
+    @Override
+    public String getName() {
+        return PhysicEngine.class.getName();
     }
 
     @Override
