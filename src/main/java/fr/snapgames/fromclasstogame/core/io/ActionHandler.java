@@ -32,8 +32,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * use the <code>getAction(ACTIONS)</code> as asynchronous access to the
  * actions map.
  *
- * @author Frédéric Delorme <frederic.delorme@gmail.com>
- * @link https://gist.github.com/mcgivrer/34641df0df83c023e9983157b61be8b8
+ * @author Frédéric Delorme
+ * @see <a href="https://gist.github.com/mcgivrer/34641df0df83c023e9983157b61be8b8">Original code from the Gist snippet</a>
  * @since 2021
  */
 public class ActionHandler extends System implements KeyListener {
@@ -55,6 +55,7 @@ public class ActionHandler extends System implements KeyListener {
     private boolean shift;
     private boolean alt;
     private boolean altGr;
+
     /**
      * Initialization of the {@link ActionHandler}. Define a default Action mapping with
      * basic keys. The map can be adapted or changed.

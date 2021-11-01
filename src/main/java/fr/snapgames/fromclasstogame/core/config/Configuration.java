@@ -22,24 +22,26 @@ public class Configuration {
     public double scale = 1.0;
 
     public Vector2d gravity = new Vector2d(0.0, 0.0);
-
     public double FPS = 60;
     public String scenes = "";
     public String defaultScene = "";
     public int defaultScreen = 0;
 
+
     public int debugLevel;
+    private String configPath;
 
     public Configuration(String configurationPath) {
-
-        cm = new CliManager();
-        defaultConfig = ResourceBundle.getBundle(configurationPath);
-        initializeArgParser();
-        readValuesFromFile();
-        logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath, System.currentTimeMillis());
+        try {
+            cm = new CliManager();
+            initializeArgParser(configurationPath);
+            logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath, System.currentTimeMillis());
+        } catch (Exception e) {
+            logger.error("Unable to read configration", e);
+        }
     }
 
-    private void initializeArgParser() {
+    private void initializeArgParser(String configurationPath) {
 
         cm.add(new IntegerArgParser("debug",
                 "dbg",
@@ -101,11 +103,18 @@ public class Configuration {
                 "Define the default scene to start with",
                 "game.setup.scene.default",
                 ""));
+        cm.add(new StringArgParser("config",
+                "c",
+                "config",
+                "set the path and file to be loaded for configuration",
+                null,
+                configurationPath
+        ));
     }
 
-    public void readValuesFromFile() {
+    public void readValuesFromFile(ResourceBundle config) {
         try {
-            cm.parse(defaultConfig);
+            cm.parseConfigFile(config);
             getValuesFromCM();
         } catch (ArgumentUnknownException e) {
             logger.error("unable to parse configuration", e);
@@ -124,10 +133,13 @@ public class Configuration {
         this.defaultScene = (String) cm.getValue("scene");
         this.scenes = (String) cm.getValue("scenes");
         this.gravity = (Vector2d) cm.getValue("gravity");
+        this.configPath = (String) cm.getValue("config");
     }
 
     public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
-        cm.parse(argv);
+        cm.parseArguments(argv);
+        getValuesFromCM();
+        readValuesFromFile(ResourceBundle.getBundle(this.configPath));
         getValuesFromCM();
         return this;
     }

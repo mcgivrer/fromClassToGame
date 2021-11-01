@@ -30,7 +30,7 @@ public class CliManager {
         logger.debug("add cli parser for '{}'", ap.getDescription());
     }
 
-    public void parse(String[] args) throws ArgumentUnknownException {
+    public void parseArguments(String[] args) throws ArgumentUnknownException {
         if (args != null) {
             for (String arg : args) {
                 if (arg.equals("h") || arg.equals("help")) {
@@ -77,7 +77,7 @@ public class CliManager {
         return values.containsKey(key);
     }
 
-    public void parse(ResourceBundle configFile) {
+    public void parseConfigFile(ResourceBundle configFile) {
         Enumeration<String> configItems = configFile.getKeys();
         while (configItems.hasMoreElements()) {
             String k = configItems.nextElement();
