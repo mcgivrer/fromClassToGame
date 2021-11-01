@@ -4,6 +4,8 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.system.System;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -36,6 +38,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class ActionHandler extends System implements KeyListener {
 
+    private static final Logger logger = LoggerFactory.getLogger(ActionHandler.class);
+
     private Window window;
 
     public interface ActionListener extends KeyListener {
@@ -43,7 +47,10 @@ public class ActionHandler extends System implements KeyListener {
     }
 
     public enum ACTIONS {
-        UP, LEFT, RIGHT, DOWN, FIRE1, FIRE2, FIRE3, FIRE4, LT_FIRE, LB_FIRE, RT_FIRE, RB_FIRE, START, HOME, POWER
+        UP, LEFT, RIGHT, DOWN,
+        FIRE1, FIRE2, FIRE3, FIRE4,
+        LT_FIRE, LB_FIRE, RT_FIRE, RB_FIRE,
+        START, HOME, POWER
     }
 
     /*
@@ -121,6 +128,7 @@ public class ActionHandler extends System implements KeyListener {
         window.getFrame().addKeyListener(this);
         return this;
     }
+
     /**
      * Define the new KeyMapping to map actions and keys.
      *
@@ -174,10 +182,15 @@ public class ActionHandler extends System implements KeyListener {
         if (keyMapping.containsKey(e.getKeyCode())) {
             actions.put(keyMapping.get(e.getKeyCode()), false);
         }
-        // Delegate key's event to registered listeners
-        listeners.forEach(kl -> {
-            kl.keyReleased(e);
-        });
+        try {
+            // Delegate key's event to registered listeners
+            listeners.forEach(kl -> {
+                kl.keyReleased(e);
+            });
+        } catch (IndexOutOfBoundsException ie) {
+            logger.error("unable to delegate key event " + ie.getMessage());
+
+        }
     }
 
     public boolean get(int key) {

@@ -95,8 +95,11 @@ public class DemoScene extends AbstractScene {
         GameObject key = new GameObject("key", new Vector2d(0, 0)).setImage(keyImg).addAttribute("inventory", keyImg);
 
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
-                new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4)).setNbPlace(4).setSelectedIndex(1)
-                        .relativeToCamera(true).add(new InventorySelectorBehavior());
+                new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
+                .setNbPlace(4)
+                .setSelectedIndex(1)
+                .relativeToCamera(true)
+                .add(new InventorySelectorBehavior());
 
         // add a first object (a key !)
         inventory.add(key);
@@ -145,8 +148,12 @@ public class DemoScene extends AbstractScene {
                 .setAcceleration(new Vector2d(rand(-40, 40), 0.0));
     }
 
-    private GameObject randomizeAccelerationAndFrictionAndBouncyness(GameObject go, double accFactorX,
-            double accFactorY, double dynFriction, double bounciness) {
+    private GameObject randomizeAccelerationAndFrictionAndBounciness(
+            GameObject go,
+            double accFactorX,
+            double accFactorY,
+            double dynFriction,
+            double bounciness) {
         Material m = go.material;
         m.dynFriction = rand(dynFriction - 0.1, dynFriction + 0.1);
         m.bounciness = rand(bounciness - 0.1, bounciness + 0.1);
@@ -174,7 +181,7 @@ public class DemoScene extends AbstractScene {
         switch (e.getKeyCode()) {
         case KeyEvent.VK_S:
             find("enemy_").forEach(o -> {
-                randomizeAccelerationAndFrictionAndBouncyness(o, 100, 100, 0.98, 0.6);
+                randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
             });
             break;
         default:
@@ -198,7 +205,7 @@ public class DemoScene extends AbstractScene {
             break;
         case KeyEvent.VK_S:
             find("enemy_").forEach(o -> {
-                randomizeAccelerationAndFrictionAndBouncyness(o, 100, 100, 0.98, 0.6);
+                randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
             });
             break;
         case KeyEvent.VK_G:

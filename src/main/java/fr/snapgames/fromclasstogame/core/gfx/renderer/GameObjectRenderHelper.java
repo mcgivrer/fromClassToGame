@@ -30,7 +30,7 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
                 break;
             case IMAGE:
                 if (go.image != null) {
-                    drawImage(g, go.image, go.position);
+                    drawImage(g, go.image, go.position, go.width, go.height);
                 } else {
                     logger.error("GameObject named {} : image attribute is not defined", go.name);
                 }
@@ -45,12 +45,11 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
             double offsetX = go.width + 8;
             fillRect(g, go.position, 100, 70, go.width + 1, offsetY - 12, debugBackgroundColor);
             setColor(g, debugFrontColor);
-            drawText(g, "pos:" + go.position.toString(), go.position, offsetX, offsetY);
-            drawText(g, "vel:" + go.velocity.toString(), go.position, offsetX, offsetY + 10);
-            drawText(g, "acc:" + go.acceleration.toString(), go.position, offsetX, offsetY + 20);
-            drawText(g, "friction:" + go.material.dynFriction, go.position, offsetX, offsetY + 30);
-            drawText(g, "contact:" + go.getAttribute("touching"), go.position, offsetX, offsetY + 40);
-            drawText(g, "jumping:" + go.getAttribute("jumping"), go.position, offsetX, offsetY + 50);
+            int i = 0;
+            for (String line : go.getDebugInfo()) {
+                drawText(g, line, go.position, offsetX, offsetY + i);
+                i += 10;
+            }
         }
     }
 
