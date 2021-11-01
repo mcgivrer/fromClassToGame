@@ -39,11 +39,6 @@ public class TestCameraScene extends AbstractScene {
     }
 
     @Override
-    public void render() {
-        // Nothing to do there for test only purpose
-    }
-
-    @Override
     public void dispose() {
         // Nothing to do there for test only purpose
     }

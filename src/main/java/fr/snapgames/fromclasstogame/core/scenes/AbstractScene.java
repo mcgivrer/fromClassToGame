@@ -5,6 +5,7 @@ import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstractScene implements Scene {
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
 
     protected Map<String, GameObject> objects = new HashMap<>();
@@ -73,6 +75,10 @@ public abstract class AbstractScene implements Scene {
         }
     }
 
+    public void addBehavior(Behavior<Scene> b) {
+        behaviors.add(b);
+    }
+
     public void remove(GameObject go) {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (cameras.containsKey(go.name)) {
@@ -126,12 +132,6 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
-            /*
-            case KeyEvent.VK_D:
-                this.debug = this.debug < 5 ? this.debug + 1 : 0;
-                game.getWindow().setDebug(debug);
-                break;
-                */
             case KeyEvent.VK_Z:
                 activate();
                 break;
@@ -180,6 +180,16 @@ public abstract class AbstractScene implements Scene {
     public String getName() {
         return sceneName;
     }
+
+    public Game getGame() {
+        return game;
+    }
+
+
+    public void render(Render r) {
+
+    }
+
 
     public List<Behavior<Scene>> getBehaviors() {
         return behaviors;

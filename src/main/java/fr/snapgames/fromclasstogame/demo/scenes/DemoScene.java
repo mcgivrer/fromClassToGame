@@ -1,14 +1,5 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -20,6 +11,7 @@ import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.demo.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
@@ -28,6 +20,13 @@ import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class DemoScene extends AbstractScene {
 
@@ -69,30 +68,49 @@ public class DemoScene extends AbstractScene {
         g.setWorld(new World(800, 600));
         // add main character (player)
         Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.96, 0.997);
-        GameObject player = new GameObject("player", new Vector2d(160, 100)).setType(GameObject.GOType.IMAGE)
-                .setColor(Color.RED).setImage(ResourceManager.getImage("images/tiles01.png:player")).setMaterial(m)
-                .setMass(10).setDebug(1).addAttribute("jumping", false).addAttribute("accelStep", 10.0)
-                .addAttribute("jumpAccel", -20.0).addAttribute("maxHorizontalVelocity", 20.0)
-                .addAttribute("maxVerticalVelocity", 30.0).add(new PlayerActionBehavior());
+        GameObject player = new GameObject("player", new Vector2d(160, 100))
+                .setType(GameObject.GOType.IMAGE)
+                .setColor(Color.RED)
+                .setImage(ResourceManager.getImage("images/tiles01.png:player"))
+                .setMaterial(m)
+                .setMass(10)
+                .setDebug(1)
+                .addAttribute("jumping", false)
+                .addAttribute("accelStep", 10.0)
+                .addAttribute("jumpAccel", -20.0)
+                .addAttribute("maxHorizontalVelocity", 20.0)
+                .addAttribute("maxVerticalVelocity", 30.0)
+                .add(new PlayerActionBehavior());
         add(player);
 
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
-        Camera camera = new Camera("cam01").setTarget(player).setTweenFactor(0.02).setViewport(vp);
+        Camera camera = new Camera("cam01")
+                .setTarget(player)
+                .setTweenFactor(0.02)
+                .setViewport(vp);
         add(camera);
 
         // Add enemies(enemy_99)
         generateEnemies(10);
 
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4).setScore(score).relativeToCamera(true)
-                .setLayer(1).setColor(Color.WHITE).setPriority(10);
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4)
+                .setScore(score)
+                .relativeToCamera(true)
+                .setLayer(1)
+                .setColor(Color.WHITE)
+                .setPriority(10);
         add(scoreTO);
 
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4).setLive(life).relativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4)
+                .setLive(life)
+                .relativeToCamera(true);
         add(lifeTO);
 
         BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
-        GameObject key = new GameObject("key", new Vector2d(0, 0)).setImage(keyImg).addAttribute("inventory", keyImg);
+        GameObject key = new GameObject("key", new Vector2d(0, 0))
+                .setImage(keyImg)
+                .addAttribute("inventory", keyImg);
 
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
@@ -106,6 +124,9 @@ public class DemoScene extends AbstractScene {
         add(inventory);
 
         randomizeFilteredGameObject("enemy_");
+
+        addBehavior(new DebugSwitcherBehavior());
+
     }
 
     private void generateEnemies(int nbEnemies) throws UnknownResource {
@@ -117,7 +138,6 @@ public class DemoScene extends AbstractScene {
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(rand(-8, 13)).setLayer(10)
                     .setPriority(i);
-
             randomizePosAndAccGameObject(e);
             add(e);
         }
@@ -179,48 +199,44 @@ public class DemoScene extends AbstractScene {
     public void keyPressed(KeyEvent e) {
         super.keyPressed(e);
         switch (e.getKeyCode()) {
-        case KeyEvent.VK_S:
-            find("enemy_").forEach(o -> {
-                randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-            });
-            break;
-        default:
-            break;
+            case KeyEvent.VK_S:
+                find("enemy_").forEach(o -> {
+                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
+                });
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         super.keyReleased(e);
+
         switch (e.getKeyCode()) {
-        case KeyEvent.VK_NUMPAD8:
-            try {
-                generateEnemies(10);
-            } catch (UnknownResource ex) {
-                logger.error("Unable to generate enemies", ex);
-            }
-            break;
-        case KeyEvent.VK_NUMPAD2:
-            removeEnemies(10);
-            break;
-        case KeyEvent.VK_S:
-            find("enemy_").forEach(o -> {
-                randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-            });
-            break;
-        case KeyEvent.VK_G:
-            Vector2d g = game.getPhysicEngine().getWorld().gravity.multiply(-1);
-            game.getPhysicEngine().getWorld().setGravity(g);
-            break;
-        default:
-            break;
+            case KeyEvent.VK_PAGE_UP:
+                try {
+
+                    generateEnemies(10);
+                } catch (UnknownResource ex) {
+                    logger.error("Unable to generate enemies", ex);
+                }
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                removeEnemies(10);
+                break;
+            case KeyEvent.VK_S:
+                find("enemy_").forEach(o -> {
+                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
+                });
+                break;
+            case KeyEvent.VK_G:
+                Vector2d g = game.getPhysicEngine().getWorld().gravity.multiply(-1);
+                game.getPhysicEngine().getWorld().setGravity(g);
+                break;
+            default:
+                break;
         }
-    }
-
-    @Override
-    public void render() {
-        // if something >new< must be computed at render time ?
-
     }
 
 }

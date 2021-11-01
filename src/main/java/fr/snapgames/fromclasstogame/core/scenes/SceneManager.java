@@ -7,15 +7,14 @@ import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.System;
-import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The {@link SceneManager} is a game states switcher to activate one of the
@@ -25,8 +24,8 @@ import java.util.Map;
 public class SceneManager extends System {
     private final static Logger logger = LoggerFactory.getLogger(SceneManager.class);
 
-    Map<String, Class<?>> scenesClasses = new HashMap<>();
-    Map<String, Scene> scenesInstances = new HashMap<>();
+    Map<String, Class<?>> scenesClasses = new ConcurrentHashMap<>();
+    Map<String, Scene> scenesInstances = new ConcurrentHashMap<>();
 
     private Scene current;
 
@@ -104,11 +103,9 @@ public class SceneManager extends System {
                 s = instantiateScene(name);
             }
             if (s != null) {
-                this.current = s;
                 s.activate();
+                setCurrent(s);
             }
-
-            setCurrent(s);
         }
 
     }
@@ -174,9 +171,8 @@ public class SceneManager extends System {
         }
     }
 
-    public void render() {
-        Render r = (Render) SystemManager.get(Render.class);
-        getCurrent().render();
+    public void render(Render r) {
+        getCurrent().render(r);
         for (Behavior<Scene> b : getCurrent().getBehaviors()) {
             b.onRender(getCurrent(), r);
         }

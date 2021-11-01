@@ -3,7 +3,6 @@ package fr.snapgames.fromclasstogame.test.scenes;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
@@ -29,12 +28,6 @@ public class TestScene extends AbstractScene {
 
     @Override
     public void input(ActionHandler actionHandler) {
-        // Nothing to do there for test only purpose
-
-    }
-
-    @Override
-    public void render() {
         // Nothing to do there for test only purpose
 
     }

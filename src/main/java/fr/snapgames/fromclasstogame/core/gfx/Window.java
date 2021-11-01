@@ -1,31 +1,41 @@
 package fr.snapgames.fromclasstogame.core.gfx;
 
+import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JFrame;
-
 public class Window {
 
+    private static final Logger logger = LoggerFactory.getLogger(Window.class);
     private JFrame frame;
     private Font debugFont;
     private int debug = 0;
     private boolean fullscreen;
+    private int defaultScreen = -1;
+    private int currentScreen = 0;
+    private GraphicsDevice currentDevice;
 
     public Window(String title, int width, int height) {
         setFrame(title, width, height);
+        defaultScreen = -1;
+    }
+
+    public Window(Configuration config) {
+        setFrame(config.title, (int) (config.width * config.scale), (int) (config.height * config.scale));
+        defaultScreen = config.defaultScreen;
     }
 
     public Window setFrame(String title, int width, int height) {
-
         frame = new JFrame(title);
-
-        GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
+        currentDevice = getGraphicsDevice(currentScreen);
         Insets ins = frame.getContentPane().getInsets();
         Dimension dim = new Dimension(width, height + ins.top);
         frame.setLayout(null);
@@ -34,11 +44,11 @@ public class Window {
         frame.setSize(dim);
         frame.setPreferredSize(dim);
         frame.setMaximumSize(dim);
-        frame.setLocation(new Point((int) (device.getDisplayMode().getWidth() - dim.width) / 2,
-                (int) (device.getDisplayMode().getHeight() - dim.height) / 2));
+        frame.setLocation(new Point((int) (currentDevice.getDisplayMode().getWidth() - dim.width) / 2,
+                (int) (currentDevice.getDisplayMode().getHeight() - dim.height) / 2));
         frame.pack();
         frame.setVisible(true);
-        frame.createBufferStrategy(2);
+        frame.createBufferStrategy(3);
         return this;
     }
 
@@ -75,27 +85,93 @@ public class Window {
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 
-    public void setDebug(int d) {
-        this.debug = d;
+
+    /**
+     * Set Default Screen to display the window in full Screen.
+     *
+     * @param defScreen the value of the device number to be used as destination of the window fullscreen.
+     *                  (min=0, max corresponding to the number of screen connected to the computer).
+     */
+    public void setScreen(int defScreen) {
+        currentScreen = defScreen;
+        if (fullscreen && defScreen < getMaxScreen()) {
+            currentDevice = getGraphicsDevice(currentScreen);
+            currentDevice.setFullScreenWindow(frame);
+        }
     }
 
     /**
      * Switching from windowed to fullscreen.
      */
     public void switchFullScreen() {
-        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice device = env.getDefaultScreenDevice();
-        if (!fullscreen && device.isFullScreenSupported()) {
-            device.setFullScreenWindow(frame);
+        currentDevice = getGraphicsDevice(currentScreen);
+        if (!fullscreen && currentDevice.isFullScreenSupported()) {
+            currentDevice.setFullScreenWindow(frame);
             fullscreen = true;
         } else {
-            device.setFullScreenWindow(null);
+            currentDevice.setFullScreenWindow(null);
             frame.setVisible(true);
             fullscreen = false;
         }
     }
 
+    /**
+     * Switch between connected Screens when window is in fullscreen mode.
+     */
+    public void switchScreen() {
+
+        if (fullscreen) {
+            if (currentScreen + 1 < getMaxScreen()) {
+                currentScreen += 1;
+            } else {
+                currentScreen = 0;
+            }
+
+            currentDevice.setFullScreenWindow(null);
+            frame.setVisible(true);
+
+            currentDevice = getGraphicsDevice(currentScreen);
+            currentDevice.setFullScreenWindow(frame);
+        }
+    }
+
+    /**
+     * get the GraphicDevice corresponding to the currentScreen connected screen.
+     *
+     * @param currentScreen the screen to be activated
+     * @return the GraphicDevice corresponding the ht currentScreen number.
+     */
+    private GraphicsDevice getGraphicsDevice(int currentScreen) {
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = null;
+        if (currentScreen == -1) {
+            device = env.getDefaultScreenDevice();
+        } else {
+            GraphicsDevice[] devs = env.getScreenDevices();
+            logger.info("list of devices : ");
+            for (GraphicsDevice d : devs) {
+                logger.info(String.format("%s: (%d x %d)", d.getIDstring(), d.getDisplayMode().getWidth(), d.getDisplayMode().getHeight()));
+            }
+            assert (currentScreen >= 0 && currentScreen < devs.length);
+            device = devs[currentScreen];
+        }
+        return device;
+    }
+
+    public int getMaxScreen() {
+        return GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length;
+    }
+
     public boolean isFullScreen() {
         return fullscreen;
     }
+
+    public int getDebug() {
+        return debug;
+    }
+
+    public void setDebug(int d) {
+        this.debug = d;
+    }
+
 }

@@ -95,8 +95,7 @@ public class Game implements ActionHandler.ActionListener {
         renderer = (Render) SystemManager.get(Render.class);
         renderer.setDebugLevel(configuration.debugLevel);
 
-        window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
-                (int) (configuration.height * configuration.scale));
+        window = new Window(configuration);
 
         pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
         cs = (CollisionSystem) SystemManager.get(CollisionSystem.class);
@@ -194,7 +193,7 @@ public class Game implements ActionHandler.ActionListener {
      */
     private void draw() {
         renderer.render();
-        sceneManager.render();
+        sceneManager.render(renderer);
         window.draw(realFPS, renderer.getBuffer());
     }
 
@@ -236,7 +235,11 @@ public class Game implements ActionHandler.ActionListener {
                 renderer.requestScreenShot();
                 break;
             case KeyEvent.VK_F11:
-                window.switchFullScreen();
+                if (actionHandler.getCtrl()) {
+                    window.switchScreen();
+                } else {
+                    window.switchFullScreen();
+                }
                 break;
             case KeyEvent.VK_ESCAPE:
                 this.exit = true;
