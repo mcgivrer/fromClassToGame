@@ -126,10 +126,12 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
+            /*
             case KeyEvent.VK_D:
                 this.debug = this.debug < 5 ? this.debug + 1 : 0;
                 game.getWindow().setDebug(debug);
                 break;
+                */
             case KeyEvent.VK_Z:
                 activate();
                 break;
@@ -142,12 +144,12 @@ public abstract class AbstractScene implements Scene {
         return activeCamera;
     }
 
-    public Camera getCamera(String cameraName) {
-        return cameras.get(cameraName);
-    }
-
     public void setActiveCamera(Camera c) {
         activeCamera = cameras.get(c.name);
+    }
+
+    public Camera getCamera(String cameraName) {
+        return cameras.get(cameraName);
     }
 
     public void input(ActionHandler ah) {
@@ -179,4 +181,7 @@ public abstract class AbstractScene implements Scene {
         return sceneName;
     }
 
+    public List<Behavior<Scene>> getBehaviors() {
+        return behaviors;
+    }
 }

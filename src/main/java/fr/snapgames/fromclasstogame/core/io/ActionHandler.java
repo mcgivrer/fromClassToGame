@@ -39,20 +39,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ActionHandler extends System implements KeyListener {
 
     private static final Logger logger = LoggerFactory.getLogger(ActionHandler.class);
-
-    private Window window;
-
-    public interface ActionListener extends KeyListener {
-        public void onAction(ACTIONS action);
-    }
-
-    public enum ACTIONS {
-        UP, LEFT, RIGHT, DOWN,
-        FIRE1, FIRE2, FIRE3, FIRE4,
-        LT_FIRE, LB_FIRE, RT_FIRE, RB_FIRE,
-        START, HOME, POWER
-    }
-
     /*
      * Internal key current status buffer
      */
@@ -61,17 +47,14 @@ public class ActionHandler extends System implements KeyListener {
      * Internal key previous status buffer
      */
     private final boolean[] previousKeys = new boolean[65536];
-
+    private Window window;
     private List<ActionListener> listeners = new CopyOnWriteArrayList<>();
-
     private Map<Integer, ACTIONS> keyMapping = new HashMap<>();
     private Map<ACTIONS, Boolean> actions = new HashMap<>();
-
     private boolean ctrl;
     private boolean shift;
     private boolean alt;
     private boolean altGr;
-
     /**
      * Initialization of the {@link ActionHandler}. Define a default Action mapping with
      * basic keys. The map can be adapted or changed.
@@ -121,7 +104,6 @@ public class ActionHandler extends System implements KeyListener {
     public void remove(ActionListener kl) {
         listeners.remove(kl);
     }
-
 
     public ActionHandler setWindow(Window window) {
         this.window = window;
@@ -220,6 +202,17 @@ public class ActionHandler extends System implements KeyListener {
 
     public boolean getAltGr() {
         return altGr;
+    }
+
+    public enum ACTIONS {
+        UP, LEFT, RIGHT, DOWN,
+        FIRE1, FIRE2, FIRE3, FIRE4,
+        LT_FIRE, LB_FIRE, RT_FIRE, RB_FIRE,
+        START, HOME, POWER
+    }
+
+    public interface ActionListener extends KeyListener {
+        public void onAction(ACTIONS action);
     }
 
 }
