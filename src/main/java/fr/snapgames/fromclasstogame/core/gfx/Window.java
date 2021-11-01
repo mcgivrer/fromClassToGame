@@ -44,6 +44,8 @@ public class Window {
         frame.setSize(dim);
         frame.setPreferredSize(dim);
         frame.setMaximumSize(dim);
+        frame.setUndecorated(true);
+        frame.setMenuBar(null);
         frame.setLocation(new Point((int) (currentDevice.getDisplayMode().getWidth() - dim.width) / 2,
                 (int) (currentDevice.getDisplayMode().getHeight() - dim.height) / 2));
         frame.pack();
@@ -106,13 +108,23 @@ public class Window {
     public void switchFullScreen() {
         currentDevice = getGraphicsDevice(currentScreen);
         if (!fullscreen && currentDevice.isFullScreenSupported()) {
+            backupListeners();
             currentDevice.setFullScreenWindow(frame);
+            restoreListeners();
             fullscreen = true;
         } else {
             currentDevice.setFullScreenWindow(null);
             frame.setVisible(true);
             fullscreen = false;
         }
+    }
+
+    private void restoreListeners() {
+
+    }
+
+    private void backupListeners() {
+
     }
 
     /**
@@ -174,4 +186,7 @@ public class Window {
         this.debug = d;
     }
 
+    public GraphicsDevice getScreenDevice() {
+        return currentDevice;
+    }
 }

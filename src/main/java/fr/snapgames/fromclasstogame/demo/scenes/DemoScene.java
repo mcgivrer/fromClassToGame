@@ -5,12 +5,14 @@ import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.PlayerActionBehavior;
@@ -212,18 +214,22 @@ public class DemoScene extends AbstractScene {
     @Override
     public void keyReleased(KeyEvent e) {
         super.keyReleased(e);
+        ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
+        int nbEnemies = 10;
+        if (ah.getCtrl()) {
+            nbEnemies = 50;
+        }
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_PAGE_UP:
                 try {
-
-                    generateEnemies(10);
+                    generateEnemies(nbEnemies);
                 } catch (UnknownResource ex) {
                     logger.error("Unable to generate enemies", ex);
                 }
                 break;
             case KeyEvent.VK_PAGE_DOWN:
-                removeEnemies(10);
+                removeEnemies(nbEnemies);
                 break;
             case KeyEvent.VK_S:
                 find("enemy_").forEach(o -> {
