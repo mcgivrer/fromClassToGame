@@ -39,4 +39,8 @@ public class AbstractRenderHelper {
     public void drawImage(Graphics2D g, BufferedImage img, Vector2d pos) {
         drawImage(g, img, pos.x, pos.y);
     }
+
+    public void drawImage(Graphics2D g, BufferedImage img, Vector2d pos, double width, double height) {
+        g.drawImage(img, (int) pos.x, (int) pos.y, (int) width, (int) height, null);
+    }
 }
