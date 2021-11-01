@@ -7,11 +7,12 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.List;
 
 public class ResourceManager {
 
@@ -106,5 +107,36 @@ public class ResourceManager {
     public static void clear() {
         resources.clear();
 
+    }
+
+    public static List<String> getFile(String attributesFilename) {
+        if (resources.containsKey(attributesFilename)) {
+            return (List<String>) resources.get(attributesFilename);
+        } else {
+            List<String> i = readTextFile(attributesFilename);
+            if (i != null) {
+                resources.put(attributesFilename, i);
+            }
+            return (List<String>) resources.get(attributesFilename);
+        }
+    }
+
+    private static List<String> readTextFile(String attributesFilename) {
+        List<String> values = new ArrayList<>();
+
+        try {
+            InputStream is = ResourceManager.class.getResourceAsStream(attributesFilename);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while ((line = br.readLine()) != null) {
+                values.add(line);
+            }
+        } catch (IOException ioe) {
+            logger.error("Unable to read file " + attributesFilename, ioe);
+
+        }
+
+
+        return values;
     }
 }
