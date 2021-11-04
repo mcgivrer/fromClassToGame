@@ -1,5 +1,10 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -19,19 +24,14 @@ import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-
 public class DemoScene extends AbstractScene {
 
     private int score = 0;
     private int life = 5;
 
     public DemoScene(Game g) {
-        super(g,"demo");
+        super(g, "demo");
     }
-
 
     @Override
     public void initialize(Game g) {
@@ -61,12 +61,9 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         g.setWorld(new World(800, 600));
         // add main character (player)
-        GameObject player = new GameObject("player", new Vector2d(160, 100))
-                .setType(GameObject.GOType.IMAGE)
-                .setColor(Color.RED)
-                .setImage(ResourceManager.getImage("images/tiles01.png:player"))
-                .setMaterial(DefaultMaterial.WOOD.getMaterial())
-                .setMass(10);
+        GameObject player = new GameObject("player", new Vector2d(160, 100)).setType(GameObject.GOType.IMAGE)
+                .setColor(Color.RED).setImage(ResourceManager.getImage("images/tiles01.png:player"))
+                .setMaterial(DefaultMaterial.WOOD.getMaterial()).setMass(10);
         add(player);
 
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
@@ -77,31 +74,19 @@ public class DemoScene extends AbstractScene {
         generateEnemies();
 
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4)
-                .setScore(score)
-                .relativeToCamera(true)
-                .setLayer(1)
-                .setColor(Color.WHITE)
-                .setPriority(10);
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4).setScore(score).relativeToCamera(true)
+                .setLayer(1).setColor(Color.WHITE).setPriority(10);
         add(scoreTO);
 
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4)
-                .setLive(life)
-                .relativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4).setLive(life).relativeToCamera(true);
         add(lifeTO);
 
         BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
-        GameObject key = new GameObject("key", 0, 0)
-                .setImage(keyImg)
-                .addAttribute("inventory", keyImg);
+        GameObject key = new GameObject("key", new Vector2d(0, 0)).setImage(keyImg).addAttribute("inventory", keyImg);
 
-        InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
-                vp.getWidth() - 2,
-                vp.getHeight() - 4)
-                .setNbPlace(4)
-                .setSelectedIndex(1)
-                .relativeToCamera(true)
-                .add(new InventorySelectorBehavior());
+        InventoryObject inventory = (InventoryObject) new InventoryObject("inventory", vp.getWidth() - 2,
+                vp.getHeight() - 4).setNbPlace(4).setSelectedIndex(1).relativeToCamera(true)
+                        .add(new InventorySelectorBehavior());
 
         // add a first object (a key !)
         inventory.add(key);
@@ -112,12 +97,9 @@ public class DemoScene extends AbstractScene {
 
     private void generateEnemies() throws UnknownResource {
         for (int i = 0; i < 10; i++) {
-            GameObject e = new GameObject("enemy_" + i, new Vector2d(0, 0))
-                    .setType(GameObject.GOType.IMAGE)
-                    .setColor(Color.ORANGE)
-                    .setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
-                    .setMaterial(DefaultMaterial.RUBBER.getMaterial())
-                    .setMass(rand(-8, 13));
+            GameObject e = new GameObject("enemy_" + i, new Vector2d(0, 0)).setType(GameObject.GOType.IMAGE)
+                    .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
+                    .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(rand(-8, 13));
             add(e);
         }
     }
@@ -132,8 +114,7 @@ public class DemoScene extends AbstractScene {
         find("enemy_").forEach(go -> go
                 .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
                         rand(0, game.getPhysicEngine().getWorld().height))
-                .setAcceleration(new Vector2d(rand(-40, 40), 0.0))
-        );
+                .setAcceleration(new Vector2d(rand(-40, 40), 0.0)));
     }
 
     @Override
