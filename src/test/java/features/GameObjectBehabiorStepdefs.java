@@ -2,6 +2,7 @@ package features;
 
 import features.CommonDefSteps;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.test.behaviors.TestBehavior;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -13,7 +14,7 @@ public class GameObjectBehabiorStepdefs extends CommonDefSteps {
 
     @Given("a new GameObject named {string} at \\({double},{double})")
     public void aNewGameObjectNamedAt(String name, Double x, Double y) {
-        go = new GameObject(name, x, y);
+        go = new GameObject(name, new Vector2d(x,y));
     }
 
     @Then("the GameObject {string} has no behavior.")

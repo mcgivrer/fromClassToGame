@@ -1,12 +1,14 @@
 package fr.snapgames.fromclasstogame.test.entity;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 public class TestObject extends GameObject {
     private boolean flag;
 
     public TestObject(String name, double x, double y) {
-        super(name, x, y);
+        super(name, Vector2d.ZERO);
+
     }
 
     public Boolean getFlag() {

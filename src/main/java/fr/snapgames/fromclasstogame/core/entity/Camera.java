@@ -2,6 +2,8 @@ package fr.snapgames.fromclasstogame.core.entity;
 
 import java.awt.Dimension;
 
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+
 /**
  * <p>
  * The Camera will follow a target centered in its viewport.
@@ -16,7 +18,7 @@ public class Camera extends GameObject {
     double tween;
 
     public Camera(String name) {
-        super(name, 0, 0);
+        super(name, new Vector2d(0,0));
     }
 
     public Camera setTarget(GameObject t) {
