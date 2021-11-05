@@ -215,11 +215,11 @@
                     <bottom>
                         <![CDATA[<em>Copyright © \\${project.inceptionYear} - SnapGames.</em>]]>
                     </bottom>
-                    <links>
+                    <!--links>
                         <link>${project.issueManagement.url}</link>
                         <link>${project.ciManagement.url}</link>
                         <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
-                    </links>
+                    </links-->
                     <!--doclet>ch.raffael.mddoclet.MarkdownDoclet</doclet>
                     <docletArtifact>
                         <groupId>ch.raffael.markdown-doclet</groupId>

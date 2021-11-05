@@ -1,20 +1,21 @@
 package features;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.awt.Dimension;
+
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
-import java.awt.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class SceneDefSteps extends CommonDefSteps {
 
@@ -32,7 +33,7 @@ public class SceneDefSteps extends CommonDefSteps {
     @Then("the title is {string}")
     public void theTitleIs(String title) {
         try {
-            game.run(new String[]{"title=" + title});
+            game.run(new String[] { "title=" + title });
         } catch (ArgumentUnknownException uae) {
             fail("Uknown Argument");
         }
@@ -41,7 +42,7 @@ public class SceneDefSteps extends CommonDefSteps {
 
     @Given("I add an Entity named {string} at {double},{double}")
     public void iAddAnEntityNamedAt(String name, Double x, Double y) {
-        GameObject go = new GameObject(name, x, y);
+        GameObject go = new GameObject(name, new Vector2d(x, y));
         Scene sc = game.getSceneManager().getCurrent();
         sc.add(go);
     }
@@ -85,7 +86,6 @@ public class SceneDefSteps extends CommonDefSteps {
         assertEquals("The camera " + cameraName + " was not the default active one", cameraName, cam.name);
     }
 
-
     @And("the Camera {string} position is centered on the {string} position.")
     public void theCameraPositionIsCenteredOnTargetPosition(String cameraName, String targetName) {
         Dimension viewport = game.getRender().getViewport();
@@ -93,8 +93,12 @@ public class SceneDefSteps extends CommonDefSteps {
         GameObject target = game.getSceneManager().getCurrent().getGameObject(targetName);
         double camX = cam.position.x + (viewport.width * 0.5) - (target.width);
         double camY = cam.position.y + (viewport.height * 0.5) - (target.height);
-        assertEquals("The horizontal camera " + cameraName + " position does not match target " + targetName + " position", target.position.x, camX, 1);
-        assertEquals("The vertical camera " + cameraName + " position does not match target " + targetName + " position", target.position.y, camY, 1);
+        assertEquals(
+                "The horizontal camera " + cameraName + " position does not match target " + targetName + " position",
+                target.position.x, camX, 1);
+        assertEquals(
+                "The vertical camera " + cameraName + " position does not match target " + targetName + " position",
+                target.position.y, camY, 1);
     }
 
     @And("I add a Scene named {string};")
@@ -104,14 +108,16 @@ public class SceneDefSteps extends CommonDefSteps {
     }
 
     @And("I add a GameObject named {string} at \\({double},{double}) sizing \\({double},{double}) to Scene {string}")
-    public void iAddAGameObjectNamedAtSizingToScene(String objectName, double x, double y, double w, double h, String sceneName) {
-        GameObject go = new GameObject(objectName, x, y).setSize(w, h);
+    public void iAddAGameObjectNamedAtSizingToScene(String objectName, double x, double y, double w, double h,
+            String sceneName) {
+        GameObject go = new GameObject(objectName, new Vector2d(x, y)).setSize(w, h);
         Scene s = game.getSceneManager().getScene(sceneName);
         s.add(go);
     }
 
     @And("I add a Camera {string} targeting {string} with factor of {double} to Scene {string}")
-    public void iAddACameraTargetingWithFactorOfToScene(String cameraName, String targetName, double tweenFactor, String sceneName) {
+    public void iAddACameraTargetingWithFactorOfToScene(String cameraName, String targetName, double tweenFactor,
+            String sceneName) {
         Scene s = game.getSceneManager().getScene(sceneName);
         GameObject target = s.getGameObject(targetName);
         Camera cam = new Camera(cameraName).setTarget(target).setTweenFactor(tweenFactor);
