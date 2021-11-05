@@ -253,7 +253,7 @@ public class Game implements KeyListener {
     }
 
     public SceneManager getSceneManager() {
-        return this.sceneManager;
+        return (SceneManager) SystemManager.get(SceneManager.class);
     }
 
     public Configuration getConfiguration() {

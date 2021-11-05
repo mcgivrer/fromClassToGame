@@ -1,14 +1,15 @@
 package features;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.system.System;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import io.cucumber.java8.En;
 
-import static org.junit.Assert.*;
-
-public class SystemManagerStepDefs implements En {
-    Game game;
+public class SystemManagerStepDefs extends CommonDefSteps implements En {
     SystemManager sm;
 
     public SystemManagerStepDefs() {

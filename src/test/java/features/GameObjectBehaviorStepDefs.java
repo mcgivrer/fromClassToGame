@@ -1,20 +1,20 @@
 package features;
 
-import features.CommonDefSteps;
+import org.junit.Assert;
+
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.test.behaviors.TestBehavior;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.junit.Assert;
 
-public class GameObjectBehabiorStepdefs extends CommonDefSteps {
+public class GameObjectBehaviorStepDefs extends CommonDefSteps {
     private GameObject go;
 
     @Given("a new GameObject named {string} at \\({double},{double})")
     public void aNewGameObjectNamedAt(String name, Double x, Double y) {
-        go = new GameObject(name, new Vector2d(x,y));
+        go = new GameObject(name, new Vector2d(x, y));
     }
 
     @Then("the GameObject {string} has no behavior.")
@@ -30,6 +30,7 @@ public class GameObjectBehabiorStepdefs extends CommonDefSteps {
 
     @Then("the GameObject {string} has {int} behavior\\(s)")
     public void theGameObjectHasBehaviorS(String name, int nbBehaviors) {
-        Assert.assertEquals(String.format("The GameObject has not %d behaviors", nbBehaviors), nbBehaviors, go.behaviors.size());
+        Assert.assertEquals(String.format("The GameObject has not %d behaviors", nbBehaviors), nbBehaviors,
+                go.behaviors.size());
     }
 }
