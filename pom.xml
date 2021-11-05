@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>core</groupId>
     <artifactId>fromclasstogame</artifactId>
@@ -51,8 +50,9 @@
     </ciManagement>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
     </properties>
 
@@ -134,8 +134,8 @@
                 <version>3.8.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -189,16 +189,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.3.0</version>
                 <configuration>
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
                     <source>1.8</source>
-                    <javadocVersion>11</javadocVersion>
-                    <show>private</show>
+                    <show>public</show>
                     <failOnError>false</failOnError>
                     <failOnWarnings>false</failOnWarnings>
-                    <linksource>true</linksource>
+                    <useStandardDocletOptions>false</useStandardDocletOptions>
+                    <linksource>false</linksource>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
                     <overview>${project.basedir}/README.md</overview>
                     <bottom>
                         <![CDATA[<em>Copyright © \\${project.inceptionYear} - SnapGames.</em>]]>
@@ -206,7 +208,7 @@
                     <links>
                         <link>${project.issueManagement.url}</link>
                         <link>${project.ciManagement.url}</link>
-                        <link>[https://docs.oracle.com/en/java/javase/11/docs/api/]</link>
+                        <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
                     </links>
                     <!--doclet>ch.raffael.mddoclet.MarkdownDoclet</doclet>
                     <docletArtifact>
@@ -253,8 +255,7 @@
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>shaded</shadedClassifierName>
                     <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>${mainClass}</mainClass>
                         </transformer>
                         <!--transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
@@ -281,6 +282,7 @@
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
+                    <tagNameFormat>v${project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
@@ -377,6 +379,17 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+            <!-- Javadoc reporting -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <stylesheetfile>${basedir}/src/docs/styles/javadoc.css</stylesheetfile>
+                    <show>public</show>
+                </configuration>
+            </plugin>
+
             <!-- Generate the Release Notes for this version (linked to github issues
                       list) -->
             <plugin>
@@ -454,7 +467,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory/>
+                                    <workingDirectory />
                                     <arguments>
                                         <argument>docs/ebook-metadata.yml</argument>
                                         <argument>docs/00-introduction.md</argument>
@@ -502,7 +515,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory/>
+                                    <workingDirectory />
                                     <arguments>
                                         <argument>docs/ebbok-metadata.yml</argument>
                                         <argument>docs/00-introduction.md</argument>
