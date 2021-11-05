@@ -11,10 +11,10 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 
-public class ConfigurationStepdefs implements En {
+public class ConfigurationStepDefs implements En {
     private Configuration config;
 
-    public ConfigurationStepdefs() {
+    public ConfigurationStepDefs() {
         Given("the Configuration object is initialized with {string}", (String configFilename) -> {
             config = new Configuration(configFilename);
         });
