@@ -69,7 +69,9 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("the Game is running")
     public void thenTheGameIsRunning() {
         try {
+            game.testMode = true;
             game.run(args);
+            logger.info("The game is running");
         } catch (Exception e) {
             logger.error("Unable to run the game", e);
         }
@@ -87,7 +89,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Given("I add a GameObject named {string} at \\({double},{double})")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
-        GameObject go = new GameObject(name, x, y);
+        GameObject go = new GameObject(name, new Vector2d(x, y));
         Scene scene = game.getSceneManager().getCurrent();
         scene.add(go);
     }

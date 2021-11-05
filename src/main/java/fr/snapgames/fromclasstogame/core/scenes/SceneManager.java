@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The {@link SceneManager} is a game states switcher to activate one of the
@@ -21,8 +22,8 @@ import java.util.Map;
 public class SceneManager extends System {
     private final static Logger logger = LoggerFactory.getLogger(SceneManager.class);
 
-    Map<String, Class<?>> scenesClasses = new HashMap<>();
-    Map<String, Scene> scenesInstances = new HashMap<>();
+    Map<String, Class<?>> scenesClasses = new ConcurrentHashMap<>();
+    Map<String, Scene> scenesInstances = new ConcurrentHashMap<>();
 
     private Scene current;
 
@@ -75,7 +76,9 @@ public class SceneManager extends System {
     }
 
     public void activate() {
-        activate(game.getConfiguration().defaultScene);
+        String defaultScene = game.getConfiguration().defaultScene;
+        logger.debug("Activate the default scene '" + defaultScene + "'");
+        activate(defaultScene);
     }
 
     /**
@@ -113,7 +116,7 @@ public class SceneManager extends System {
         Scene s = null;
         try {
             Class<?> clazzScene = scenesClasses.get(name);
-            final Constructor<?> sceneConstructor = clazzScene.getConstructor(new Class[]{Game.class});
+            final Constructor<?> sceneConstructor = clazzScene.getConstructor(Game.class);
             s = (Scene) sceneConstructor.newInstance(game);
             add(name, s);
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
@@ -156,7 +159,7 @@ public class SceneManager extends System {
         scenesClasses.clear();
     }
 
-    public Scene getCurrent() {
+    public synchronized Scene getCurrent() {
         if (current == null) {
             activate();
         }
