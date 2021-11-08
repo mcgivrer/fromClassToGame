@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 public class Configuration {
     private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-    public ResourceBundle defaultConfig;
+    public ResourceBundle defaultValues;
     public CliManager cm;
     public String levelPath;
     public String title = "fromClassToGame";

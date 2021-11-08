@@ -1,6 +1,13 @@
-# Architecture
+---
+title: From a Class to Game 
+chapter: 100 - Architecture
+author: Frédéric Delorme
+description: Some details about global architecture for the Game framework.
+created: 2021-08-01
+tags: gamedev, architecture
+---
 
-## The Core Architecture
+## Architecture
 
 The game has now an internal architecture we need to draw to well understand the links between components.
 
@@ -67,7 +74,7 @@ package "fr.snapgames.fromclasstogame" {
 
 _Core package internal architecture_
 
-## An implementation
+### An implementation
 
 ```plantuml
 @startuml "Demonstration"

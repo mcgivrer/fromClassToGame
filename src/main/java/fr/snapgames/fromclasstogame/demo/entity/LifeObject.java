@@ -8,7 +8,8 @@ public class LifeObject extends GameObject {
 
     @Deprecated
     public LifeObject(String name, double x, double y) {
-        super(name, x, y);
+        super(name, new Vector2d(x, y));
+
     }
 
     public LifeObject(String name, Vector2d position) {

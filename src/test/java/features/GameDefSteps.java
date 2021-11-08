@@ -34,6 +34,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
+        game = null;
         game = new Game("test-scene");
         game.testMode = true;
     }
@@ -70,6 +71,7 @@ public class GameDefSteps extends CommonDefSteps {
     public void thenTheGameIsRunning() {
         try {
             game.run(args);
+            logger.info("The game is running");
         } catch (Exception e) {
             logger.error("Unable to run the game", e);
         }
