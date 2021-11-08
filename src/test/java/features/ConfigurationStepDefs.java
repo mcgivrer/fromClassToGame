@@ -19,7 +19,7 @@ public class ConfigurationStepDefs implements En {
             config = new Configuration(configFilename);
         });
         Then("the properties are loaded", () -> {
-            assertNotNull("properties have not been loaded", config.defaultConfig);
+            assertNotNull("properties have not been loaded", config.defaultValues);
         });
         And("the default title is {string}", (String title) -> {
             assertEquals("the title has not been set to the correct value ", title, config.title);

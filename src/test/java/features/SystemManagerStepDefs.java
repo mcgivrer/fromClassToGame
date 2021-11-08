@@ -9,8 +9,7 @@ import fr.snapgames.fromclasstogame.core.system.System;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import io.cucumber.java8.En;
 
-public class SystemManagerStepDefs implements En {
-    Game game;
+public class SystemManagerStepDefs extends CommonDefSteps implements En {
     SystemManager sm;
 
     public SystemManagerStepDefs() {
