@@ -15,7 +15,7 @@ Starting with a very simple class, we will create a brand new Game, by adding so
 ## chapters
 
 1. [A class ?](chapters/01-a-class.md)
-2. [Adding a structure](chapters/02-addind-a-structure.md)
+2. [Adding a structure](chapters/02-adding-a-structure.md)
 3. [Delegate things](chapters/03-delegate-things.md)
 4. [the Object Game](chapters/04-the-object-game.md)
 5. [Input Handler](chapters/05-input-handler.md)
@@ -29,7 +29,8 @@ Starting with a very simple class, we will create a brand new Game, by adding so
 13. [Basic of a Physic Engine](chapters/13-basic-physic-engine.md)
 14. [Collision System](chapters/14-collision-system.md)
 15. [GameObject and Behaviors](chapters/16-gameobject-and-behaviors.md)
-16. [Global Architecture](chapters/100-architecture.md)
+16. [Managing a quick Inventory](chapters/17-inventory.md)
+17. [Global Architecture](chapters/100-architecture.md)
 
 More to come... stay Tuned !
 
