@@ -17,9 +17,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class RenderHelperStepDefs {
-
-    private Game game;
+public class RenderHelperStepDefs extends CommonDefSteps {
 
     @Given("The Game start with default config")
     public void theGameStartWithDefaultConfig() {
@@ -76,6 +74,6 @@ public class RenderHelperStepDefs {
     @And("I add a TestObject named {string}")
     public void iAddATestObjectNamed(String arg0) {
         Scene sc = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
-        sc.add(new TestObject("test",0,0));
+        sc.add(new TestObject("test", 0, 0));
     }
 }
