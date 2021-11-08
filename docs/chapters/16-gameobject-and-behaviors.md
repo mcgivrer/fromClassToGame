@@ -1,14 +1,4 @@
----
-title: From a Class to Game
-chapter: 16 - Gameobject and Behaviors
-author: Frédéric Delorme
-description: The GameObject's behaviors ar sometimes the same between Object. the Behavior interface will provide a way \
-to share common behaviors between multiple GameObject instances.
-created: 2021-10-18
-tags: gamedev, gameobject, behavior
----
-
-## GameObject and Behaviors
+# GameObject and Behaviors
 
 A GameObject can share some of their behaviors.
 
@@ -41,3 +31,86 @@ public class GameObject {
 
 Then at Game engine level, we will need to process the corresponding implementation's input, update and render call.
 
+## The Player Action Behavior
+
+As a player, I must be able to interact with the Game, and move my character on screen.
+
+This is what we are going to try and achieve by implementing the `PlayerActionBehavior`.
+
+Start implementing this behavior :
+
+```java
+public class PlayerActionBehavior implements Behavior<GameObject> {
+    public PlayerActionBehavior() {
+        ah = (ActionHandler) SystemManager.get(ActionHandler.class);
+    }
+}
+```
+
+We need to focus on what we want to be able to achieve as move:
+
+- move LEFT,
+- move RIGHT,
+- make the character JUMP,
+- RESET every velocity and acceleration parameters (only for debug purpose)
+
+So we will capture the `onInput()` method to catch left and right key press:
+
+```java
+public class PlayerActionBehavior implements Behavior<GameObject> {
+
+    //...
+    @Override
+    public void onInput(GameObject go, ActionHandler ih) {
+        if (ih.get(KeyEvent.VK_LEFT)) {
+            go.acceleration.x = -accel;
+        }
+        if (ih.get(KeyEvent.VK_RIGHT)) {
+            go.acceleration.x = accel;
+        }
+    }
+    
+}
+```
+
+but we rely on the `onAction()` to detect JUMP and RESET parameter.
+
+```java
+public class PlayerActionBehavior implements Behavior<GameObject> {
+
+    //...
+    @Override
+    public void onAction(GameObject go, ActionHandler.ACTIONS action) {
+        accelStep = (Double) go.getAttribute("accelStep");
+        jumpAccel = (Double) go.getAttribute("jumpAccel");
+        jumping = (boolean) go.getAttribute("jumping");
+
+        if (ah.getCtrl()) {
+            accel = accelStep * 10;
+        } else if (ah.getShift()) {
+            accel = accelStep * 5;
+        } else {
+            accel = accelStep;
+        }
+        switch (action) {
+            case UP:
+                jumping = (boolean) go.getAttribute("jumping");
+                if (!jumping) {
+                    go.acceleration.y = jumpAccel * accel;
+                    go.addAttribute("jumping", true);
+                }
+                break;
+            case FIRE1:
+                if (go.debug > 0) {
+                    go.acceleration.x = 0;
+                    go.acceleration.y = 0;
+                    go.velocity.x = 0;
+                    go.velocity.y = 0;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+```

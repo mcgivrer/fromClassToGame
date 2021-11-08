@@ -1,13 +1,4 @@
----
-title: From a Class to Game 
-chapter: 11 - Score and Render Helper
-author: Frédéric Delorme
-description: Moving from Text to ScoreObject and adapting Render to support enhancement. 
-created: 2021-08-01 
-tags: gamedev, render, score, renderhelper
----
-
-## Score and RenderHelper
+# Score and RenderHelper
 
 In the previous chapters, the demo scene was displaying some `GameObject`'s and a `TextObject` as a score display. In
 this chapter, we are going to create a new `ScoreObject` to support all the score mechanism. But if we want to render

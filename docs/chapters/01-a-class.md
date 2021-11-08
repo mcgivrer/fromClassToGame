@@ -1,4 +1,4 @@
-# *A Class ?
+# A Class, begin of everything
 
 A class is a pure OOP entity, defining an object, with its own attributes, which can be named characteristics, and its
 own methods, that we can name actions.

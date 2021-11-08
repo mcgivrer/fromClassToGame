@@ -46,16 +46,11 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
 
     @Override
     public void onInput(GameObject go, ActionHandler ih) {
-        touching = go.getAttributes().containsKey("touching") ? (boolean) go.getAttribute("touching") : false;
         if (ih.get(KeyEvent.VK_LEFT)) {
             go.acceleration.x = -accel;
         }
         if (ih.get(KeyEvent.VK_RIGHT)) {
             go.acceleration.x = accel;
-        }
-
-        if (ih.get(KeyEvent.VK_DOWN)) {
-            go.acceleration.y = accel;
         }
     }
 
