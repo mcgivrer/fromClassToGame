@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 public class Configuration {
     private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-    public ResourceBundle defaultConfig;
+    public ResourceBundle defaultValues;
     public CliManager cm;
 
     public String title = "fromClassToGame";
@@ -33,7 +33,7 @@ public class Configuration {
     public Configuration(String configurationPath) {
 
         cm = new CliManager();
-        defaultConfig = ResourceBundle.getBundle(configurationPath);
+        defaultValues = ResourceBundle.getBundle(configurationPath);
         initializeArgParser();
         readValuesFromFile();
         logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath, System.currentTimeMillis());
@@ -105,7 +105,7 @@ public class Configuration {
 
     public void readValuesFromFile() {
         try {
-            cm.parse(defaultConfig);
+            cm.parse(defaultValues);
             getValuesFromCM();
         } catch (ArgumentUnknownException e) {
             logger.error("unable to parse configuration", e);
