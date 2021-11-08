@@ -395,7 +395,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <stylesheetfile>${basedir}/src/docs/styles/javadoc.css</stylesheetfile>
+                    <stylesheetfile>${basedir}/docs/styles/javadoc.css</stylesheetfile>
                     <show>public</show>
                 </configuration>
             </plugin>
@@ -480,17 +480,6 @@
                                     <workingDirectory />
                                     <arguments>
                                         <argument>docs/ebook-metadata.yml</argument>
-                                        <argument>docs/00-introduction.md</argument>
-                                        <argument>docs/01-game.md</argument>
-                                        <argument>docs/02-game_object.md</argument>
-                                        <argument>docs/03-scene_and_manager_system.md</argument>
-                                        <argument>docs/04-renderer.md</argument>
-                                        <argument>docs/05-camera.md</argument>
-                                        <argument>docs/06-system_manager.md</argument>
-                                        <argument>docs/07-behaviors_and_lua_scripts.md</argument>
-                                        <argument>docs/08-physic_engine_system.md</argument>
-                                        <argument>docs/09-maplevel.md</argument>
-                                        <argument>docs/10-the_maven_project.md</argument>
                                         <!--argument>docs/00-.md</argument -->
                                         <argument>--resource-path=docs/</argument>
                                         <argument>--toc</argument>
@@ -527,18 +516,8 @@
                                     <executable>pandoc</executable>
                                     <workingDirectory />
                                     <arguments>
-                                        <argument>docs/ebbok-metadata.yml</argument>
-                                        <argument>docs/00-introduction.md</argument>
-                                        <argument>docs/01-game.md</argument>
-                                        <argument>docs/02-game_object.md</argument>
-                                        <argument>docs/03-scene_and_manager_system.md</argument>
-                                        <argument>docs/04-renderer.md</argument>
-                                        <argument>docs/05-camera.md</argument>
-                                        <argument>docs/06-system_manager.md</argument>
-                                        <argument>docs/07-behaviors_and_lua_scripts.md</argument>
-                                        <argument>docs/08-physic_engine_system.md</argument>
-                                        <argument>docs/09-maplevel.md</argument>
-                                        <argument>docs/10-the_maven_project.md</argument>
+                                        <argument>docs/ebook-metadata.yml</argument>
+
                                         <!--argument>docs/00-.md</argument -->
                                         <argument>--resource-path=docs/</argument>
                                         <argument>--toc</argument>
