@@ -7,7 +7,7 @@ public class LifeObject extends GameObject {
     public int value = 0;
 
     public LifeObject(String name, double x, double y) {
-        super(name, Vector2d.ZERO);
+        super(name, new Vector2d(x, y));
 
     }
 
