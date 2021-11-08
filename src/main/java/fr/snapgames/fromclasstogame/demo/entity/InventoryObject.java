@@ -14,7 +14,7 @@ public class InventoryObject extends GameObject {
     List<GameObject> items = new ArrayList<>();
 
     public InventoryObject(String name, double x, double y) {
-        super(name, Vector2d.ZERO);
+        super(name, new Vector2d(x, y));
 
     }
 

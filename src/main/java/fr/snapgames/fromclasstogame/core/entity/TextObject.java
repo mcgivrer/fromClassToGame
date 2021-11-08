@@ -11,7 +11,7 @@ public class TextObject extends GameObject {
     public Font font;
 
     public TextObject(String name, double x, double y) {
-        super(name, Vector2d.ZERO);
+        super(name, new Vector2d(x, y));
 
         this.color = Color.WHITE;
         type = GOType.OTHER;
