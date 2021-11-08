@@ -60,8 +60,9 @@
 
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
     </properties>
 
@@ -143,8 +144,8 @@
                 <version>3.8.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -198,25 +199,27 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.3.0</version>
                 <configuration>
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
                     <source>1.8</source>
-                    <javadocVersion>11</javadocVersion>
-                    <show>private</show>
+                    <show>public</show>
                     <failOnError>false</failOnError>
                     <failOnWarnings>false</failOnWarnings>
-                    <linksource>true</linksource>
+                    <useStandardDocletOptions>false</useStandardDocletOptions>
+                    <linksource>false</linksource>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
                     <overview>${project.basedir}/README.md</overview>
                     <bottom>
                         <![CDATA[<em>Copyright © \\${project.inceptionYear} - SnapGames.</em>]]>
                     </bottom>
-                    <links>
+                    <!--links>
                         <link>${project.issueManagement.url}</link>
                         <link>${project.ciManagement.url}</link>
-                        <link>[https://docs.oracle.com/en/java/javase/11/docs/api/]</link>
-                    </links>
+                        <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
+                    </links-->
                     <!--doclet>ch.raffael.mddoclet.MarkdownDoclet</doclet>
                     <docletArtifact>
                         <groupId>ch.raffael.markdown-doclet</groupId>
@@ -289,6 +292,7 @@
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
+                    <tagNameFormat>v${project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
@@ -385,6 +389,17 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+            <!-- Javadoc reporting -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <stylesheetfile>${basedir}/src/docs/styles/javadoc.css</stylesheetfile>
+                    <show>public</show>
+                </configuration>
+            </plugin>
+
             <!-- Generate the Release Notes for this version (linked to github issues
                       list) -->
             <plugin>

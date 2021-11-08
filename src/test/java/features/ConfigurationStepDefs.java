@@ -11,15 +11,15 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 
-public class ConfigurationStepdefs implements En {
+public class ConfigurationStepDefs implements En {
     private Configuration config;
 
-    public ConfigurationStepdefs() {
+    public ConfigurationStepDefs() {
         Given("the Configuration object is initialized with {string}", (String configFilename) -> {
             config = new Configuration(configFilename);
         });
         Then("the properties are loaded", () -> {
-            assertNotNull("properties have not been loaded", config.defaultConfig);
+            assertNotNull("properties have not been loaded", config.defaultValues);
         });
         And("the default title is {string}", (String title) -> {
             assertEquals("the title has not been set to the correct value ", title, config.title);
