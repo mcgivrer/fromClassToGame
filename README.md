@@ -23,25 +23,26 @@ using a bit of TDD to develop and refactor
 
 Added some valuable features like:
 
--  A Core `Game` class,
--  A standard central `GameObject`,
--  an `InputHandler` to capture player interaction
--  A `ResourceManager` service,
--  A `SceneManager` service,
--  A `SystemManager` and convert any service to `System` interface,
--  Implement a `Render` upon Graphics2D and `RenderHelper`,
--  Some fancy other objects like `TextObject`, `LifeObject` or `ScoreObject`,
--  A `Camera` to move view with following a specific target, 
--  A `PhysicEngine` to compute more realistic moves,
--  Some `Behavior` capability to GameObject,
--  A Map of `attributes` to GameObject
--  A new `InventoryObject` to manage a player inventory with its own render helper and behavior,
+- A Core `Game` class,
+- A standard central `GameObject`,
+- an `InputHandler` to capture player interaction
+- A `ResourceManager` service,
+- A `SceneManager` service,
+- A `SystemManager` and convert any service to `System` interface,
+- Implement a `Render` upon Graphics2D and `RenderHelper`,
+- Some fancy other objects like `TextObject`, `LifeObject` or `ScoreObject`,
+- A `Camera` to move view with following a specific target,
+- A `PhysicEngine` to compute more realistic moves,
+- Some `Behavior` capability to GameObject,
+- A Map of `attributes` to GameObject
+- A new `InventoryObject` to manage a player inventory with its own render helper and behavior,
 
 ## More to come
 
--  A `CollisionSystem` is a work in progress
--  Some `TileMap` object to display beautiful game level graphic set and all its dependencies (`Tile`, `TileSet` and `TileLayer`) are also work in progress !
--  A Mouse and Gamepad events integration to rules'em all !
+- A `CollisionSystem` is a work in progress
+- Some `TileMap` object to display beautiful game level graphic set and all its dependencies (`Tile`, `TileSet`
+  and `TileLayer`) are also work in progress !
+- A Mouse and Gamepad events integration to rules'em all !
 
 ## Build, Run and See
 
@@ -71,4 +72,11 @@ mvn exec:java
 
 You will get the current display:
 
-![screenshot-004](docs/images/../../src/docs/images/capture-004.png "a screenshot of the current sample demo")
+![screenshot - DemoScene with objects](docs/images/demo-scene-structure.png "a screenshot of the current demo scene")
+
+This sample demo will show :
+
+1. Some `GameObject` as player (the red one), and some random spawning enemies (orange ones),
+2. the `ScoreObject`, displaying score (sic),
+3. the `LifeObject` showing the remaining number of life,
+4. the `InventoryObject`, showing a qick inventory to select an available item.
