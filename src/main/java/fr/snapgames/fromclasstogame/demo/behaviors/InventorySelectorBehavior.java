@@ -1,12 +1,12 @@
 package fr.snapgames.fromclasstogame.demo.behaviors;
 
-import java.awt.event.KeyEvent;
-
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
+
+import java.awt.event.KeyEvent;
 
 public class InventorySelectorBehavior implements Behavior<GameObject> {
     @Override
@@ -17,6 +17,11 @@ public class InventorySelectorBehavior implements Behavior<GameObject> {
         testKey(ih, io, KeyEvent.VK_3, 2, 3);
         testKey(ih, io, KeyEvent.VK_4, 3, 4);
         testKey(ih, io, KeyEvent.VK_5, 4, 5);
+        testKey(ih, io, KeyEvent.VK_6, 5, 6);
+        testKey(ih, io, KeyEvent.VK_7, 6, 7);
+        testKey(ih, io, KeyEvent.VK_8, 7, 8);
+        testKey(ih, io, KeyEvent.VK_9, 8, 9);
+        testKey(ih, io, KeyEvent.VK_0, 9, 10);
     }
 
     private void testKey(ActionHandler ih, InventoryObject io, int vk1, int i, int i2) {
