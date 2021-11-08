@@ -2,12 +2,15 @@ Feature: The game has scene with different types of GameObject.
 
   The Game class is started normally by initializing with arguments or default values.
 
-  Scenario: The Game has one GameObject
+  Scenario Outline: The Game has one GameObject
     Given the Game is instantiated
     And the Game is running
-    And I add a GameObject named "player" at (160.0,100.0)
-    And the "player" size is 16 x 16
-    Then the Game has 1 GameObject at window center.
+    And I add a GameObject named <name> at (<x>,<y>)
+    And the <name> size is <w> x <h>
+    Then the Game has <i> GameObject at window center.
+    Examples:
+      | name     | x     | y     | w  | h  | i |
+      | "player" | 160.0 | 100.0 | 16 | 16 | 1 |
 
   Scenario: The Game has multiple GameObjects
     Given the Game is instantiated

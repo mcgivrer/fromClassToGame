@@ -78,7 +78,9 @@ public class SceneManager extends System {
     }
 
     public void activate() {
-        activate(game.getConfiguration().defaultScene);
+        String defaultScene = game.getConfiguration().defaultScene;
+        logger.debug("Activate the default scene '" + defaultScene + "'");
+        activate(defaultScene);
     }
 
     /**
@@ -114,7 +116,7 @@ public class SceneManager extends System {
         Scene s = null;
         try {
             Class<?> clazzScene = scenesClasses.get(name);
-            final Constructor<?> sceneConstructor = clazzScene.getConstructor(new Class[]{Game.class});
+            final Constructor<?> sceneConstructor = clazzScene.getConstructor(Game.class);
             s = (Scene) sceneConstructor.newInstance(game);
             add(name, s);
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
@@ -150,7 +152,7 @@ public class SceneManager extends System {
         scenesClasses.clear();
     }
 
-    public Scene getCurrent() {
+    public synchronized Scene getCurrent() {
         if (current == null) {
             activate();
         }

@@ -1,5 +1,10 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -96,17 +101,11 @@ public class DemoScene extends AbstractScene {
         generateEnemies(10);
 
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4)
-                .setScore(score)
-                .relativeToCamera(true)
-                .setLayer(1)
-                .setColor(Color.WHITE)
-                .setPriority(10);
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4).setScore(score).relativeToCamera(true)
+                .setLayer(1).setColor(Color.WHITE).setPriority(10);
         add(scoreTO);
 
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4)
-                .setLive(life)
-                .relativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4).setLive(life).relativeToCamera(true);
         add(lifeTO);
 
         BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
