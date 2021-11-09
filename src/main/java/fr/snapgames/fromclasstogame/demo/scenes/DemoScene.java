@@ -9,6 +9,7 @@ import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
+import fr.snapgames.fromclasstogame.core.physic.Utils;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
@@ -137,10 +138,10 @@ public class DemoScene extends AbstractScene {
         for (int i = 0; i < nbEnemies; i++) {
             GameObject e = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
                     .setType(GameObject.GOType.IMAGE)
-                    .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
-                            rand(0, game.getPhysicEngine().getWorld().height))
+                    .setPosition(Utils.rand(0, game.getPhysicEngine().getWorld().width),
+                            Utils.rand(0, game.getPhysicEngine().getWorld().height))
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
-                    .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(rand(-8, 13)).setLayer(10)
+                    .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
                     .setPriority(3);
             randomizePosAndAccGameObject(e);
             add(e);
@@ -167,9 +168,8 @@ public class DemoScene extends AbstractScene {
 
     private GameObject randomizePosAndAccGameObject(GameObject go) {
         return go
-                .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
-                        rand(0, game.getPhysicEngine().getWorld().height))
-                .setAcceleration(new Vector2d(rand(-40, 40), 0.0));
+                .setPosition(Utils.randV2d(0, game.getPhysicEngine().getWorld().width, 0, game.getPhysicEngine().getWorld().height))
+                .setAcceleration(Utils.randV2d(-40, 40, 0, 0));
     }
 
     private GameObject randomizeAccelerationAndFrictionAndBounciness(
@@ -179,9 +179,9 @@ public class DemoScene extends AbstractScene {
             double dynFriction,
             double bounciness) {
         Material m = go.material;
-        m.dynFriction = rand(dynFriction - 0.1, dynFriction + 0.1);
-        m.bounciness = rand(bounciness - 0.1, bounciness + 0.1);
-        return go.setAcceleration(new Vector2d(rand(-accFactorX, accFactorX), rand(-accFactorY, accFactorY)));
+        m.dynFriction = Utils.rand(dynFriction - 0.1, dynFriction + 0.1);
+        m.bounciness = Utils.rand(bounciness - 0.1, bounciness + 0.1);
+        return go.setAcceleration(Utils.randV2d(-accFactorX, accFactorX, -accFactorY, accFactorY));
     }
 
     @Override
