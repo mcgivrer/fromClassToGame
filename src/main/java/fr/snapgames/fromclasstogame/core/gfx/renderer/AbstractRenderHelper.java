@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.awt.*;
@@ -32,6 +33,16 @@ public class AbstractRenderHelper {
         drawText(g, text, pos.x, pos.y);
     }
 
+    public void drawTextBorder(Graphics2D g, double maxBorderWidth, TextObject so) {
+        // draw black border
+        g.setColor(Color.BLACK);
+        for (double x = so.position.x - maxBorderWidth; x < so.position.x + maxBorderWidth; x++) {
+            for (double y = so.position.y - maxBorderWidth; y < so.position.y + maxBorderWidth; y++) {
+                g.drawString(so.text, (int) (x), (int) (y));
+            }
+        }
+    }
+
     public void drawImage(Graphics2D g, BufferedImage img, double x, double y) {
         g.drawImage(img, (int) x, (int) y, null);
     }
@@ -43,4 +54,10 @@ public class AbstractRenderHelper {
     public void drawImage(Graphics2D g, BufferedImage img, Vector2d pos, double width, double height) {
         g.drawImage(img, (int) pos.x, (int) pos.y, (int) width, (int) height, null);
     }
+
+    public void drawPoint(Graphics2D g, Vector2d position, double size, Color color) {
+        g.setColor(color);
+        g.fillOval((int) position.x, (int) position.y, (int) size, (int) size);
+    }
+
 }

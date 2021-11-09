@@ -6,15 +6,14 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GameObjectRenderHelper extends AbstractRenderHelper implements RenderHelper {
+public class GameObjectRenderHelper extends AbstractRenderHelper implements RenderHelper<GameObject> {
     private static final Logger logger = LoggerFactory.getLogger(GameObjectRenderHelper.class);
 
     private Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
     private Color debugFrontColor = Color.ORANGE;
 
     @Override
-    public void draw(Graphics2D g, Object o) {
-        GameObject go = (GameObject) o;
+    public void draw(Graphics2D g, GameObject go) {
         switch (go.type) {
             case POINT:
                 g.setColor(go.color);
