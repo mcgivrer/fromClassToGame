@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.charset.StandardCharsets;
 
-public class ScoreRenderHelper implements RenderHelper {
+public class ScoreRenderHelper implements RenderHelper<ScoreObject> {
 
     BufferedImage figuresImg;
     BufferedImage figs[];
@@ -27,22 +27,12 @@ public class ScoreRenderHelper implements RenderHelper {
     }
 
     @Override
-    public void draw(Graphics2D g, Object o) {
+    public void draw(Graphics2D g, ScoreObject so) {
         double maxBorderWidth = 2;
-        ScoreObject so = (ScoreObject) o;
         g.setColor(so.color);
         drawScore(g, so.text, (int) (so.position.x), (int) (so.position.y));
     }
 
-    protected void drawBorder(Graphics2D g, double maxBorderWidth, TextObject so) {
-        // draw black border
-        g.setColor(Color.BLACK);
-        for (double x = so.position.x - maxBorderWidth; x < so.position.x + maxBorderWidth; x++) {
-            for (double y = so.position.y - maxBorderWidth; y < so.position.y + maxBorderWidth; y++) {
-                g.drawString(so.text, (int) (x), (int) (y));
-            }
-        }
-    }
 
     /**
      * Draw score with digital characters

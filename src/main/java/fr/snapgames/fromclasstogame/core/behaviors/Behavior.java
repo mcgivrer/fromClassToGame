@@ -5,6 +5,11 @@ import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 
 public interface Behavior<T> {
+
+    default void onCreate(T go) {
+        // Nothing specific to do by default.
+    }
+
     void onInput(T go, ActionHandler ih);
 
     void onUpdate(T go, long dt);
