@@ -75,6 +75,19 @@ public class Vector2d {
     }
 
     /**
+     * Add the <code>v</code> vector to this vector and return the corresponding result in a new vector.
+     *
+     * @param v the vector to add to this vector.
+     * @return this.
+     */
+    public Vector2d addTo(Vector2d v) {
+        Vector2d r = new Vector2d();
+        r.x = x + v.x;
+        r.y = y + v.y;
+        return r;
+    }
+
+    /**
      * Multiply vector by a factor.
      *
      * @param factor the factor to multiply the vector by.
