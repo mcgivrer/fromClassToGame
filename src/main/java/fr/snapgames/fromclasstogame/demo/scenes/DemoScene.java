@@ -1,10 +1,5 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -60,14 +55,13 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
         // inventory objects item.
         ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
+        ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new ScoreObject
         g.getRender().addRenderHelper(new ScoreRenderHelper());
         g.getRender().addRenderHelper(new TextValueRenderHelper());
         g.getRender().addRenderHelper(new LifeRenderHelper());
         g.getRender().addRenderHelper(new InventoryRenderHelper());
-
-        // load resources
     }
 
     @Override
@@ -78,6 +72,8 @@ public class DemoScene extends AbstractScene {
         GameObject player = new GameObject("player", new Vector2d(160, 100))
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
+                .setLayer(1)
+                .setPriority(0)
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
@@ -99,6 +95,13 @@ public class DemoScene extends AbstractScene {
 
         // Add enemies(enemy_99)
         generateEnemies(10);
+
+        GameObject bckG = new GameObject("background", 0, 0)
+                .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
+                .setType(GameObject.GOType.IMAGE)
+                .setLayer(100)
+                .setPriority(100);
+        add(bckG);
 
         // add score display.
         ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4).setScore(score).relativeToCamera(true)
@@ -138,7 +141,7 @@ public class DemoScene extends AbstractScene {
                             rand(0, game.getPhysicEngine().getWorld().height))
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(rand(-8, 13)).setLayer(10)
-                    .setPriority(i);
+                    .setPriority(3);
             randomizePosAndAccGameObject(e);
             add(e);
         }
