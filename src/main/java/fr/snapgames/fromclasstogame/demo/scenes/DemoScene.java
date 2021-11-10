@@ -31,6 +31,12 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+/**
+ * Demo Scene to test features during framework development.
+ *
+ * @author Frédéric Delorme
+ * @since 0.0.1
+ */
 public class DemoScene extends AbstractScene {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoScene.class);
@@ -38,6 +44,11 @@ public class DemoScene extends AbstractScene {
     private int score = 0;
     private int life = 5;
 
+    /**
+     * Create the Demo.
+     *
+     * @param g the parent Game object.
+     */
     public DemoScene(Game g) {
         super(g, "demo");
     }
@@ -51,11 +62,12 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
-        // inventory
+        // inventory selector states
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selector", 5 * 16, 3 * 16, 17, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
         // inventory objects item.
         ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
+        // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new ScoreObject
@@ -87,6 +99,7 @@ public class DemoScene extends AbstractScene {
                 .add(new PlayerActionBehavior());
         add(player);
 
+        // Define the camera following the player object.
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
         Camera camera = new Camera("cam01")
                 .setTarget(player)
@@ -97,39 +110,49 @@ public class DemoScene extends AbstractScene {
         // Add enemies(enemy_99)
         generateEnemies(10);
 
-        GameObject bckG = new GameObject("background", 0, 0)
-                .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
-                .setType(GameObject.GOType.IMAGE)
-                .setLayer(100)
-                .setPriority(100);
-        add(bckG);
+
+        /**
+         * This is commented only for easiest development purpose, must be uncommented.
+         * ---
+         * // add a background image
+         * GameObject bckG = new GameObject("background", Vector2d.ZERO)
+         *   .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
+         *   .setType(GameObject.GOType.IMAGE)
+         *   .setLayer(100)
+         *   .setPriority(100);
+         * add(bckG);
+         * ---
+         */
 
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4).setScore(score).relativeToCamera(true)
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", new Vector2d(10, 4)).setScore(score).relativeToCamera(true)
                 .setLayer(1).setColor(Color.WHITE).setPriority(10);
         add(scoreTO);
 
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4).setLive(life).relativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).relativeToCamera(true);
         add(lifeTO);
 
-        BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
-        GameObject key = new GameObject("key", new Vector2d(0, 0))
-                .setImage(keyImg)
-                .addAttribute("inventory", keyImg);
-
+        // prepare the inventory item image
+        BufferedImage keyItemImg = ResourceManager.getImage("images/tiles01.png:key");
+        // create the Key Item object
+        GameObject keyItem = new GameObject("key", new Vector2d(0, 0))
+                .setImage(keyItemImg)
+                .addAttribute("inventory", keyItemImg);
+        // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
                 .setNbPlace(4)
                 .setSelectedIndex(1)
                 .relativeToCamera(true)
                 .add(new InventorySelectorBehavior());
-
         // add a first object (a key !)
-        inventory.add(key);
+        inventory.add(keyItem);
         add(inventory);
 
+        // shuffle `enemy_*`'s object's position and acceleration
         randomizeFilteredGameObject("enemy_");
 
+        // Add the Debug switcher capability to this scene
         addBehavior(new DebugSwitcherBehavior());
 
     }
