@@ -80,3 +80,7 @@ This sample demo will show :
 2. the `ScoreObject`, displaying score (sic),
 3. the `LifeObject` showing the remaining number of life,
 4. the `InventoryObject`, showing a qick inventory to select an available item.
+
+Have Fun !
+
+McG.
