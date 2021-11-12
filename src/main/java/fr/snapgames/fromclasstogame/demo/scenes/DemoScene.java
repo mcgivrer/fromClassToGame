@@ -100,7 +100,8 @@ public class DemoScene extends AbstractScene {
                 .addAttribute("jumpAccel", -20.0)
                 .addAttribute("maxHorizontalVelocity", 20.0)
                 .addAttribute("maxVerticalVelocity", 30.0)
-                .add(new PlayerActionBehavior());
+                .add(new PlayerActionBehavior())
+                .setDebug(3);
         add(player);
 
         // Define the camera following the player object.
@@ -115,18 +116,13 @@ public class DemoScene extends AbstractScene {
         generateEnemies(10);
 
 
-        /**
-         * This is commented only for easiest development purpose, must be uncommented.
-         * ---
-         * // add a background image
-         * GameObject bckG = new GameObject("background", Vector2d.ZERO)
-         *   .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
-         *   .setType(GameObject.GOType.IMAGE)
-         *   .setLayer(100)
-         *   .setPriority(100);
-         * add(bckG);
-         * ---
-         */
+        // add a background image
+        GameObject bckG = new GameObject("background", Vector2d.ZERO)
+                .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
+                .setType(GameObject.GOType.IMAGE)
+                .setLayer(100)
+                .setPriority(100);
+        add(bckG);
 
         // add a ParticleSystem
         ParticleSystem ps = new ParticleSystem("pstest", new Vector2d(160, 160)).create(100);
