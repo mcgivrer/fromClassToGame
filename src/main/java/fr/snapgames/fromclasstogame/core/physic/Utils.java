@@ -12,8 +12,10 @@ public class Utils {
 
     public static Vector2d add(Vector2d p1, Vector2d p2) {
         Vector2d r = new Vector2d();
-        r.x = p1.x + p2.x;
-        r.y = p1.y + p2.y;
+        if (p1 != null & p2 != null) {
+            r.x = p1.x + p2.x;
+            r.y = p1.y + p2.y;
+        }
         return r;
     }
 }
