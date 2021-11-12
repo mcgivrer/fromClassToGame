@@ -1,10 +1,13 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.BasicParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
@@ -75,6 +78,7 @@ public class DemoScene extends AbstractScene {
         g.getRender().addRenderHelper(new TextValueRenderHelper());
         g.getRender().addRenderHelper(new LifeRenderHelper());
         g.getRender().addRenderHelper(new InventoryRenderHelper());
+        g.getRender().addRenderHelper(new ParticleSystemRenderHelper());
     }
 
     @Override
@@ -123,6 +127,11 @@ public class DemoScene extends AbstractScene {
          * add(bckG);
          * ---
          */
+
+        // add a ParticleSystem
+        ParticleSystem ps = new ParticleSystem("pstest", new Vector2d(160, 160)).create(100);
+        ps.addParticleBehavior(new BasicParticleBehavior());
+        add(ps);
 
         // add score display.
         ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", new Vector2d(10, 4)).setScore(score).relativeToCamera(true)
