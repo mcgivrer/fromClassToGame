@@ -1,0 +1,14 @@
+---
+title: From a Class to Game
+author: Frédéric Delorme
+date: 2021-08-01
+keywords: java, 2d, platform, pattern
+category: gamedev, java, 2D, platform
+description: This small how-to is an introduction to java 2D game development, guiding java developer to abc patterns used for beginners. Starting with some simple classes, Chapter to chapter will be brings new concepts and new way to manager things in a game.
+lang: en-US
+cover-image: src/docs/images/covers/en-front.jpg
+css: src/docs/assets/ebook.css
+header: How-To Java 2D Platform - 2020
+footer: fredericDOTdelormeATgmailDOTcom [p]
+---
+

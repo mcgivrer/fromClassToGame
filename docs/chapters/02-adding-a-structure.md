@@ -1,15 +1,6 @@
----
-title: From a Class to Game 
-chapter: 02 - Adding a Structure 
-author: Frédéric Delorme 
-description: Moving from a simple class to a game structure. 
-created: 2021-08-01 
-tags: gamedev, structure, game, loop
----
+# Adding a Structure
 
-## Adding a Structure
-
-### Core Game methods
+## Core Game methods
 
 So now we had a basic class for our game, we need to ass some game structure.
 
@@ -42,14 +33,14 @@ This main method will delegate all the sub processing to other methods:
 
 And finally the unforgettable `main(argv)` to create and call our `Game` object.
 
-### The LOOP
+## The LOOP
 
 The `loop` method is where player input will be processed and where the game and all its internal objects and entities
 will be updated accordingly, and finally all those objects will be displayed, if necessary.
 
 ```java
 public class Game {
-    
+
     // the flag requesting the game to exit.
     private boolean exit = false;
 
@@ -98,12 +89,12 @@ So let's add a JFrame to create a window and capture keyboard events:
 
 ```java
 public class Game {
-    
+
     // the flag requesting the game to exit.
     private boolean exit = false;
     // the game window
     private JFrame frame;
-    
+
 
     private void initialize(String[] argv) {
 
@@ -127,24 +118,25 @@ public class Game {
 }
 ```
 
-#### input
+### input
 
 We will need to capture the keyboard events to be able at least to interact with the player.
 
-#### update
+### update
 
 just update the object to be displayed:
 
-#### draw
+### draw
 
 and finally draw things.
 
-### A bit of History
+## A bit of History
 
 Why the game loop exists ? This is a very good question and the reason why is a historically based answer. Everything
 starts from the first ever video game: PONG.
 
-![This is the original PONG video game](https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Pong.svg/1024px-Pong.svg.png)
+![figure large](https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Pong.svg/1024px-Pong.svg.png "This is the original PONG video game")
+
 _The original Pong video game from wikipedia_
 
 At this very beginning time, the processor to execute tasks is a very a slow on, almost some hundreds of Khz as CPU
@@ -160,7 +152,8 @@ the anode (the screen grid) to excite fluorescent layer in the intern face of th
 And swiping the all surface of the screen has a time cost: to display 25 frame per seconds, we need 16ms to swipe a
 frame.
 
-![The CRT swiping loop](../images/crt.jpg)
+![figure large](../images/crt.jpg "The CRT swiping loop")
+
 _The CRT Tube is nothing more than a big bubble light. (3) the cathode emits ions (1) and (2) are anodes, deflecting ion ray to screen, lighting a fluorescent dot._
 
 This is the available time for the CPU to prepare next image !
@@ -169,13 +162,15 @@ So capturing input, moving things and displaying things must be done in 16ms. An
 
 So the main process is a LOOP. that's why we talk about a Game Loop:
 
-![The Famous Game Loop](../images/game-loop.jpg "inspired from Robert Nystrom 'Game programming Patterns'")
+![figure large](../images/game-loop.jpg "THe traditional and famous `Game Loop` inspired from Robert Nystrom 'Game programming Patterns'")
+
 _The method to keep a fixed frame rate_
 
 There is also some advanced version of the Game Loop, where multiple update can be performed between each rendering
 phase, the timer is around the update methods only:
 
-![The advanced method to keep a fixed update rate](../images/game-loop-fixed.jpg "inspired from Robert Nystrom 'Game programming Patterns'")
+![figure large](../images/game-loop-fixed.jpg "The advanced method to keep a fixed update rate inspired from Robert Nystrom 'Game programming Patterns'")
+
 _The advanced method to keep a fixed update rate_
 
 I can only invite you to read the fantastic book from Robert Nystrom for details about

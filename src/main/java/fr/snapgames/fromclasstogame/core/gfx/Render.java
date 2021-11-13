@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Render extends System {
 
@@ -34,7 +35,7 @@ public class Render extends System {
 
     private Camera camera;
 
-    private List<GameObject> objectsRelativeToCamera = new ArrayList<>();
+    private List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
     private Map<String, RenderHelper> renderHelpers = new HashMap<>();
     private Dimension viewport;
     private Color debugColor = Color.ORANGE;
@@ -122,7 +123,7 @@ public class Render extends System {
         if (!listObjects.contains(go)) {
             listObjects.add(go);
             listObjects.sort((a, b) -> {
-                return a.layer < b.layer ? -1 : a.priority < b.priority ? -1 : 1;
+                return a.layer < b.layer ? 1 : a.priority < b.priority ? 1 : -1;
             });
         }
     }

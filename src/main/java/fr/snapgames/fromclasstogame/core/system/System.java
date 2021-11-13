@@ -6,6 +6,7 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Default System.
@@ -23,7 +24,7 @@ public abstract class System {
 
     protected Game game;
 
-    protected List<GameObject> objects = new ArrayList<>();
+    protected List<GameObject> objects = new CopyOnWriteArrayList<>();
 
     public System(Game g) {
         this.game = g;
@@ -39,7 +40,7 @@ public abstract class System {
         return true;
     }
 
-    public void add(GameObject o) {
+    public synchronized void add(GameObject o) {
         if (!objects.contains(o)) {
             objects.add(o);
         }
@@ -49,9 +50,13 @@ public abstract class System {
         objects.clear();
     }
 
-    public void remove(GameObject o) {
+    public synchronized void remove(GameObject o) {
         if (objects.contains(o)) {
             objects.remove(o);
         }
+    }
+
+    public synchronized List<GameObject> getObjects() {
+        return objects;
     }
 }

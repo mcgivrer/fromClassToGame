@@ -1,14 +1,16 @@
-package features;
+package features.demo;
+
+import java.awt.image.BufferedImage;
+
+import org.junit.Assert;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.junit.Assert;
-
-import java.awt.image.BufferedImage;
 
 public class InventoryStepDefs {
 
@@ -18,7 +20,7 @@ public class InventoryStepDefs {
     @Given("an InventoryObject {string} is created")
     public void anInventoryObjectIsCreated(String name) {
         testScene = new TestScene(null);
-        inventory = new InventoryObject(name, 0, 0);
+        inventory = new InventoryObject(name, Vector2d.ZERO);
         testScene.add(inventory);
     }
 
@@ -44,7 +46,9 @@ public class InventoryStepDefs {
     @Then("the InventoryObject {string} has {int} Item.")
     public void theInventoryObjectHasOneItem(String inventoryObjectName, int nbItems) {
         InventoryObject invt = (InventoryObject) testScene.getGameObject(inventoryObjectName);
-        Assert.assertEquals(String.format("The InventoryObject %s does not have the right number of items", inventoryObjectName), nbItems, invt.getItems().size());
+        Assert.assertEquals(
+                String.format("The InventoryObject %s does not have the right number of items", inventoryObjectName),
+                nbItems, invt.getItems().size());
     }
 
 }

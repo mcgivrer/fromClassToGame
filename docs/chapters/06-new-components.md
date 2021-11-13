@@ -1,17 +1,8 @@
----
-title: From a Class to Game
-chapter: 06 - New Components
-author: Frédéric Delorme
-description: Adding some new components to the game framework.
-created: 2021-08-01
-tags: gamedev, text, resources
----
+# New Components
 
-## New Components
+## A Text at display
 
-### A Text at display
-
-#### TextObject class
+### TextObject class
 
 The `TextObject` will be used to display text on screen. Starting from a standard `GameObject`, we just have to add 2 more properties:
 
@@ -40,7 +31,7 @@ public class TextObect extends GameObject {
 }
 ```
 
-#### Render adaptation
+### Render adaptation
 
 The `Render.draw(Graphics,GameObject)` must be modified to let it render the `TextObject`. In a first run, we will use a simple if to capture the nature of the object to be rendered:
 
@@ -62,7 +53,7 @@ The `Render.draw(Graphics,GameObject)` must be modified to let it render the `Te
     }
 ```
 
-#### How to use it ?
+## How to use it ?
 
 You just have to create a Text Object and add is to the Game objects list:
 

@@ -28,6 +28,9 @@ public class GameObject implements Entity {
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
 
+    private List<String> debugData = new ArrayList<>();
+    private int debug;
+
     public double width;
     public double height;
 
@@ -71,6 +74,17 @@ public class GameObject implements Entity {
     }
 
     public void update(long dt) {
+    }
+
+    public List<String> getDebugInfo() {
+        List<String> debugInfo = new ArrayList<>();
+        debugInfo.add("pos:" + position.toString());
+        debugInfo.add("vel:" + velocity.toString());
+        debugInfo.add("acc:" + acceleration.toString());
+        debugInfo.add("friction:" + material.dynFriction);
+        debugInfo.add("contact:" + getAttribute("touching"));
+        debugInfo.add("jumping:" + getAttribute("jumping"));
+        return debugInfo;
     }
 
     public GameObject setType(GOType type) {
@@ -141,6 +155,15 @@ public class GameObject implements Entity {
         return this;
     }
 
+    public GameObject setDebug(int d) {
+        this.debug = d;
+        return this;
+    }
+
+    public int getDebug() {
+        return this.debug;
+    }
+
     public GameObject add(Behavior b) {
         if (!behaviors.contains(b)) {
             behaviors.add(b);
@@ -160,4 +183,9 @@ public class GameObject implements Entity {
     public Map<String, Object> getAttributes() {
         return attributes;
     }
+
+    public static int getIndex() {
+        return index;
+    }
+
 }

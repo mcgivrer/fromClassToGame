@@ -4,20 +4,24 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.system.System;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public class PhysicEngine extends System {
+    private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
 
-    public World world;
-
-    @Override
-    public String getName() {
-        return "PhysicEngine";
-    }
+    private World world;
 
     public PhysicEngine(Game g) {
         super(g);
+    }
+
+    @Override
+    public String getName() {
+        return PhysicEngine.class.getName();
     }
 
     @Override
@@ -34,28 +38,56 @@ public class PhysicEngine extends System {
     }
 
     public void update(long dt) {
-        for (GameObject go : objects) {
-            update(go, dt);
+        try {
+            for (GameObject go : getObjects()) {
+                update(go, dt);
+            }
+        } catch (ConcurrentModificationException e) {
+            logger.error("Unable to update the GameObjects");
         }
     }
 
     private void update(GameObject go, long dt) {
         double dtCorrected = dt * 0.01;
-        if (!go.relativeToCamera) {
+        if (go != null && !go.relativeToCamera) {
 
+            boolean touching = go.getAttribute("touching") != null ? (boolean) go.getAttribute("touching") : false;
             // Acceleration is not already used in velocity & position computation
             Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
-            go.acceleration = go.acceleration.add(gravity.multiply(-1)).add(new Vector2d(0, go.mass));
+            go.acceleration = go.acceleration.add(gravity).add(new Vector2d(0, go.mass));
+
+            // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and `maxVerticalAcceleration`
+            if (go.getAttributes().containsKey("maxHorizontalAcceleration")) {
+                double ax = (Double) go.getAttribute("maxHorizontalAcceleration");
+                go.acceleration.x = Math.abs(go.acceleration.x) > ax ? Math.signum(go.acceleration.x) * ax : go.acceleration.x;
+            }
+            if (go.getAttributes().containsKey("maxVerticalAcceleration")) {
+                double ay = (Double) go.getAttribute("maxVerticalAcceleration");
+                go.acceleration.y = Math.abs(go.acceleration.y) > ay ? Math.signum(go.acceleration.y) * ay : go.acceleration.y;
+            }
 
             // Compute velocity
             double friction = go.material != null ? go.material.staticFriction : 1;
-            double dynFriction = go.material != null ? go.material.dynFriction : 1;
-            go.velocity = go.velocity.add(go.acceleration.multiply(dtCorrected).multiply(friction).multiply(dynFriction));
+            go.velocity = go.velocity.add(go.acceleration.multiply(dtCorrected)).multiply(friction);
 
+            if (touching && Math.abs(go.acceleration.x) < 0.5 && Math.abs(go.acceleration.y) < 0.5) {
+                double dynFriction = dynFriction = go.material != null ? go.material.dynFriction : 1;
+                go.velocity = go.velocity.multiply(dynFriction);
+            }
+
+            // limit velocity with GameObject threshold `maxHorizontalVelocity` and `maxVerticalVelocity`
+            if (go.getAttributes().containsKey("maxHorizontalVelocity")) {
+                double dx = (Double) go.getAttribute("maxHorizontalVelocity");
+                go.velocity.x = Math.abs(go.velocity.x) > dx ? Math.signum(go.velocity.x) * dx : go.velocity.x;
+            }
+            if (go.getAttributes().containsKey("maxVerticalVelocity")) {
+                double dy = (Double) go.getAttribute("maxVerticalVelocity");
+                go.velocity.y = Math.abs(go.velocity.y) > dy ? Math.signum(go.velocity.y) * dy : go.velocity.y;
+            }
             // Compute position
             go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
             go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
-           
+
             // test World space constrained
             verifyGameConstraint(go);
 
@@ -76,26 +108,29 @@ public class PhysicEngine extends System {
 
     private void verifyGameConstraint(GameObject go) {
         double bounciness = go.material != null ? go.material.bounciness : 0.0;
+        go.addAttribute("touching", false);
         if (go.position.x < 0) {
             go.position.x = 0;
+            go.velocity.x = -go.velocity.x * bounciness;
+        }
+        if (go.position.x + go.width > world.width) {
+            go.position.x = world.width - go.width;
             go.velocity.x = -go.velocity.x * bounciness;
         }
         if (go.position.y < 0) {
             go.position.y = 0;
             go.velocity.y = -go.velocity.y * bounciness;
         }
-        if (go.position.x + go.width > world.width) {
-            go.position.x = world.width - go.width;
-            go.velocity.x = -go.velocity.x * bounciness;
-        }
         if (go.position.y + go.height > world.height) {
             go.position.y = world.height - go.height;
             go.velocity.y = -go.velocity.y * bounciness;
         }
-    }
 
-    public void addToPipeline(GameObject go) {
-        this.objects.add(go);
+        //Touching ?
+        if (go.position.y + go.height >= world.height) {
+            go.addAttribute("touching", true);
+            go.addAttribute("jumping", false);
+        }
     }
 
     public World getWorld() {

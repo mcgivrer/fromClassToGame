@@ -1,10 +1,10 @@
 package fr.snapgames.fromclasstogame.demo.entity;
 
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 public class InventoryObject extends GameObject {
 
@@ -13,8 +13,14 @@ public class InventoryObject extends GameObject {
 
     List<GameObject> items = new ArrayList<>();
 
+    @Deprecated
     public InventoryObject(String name, double x, double y) {
         super(name, new Vector2d(x, y));
+
+    }
+
+    public InventoryObject(String name, Vector2d position) {
+        super(name, position);
 
     }
 

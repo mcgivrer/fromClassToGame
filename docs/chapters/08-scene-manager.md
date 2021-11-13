@@ -1,13 +1,4 @@
----
-title: From a Class to Game
-chapter: 08 - Scene Manager
-author: Frédéric Delorme
-description: A dedicated service to Scenes management.
-created: 2021-08-01
-tags: gamedev, scene
----
-
-## Scene Manager
+# Scene Manager
 
 Add Scene container to describe a Game state.
 
@@ -16,7 +7,7 @@ A Scene can be a Menu Screen, a Map screen, the Play screen or any specific game
 - Add a Scene component
 - Add SceneManager to manage switch.
 
-### A Scene
+## A Scene
 
 A scene will contain its own `objectList` of `GameObject`, a name, an `update()` method, an `input()` method.
 
@@ -24,7 +15,7 @@ It will have an `initialize()` method called just after instantiation, an a `cre
 
 A `dispose()` method will be called at end of game juste before closing.
 
-### SceneManager
+## SceneManager
 
 The `SceneManager` will support all `Scene`, and can switch between each one.
 
