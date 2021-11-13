@@ -89,45 +89,46 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Given("I add a GameObject named {string} at \\({double},{double})")
     public void givenIAddAGameObjectNamedStringAtIntInt(String name, Double x, Double y) {
-        GameObject go = new GameObject(name, new Vector2d(x, y));
-        Scene scene = game.getSceneManager().getCurrent();
+        GameObject go = new GameObject(name, new Vector2d(x,y));
+        Scene scene = ((SceneManager)SystemManager.get(SceneManager.class)).getCurrent();
         scene.add(go);
     }
 
     @Given("the {string} size is {int} x {int}")
     public void givenTheStringSizeIsIntXInt(String name, int w, int h) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = ((SceneManager)SystemManager.get(SceneManager.class)).getCurrent();
+
         GameObject go = scene.getGameObject(name);
         go.setSize(w, h);
     }
 
     @Then("the Game has {int} GameObject at window center.")
     public void thenTheGameHasIntGameObjectAtWindowCenter(int i) {
-        SceneManager sm = (SceneManager) SystemManager.get(SceneManager.class);
+        Scene scene = ((SceneManager)SystemManager.get(SceneManager.class)).getCurrent();
         Render render = (Render) SystemManager.get(Render.class);
-        GameObject go = sm.getCurrent().getObjectsList().get(0);
+        GameObject go = scene.getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
-                sm.getCurrent().getObjectsList().size());
+                scene.getObjectsList().size());
         assertEquals("the GameObject is not horizontally centered", render.getBuffer().getWidth() / 2, go.position.x, 0.0);
         assertEquals("the GameObject is not vertically centered", render.getBuffer().getHeight() / 2, go.position.y, 0.0);
     }
 
     @Then("the Game has {int} GameObject\\(s).")
     public void theGameHasGameObjectS(int nbObjects) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = ((SceneManager)SystemManager.get(SceneManager.class)).getCurrent();
         assertEquals("The Scene has not the right number of objects", nbObjects, scene.getObjectsList().size());
     }
 
     @And("the {string} GameObject velocity is set to \\({double},{double})")
     public void theGameObjectVelocityIsSetTo(String name, Double dx, Double dy) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = ((SceneManager)SystemManager.get(SceneManager.class)).getCurrent();
         GameObject go = scene.getGameObject(name);
         go.setVelocity(new Vector2d(dx, dy));
     }
 
     @And("the {string} GameObject acceleration is set to \\({double},{double})")
     public void theGameObjectAccelerationIsSetTo(String name, Double dx, Double dy) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = ((SceneManager)SystemManager.get(SceneManager.class)).getCurrent();
         GameObject go = scene.getGameObject(name);
         go.setAcceleration(new Vector2d(dx, dy));
     }
@@ -142,7 +143,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @And("the {string} GameObject is now at \\({double},{double})")
     public void theGameObjectIsNowAt(String name, Double x, Double y) {
-        Scene scene = game.getSceneManager().getCurrent();
+        Scene scene = ((SceneManager)SystemManager.get(SceneManager.class)).getCurrent();
         GameObject go = scene.getGameObject(name);
         assertEquals("the GameObject " + name + " is not horizontally centered", x, Math.ceil(go.position.x), 1.0);
         assertEquals("the GameObject " + name + " is not vertically centered", y, Math.ceil(go.position.y), 1.0);

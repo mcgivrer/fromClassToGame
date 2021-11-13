@@ -1,4 +1,4 @@
-## Inventory
+# Inventory
 
 The inventory feature introduce a new dependency inside the GameObject itself.
 
@@ -15,7 +15,7 @@ Gray ones are the available ones, and gold one is the active one.
 2. The current active item is highlighted with a gold squared selector,
 3. other placeholder are free space for future collectible items.
 
-### The Inventory object
+## The Inventory object
 
 `InventoryObject` class is a list of empty slots, where some object can be stored. The dynamic maximum number of objects to be stack can evolve during the play.
 
@@ -74,7 +74,7 @@ You can notice the `InventorySelectorBehavior` added to the `InventoryObject` to
 
 It would be a good practice to add this behavior in the `InventoryObject` constructor, but the `Behavior` would be invisible from the developer point of view.
 
-### How to display the Inventory ?
+## How to display the Inventory ?
 
 The drawing operations are performed through a Dedicted RenderHelper implementation.
 
@@ -125,7 +125,7 @@ public void draw(Graphics2D g, Object o) {
 }
 ```
 
-### Selecting an item
+## Selecting an item
 
 As defined inthe `InventoryObject` chapter, the user(player) can manage its inventiry by pressing one of the keys between 1 to 4 (the maximmum would be 9) key touch in our `DemoScene` (see `setNbplace(4)`).
 

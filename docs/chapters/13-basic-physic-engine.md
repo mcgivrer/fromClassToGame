@@ -1,13 +1,4 @@
----
-title: From a Class to Game
-chapter: 13 - A Basic Physic Engine
-author: Frédéric Delorme
-description: Adding a Camera to the scene will allow you to move in as you want, and follow a target.
-created: 2021-08-01
-tags: gamedev, camera, target
----
-
-## A Basic Physic Engine
+# A Basic Physic Engine
 
 The BPE[^1] is very basic one using only position and speed to move object. The mechanic formula we will use in the computation of object moves will take only in account the velocity and th e current positio nof an oibject to compute its own next position.
 
@@ -59,7 +50,7 @@ the `g` gravity factor is a force.
 
 In a next chapter we will enhanced this physic and mechnanic computation engine with a new bundle of forces that can be added at any time to a [`GameObject`](../../../src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java "go a see code for the GameObject class").
 
-### Some C0D3 ?
+## Some C0D3 ?
 
 The implementation of such engine can be dne throught mulitple solution. We will use one that is very simple.
 
@@ -71,7 +62,7 @@ This class will provide all information about physc and mechanic characteristics
 
 first thing first, the `World` object.
 
-### World
+## World
 
 the `World` class will provide some basic information about the world our object will moved on: `gravity` is our first one.
 
@@ -82,7 +73,7 @@ public class World{
 }
 ```
 
-### Material
+## Material
 
 The Material Object will contains, as seen before, the all attributes needed by our engine to compute next object position.
 
@@ -136,7 +127,7 @@ public class PhysicEngine {
 }
 ```
 
-### Enhancing the simulation
+## Enhancing the simulation
 
 To get a better simulation, we will need to distinguish 2 kind of friction:
 
@@ -162,7 +153,7 @@ public class Material{
 
 and the World update method formula will be updated with that:
 
-#### PhysicEngine update
+### PhysicEngine update
 
 So now, the `PhysicEngine#update(double)` must be updated was following:
 
@@ -183,7 +174,7 @@ public class PhysicEngine {
 }
 ```
 
-### The Default material
+## The Default material
 
 Materials are so difficult to create, we need some references. According to some web reference, we can find some and use
 them as is.

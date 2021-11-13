@@ -1,8 +1,11 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -103,11 +105,9 @@ public class SceneManager extends System {
                 s = instantiateScene(name);
             }
             if (s != null) {
-                this.current = s;
                 s.activate();
+                setCurrent(s);
             }
-
-            setCurrent(s);
         }
 
     }
@@ -123,13 +123,6 @@ public class SceneManager extends System {
             logger.error("Unable to instantiate class {}", name);
         }
         return s;
-    }
-
-    private void setCurrent(Scene s) {
-        if (s != null) {
-            this.current = s;
-            s.activate();
-        }
     }
 
     /**
@@ -164,6 +157,42 @@ public class SceneManager extends System {
             activate();
         }
         return this.current;
+    }
+
+    private void setCurrent(Scene s) {
+        if (s != null) {
+            this.current = s;
+            s.activate();
+        }
+    }
+
+    public void input(ActionHandler ah) {
+        getCurrent().input(ah);
+        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
+            b.onInput(getCurrent(), ah);
+        }
+    }
+
+    public void render(Render r) {
+        getCurrent().render(r);
+        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
+            b.onRender(getCurrent(), r);
+        }
+
+    }
+
+    public void update(long dt) {
+        getCurrent().update(dt);
+        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
+            b.onUpdate(getCurrent(), dt);
+        }
+    }
+
+    public void onAction(ActionHandler.ACTIONS action) {
+        getCurrent().onAction(action);
+        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
+            b.onAction(getCurrent(), action);
+        }
     }
 
     public Collection<?> getScenes() {

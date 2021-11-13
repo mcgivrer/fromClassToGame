@@ -1,21 +1,22 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 
 import java.util.List;
-import java.awt.event.KeyListener;
 
 /**
  * The {@link Scene} interface to create a new game state.
- * 
+ *
  * @author Frédéric Delorme
  * @since 2021-08-02
  */
-public interface Scene extends KeyListener{
+public interface Scene extends ActionHandler.ActionListener {
 
     String getName();
 
@@ -37,11 +38,17 @@ public interface Scene extends KeyListener{
 
     void update(long dt);
 
-    void input(InputHandler inputHandler);
+    void input(ActionHandler actionHandler);
 
-    void render();
+    void onAction(ActionHandler.ACTIONS action);
+
+    void render(Render render);
 
     void dispose();
 
     Camera getCamera(String cameraName);
+
+    List<Behavior<Scene>> getBehaviors();
+
+    Game getGame();
 }

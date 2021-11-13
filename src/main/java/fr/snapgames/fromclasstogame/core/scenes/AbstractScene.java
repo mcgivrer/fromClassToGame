@@ -1,26 +1,27 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstractScene implements Scene {
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
 
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
+    protected List<Behavior<Scene>> behaviors = new ArrayList<>();
 
     protected Map<String, Camera> cameras = new HashMap<>();
 
@@ -74,6 +75,26 @@ public abstract class AbstractScene implements Scene {
         }
     }
 
+    public void addBehavior(Behavior<Scene> b) {
+        behaviors.add(b);
+    }
+
+    public void remove(GameObject go) {
+        if (go.getClass().getName().equals(Camera.class.getName())) {
+            if (cameras.containsKey(go.name)) {
+                cameras.remove(go.name);
+                game.getRender().setCamera(null);
+            }
+            if (activeCamera.equals(go)) {
+                activeCamera = null;
+            }
+        } else if (objects.containsKey(go.name)) {
+            objects.remove(go.name);
+            objectsList.remove(go);
+            SystemManager.remove(go);
+        }
+    }
+
     public GameObject getGameObject(String name) {
         return objects.get(name);
     }
@@ -111,11 +132,7 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_D:
-                this.debug = this.debug < 5 ? this.debug + 1 : 0;
-                game.getWindow().setDebug(debug);
-                break;
-            case KeyEvent.VK_R:
+            case KeyEvent.VK_Z:
                 activate();
                 break;
             default:
@@ -127,19 +144,34 @@ public abstract class AbstractScene implements Scene {
         return activeCamera;
     }
 
-    public Camera getCamera(String cameraName) {
-        return cameras.get(cameraName);
-    }
-
     public void setActiveCamera(Camera c) {
         activeCamera = cameras.get(c.name);
     }
 
-    public void input(InputHandler ih) {
+    public Camera getCamera(String cameraName) {
+        return cameras.get(cameraName);
+    }
+
+    public void input(ActionHandler ah) {
+        try {
+            objects.forEach((k, o) -> {
+                if (!o.behaviors.isEmpty()) {
+                    o.behaviors.forEach(b -> {
+                        b.onInput(o, ah);
+                    });
+                }
+            });
+        } catch (ConcurrentModificationException e) {
+            logger.error("Unable to handle input in scene '" + sceneName + "'.");
+        }
+    }
+
+    public void onAction(ActionHandler.ACTIONS a) {
+        logger.debug("Action:" + a);
         objects.forEach((k, o) -> {
             if (!o.behaviors.isEmpty()) {
                 o.behaviors.forEach(b -> {
-                    b.input(o, ih);
+                    b.onAction(o, a);
                 });
             }
         });
@@ -149,4 +181,17 @@ public abstract class AbstractScene implements Scene {
         return sceneName;
     }
 
+    public Game getGame() {
+        return game;
+    }
+
+
+    public void render(Render r) {
+
+    }
+
+
+    public List<Behavior<Scene>> getBehaviors() {
+        return behaviors;
+    }
 }

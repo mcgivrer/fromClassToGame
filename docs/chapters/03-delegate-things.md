@@ -1,13 +1,4 @@
----
-title: From a Class to Game
-chapter: 03 - Delegate things
-author: Frédéric Delorme
-description: Addng some specialized service into the game.
-created: 2021-08-01
-tags: gamedev, structure, input, window, render
----
-
-## Delegating things
+# Delegating things
 
 If we want to produce the game we will be able to code all thing into one class, but we will quickly see that the class will grow very fast according to new things we will add, as enemies, decors, player, and so on. Too much code in one place is a very bad practice.
 
@@ -18,7 +9,7 @@ The good one consists in creating multiple classes interacting, and having a ded
 - `Window` will support display and adaptation to the host machine,
 - `GameObject` will be the main entity for our game.
 
-### Input Handler
+## Input Handler
 
 To be able for the user/player to interact with the game, we will add some 'connection' between the game window and our `Game` class.
 the Java world request to implements some specific method in our classes to intercept Keyboard events: the `KeyListener` interface.
@@ -111,7 +102,7 @@ And from the `Game#initialize()` method :
   }
 ```
 
-### draw things
+## Draw things
 
 Like for managing input, we are going to create a class to delegate all drawing operation: the `Render` class.
 
@@ -141,7 +132,7 @@ So first we will need a class with an image buffer.
 
 So the class is in charge of creating and maintaining an internal draw buffer. The render() method will first clear this image buffer (with a black color), and will do more thing in the future chapters.
 
-### extending things
+## extending things
 
 To rise this simple Window, we are going to add some fancy features like:
 
@@ -150,7 +141,7 @@ To rise this simple Window, we are going to add some fancy features like:
 
 These 2 features are really easy to implement. The capture mode can be implemented using the ImageIO capabilities into the `Render` class, the mod switching will be managed into the `Window` class.
 
-#### Screen capture
+### Screen capture
 
 First of all, get the default path where to save screenshots.
 Then build the `screenshots` directory, and finally, copy the BufferedImage to a PNG file.
@@ -181,7 +172,7 @@ class Render {
 }
 ```
 
-#### Mode switching
+### Mode switching
 
 The window mode is the default JFrame behavior, so nothing to do with that, just use `JFrame#setVisible()` capability.
 
