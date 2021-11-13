@@ -1,20 +1,20 @@
 Feature: A Scene can have one or more camera
   A Scene support a list of Camera's with an active one.
 
-  Scenario: I can add Camera's to the Scene
+  Scenario: 01 - I can add Camera's to the Scene
     Given the Game is started with config "camera-1-scene"
     And I can activate the scene "testCamera"
     Then the SceneManager has 1 scene(s)
     And the camera "cam01" is declared.
     And the camera "cam02" is declared.
 
-  Scenario: The first added camera is the active one
+  Scenario: 02 - The first added camera is the active one
     Given the Game is started with config "camera-1-scene"
     And I can activate the scene "testCamera"
     Then the SceneManager has 1 scene(s)
     And the camera "cam01" is active.
 
-  Scenario: The camera is centering to its target
+  Scenario: 03 - The camera is centering to its target
     Given the Game is started with config "no-scene"
     And I add a Scene named "followingCamTest";
     And I add a GameObject named "target" at (100,100) sizing (10,10) to Scene "followingCamTest"

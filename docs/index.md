@@ -10,7 +10,7 @@ tags: gamedev, framework
 
 Starting with a very simple class, we will create a brand new Game, by adding some features, step by step.
 
-![Screenshot of the current dev](images/capture-001.png "A Simple screen shot of the current sample code")
+![Screenshot of the current dev](images/capture-004.png "A Simple screen shot of the current sample code")
 
 ## chapters
 
