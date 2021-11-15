@@ -1,21 +1,24 @@
 package fr.snapgames.fromclasstogame.demo.behaviors;
 
+import java.awt.event.KeyEvent;
+
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 
-import java.awt.event.KeyEvent;
-import java.util.Optional;
-
 /**
  * The {@link PlayerActionBehavior} requires some GameObject attributes:
  * <ul>
- *     <li><code>accelStep</code> the value for the acceleration factor to be applied by default in the object on any directional move</li>
- *     <li><code>jumpAccel</code> the vertical acceleration to be applied in case of jumping action</li>
- *     <li><code>jumping</code> a boolean flag storing the current jump action: true = jumping</li>
- *     <li><code>touching</code> a boolean flag storing the current contact action: true = contact</li>
+ * <li><code>accelStep</code> the value for the acceleration factor to be
+ * applied by default in the object on any directional move</li>
+ * <li><code>jumpAccel</code> the vertical acceleration to be applied in case of
+ * jumping action</li>
+ * <li><code>jumping</code> a boolean flag storing the current jump action: true
+ * = jumping</li>
+ * <li><code>touching</code> a boolean flag storing the current contact action:
+ * true = contact</li>
  * </ul>
  * <p>
  * Usage :
@@ -31,14 +34,12 @@ import java.util.Optional;
  */
 public class PlayerActionBehavior implements Behavior<GameObject> {
 
-
     private double accelStep;
     private double jumpAccel;
     private boolean jumping;
     private boolean touching;
     double accel = 0.0;
     private ActionHandler ah;
-
 
     public PlayerActionBehavior() {
         ah = (ActionHandler) SystemManager.get(ActionHandler.class);
@@ -78,21 +79,21 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
             accel = accelStep;
         }
         switch (action) {
-            case UP:
-                jumping = (boolean) go.getAttribute("jumping");
-                if (!jumping) {
-                    go.acceleration.y = jumpAccel * accel;
-                    go.addAttribute("jumping", true);
-                }
-                break;
-            case FIRE1:
-                go.acceleration.x = 0;
-                go.acceleration.y = 0;
-                go.velocity.x = 0;
-                go.velocity.y = 0;
-                break;
-            default:
-                break;
+        case UP:
+            jumping = (boolean) go.getAttribute("jumping");
+            if (!jumping) {
+                go.acceleration.y = jumpAccel * accel;
+                go.addAttribute("jumping", true);
+            }
+            break;
+        case FIRE1:
+            go.acceleration.x = 0;
+            go.acceleration.y = 0;
+            go.velocity.x = 0;
+            go.velocity.y = 0;
+            break;
+        default:
+            break;
         }
     }
 }
