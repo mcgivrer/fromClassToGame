@@ -96,19 +96,19 @@ public class Configuration {
                 "ss",
                 "scenes",
                 "Define the scene names and classes to initialize the game",
-                "game.setup.scenes",
+                "game.setup.scenes.list",
                 ""));
         cm.add(new StringArgParser("scene",
                 "sd",
                 "scene",
                 "Define the default scene to start with",
-                "game.setup.scene.default",
+                "game.setup.scenes.default",
                 ""));
         cm.add(new StringArgParser("config",
                 "c",
                 "config",
                 "set the path and file to be loaded for configuration",
-                null,
+                "game.setup.config.filename",
                 configurationPath
         ));
     }
