@@ -5,7 +5,7 @@ import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,44 +15,32 @@ import java.util.Map;
 public class GameObject implements Entity {
 
 
-    public enum GOType {
-        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
-    }
-
     private static int index = 0;
-
     public int id = ++index;
     public String name = "noname_" + id;
-
     public Vector2d position = new Vector2d();
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
-
-    private List<String> debugData = new ArrayList<>();
-    private int debug;
-
     public double width;
     public double height;
-
     public BoundingBox bbox;
-
     public GOType type = GOType.RECTANGLE;
-
     public Color color;
     public BufferedImage image;
-
     public int layer;
     public boolean relativeToCamera;
     public int priority;
-
     public double gravity = 0;
-
     public Material material;
     public double mass = 1;
 
+    public List<Behavior<GameObject>> behaviors = new ArrayList<>();
+
     protected Map<String, Object> attributes = new HashMap<>();
 
-    public List<Behavior> behaviors = new ArrayList<>();
+    private List<String> debugData = new ArrayList<>();
+
+    private int debug;
 
     public GameObject(String objectName) {
         this.name = objectName;
@@ -73,17 +61,22 @@ public class GameObject implements Entity {
         this.relativeToCamera = false;
     }
 
+    public static int getIndex() {
+        return index;
+    }
+
     public void update(long dt) {
     }
 
     public List<String> getDebugInfo() {
         List<String> debugInfo = new ArrayList<>();
+        debugInfo.add("n:" + name);
         debugInfo.add("pos:" + position.toString());
         debugInfo.add("vel:" + velocity.toString());
         debugInfo.add("acc:" + acceleration.toString());
         debugInfo.add("friction:" + material.dynFriction);
-        debugInfo.add("contact:" + getAttribute("touching"));
-        debugInfo.add("jumping:" + getAttribute("jumping"));
+        debugInfo.add("contact:" + getAttribute("touching",false));
+        debugInfo.add("jumping:" + getAttribute("jumping",false));
         return debugInfo;
     }
 
@@ -155,13 +148,13 @@ public class GameObject implements Entity {
         return this;
     }
 
+    public int getDebug() {
+        return this.debug;
+    }
+
     public GameObject setDebug(int d) {
         this.debug = d;
         return this;
-    }
-
-    public int getDebug() {
-        return this.debug;
     }
 
     public GameObject add(Behavior b) {
@@ -176,16 +169,20 @@ public class GameObject implements Entity {
         return this;
     }
 
-    public Object getAttribute(String name) {
-        return attributes.get(name);
+    public Object getAttribute(String name, Object defaultValue) {
+        if (attributes.containsKey(name)) {
+            return attributes.get(name);
+        } else {
+            return defaultValue;
+        }
     }
 
     public Map<String, Object> getAttributes() {
         return attributes;
     }
 
-    public static int getIndex() {
-        return index;
+    public enum GOType {
+        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
     }
 
 }
