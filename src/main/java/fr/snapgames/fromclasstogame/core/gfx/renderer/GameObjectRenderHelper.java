@@ -51,7 +51,8 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
                 setFontSize(g, 9);
                 double offsetY = -40;
                 double offsetX = go.width + 8;
-                fillRect(g, go.position, 100, 70, go.width + 1, offsetY - 12, debugBackgroundColor);
+                int height = (int)((go.getDebugInfo().size()+2)*9);
+                fillRect(g, go.position, 100, height, go.width + 1, offsetY - 12, debugBackgroundColor);
                 setColor(g, debugFrontColor);
                 int i = 0;
                 for (String line : go.getDebugInfo()) {

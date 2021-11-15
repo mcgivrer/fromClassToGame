@@ -45,5 +45,10 @@ public class ParticleSystem extends GameObject {
         return this;
     }
 
-
+    @Override
+    public List<String> getDebugInfo() {
+        List<String> ls = super.getDebugInfo();
+        ls.add(String.format("NbPtl:"+this.nbMaxParticle));
+        return ls;
+    }
 }

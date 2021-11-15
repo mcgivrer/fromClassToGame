@@ -22,7 +22,7 @@ public class Configuration {
     public int height = 200;
     public double scale = 1.0;
 
-    public Vector2d gravity = new Vector2d(0.0, 0.0);
+    public Vector2d gravity = new Vector2d(0.0, -0.981);
     public double FPS = 60;
     public String scenes = "";
     public String defaultScene = "";

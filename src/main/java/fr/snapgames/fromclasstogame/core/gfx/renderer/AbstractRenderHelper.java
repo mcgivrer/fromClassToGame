@@ -173,7 +173,11 @@ public class AbstractRenderHelper {
      */
     public void drawPoint(Graphics2D g, Vector2d position, double size, Color color) {
         g.setColor(color);
-        g.fillOval((int) position.x, (int) position.y, (int) size, (int) size);
+        g.fillOval(
+                (int) position.x,
+                (int) position.y,
+                (int) size,
+                (int) size);
     }
 
 }

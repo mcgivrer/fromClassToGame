@@ -66,9 +66,9 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
 
     @Override
     public void onAction(GameObject go, ActionHandler.ACTIONS action) {
-        accelStep = (Double) go.getAttribute("accelStep");
-        jumpAccel = (Double) go.getAttribute("jumpAccel");
-        jumping = (boolean) go.getAttribute("jumping");
+        accelStep = (Double) go.getAttribute("accelStep",0);
+        jumpAccel = (Double) go.getAttribute("jumpAccel",0);
+        jumping = (boolean) go.getAttribute("jumping",0);
 
         if (ah.getCtrl()) {
             accel = accelStep * 10;
@@ -79,7 +79,7 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
         }
         switch (action) {
             case UP:
-                jumping = (boolean) go.getAttribute("jumping");
+                jumping = (boolean) go.getAttribute("jumping",false);
                 if (!jumping) {
                     go.acceleration.y = jumpAccel * accel;
                     go.addAttribute("jumping", true);

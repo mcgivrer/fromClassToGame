@@ -10,13 +10,11 @@ import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
-import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
-import fr.snapgames.fromclasstogame.core.physic.Utils;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
-import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
+import fr.snapgames.fromclasstogame.demo.behaviors.CopyObjectPosition;
 import fr.snapgames.fromclasstogame.demo.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.PlayerActionBehavior;
@@ -94,14 +92,13 @@ public class DemoScene extends AbstractScene {
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                .setDebug(1)
+                .setDebug(0)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
                 .addAttribute("maxHorizontalVelocity", 20.0)
                 .addAttribute("maxVerticalVelocity", 30.0)
-                .add(new PlayerActionBehavior())
-                .setDebug(3);
+                .add(new PlayerActionBehavior());
         add(player);
 
         // Define the camera following the player object.
@@ -125,8 +122,12 @@ public class DemoScene extends AbstractScene {
         add(bckG);
 
         // add a ParticleSystem
-        ParticleSystem ps = new ParticleSystem("pstest", new Vector2d(160, 160)).create(100);
-        ps.addParticleBehavior(new BasicParticleBehavior());
+        ParticleSystem ps = new ParticleSystem("PS_test", player.position).create(100);
+        ps.addParticleBehavior(new BasicParticleBehavior(ps));
+        ps.add(new CopyObjectPosition(player));
+        ps.setLayer(1);
+        ps.setPriority(1);
+        ps.setDebug(3);
         add(ps);
 
         // add score display.
@@ -146,7 +147,7 @@ public class DemoScene extends AbstractScene {
         // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
-                .setNbPlace(4)
+                .setNbPlace(6)
                 .setSelectedIndex(1)
                 .relativeToCamera(true)
                 .add(new InventorySelectorBehavior());
@@ -187,6 +188,7 @@ public class DemoScene extends AbstractScene {
     @Override
     public void activate() {
         randomizeFilteredGameObject("enemy_");
+        randomizeFilteredGameObject("player");
         this.score = 0;
     }
 
@@ -267,8 +269,7 @@ public class DemoScene extends AbstractScene {
                 });
                 break;
             case KeyEvent.VK_G:
-                Vector2d g = game.getPhysicEngine().getWorld().gravity.multiply(-1);
-                game.getPhysicEngine().getWorld().setGravity(g);
+                ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.multiply(-1);
                 break;
             default:
                 break;
