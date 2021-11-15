@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +63,7 @@ public class Render extends System {
         if (camera != null) {
             g.translate(-camera.position.x, -camera.position.y);
         }
-        renderWorld(g, world);
+        drawGrid(g, world);
         for (GameObject go : objects) {
             draw(g, go);
         }
@@ -83,7 +82,7 @@ public class Render extends System {
         }
     }
 
-    private void renderWorld(Graphics2D g, World w) {
+    private void drawGrid(Graphics2D g, World w) {
         if (w != null && debug > 0) {
             g.setColor(Color.BLUE);
             for (int x = 0; x < w.width; x += 16) {

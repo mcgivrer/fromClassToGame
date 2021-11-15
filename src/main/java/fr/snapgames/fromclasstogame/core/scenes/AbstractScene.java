@@ -115,10 +115,6 @@ public abstract class AbstractScene implements Scene {
         return objectsList;
     }
 
-    public double rand(double min, double max) {
-        return (Math.random() * (max - min)) + min;
-    }
-
     @Override
     public void keyTyped(KeyEvent e) {
         // Can be implemented in the class extending this abstract one.

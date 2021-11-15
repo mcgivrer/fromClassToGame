@@ -1,14 +1,18 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.BasicParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
+import fr.snapgames.fromclasstogame.core.physic.Utils;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
@@ -30,6 +34,12 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+/**
+ * Demo Scene to test features during framework development.
+ *
+ * @author Frédéric Delorme
+ * @since 0.0.1
+ */
 public class DemoScene extends AbstractScene {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoScene.class);
@@ -37,6 +47,11 @@ public class DemoScene extends AbstractScene {
     private int score = 0;
     private int life = 5;
 
+    /**
+     * Create the Demo.
+     *
+     * @param g the parent Game object.
+     */
     public DemoScene(Game g) {
         super(g, "demo");
     }
@@ -50,11 +65,12 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
-        // inventory
+        // inventory selector states
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selector", 5 * 16, 3 * 16, 17, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
         // inventory objects item.
         ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
+        // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new ScoreObject
@@ -62,6 +78,7 @@ public class DemoScene extends AbstractScene {
         g.getRender().addRenderHelper(new TextValueRenderHelper());
         g.getRender().addRenderHelper(new LifeRenderHelper());
         g.getRender().addRenderHelper(new InventoryRenderHelper());
+        g.getRender().addRenderHelper(new ParticleSystemRenderHelper());
     }
 
     @Override
@@ -83,9 +100,11 @@ public class DemoScene extends AbstractScene {
                 .addAttribute("jumpAccel", -20.0)
                 .addAttribute("maxHorizontalVelocity", 20.0)
                 .addAttribute("maxVerticalVelocity", 30.0)
-                .add(new PlayerActionBehavior());
+                .add(new PlayerActionBehavior())
+                .setDebug(3);
         add(player);
 
+        // Define the camera following the player object.
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
         Camera camera = new Camera("cam01")
                 .setTarget(player)
@@ -96,39 +115,49 @@ public class DemoScene extends AbstractScene {
         // Add enemies(enemy_99)
         generateEnemies(10);
 
-        GameObject bckG = new GameObject("background", 0, 0)
+
+        // add a background image
+        GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
                 .setType(GameObject.GOType.IMAGE)
                 .setLayer(100)
                 .setPriority(100);
         add(bckG);
 
+        // add a ParticleSystem
+        ParticleSystem ps = new ParticleSystem("pstest", new Vector2d(160, 160)).create(100);
+        ps.addParticleBehavior(new BasicParticleBehavior());
+        add(ps);
+
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", 10, 4).setScore(score).relativeToCamera(true)
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", new Vector2d(10, 4)).setScore(score).relativeToCamera(true)
                 .setLayer(1).setColor(Color.WHITE).setPriority(10);
         add(scoreTO);
 
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", 280, 4).setLive(life).relativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).relativeToCamera(true);
         add(lifeTO);
 
-        BufferedImage keyImg = ResourceManager.getImage("images/tiles01.png:key");
-        GameObject key = new GameObject("key", new Vector2d(0, 0))
-                .setImage(keyImg)
-                .addAttribute("inventory", keyImg);
-
+        // prepare the inventory item image
+        BufferedImage keyItemImg = ResourceManager.getImage("images/tiles01.png:key");
+        // create the Key Item object
+        GameObject keyItem = new GameObject("key", new Vector2d(0, 0))
+                .setImage(keyItemImg)
+                .addAttribute("inventory", keyItemImg);
+        // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
                 .setNbPlace(4)
                 .setSelectedIndex(1)
                 .relativeToCamera(true)
                 .add(new InventorySelectorBehavior());
-
         // add a first object (a key !)
-        inventory.add(key);
+        inventory.add(keyItem);
         add(inventory);
 
+        // shuffle `enemy_*`'s object's position and acceleration
         randomizeFilteredGameObject("enemy_");
 
+        // Add the Debug switcher capability to this scene
         addBehavior(new DebugSwitcherBehavior());
 
     }
@@ -137,10 +166,10 @@ public class DemoScene extends AbstractScene {
         for (int i = 0; i < nbEnemies; i++) {
             GameObject e = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
                     .setType(GameObject.GOType.IMAGE)
-                    .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
-                            rand(0, game.getPhysicEngine().getWorld().height))
+                    .setPosition(Utils.rand(0, game.getPhysicEngine().getWorld().width),
+                            Utils.rand(0, game.getPhysicEngine().getWorld().height))
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
-                    .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(rand(-8, 13)).setLayer(10)
+                    .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
                     .setPriority(3);
             randomizePosAndAccGameObject(e);
             add(e);
@@ -167,9 +196,8 @@ public class DemoScene extends AbstractScene {
 
     private GameObject randomizePosAndAccGameObject(GameObject go) {
         return go
-                .setPosition(rand(0, game.getPhysicEngine().getWorld().width),
-                        rand(0, game.getPhysicEngine().getWorld().height))
-                .setAcceleration(new Vector2d(rand(-40, 40), 0.0));
+                .setPosition(Utils.randV2d(0, game.getPhysicEngine().getWorld().width, 0, game.getPhysicEngine().getWorld().height))
+                .setAcceleration(Utils.randV2d(-40, 40, 0, 0));
     }
 
     private GameObject randomizeAccelerationAndFrictionAndBounciness(
@@ -179,9 +207,9 @@ public class DemoScene extends AbstractScene {
             double dynFriction,
             double bounciness) {
         Material m = go.material;
-        m.dynFriction = rand(dynFriction - 0.1, dynFriction + 0.1);
-        m.bounciness = rand(bounciness - 0.1, bounciness + 0.1);
-        return go.setAcceleration(new Vector2d(rand(-accFactorX, accFactorX), rand(-accFactorY, accFactorY)));
+        m.dynFriction = Utils.rand(dynFriction - 0.1, dynFriction + 0.1);
+        m.bounciness = Utils.rand(bounciness - 0.1, bounciness + 0.1);
+        return go.setAcceleration(Utils.randV2d(-accFactorX, accFactorX, -accFactorY, accFactorY));
     }
 
     @Override
