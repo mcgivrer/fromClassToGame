@@ -44,7 +44,7 @@ public class Window {
         frame.setSize(dim);
         frame.setPreferredSize(dim);
         frame.setMaximumSize(dim);
-        frame.setUndecorated(true);
+        //frame.setUndecorated(true);
         frame.setMenuBar(null);
         frame.setLocation(new Point((int) (currentDevice.getDisplayMode().getWidth() - dim.width) / 2,
                 (int) (currentDevice.getDisplayMode().getHeight() - dim.height) / 2));

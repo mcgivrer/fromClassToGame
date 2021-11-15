@@ -4,11 +4,10 @@ import java.awt.Graphics2D;
 
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 
-public class TextRenderHelper implements RenderHelper {
+public class TextRenderHelper implements RenderHelper<TextObject> {
 
     @Override
-    public void draw(Graphics2D g, Object go) {
-        TextObject to = (TextObject) go;
+    public void draw(Graphics2D g, TextObject to) {
         g.setFont(to.font);
         g.setColor(to.color);
         g.drawString(to.text, (int) (to.position.x), (int) (to.position.y));

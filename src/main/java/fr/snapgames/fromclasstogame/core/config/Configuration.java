@@ -38,7 +38,7 @@ public class Configuration {
             initializeArgParser(configurationPath);
             logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath, System.currentTimeMillis());
         } catch (Exception e) {
-            logger.error("Unable to read configration", e);
+            logger.error("Unable to read configuration", e);
         }
     }
 
