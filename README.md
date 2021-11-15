@@ -6,6 +6,7 @@
 [![Known Vulnerabilities](https://snyk.io//test/github/mcgivrer/fromClassToGame/badge.svg?targetFile=pom.xml)](https://snyk.io//test/github/mcgivrer/fromClassToGame?targetFile=pom.xml)
 [![Codacy Coverage Badge](https://app.codacy.com/project/badge/Coverage/0b6d37e6859d48e99c0493c08efa4d63)](https://www.codacy.com/gh/mcgivrer/fromClassToGame/dashboard?utm_source=github.com&utm_medium=referral&utm_content=mcgivrer/fromClassToGame&utm_campaign=Badge_Coverage)
 [![Cucumber Reports](https://messages.cucumber.io/api/report-collections/dce051b0-e607-40d6-af37-8bf5b67deb97/badge)](https://reports.cucumber.io/report-collections/dce051b0-e607-40d6-af37-8bf5b67deb97 "See the latest Cucumber Reports")
+[![OpenHub](https://img.shields.io/badge/OH-OpenHub-blue)](https://www.openhub.net/p/fromClassToGame "See the Open Hub project page")
 
 ## Description
 
@@ -80,3 +81,7 @@ This sample demo will show :
 2. the `ScoreObject`, displaying score (sic),
 3. the `LifeObject` showing the remaining number of life,
 4. the `InventoryObject`, showing a qick inventory to select an available item.
+
+Have Fun !
+
+McG.

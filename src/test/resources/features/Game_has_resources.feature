@@ -2,21 +2,21 @@ Feature: A Game has resources
 
     The Game can read resources like mage, font, etc...
 
-    Scenario: Reading some Font resource
+    Scenario: 01 - Reading some Font resource
         Given the Game is instantiated
         And the Game is running
         And the resources are cleared
         And The font "fonts/FreePixel.ttf" is added
         Then the ResourceManager has 1 resources
 
-    Scenario: Reading some Image resource
+    Scenario: 02 - Reading some Image resource
         Given the Game is instantiated
         And the Game is running
         And the resources are cleared
         And The image "images/tiles.png" is added
         Then the ResourceManager has 1 resources
 
-    Scenario: Reading some unknown resource
+    Scenario: 03 - Reading some unknown resource
         Given the Game is instantiated
         And the Game is running
         And the resources are cleared
@@ -25,7 +25,7 @@ Feature: A Game has resources
 
 
 
-    Scenario: Read and Slice an image resource
+    Scenario: 04 - Read and Slice an image resource
         Given the Game is instantiated
         And the Game is running
         And the resources are cleared
