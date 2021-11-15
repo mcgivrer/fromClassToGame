@@ -7,12 +7,13 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Configuration {
     private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-    public ResourceBundle defaultValues;
+    public ResourceBundle defaultValues = ResourceBundle.getBundle("config",Locale.ENGLISH);
     public CliManager cm;
     public String levelPath;
     public String title = "fromClassToGame";
@@ -37,7 +38,7 @@ public class Configuration {
             initializeArgParser(configurationPath);
             logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath, System.currentTimeMillis());
         } catch (Exception e) {
-            logger.error("Unable to read configration", e);
+            logger.error("Unable to read configuration", e);
         }
     }
 
@@ -95,19 +96,19 @@ public class Configuration {
                 "ss",
                 "scenes",
                 "Define the scene names and classes to initialize the game",
-                "game.setup.scenes",
+                "game.setup.scenes.list",
                 ""));
         cm.add(new StringArgParser("scene",
                 "sd",
                 "scene",
                 "Define the default scene to start with",
-                "game.setup.scene.default",
+                "game.setup.scenes.default",
                 ""));
         cm.add(new StringArgParser("config",
                 "c",
                 "config",
                 "set the path and file to be loaded for configuration",
-                null,
+                "game.setup.config.filename",
                 configurationPath
         ));
     }

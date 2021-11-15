@@ -1,5 +1,6 @@
-package fr.snapgames.fromclasstogame.core.entity;
+package fr.snapgames.fromclasstogame.core.entity.particles;
 
+import fr.snapgames.fromclasstogame.core.entity.EntityUpdate;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.util.HashMap;
