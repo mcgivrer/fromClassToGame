@@ -161,7 +161,8 @@ public class Game implements KeyListener {
             long elapsed = System.currentTimeMillis() - start;
             if (elapsed > 0 && elapsed < frameDuration) {
                 try {
-                    Thread.sleep(frameDuration - (System.currentTimeMillis() - start));
+                    long waitTime = frameDuration - (System.currentTimeMillis() - start);
+                    Thread.sleep(waitTime);
                 } catch (InterruptedException e) {
                     logger.error("The Game Thread has been interrupted");
                     Thread.currentThread().interrupt();
