@@ -83,7 +83,7 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         g.setWorld(new World(800, 600));
         // add main character (player)
-        Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.96, 0.997);
+        Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.80, 0.98);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
@@ -171,7 +171,9 @@ public class DemoScene extends AbstractScene {
                             Utils.rand(0, game.getPhysicEngine().getWorld().height))
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
-                    .setPriority(3);
+                    .setPriority(3)
+                    .setSize(8,8);
+
             randomizePosAndAccGameObject(e);
             add(e);
         }
