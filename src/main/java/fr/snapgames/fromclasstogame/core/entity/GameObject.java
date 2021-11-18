@@ -12,12 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class GameObject implements Entity {
 
 
     private static int index = 0;
     public int id = ++index;
     public String name = "noname_" + id;
+
+    public boolean active = true;
+
     public Vector2d position = new Vector2d();
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
@@ -33,13 +37,10 @@ public class GameObject implements Entity {
     public double gravity = 0;
     public Material material;
     public double mass = 1;
-
+    public int life = -1;
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
-
     protected Map<String, Object> attributes = new HashMap<>();
-
     private List<String> debugData = new ArrayList<>();
-
     private int debug;
 
     public GameObject(String objectName) {
@@ -66,6 +67,14 @@ public class GameObject implements Entity {
     }
 
     public void update(long dt) {
+        if (life > -1) {
+            if (life - dt >= 0) {
+                life -= dt;
+            } else {
+                active = false;
+                life = -1;
+            }
+        }
     }
 
     public List<String> getDebugInfo() {
@@ -75,8 +84,8 @@ public class GameObject implements Entity {
         debugInfo.add("vel:" + velocity.toString());
         debugInfo.add("acc:" + acceleration.toString());
         debugInfo.add("friction:" + material.dynFriction);
-        debugInfo.add("contact:" + getAttribute("touching",false));
-        debugInfo.add("jumping:" + getAttribute("jumping",false));
+        debugInfo.add("contact:" + getAttribute("touching", false));
+        debugInfo.add("jumping:" + getAttribute("jumping", false));
         return debugInfo;
     }
 
@@ -179,6 +188,11 @@ public class GameObject implements Entity {
 
     public Map<String, Object> getAttributes() {
         return attributes;
+    }
+
+    public GameObject setDuration(int ms) {
+        this.life = ms;
+        return this;
     }
 
     public enum GOType {
