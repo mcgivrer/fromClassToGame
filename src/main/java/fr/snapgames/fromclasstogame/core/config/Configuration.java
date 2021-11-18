@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame.core.config;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 public class Configuration {
         private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-        public ResourceBundle defaultValues = ResourceBundle.getBundle("config");
+        public ResourceBundle defaultValues;
         public CliManager cm;
         public String levelPath;
         public String title = "fromClassToGame";
@@ -25,11 +26,11 @@ public class Configuration {
         public int height = 200;
         public double scale = 1.0;
 
-    public Vector2d gravity = new Vector2d(0.0, -0.981);
-    public double FPS = 60;
-    public String scenes = "";
-    public String defaultScene = "";
-    public int defaultScreen = 0;
+        public Vector2d gravity = new Vector2d(0.0, -0.981);
+        public double FPS = 60;
+        public String scenes = "";
+        public String defaultScene = "";
+        public int defaultScreen = 0;
 
         public int debugLevel;
         private String configPath;
@@ -73,8 +74,12 @@ public class Configuration {
                                 configurationPath));
         }
 
-        public void readValuesFromFile(ResourceBundle config) {
+        public void readValuesFromFile() {
                 try {
+                        ResourceBundle.clearCache(this.getClass().getClassLoader());
+                        ResourceBundle config = ResourceBundle.getBundle(this.configPath, 
+                                        Locale.ROOT,
+                                        this.getClass().getClassLoader());
                         cm.parseConfigFile(config);
                         getValuesFromCM();
                 } catch (ArgumentUnknownException e) {
@@ -99,7 +104,9 @@ public class Configuration {
         public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
                 cm.parseArguments(argv);
                 getValuesFromCM();
-                readValuesFromFile(ResourceBundle.getBundle(this.configPath));
+
+                readValuesFromFile();
+
                 getValuesFromCM();
                 return this;
         }
