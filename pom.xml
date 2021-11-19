@@ -1,8 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>core</groupId>
     <artifactId>fromclasstogame</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>FromClassToGame</name>
     <description>Journey from a simple class to a Game, with the Java language</description>
     <inceptionYear>2021</inceptionYear>
@@ -60,16 +61,20 @@
 
 
     <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
     <!-- Project Dependencies -->
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -145,15 +150,13 @@
                 <version>3.8.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>11</source>
-                    <target>11</target>
                 </configuration>
             </plugin>
             <!-- Resource parsing -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
@@ -163,7 +166,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.6</version>
+                <version>0.8.7</version>
                 <executions>
                     <execution>
                         <goals>
@@ -184,7 +187,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -200,11 +203,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
-                    <source>1.8</source>
+                    <source>${java.version}</source>
                     <show>public</show>
                     <failOnError>false</failOnError>
                     <failOnWarnings>false</failOnWarnings>
@@ -244,7 +247,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <index>true</index>
@@ -260,13 +263,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.4</version>
                 <configuration>
                     <!-- put your configurations here -->
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>shaded</shadedClassifierName>
                     <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>${mainClass}</mainClass>
                         </transformer>
                         <!--transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
@@ -302,7 +306,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -327,7 +331,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.1</version>
+                <version>2.22.2</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
                     <includes>
@@ -342,7 +346,7 @@
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
-                <version>2.0.0</version>
+                <version>5.6.2</version>
                 <executions>
                     <execution>
                         <id>execution</id>
@@ -364,7 +368,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.9.0</version>
+                <version>3.9.1</version>
             </plugin>
         </plugins>
         <resources>
@@ -391,7 +395,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.6</version>
+                <version>0.8.7</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -405,7 +409,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <stylesheetfile>${basedir}/docs/styles/javadoc.css</stylesheetfile>
                     <show>public</show>
@@ -489,7 +493,7 @@
                                 <phase>site</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory />
+                                    <workingDirectory/>
                                     <arguments>
                                         <argument>docs/ebook-metadata.yml</argument>
                                         <!--argument>docs/00-.md</argument -->
@@ -526,7 +530,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory />
+                                    <workingDirectory/>
                                     <arguments>
                                         <argument>docs/ebook-metadata.yml</argument>
 
@@ -562,7 +566,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>2.1.2</version>
+                        <version>1.7.21</version>
                         <executions>
                             <execution>
                                 <id>l4j-clui</id>

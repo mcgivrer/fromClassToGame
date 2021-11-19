@@ -1,14 +1,14 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class InventoryRenderHelper implements RenderHelper {
     private BufferedImage selector;
@@ -35,7 +35,7 @@ public class InventoryRenderHelper implements RenderHelper {
         InventoryObject go = (InventoryObject) o;
 
         // retrieve all object from the inventory
-        List<GameObject> itemImages = go.getItems().stream().filter((v) -> v.getAttribute("inventory") != null).collect(Collectors.toList());
+        List<GameObject> itemImages = go.getItems().stream().filter((v) -> !v.getAttribute("inventory", "none").equals("none")).collect(Collectors.toList());
 
         // parse all available places and display corresponding object.
         for (int i = 0; i < go.getNbPlaces(); i++) {
@@ -47,7 +47,7 @@ public class InventoryRenderHelper implements RenderHelper {
                     (int) ry,
                     null);
             if (!itemImages.isEmpty() && itemImages.size() > i) {
-                BufferedImage itemImg = (BufferedImage) itemImages.get(i).getAttribute("inventory");
+                BufferedImage itemImg = (BufferedImage) itemImages.get(i).getAttribute("inventory", new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB));
                 int dx = (selector.getWidth() - itemImg.getWidth()) / 2;
                 int dy = (selector.getHeight() - itemImg.getHeight()) / 2;
                 g.drawImage(itemImg,
