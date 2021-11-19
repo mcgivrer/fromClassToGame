@@ -1,5 +1,6 @@
-package fr.snapgames.fromclasstogame.core.behaviors;
+package fr.snapgames.fromclasstogame.core.behaviors.particle;
 
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.particles.Particle;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.gfx.Render;

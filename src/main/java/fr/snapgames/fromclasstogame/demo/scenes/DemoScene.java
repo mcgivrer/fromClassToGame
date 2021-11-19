@@ -1,7 +1,7 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.behaviors.BasicParticleBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.particle.BasicParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
@@ -14,10 +14,10 @@ import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
-import fr.snapgames.fromclasstogame.demo.behaviors.CopyObjectPosition;
-import fr.snapgames.fromclasstogame.demo.behaviors.DebugSwitcherBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
-import fr.snapgames.fromclasstogame.demo.behaviors.PlayerActionBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
