@@ -13,6 +13,9 @@ import java.awt.image.BufferedImage;
  * @since 1.0.0
  */
 public class AbstractRenderHelper {
+    protected Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
+    protected Color debugFrontColor = Color.ORANGE;
+    protected Color debugBoxColor = Color.YELLOW;
 
     /**
      * Simple set active Font
