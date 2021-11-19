@@ -1,6 +1,7 @@
-package fr.snapgames.fromclasstogame.core.entity;
+package fr.snapgames.fromclasstogame.core.entity.particles;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ public class ParticleSystem extends GameObject {
 
     public List<Behavior<Particle>> pBehave = new ArrayList<>();
     public List<Particle> particles = new ArrayList<>();
-    int nbMaxParticle = 200;
+    int nbMaxParticle = 20;
 
     public ParticleSystem(String objectName, Vector2d pos) {
         super(objectName, pos);
@@ -44,5 +45,10 @@ public class ParticleSystem extends GameObject {
         return this;
     }
 
-
+    @Override
+    public List<String> getDebugInfo() {
+        List<String> ls = super.getDebugInfo();
+        ls.add(String.format("NbPtl:"+this.nbMaxParticle));
+        return ls;
+    }
 }

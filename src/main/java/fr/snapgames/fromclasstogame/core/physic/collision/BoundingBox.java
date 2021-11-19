@@ -6,12 +6,12 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 public class BoundingBox {
 
 
-    BoundingBoxType type;
-    Vector2d position;
-    Box shape;
-    double diam1;
-    double diam2;
-    Vector2d[] points;
+    public BoundingBoxType type;
+    public Vector2d position;
+    public Box shape;
+    public double diam1;
+    public double diam2;
+    public Vector2d[] points;
 
     public void update(GameObject go) {
         position.x = go.position.x;
@@ -41,7 +41,7 @@ public class BoundingBox {
         POINT,
         RECTANGLE,
         CIRCLE,
-        ELLIPSE;
+        ELLIPSE
     }
 
 }

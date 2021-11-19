@@ -1,13 +1,12 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
-import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.nio.charset.StandardCharsets;
+
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.nio.charset.StandardCharsets;
 
 public class ScoreRenderHelper implements RenderHelper<ScoreObject> {
 
@@ -21,8 +20,7 @@ public class ScoreRenderHelper implements RenderHelper<ScoreObject> {
     private void prepareFigures() {
         figs = new BufferedImage[10];
         for (int i = 0; i < 10; i++) {
-            figs[i] = ResourceManager.getSlicedImage("images/tiles01.png",
-                    "" + i, i * 8, 3 * 16, 8, 16);
+            figs[i] = ResourceManager.getSlicedImage("images/tiles01.png", "" + i, i * 8, 3 * 16, 8, 16);
         }
     }
 
@@ -32,7 +30,6 @@ public class ScoreRenderHelper implements RenderHelper<ScoreObject> {
         g.setColor(so.color);
         drawScore(g, so.text, (int) (so.position.x), (int) (so.position.y));
     }
-
 
     /**
      * Draw score with digital characters
