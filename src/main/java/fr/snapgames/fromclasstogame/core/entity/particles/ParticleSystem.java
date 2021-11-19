@@ -11,7 +11,7 @@ public class ParticleSystem extends GameObject {
 
     public List<Behavior<Particle>> pBehave = new ArrayList<>();
     public List<Particle> particles = new ArrayList<>();
-    int nbMaxParticle = 200;
+    int nbMaxParticle = 20;
 
     public ParticleSystem(String objectName, Vector2d pos) {
         super(objectName, pos);
