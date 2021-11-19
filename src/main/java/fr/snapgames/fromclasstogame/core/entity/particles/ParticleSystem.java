@@ -15,6 +15,7 @@ public class ParticleSystem extends GameObject {
 
     public ParticleSystem(String objectName, Vector2d pos) {
         super(objectName, pos);
+        this.life = 10000;
     }
 
 
@@ -48,7 +49,7 @@ public class ParticleSystem extends GameObject {
     @Override
     public List<String> getDebugInfo() {
         List<String> ls = super.getDebugInfo();
-        ls.add(String.format("NbPtl:"+this.nbMaxParticle));
+        ls.add(String.format("NbPtl:" + this.nbMaxParticle));
         return ls;
     }
 }

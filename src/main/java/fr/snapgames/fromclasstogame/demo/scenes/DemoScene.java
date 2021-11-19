@@ -134,12 +134,15 @@ public class DemoScene extends AbstractScene {
         add(bckG);
 
         // add a ParticleSystem
-        ParticleSystem ps = new ParticleSystem("PS_test", player.position).create(100);
-        ps.addParticleBehavior(new BasicParticleBehavior(ps));
+        ParticleSystem ps = new ParticleSystem("PS_test", player.position);
+        ps.addParticleBehavior(
+                new BasicParticleBehavior(ps, 5000)
+                    .setColor(Color.RED));
         ps.add(new CopyObjectPosition(player));
         ps.setLayer(1);
         ps.setPriority(1);
         ps.setDebug(3);
+        ps.create(10);
         add(ps);
 
         // add score display.

@@ -12,22 +12,47 @@ import java.awt.*;
 public class BasicParticleBehavior implements Behavior<Particle> {
 
     private ParticleSystem parent;
+    private int defaultLifeTime = 1000;
+    private Color defaultColor = Color.WHITE;
 
-    public BasicParticleBehavior(ParticleSystem ps) {
+    public BasicParticleBehavior(ParticleSystem ps, int defaultLifeTime) {
         super();
         this.parent = ps;
+        this.defaultLifeTime = defaultLifeTime;
     }
 
     @Override
     public void onCreate(Particle p) {
         Behavior.super.onCreate(p);
         p.alive = true;
-        p.life = 1000;
+        p.life = defaultLifeTime;
         p.color = Color.WHITE;
-        p.setSize(1 + (int) (Math.random() * 5));
+        p.setSize(2 + (int) (Math.random() * 5));
         p.setPosition(parent.position);
         p.setAcceleration(Utils.randV2d(-1, 1, -1, 1));
 
+    }
+
+    /**
+     * Define the default Color for the new particle
+     *
+     * @param c
+     * @return
+     */
+    public BasicParticleBehavior setColor(Color c) {
+        this.defaultColor = c;
+        return this;
+    }
+
+    /**
+     * Set the default lifetime t for the new particle.
+     *
+     * @param t
+     * @return
+     */
+    public BasicParticleBehavior setLifeTime(int t) {
+        this.defaultLifeTime = t;
+        return this;
     }
 
     @Override
@@ -40,10 +65,8 @@ public class BasicParticleBehavior implements Behavior<Particle> {
         if (go.alive) {
             go.life = go.life - 1;
             go.setPosition(parent.position);
-        }
-        if (go.life < 0) {
-            go.alive = false;
-            go.life = 0;
+        } else if (go.life < 0) {
+            this.onCreate(go);
         }
     }
 
