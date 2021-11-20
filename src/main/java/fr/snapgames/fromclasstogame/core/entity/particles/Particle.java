@@ -16,17 +16,17 @@ public class Particle implements EntityUpdate {
 
     public Color color = Color.RED;
     public double size;
-    public int life = 0;
+    public long life = 0;
     public boolean alive;
     public Map<String, Object> attributes = new HashMap<>();
-    int id = 0;
+    public int id = 0;
 
     public Particle() {
         this(0);
         id = index++;
     }
 
-    public Particle(int life) {
+    public Particle(long life) {
         this.life = life;
     }
 

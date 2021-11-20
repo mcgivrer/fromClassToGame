@@ -1,7 +1,12 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.BasicParticleBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
+import fr.snapgames.fromclasstogame.core.config.cli.Vector2dArgParser;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -16,10 +21,7 @@ import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
-import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
-import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
-import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
@@ -100,11 +102,11 @@ public class DemoScene extends AbstractScene {
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
                 .setLayer(1)
-                .setPriority(0)
+                .setPriority(2)
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                .setDebug(0)
+                .setDebug(3)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
@@ -126,23 +128,28 @@ public class DemoScene extends AbstractScene {
 
 
         // add a background image
+
+        /**
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
                 .setType(GameObject.GOType.IMAGE)
                 .setLayer(100)
                 .setPriority(100);
         add(bckG);
+        */
 
         // add a ParticleSystem
         ParticleSystem ps = new ParticleSystem("PS_test", player.position);
         ps.addParticleBehavior(
-                new BasicParticleBehavior(ps, 5000)
-                    .setColor(Color.RED));
-        ps.add(new CopyObjectPosition(player));
+                new BasicParticleBehavior(ps, 1400, true)
+                        .setColor(Color.RED));
+        ps.addParticleBehavior(
+                new FireParticleBehavior());
         ps.setLayer(1);
         ps.setPriority(1);
         ps.setDebug(3);
-        ps.create(10);
+        ps.create(200);
+        ps.add(new CopyObjectPosition(player, new Vector2d(0, -10)));
         add(ps);
 
         // add score display.
@@ -173,9 +180,12 @@ public class DemoScene extends AbstractScene {
         // shuffle `enemy_*`'s object's position and acceleration
         randomizeFilteredGameObject("enemy_");
 
-        TextObject welcome = new TextObject("welcomeMsg", new Vector2d(40, 100))
+        // Welcome text at middle bottom center game screen
+        double tPosX = game.getRender().getBuffer().getWidth() / 3;
+        double tPosY = (game.getRender().getBuffer().getHeight() / 5) * 4;
+        TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
-        welcome.setDuration(2000).setLayer(0).setPriority(1).relativeToCamera(true);
+        welcome.setDuration(5000).setLayer(0).setPriority(1).relativeToCamera(true);
 
         add(welcome);
 
@@ -195,7 +205,6 @@ public class DemoScene extends AbstractScene {
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
                     .setPriority(3)
                     .setSize(8, 8);
-
             randomizePosAndAccGameObject(e);
             add(e);
         }

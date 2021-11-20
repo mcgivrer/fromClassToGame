@@ -11,11 +11,12 @@ public class ParticleSystem extends GameObject {
 
     public List<Behavior<Particle>> pBehave = new ArrayList<>();
     public List<Particle> particles = new ArrayList<>();
-    int nbMaxParticle = 20;
+    private int nbMaxParticle = 20;
+    private boolean restart = false;
 
     public ParticleSystem(String objectName, Vector2d pos) {
         super(objectName, pos);
-        this.life = 10000;
+        this.life = -1;
     }
 
 
@@ -23,12 +24,16 @@ public class ParticleSystem extends GameObject {
         nbMaxParticle = nb;
         for (int i = 0; i < nbMaxParticle; i++) {
             Particle p = new Particle();
-            if (pBehave.size() > 0) {
-                pBehave.forEach(b -> b.onCreate(p));
-            }
+            onCreateParticle(p);
             particles.add(p);
         }
         return this;
+    }
+
+    private void onCreateParticle(Particle p) {
+        if (pBehave.size() > 0) {
+            pBehave.forEach(b -> b.onCreate(p));
+        }
     }
 
     @Override
@@ -37,8 +42,12 @@ public class ParticleSystem extends GameObject {
         if (pBehave.size() > 0) {
             for (Particle particle : particles) {
                 pBehave.forEach(b -> b.onUpdate(particle, dt));
+                if (particle.life <= 0 && getRestart()) {
+                    onCreateParticle(particle);
+                }
             }
         }
+
     }
 
     public ParticleSystem addParticleBehavior(Behavior<Particle> bp) {
@@ -51,5 +60,13 @@ public class ParticleSystem extends GameObject {
         List<String> ls = super.getDebugInfo();
         ls.add(String.format("NbPtl:" + this.nbMaxParticle));
         return ls;
+    }
+
+    public boolean getRestart() {
+        return restart;
+    }
+
+    public void setRestart(boolean b) {
+        this.restart = b;
     }
 }
