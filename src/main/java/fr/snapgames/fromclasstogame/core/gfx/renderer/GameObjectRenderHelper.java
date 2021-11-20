@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 public class GameObjectRenderHelper extends AbstractRenderHelper implements RenderHelper<GameObject> {
     private static final Logger logger = LoggerFactory.getLogger(GameObjectRenderHelper.class);
 
-    private Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
-    private Color debugFrontColor = Color.ORANGE;
-    private Color debugBoxColor = Color.YELLOW;
+
 
     @Override
     public void draw(Graphics2D g, GameObject go) {
@@ -51,7 +49,8 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
                 setFontSize(g, 9);
                 double offsetY = -40;
                 double offsetX = go.width + 8;
-                fillRect(g, go.position, 100, 70, go.width + 1, offsetY - 12, debugBackgroundColor);
+                int height = ((go.getDebugInfo().size()+2)*9);
+                fillRect(g, go.position, 100, height, go.width + 1, offsetY - 12, debugBackgroundColor);
                 setColor(g, debugFrontColor);
                 int i = 0;
                 for (String line : go.getDebugInfo()) {

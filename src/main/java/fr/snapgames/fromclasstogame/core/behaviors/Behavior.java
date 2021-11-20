@@ -1,6 +1,5 @@
 package fr.snapgames.fromclasstogame.core.behaviors;
 
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 

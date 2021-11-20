@@ -25,7 +25,7 @@ public class InventoryObject extends GameObject {
     }
 
     public InventoryObject add(GameObject gio) {
-        if (gio.getAttribute("inventory") != null) {
+        if (!gio.getAttribute("inventory","none").equals("none")) {
             items.add(gio);
         }
         return this;

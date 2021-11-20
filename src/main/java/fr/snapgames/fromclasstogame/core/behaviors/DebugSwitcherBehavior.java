@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.demo.behaviors;
+package fr.snapgames.fromclasstogame.core.behaviors;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.gfx.Render;

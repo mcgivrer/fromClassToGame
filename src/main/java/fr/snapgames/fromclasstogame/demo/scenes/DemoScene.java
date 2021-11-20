@@ -1,25 +1,25 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.behaviors.BasicParticleBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.particle.BasicParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
+import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
-import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
-import fr.snapgames.fromclasstogame.core.physic.Utils;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
-import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
-import fr.snapgames.fromclasstogame.demo.behaviors.DebugSwitcherBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
-import fr.snapgames.fromclasstogame.demo.behaviors.PlayerActionBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
@@ -83,9 +83,19 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-        g.setWorld(new World(800, 600));
+        // Declare World playground
+        World world = new World(800, 600);
+        g.setWorld(world);
+
+        // add Viewport Grid debug view
+        DebugViewportGrid dvg = new DebugViewportGrid("vpgrid", world, 32, 32);
+        dvg.setDebug(1);
+        dvg.setLayer(11);
+        dvg.setPriority(2);
+        add(dvg);
+
         // add main character (player)
-        Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.96, 0.997);
+        Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.80, 0.98);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
@@ -94,14 +104,13 @@ public class DemoScene extends AbstractScene {
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                .setDebug(1)
+                .setDebug(0)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
                 .addAttribute("maxHorizontalVelocity", 20.0)
                 .addAttribute("maxVerticalVelocity", 30.0)
-                .add(new PlayerActionBehavior())
-                .setDebug(3);
+                .add(new PlayerActionBehavior());
         add(player);
 
         // Define the camera following the player object.
@@ -125,8 +134,15 @@ public class DemoScene extends AbstractScene {
         add(bckG);
 
         // add a ParticleSystem
-        ParticleSystem ps = new ParticleSystem("pstest", new Vector2d(160, 160)).create(100);
-        ps.addParticleBehavior(new BasicParticleBehavior());
+        ParticleSystem ps = new ParticleSystem("PS_test", player.position);
+        ps.addParticleBehavior(
+                new BasicParticleBehavior(ps, 5000)
+                    .setColor(Color.RED));
+        ps.add(new CopyObjectPosition(player));
+        ps.setLayer(1);
+        ps.setPriority(1);
+        ps.setDebug(3);
+        ps.create(10);
         add(ps);
 
         // add score display.
@@ -146,7 +162,7 @@ public class DemoScene extends AbstractScene {
         // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
-                .setNbPlace(4)
+                .setNbPlace(6)
                 .setSelectedIndex(1)
                 .relativeToCamera(true)
                 .add(new InventorySelectorBehavior());
@@ -156,6 +172,13 @@ public class DemoScene extends AbstractScene {
 
         // shuffle `enemy_*`'s object's position and acceleration
         randomizeFilteredGameObject("enemy_");
+
+        TextObject welcome = new TextObject("welcomeMsg", new Vector2d(40, 100))
+                .setText("Welcome on Board");
+        welcome.setDuration(2000).setLayer(0).setPriority(1).relativeToCamera(true);
+
+        add(welcome);
+
 
         // Add the Debug switcher capability to this scene
         addBehavior(new DebugSwitcherBehavior());
@@ -170,7 +193,9 @@ public class DemoScene extends AbstractScene {
                             Utils.rand(0, game.getPhysicEngine().getWorld().height))
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
-                    .setPriority(3);
+                    .setPriority(3)
+                    .setSize(8, 8);
+
             randomizePosAndAccGameObject(e);
             add(e);
         }
@@ -187,6 +212,7 @@ public class DemoScene extends AbstractScene {
     @Override
     public void activate() {
         randomizeFilteredGameObject("enemy_");
+        randomizeFilteredGameObject("player");
         this.score = 0;
     }
 
@@ -267,8 +293,7 @@ public class DemoScene extends AbstractScene {
                 });
                 break;
             case KeyEvent.VK_G:
-                Vector2d g = game.getPhysicEngine().getWorld().gravity.multiply(-1);
-                game.getPhysicEngine().getWorld().setGravity(g);
+                ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.multiply(-1);
                 break;
             default:
                 break;
