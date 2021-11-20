@@ -1,21 +1,23 @@
-package fr.snapgames.fromclasstogame.demo.behaviors;
+package fr.snapgames.fromclasstogame.core.behaviors;
 
-import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
+import java.awt.event.KeyEvent;
+
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 
-import java.awt.event.KeyEvent;
-import java.util.Optional;
-
 /**
  * The {@link PlayerActionBehavior} requires some GameObject attributes:
  * <ul>
- *     <li><code>accelStep</code> the value for the acceleration factor to be applied by default in the object on any directional move</li>
- *     <li><code>jumpAccel</code> the vertical acceleration to be applied in case of jumping action</li>
- *     <li><code>jumping</code> a boolean flag storing the current jump action: true = jumping</li>
- *     <li><code>touching</code> a boolean flag storing the current contact action: true = contact</li>
+ * <li><code>accelStep</code> the value for the acceleration factor to be
+ * applied by default in the object on any directional move</li>
+ * <li><code>jumpAccel</code> the vertical acceleration to be applied in case of
+ * jumping action</li>
+ * <li><code>jumping</code> a boolean flag storing the current jump action: true
+ * = jumping</li>
+ * <li><code>touching</code> a boolean flag storing the current contact action:
+ * true = contact</li>
  * </ul>
  * <p>
  * Usage :
@@ -31,14 +33,12 @@ import java.util.Optional;
  */
 public class PlayerActionBehavior implements Behavior<GameObject> {
 
-
     private double accelStep;
     private double jumpAccel;
     private boolean jumping;
     private boolean touching;
     double accel = 0.0;
     private ActionHandler ah;
-
 
     public PlayerActionBehavior() {
         ah = (ActionHandler) SystemManager.get(ActionHandler.class);
@@ -66,9 +66,9 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
 
     @Override
     public void onAction(GameObject go, ActionHandler.ACTIONS action) {
-        accelStep = (Double) go.getAttribute("accelStep");
-        jumpAccel = (Double) go.getAttribute("jumpAccel");
-        jumping = (boolean) go.getAttribute("jumping");
+        accelStep = (Double) go.getAttribute("accelStep",0);
+        jumpAccel = (Double) go.getAttribute("jumpAccel",0);
+        jumping = (boolean) go.getAttribute("jumping",0);
 
         if (ah.getCtrl()) {
             accel = accelStep * 10;
@@ -79,7 +79,7 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
         }
         switch (action) {
             case UP:
-                jumping = (boolean) go.getAttribute("jumping");
+                jumping = (boolean) go.getAttribute("jumping",false);
                 if (!jumping) {
                     go.acceleration.y = jumpAccel * accel;
                     go.addAttribute("jumping", true);

@@ -4,6 +4,7 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.DebugViewportGridRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
@@ -28,10 +29,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Render extends System {
 
     private static final Logger logger = LoggerFactory.getLogger(Render.class);
-
-    private BufferedImage buffer;
     private static int screenShotIndex = 0;
-
+    private BufferedImage buffer;
     private Camera camera;
 
     private List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
@@ -50,51 +49,47 @@ public class Render extends System {
         setViewport(config.width, config.height);
         addRenderHelper(new GameObjectRenderHelper());
         addRenderHelper(new TextRenderHelper());
+        addRenderHelper(new DebugViewportGridRenderHelper());
         return 0;
     }
 
     public void render() {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        setRenderingHintsList(g);
 
-        if (camera != null) {
-            g.translate(-camera.position.x, -camera.position.y);
-        }
-        drawGrid(g, world);
-        for (GameObject go : objects) {
-            draw(g, go);
-        }
-
-        if (camera != null) {
-            g.translate(camera.position.x, camera.position.y);
-        }
-        for (GameObject go : objectsRelativeToCamera) {
-            draw(g, go);
-        }
+        setCamera(g, -camera.position.x, -camera.position.y);
+        drawObjectList(g, objects);
+        setCamera(g, camera.position.x, camera.position.y);
+        drawObjectList(g, objectsRelativeToCamera);
 
         g.dispose();
         if (renderScreenshot) {
             saveScreenshot();
             renderScreenshot = false;
         }
+
+        objects.stream().filter(o -> !o.active).forEach(o -> objects.remove(o));
+        objectsRelativeToCamera.stream().filter(o -> !o.active).forEach(o -> objectsRelativeToCamera.remove(o));
     }
 
-    private void drawGrid(Graphics2D g, World w) {
-        if (w != null && debug > 0) {
-            g.setColor(Color.BLUE);
-            for (int x = 0; x < w.width; x += 16) {
-                g.drawRect(x, 0, (int) 16, (int) w.height);
+    private void setRenderingHintsList(Graphics2D g) {
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    }
+
+    private void setCamera(Graphics2D g, double v, double v2) {
+        if (camera != null) {
+            g.translate(v, v2);
+        }
+    }
+
+    private void drawObjectList(Graphics2D g, List<GameObject> objects) {
+        for (GameObject go : objects) {
+            if (go.active) {
+                draw(g, go);
             }
-            for (int y = 0; y < w.height; y += 16) {
-                if (y + 16 < w.height) {
-                    g.drawRect(0, y, (int) w.width, 16);
-                }
-            }
-            g.setColor(debugColor);
-            g.drawRect(0, 0, (int) w.width, (int) w.height);
         }
     }
 
