@@ -207,7 +207,7 @@
                 <configuration>
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
-                    <source>${java.version}</source>
+                    <source>1.8</source>
                     <show>public</show>
                     <failOnError>false</failOnError>
                     <failOnWarnings>false</failOnWarnings>
@@ -357,8 +357,13 @@
                         <configuration>
                             <projectName>${project.name}</projectName>
                             <outputDirectory>${project.build.directory}/site/cucumber-reports</outputDirectory>
+                            <jsonFiles>
+                                <!-- supports wildcard or name pattern -->
+                                <param>**/*.json</param>
+                            </jsonFiles>
                             <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
-                            <skippedFails>true</skippedFails>
+                            <skip>true</skip>
+                            <mergeFeaturesById>true</mergeFeaturesById>
                             <buildNumber>4</buildNumber>
                         </configuration>
                     </execution>

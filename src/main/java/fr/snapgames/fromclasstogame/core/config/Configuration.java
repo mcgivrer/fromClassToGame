@@ -137,7 +137,7 @@ public class Configuration {
     public void readValuesFromFile() {
 
         ResourceBundle.clearCache(this.getClass().getClassLoader());
-        ResourceBundle config = ResourceBundle.getBundle(this.configPath, Locale.ENGLISH,
+        ResourceBundle config = ResourceBundle.getBundle(this.configPath, Locale.ROOT,
                 this.getClass().getClassLoader());
         if (config != null) {
             cm.parseConfigFile(config);

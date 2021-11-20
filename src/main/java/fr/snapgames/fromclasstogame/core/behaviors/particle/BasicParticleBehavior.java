@@ -5,20 +5,20 @@ import fr.snapgames.fromclasstogame.core.entity.particles.Particle;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
-import fr.snapgames.fromclasstogame.core.physic.Utils;
 
 import java.awt.*;
 
 public class BasicParticleBehavior implements Behavior<Particle> {
 
     private ParticleSystem parent;
-    private int defaultLifeTime = 1000;
+    private long defaultLifeTime = 1000;
     private Color defaultColor = Color.WHITE;
 
-    public BasicParticleBehavior(ParticleSystem ps, int defaultLifeTime) {
+    public BasicParticleBehavior(ParticleSystem ps, int defaultLifeTimeMS, boolean restart) {
         super();
         this.parent = ps;
-        this.defaultLifeTime = defaultLifeTime;
+        this.defaultLifeTime = defaultLifeTimeMS;
+        ps.setRestart(restart);
     }
 
     @Override
@@ -27,10 +27,8 @@ public class BasicParticleBehavior implements Behavior<Particle> {
         p.alive = true;
         p.life = defaultLifeTime;
         p.color = Color.WHITE;
-        p.setSize(2 + (int) (Math.random() * 5));
+        p.setSize(1 + (int) (Math.random() * 2));
         p.setPosition(parent.position);
-        p.setAcceleration(Utils.randV2d(-1, 1, -1, 1));
-
     }
 
     /**
@@ -63,11 +61,17 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     @Override
     public void onUpdate(Particle go, long dt) {
         if (go.alive) {
-            go.life = go.life - 1;
-            go.setPosition(parent.position);
-        } else if (go.life < 0) {
-            this.onCreate(go);
+
+            if (go.life - dt >= 0) {
+                go.life = go.life - dt;
+            } else {
+                go.life = 0;
+                go.alive = false;
+            }
         }
+        double time = (double)dt / 1000.0;
+        //go.velocity.add(go.acceleration).multiply(time);
+        go.position.add(go.velocity.multiply(time));
     }
 
     @Override
