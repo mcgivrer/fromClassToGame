@@ -537,7 +537,28 @@
                                     <executable>pandoc</executable>
                                     <workingDirectory/>
                                     <arguments>
-                                        <argument>docs/ebook-metadata.yml</argument>
+                                        <argument>docs/epub-metadata.yml</argument>
+                                        <argument>docs/index.md</argument>
+                                        <argument>docs/chapters/01-a-class.md</argument>
+                                        <argument>docs/chapters/02-adding-a-structure.md</argument>
+                                        <argument>docs/chapters/03-delegating-things.md</argument>
+                                        <argument>docs/chapters/04-object-game.md</argument>
+                                        <argument>docs/chapters/05-input-handler.md</argument>
+                                        <argument>docs/chapters/06-new-components.md</argument>
+                                        <argument>docs/chapters/07-resource-manager.md</argument>
+                                        <argument>docs/chapters/08-scene-manager.md</argument>
+                                        <argument>docs/chapters/09-extract-configuration.md</argument>
+                                        <argument>docs/chapters/10-refactoring-packages.md</argument>
+                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/12-see-through-camera.md</argument>
+                                        <argument>docs/chapters/13-basic-physic-engine.md</argument>
+                                        <argument>docs/chapters/14-collision-system.md</argument>
+                                        <argument>docs/chapters/16-gameobject-and-behaviors.md</argument>
+                                        <argument>docs/chapters/17-inventory.md</argument>
+                                        <argument>docs/chapters/18-enhanced-behavior.md</argument>
+                                        <argument>docs/chapters/19-particles-are-beautiful.md</argument>
+                                        <argument>docs/chapters/100-.md</argument>
+
 
                                         <!--argument>docs/00-.md</argument -->
                                         <argument>--resource-path=docs/</argument>
@@ -571,7 +592,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.21</version>
+                        <version>2.1.2</version>
                         <executions>
                             <execution>
                                 <id>l4j-clui</id>
