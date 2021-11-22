@@ -58,11 +58,11 @@ public class PhysicEngine extends System {
 
             // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and `maxVerticalAcceleration`
             if (go.getAttributes().containsKey("maxHorizontalAcceleration")) {
-                double ax = (Double) go.getAttribute("maxHorizontalAcceleration",0);
+                double ax = (Double) go.getAttribute("maxHorizontalAcceleration", 0);
                 go.acceleration.x = Math.abs(go.acceleration.x) > ax ? Math.signum(go.acceleration.x) * ax : go.acceleration.x;
             }
             if (go.getAttributes().containsKey("maxVerticalAcceleration")) {
-                double ay = (Double) go.getAttribute("maxVerticalAcceleration",0);
+                double ay = (Double) go.getAttribute("maxVerticalAcceleration", 0);
                 go.acceleration.y = Math.abs(go.acceleration.y) > ay ? Math.signum(go.acceleration.y) * ay : go.acceleration.y;
             }
 
@@ -71,25 +71,24 @@ public class PhysicEngine extends System {
             go.velocity = go.velocity.add(go.acceleration.multiply(dtCorrected)).multiply(friction);
 
             if (touching && Math.abs(go.acceleration.x) < 0.5 && Math.abs(go.acceleration.y) < 0.5) {
-                double dynFriction = dynFriction = go.material != null ? go.material.dynFriction : 1;
+                double dynFriction = go.material != null ? go.material.dynFriction : 1;
                 go.velocity = go.velocity.multiply(dynFriction);
             }
 
             // limit velocity with GameObject threshold `maxHorizontalVelocity` and `maxVerticalVelocity`
             if (go.getAttributes().containsKey("maxHorizontalVelocity")) {
-                double dx = (Double) go.getAttribute("maxHorizontalVelocity",0);
+                double dx = (Double) go.getAttribute("maxHorizontalVelocity", 0);
                 go.velocity.x = Math.abs(go.velocity.x) > dx ? Math.signum(go.velocity.x) * dx : go.velocity.x;
             }
             if (go.getAttributes().containsKey("maxVerticalVelocity")) {
-                double dy = (Double) go.getAttribute("maxVerticalVelocity",0);
+                double dy = (Double) go.getAttribute("maxVerticalVelocity", 0);
                 go.velocity.y = Math.abs(go.velocity.y) > dy ? Math.signum(go.velocity.y) * dy : go.velocity.y;
             }
             // Compute position
             go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
             go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
 
-            // Update the Object itself
-            go.update(dt);
+
             // test World space constrained
             verifyGameConstraint(go);
             // update Bounding box for this GameObject.
@@ -97,6 +96,8 @@ public class PhysicEngine extends System {
                 go.bbox.update(go);
             }
         }
+        // Update the Object itself
+        go.update(dt);
     }
 
     private double ceilValue(double x, double ceil) {

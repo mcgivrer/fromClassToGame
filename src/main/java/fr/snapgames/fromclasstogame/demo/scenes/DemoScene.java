@@ -1,9 +1,11 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.behaviors.BasicParticleBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.particle.BasicParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
+import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
@@ -14,10 +16,10 @@ import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
-import fr.snapgames.fromclasstogame.demo.behaviors.CopyObjectPosition;
-import fr.snapgames.fromclasstogame.demo.behaviors.DebugSwitcherBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
-import fr.snapgames.fromclasstogame.demo.behaviors.PlayerActionBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
@@ -81,7 +83,17 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-        g.setWorld(new World(800, 600));
+        // Declare World playground
+        World world = new World(800, 600);
+        g.setWorld(world);
+
+        // add Viewport Grid debug view
+        DebugViewportGrid dvg = new DebugViewportGrid("vpgrid", world, 32, 32);
+        dvg.setDebug(1);
+        dvg.setLayer(11);
+        dvg.setPriority(2);
+        add(dvg);
+
         // add main character (player)
         Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.80, 0.98);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
@@ -158,6 +170,13 @@ public class DemoScene extends AbstractScene {
         // shuffle `enemy_*`'s object's position and acceleration
         randomizeFilteredGameObject("enemy_");
 
+        TextObject welcome = new TextObject("welcomeMsg", new Vector2d(40, 100))
+                .setText("Welcome on Board");
+        welcome.setDuration(2000).setLayer(0).setPriority(1).relativeToCamera(true);
+
+        add(welcome);
+
+
         // Add the Debug switcher capability to this scene
         addBehavior(new DebugSwitcherBehavior());
 
@@ -172,7 +191,7 @@ public class DemoScene extends AbstractScene {
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
                     .setPriority(3)
-                    .setSize(8,8);
+                    .setSize(8, 8);
 
             randomizePosAndAccGameObject(e);
             add(e);
