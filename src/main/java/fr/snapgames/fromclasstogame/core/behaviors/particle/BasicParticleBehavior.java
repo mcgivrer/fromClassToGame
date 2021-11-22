@@ -10,14 +10,23 @@ import java.awt.*;
 
 public class BasicParticleBehavior implements Behavior<Particle> {
 
+    /**
+     * Parent particle System
+     */
     private ParticleSystem parent;
-    private long defaultLifeTime = 1000;
+    /**
+     * Default life duration initialisation
+     */
+    private long defaultLifeDuration;
+    /**
+     * Default color for particle ar initialization
+     */
     private Color defaultColor = Color.WHITE;
 
     public BasicParticleBehavior(ParticleSystem ps, int defaultLifeTimeMS, boolean restart) {
         super();
         this.parent = ps;
-        this.defaultLifeTime = defaultLifeTimeMS;
+        this.defaultLifeDuration = defaultLifeTimeMS;
         ps.setRestart(restart);
     }
 
@@ -25,7 +34,7 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     public void onCreate(Particle p) {
         Behavior.super.onCreate(p);
         p.alive = true;
-        p.life = defaultLifeTime;
+        p.life = defaultLifeDuration;
         p.color = Color.WHITE;
         p.setSize(1 + (int) (Math.random() * 2));
         p.setPosition(parent.position);
@@ -34,8 +43,8 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     /**
      * Define the default Color for the new particle
      *
-     * @param c
-     * @return
+     * @param c color to be set.
+     * @return the Modified BasicParticleBehavior object
      */
     public BasicParticleBehavior setColor(Color c) {
         this.defaultColor = c;
@@ -45,11 +54,11 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     /**
      * Set the default lifetime t for the new particle.
      *
-     * @param t
-     * @return
+     * @param t set the default life duration for this particle
+     * @return the Modified BasicParticleBehavior object
      */
-    public BasicParticleBehavior setLifeTime(int t) {
-        this.defaultLifeTime = t;
+    public BasicParticleBehavior setLifeDuration(int t) {
+        this.defaultLifeDuration = t;
         return this;
     }
 
@@ -63,24 +72,24 @@ public class BasicParticleBehavior implements Behavior<Particle> {
         if (go.alive) {
 
             if (go.life - dt >= 0) {
-                go.life = go.life - dt;
+                go.life -= dt;
             } else {
-                go.life = 0;
+                go.life = -1;
                 go.alive = false;
             }
         }
-        double time = (double)dt / 1000.0;
+        double time = (double) dt / 1000.0;
         //go.velocity.add(go.acceleration).multiply(time);
-        go.position.add(go.velocity.multiply(time));
+        go.position = go.position.add(go.velocity.multiply(time));
     }
 
     @Override
     public void onRender(Particle go, Render r) {
-
+        // Nothing special to do
     }
 
     @Override
     public void onAction(Particle go, ActionHandler.ACTIONS action) {
-
+        // Nothing special to do
     }
 }

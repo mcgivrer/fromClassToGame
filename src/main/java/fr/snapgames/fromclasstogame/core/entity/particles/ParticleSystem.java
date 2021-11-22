@@ -10,7 +10,6 @@ import java.util.List;
 public class ParticleSystem extends GameObject {
 
     public List<Behavior<Particle>> pBehave = new ArrayList<>();
-    public List<Particle> particles = new ArrayList<>();
     private int nbMaxParticle = 20;
     private boolean restart = false;
 
@@ -25,7 +24,7 @@ public class ParticleSystem extends GameObject {
         for (int i = 0; i < nbMaxParticle; i++) {
             Particle p = new Particle();
             onCreateParticle(p);
-            particles.add(p);
+            child.add(p);
         }
         return this;
     }
@@ -40,7 +39,8 @@ public class ParticleSystem extends GameObject {
     public void update(long dt) {
         super.update(dt);
         if (pBehave.size() > 0) {
-            for (Particle particle : particles) {
+            for (GameObject go : child) {
+                Particle particle = (Particle) go;
                 pBehave.forEach(b -> b.onUpdate(particle, dt));
                 if (particle.life <= 0 && getRestart()) {
                     onCreateParticle(particle);
@@ -58,7 +58,7 @@ public class ParticleSystem extends GameObject {
     @Override
     public List<String> getDebugInfo() {
         List<String> ls = super.getDebugInfo();
-        ls.add(String.format("NbPtl:" + this.nbMaxParticle));
+        ls.add(String.format("npl:%d", this.nbMaxParticle));
         return ls;
     }
 

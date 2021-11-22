@@ -13,7 +13,7 @@ import java.util.ConcurrentModificationException;
 public class PhysicEngine extends System {
     private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
 
-    private World world;
+    private World world = new World(0, 0);
 
     public PhysicEngine(Game g) {
         super(g);
@@ -88,7 +88,7 @@ public class PhysicEngine extends System {
             go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
             go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
 
-            // apply Object behaviors computations
+            // apply Object behaviors update event computation
             if (go.behaviors.size() > 0) {
                 go.behaviors.forEach(b -> b.onUpdate(go, dt));
             }
@@ -100,9 +100,10 @@ public class PhysicEngine extends System {
             if (go.bbox != null) {
                 go.bbox.update(go);
             }
+
+            // Update the Object itself
+            go.update(dt);
         }
-        // Update the Object itself
-        go.update(dt);
     }
 
     private double ceilValue(double x, double ceil) {
