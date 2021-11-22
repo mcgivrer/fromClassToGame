@@ -19,9 +19,7 @@ public class ParticleSystemRenderHelper extends AbstractRenderHelper implements 
     @Override
     public void draw(Graphics2D g, ParticleSystem go) {
         if (g != null) {
-            go.particles.forEach(p -> {
-                drawPoint(g, p.position, p.size, p.color);
-            });
+            go.getChild().forEach(p -> drawPoint(g, p.position, (p.width + p.height) / 2, p.color));
         }
     }
 }

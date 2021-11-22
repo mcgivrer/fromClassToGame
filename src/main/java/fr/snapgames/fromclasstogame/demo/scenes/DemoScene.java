@@ -129,14 +129,12 @@ public class DemoScene extends AbstractScene {
 
         // add a background image
 
-        /**
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
                 .setType(GameObject.GOType.IMAGE)
                 .setLayer(100)
                 .setPriority(100);
         add(bckG);
-        */
 
         // add a ParticleSystem
         ParticleSystem ps = new ParticleSystem("PS_test", player.position);
@@ -181,8 +179,8 @@ public class DemoScene extends AbstractScene {
         randomizeFilteredGameObject("enemy_");
 
         // Welcome text at middle bottom center game screen
-        double tPosX = game.getRender().getBuffer().getWidth() / 3;
-        double tPosY = (game.getRender().getBuffer().getHeight() / 5) * 4;
+        double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
+        double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
         welcome.setDuration(5000).setLayer(0).setPriority(1).relativeToCamera(true);
@@ -226,7 +224,7 @@ public class DemoScene extends AbstractScene {
     }
 
     private synchronized void randomizeFilteredGameObject(String rootName) {
-        find(rootName).forEach(go -> randomizePosAndAccGameObject(go));
+        find(rootName).forEach(this::randomizePosAndAccGameObject);
     }
 
     private GameObject randomizePosAndAccGameObject(GameObject go) {
@@ -267,9 +265,9 @@ public class DemoScene extends AbstractScene {
         super.keyPressed(e);
         switch (e.getKeyCode()) {
             case KeyEvent.VK_S:
-                find("enemy_").forEach(o -> {
+                for (GameObject o : find("enemy_")) {
                     randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-                });
+                }
                 break;
             default:
                 break;
@@ -281,7 +279,7 @@ public class DemoScene extends AbstractScene {
         super.keyReleased(e);
         ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
         int nbEnemies = 10;
-        if (ah.getCtrl()) {
+        if (ah != null && ah.getCtrl()) {
             nbEnemies = 50;
         }
 
@@ -297,9 +295,7 @@ public class DemoScene extends AbstractScene {
                 removeEnemies(nbEnemies);
                 break;
             case KeyEvent.VK_S:
-                find("enemy_").forEach(o -> {
-                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-                });
+                find("enemy_").forEach(o -> randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6));
                 break;
             case KeyEvent.VK_G:
                 ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.multiply(-1);
