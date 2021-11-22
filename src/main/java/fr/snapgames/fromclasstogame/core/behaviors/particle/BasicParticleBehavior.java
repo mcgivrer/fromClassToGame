@@ -54,8 +54,8 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     /**
      * Set the default lifetime t for the new particle.
      *
-     * @param t set the default life duration for this particle
-     * @return the Modified BasicParticleBehavior object
+     * @param t is the default life duration for this particle
+     * @return the modified `BasicParticleBehavior` object
      */
     public BasicParticleBehavior setLifeDuration(int t) {
         this.defaultLifeDuration = t;
