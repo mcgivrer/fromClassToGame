@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame.core.config;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
@@ -14,9 +15,11 @@ import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownExc
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 public class Configuration {
+        
         private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-        public ResourceBundle defaultValues = ResourceBundle.getBundle("config");
+        public ResourceBundle defaultValues = ResourceBundle.getBundle("config",Locale.ROOT);
+
         public CliManager cm;
         public String levelPath;
         public String title = "fromClassToGame";
