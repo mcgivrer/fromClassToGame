@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="491ff604-aa87-4d6b-9b85-867a48d78f40" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/fromclasstogame.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.ipr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fromclasstogame.iws" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/particle/BasicParticleBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/particle/BasicParticleBehavior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/particle/FireParticleBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/particle/FireParticleBehavior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/entity/particles/ParticleSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/entity/particles/ParticleSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,6 +250,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunManager">
     <configuration selected="false" default="true" type="Applet" factoryName="Applet">

@@ -106,7 +106,7 @@ public class DemoScene extends AbstractScene {
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                .setDebug(3)
+                //.setDebug(3)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
@@ -129,32 +129,36 @@ public class DemoScene extends AbstractScene {
 
         // add a background image
 
-        /**
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
                 .setType(GameObject.GOType.IMAGE)
                 .setLayer(100)
                 .setPriority(100);
         add(bckG);
-        */
 
         // add a ParticleSystem
         ParticleSystem ps = new ParticleSystem("PS_test", player.position);
         ps.addParticleBehavior(
-                new BasicParticleBehavior(ps, 1400, true)
-                        .setColor(Color.RED));
-        ps.addParticleBehavior(
-                new FireParticleBehavior());
-        ps.setLayer(1);
-        ps.setPriority(1);
-        ps.setDebug(3);
-        ps.create(200);
-        ps.add(new CopyObjectPosition(player, new Vector2d(0, -10)));
+                        new FireParticleBehavior(ps, 1200, true)
+                                .setColor(Color.YELLOW))
+                .create(10)
+                .setFeeding(2)
+                .setEmitFrequency(500)
+                .add(new CopyObjectPosition(player, new Vector2d(7, 2)))
+                .setLayer(1)
+                .setPriority(1);
+        //.setDebug(3);
         add(ps);
 
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", new Vector2d(10, 4)).setScore(score).relativeToCamera(true)
-                .setLayer(1).setColor(Color.WHITE).setPriority(10);
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject(
+                "score",
+                new Vector2d(10, 4))
+                .setScore(score)
+                .relativeToCamera(true)
+                .setLayer(1)
+                .setColor(Color.WHITE)
+                .setPriority(10);
         add(scoreTO);
 
         LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).relativeToCamera(true);

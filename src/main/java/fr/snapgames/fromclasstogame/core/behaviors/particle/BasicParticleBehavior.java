@@ -5,14 +5,19 @@ import fr.snapgames.fromclasstogame.core.entity.particles.Particle;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.physic.Utils;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 
 public class BasicParticleBehavior implements Behavior<Particle> {
+    private static final Logger logger = LoggerFactory.getLogger(BasicParticleBehavior.class);
 
-    private ParticleSystem parent;
-    private long defaultLifeTime = 1000;
-    private Color defaultColor = Color.WHITE;
+    protected ParticleSystem parent;
+    protected long defaultLifeTime;
+    protected Color defaultColor = Color.WHITE;
 
     public BasicParticleBehavior(ParticleSystem ps, int defaultLifeTimeMS, boolean restart) {
         super();
@@ -26,9 +31,7 @@ public class BasicParticleBehavior implements Behavior<Particle> {
         Behavior.super.onCreate(p);
         p.alive = true;
         p.life = defaultLifeTime;
-        p.color = Color.WHITE;
-        p.setSize(1 + (int) (Math.random() * 2));
-        p.setPosition(parent.position);
+        p.color = defaultColor;
     }
 
     /**
@@ -69,9 +72,12 @@ public class BasicParticleBehavior implements Behavior<Particle> {
                 go.alive = false;
             }
         }
-        double time = (double)dt / 1000.0;
-        //go.velocity.add(go.acceleration).multiply(time);
+        double time = Utils.range(dt * 0.25, 1, 4);
+        go.acceleration.multiply(time * 0.5);
+        go.velocity.add(go.acceleration).multiply(time);
         go.position.add(go.velocity.multiply(time));
+
+        //logger.info("p{}({}):p={},v={},a={}", go.id, time, go.position, go.velocity, go.acceleration);
     }
 
     @Override
