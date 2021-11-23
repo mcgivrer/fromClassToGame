@@ -28,10 +28,13 @@ Starting with a very simple class, we will create a brand new Game, by adding so
 12. [See through a Camera](chapters/12-see-through-camera.md)
 13. [Basic of a Physic Engine](chapters/13-basic-physic-engine.md)
 14. [Collision System](chapters/14-collision-system.md)
-15. [GameObject and Behaviors](chapters/16-gameobject-and-behaviors.md)
-16. [Managing a quick Inventory](chapters/17-inventory.md)
-17. [Enhancing the Behavior](chapters/18-enhanced-behavior.md)
-18. [Global Architecture](chapters/100-architecture.md)
+15. Tiles and TileMap _(Coming soon)_
+16. [GameObject and Behaviors](chapters/16-gameobject-and-behaviors.md)
+17. [Managing a quick Inventory](chapters/17-inventory.md)
+18. [Enhancing the Behavior](chapters/18-enhanced-behavior.md)
+19. [Particles are beautiful](chapters/19-particles-are-beautiful.md)
+20. Menu and Scene navigation _(coming soon)_
+21. [Global Architecture](chapters/100-architecture.md)
 
 More to come... stay Tuned !
 
