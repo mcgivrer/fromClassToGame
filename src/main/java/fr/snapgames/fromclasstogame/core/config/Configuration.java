@@ -15,6 +15,16 @@ import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownExc
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 public class Configuration {
+<<<<<<< HEAD
+        
+        private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
+
+        public ResourceBundle defaultValues = ResourceBundle.getBundle("config",Locale.ROOT);
+
+        public CliManager cm;
+        public String levelPath;
+        public String title = "fromClassToGame";
+=======
     /**
      * path to the default configuration file
      */
@@ -24,6 +34,7 @@ public class Configuration {
      * default scene code to be activated
      */
     private static final String CFG_KEY_SCENE = "scene";
+>>>>>>> a29d340ad9fb966abeeb35e957958430525a0fac
 
     /**
      * list of scenes
