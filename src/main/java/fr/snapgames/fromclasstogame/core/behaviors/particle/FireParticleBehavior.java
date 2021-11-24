@@ -20,13 +20,13 @@ public class FireParticleBehavior extends BasicParticleBehavior implements Behav
     @Override
     public void onCreate(Particle p) {
         super.onCreate(p);
-        p.life = (long) Utils.rand(500, 800);
+        p.life = (long) Utils.rand(200, 400);
         p.alive = true;
         p.color = Utils.randomColor(Color.RED, Color.YELLOW);
-        p.setSize(1 + (int) (Math.random() * 4));
-        p.setPosition(Utils.add(parent.position, Utils.randV2d(-2, 2, -2, 2)));
+        p.setSize(2 + (int) (Math.random() * 6));
+        p.setPosition(Utils.add(parent.position, Utils.randV2d(-3, 3, -2, 2)));
         p.setVelocity(new Vector2d(0.0, 0.0));
-        p.acceleration = Utils.randV2d(-0.00005, 0.00005, -0.03, -0.07);
+        p.acceleration = Utils.randV2d(-0.0008, 0.0008, -0.15, -0.35);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class FireParticleBehavior extends BasicParticleBehavior implements Behav
         p.life -= dt;
         p.color = fade(p.color, dt);
         if (p.size > 0) {
-            p.size *= 0.998;
+            p.size *= 0.98;
         } else {
             p.life = 0;
             p.size = 1;

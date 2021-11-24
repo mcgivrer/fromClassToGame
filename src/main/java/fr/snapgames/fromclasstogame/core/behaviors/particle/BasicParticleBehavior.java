@@ -72,10 +72,10 @@ public class BasicParticleBehavior implements Behavior<Particle> {
                 go.alive = false;
             }
         }
-        double time = Utils.range(dt * 0.25, 1, 4);
+        double time = Utils.range(dt * 0.125, 0, 16);
         go.acceleration.multiply(time * 0.5);
-        go.velocity.add(go.acceleration).multiply(time);
-        go.position.add(go.velocity.multiply(time));
+        go.velocity.add(go.acceleration);
+        go.position.add(go.velocity);
 
         //logger.info("p{}({}):p={},v={},a={}", go.id, time, go.position, go.velocity, go.acceleration);
     }

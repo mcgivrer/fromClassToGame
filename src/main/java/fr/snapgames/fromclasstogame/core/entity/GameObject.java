@@ -39,6 +39,8 @@ public class GameObject implements Entity {
     public double mass = 1;
     public int life = -1;
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
+    public int debugOffsetX;
+    public int debugOffsetY;
     protected Map<String, Object> attributes = new HashMap<>();
     private List<String> debugData = new ArrayList<>();
     private int debug;
@@ -78,12 +80,16 @@ public class GameObject implements Entity {
     }
 
     public List<String> getDebugInfo() {
+        this.debugOffsetX = 20;
+        this.debugOffsetY = 20;
         List<String> debugInfo = new ArrayList<>();
         debugInfo.add("n:" + name);
         debugInfo.add("pos:" + position.toString());
         debugInfo.add("vel:" + velocity.toString());
         debugInfo.add("acc:" + acceleration.toString());
-        debugInfo.add("friction:" + material.dynFriction);
+        if (material != null) {
+            debugInfo.add("friction:" + material.dynFriction);
+        }
         debugInfo.add("contact:" + getAttribute("touching", false));
         debugInfo.add("jumping:" + getAttribute("jumping", false));
         return debugInfo;

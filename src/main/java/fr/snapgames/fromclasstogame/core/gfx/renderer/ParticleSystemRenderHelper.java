@@ -22,6 +22,8 @@ public class ParticleSystemRenderHelper extends AbstractRenderHelper implements 
             go.particles.forEach(p -> {
                 drawPoint(g, p.position, p.size, p.color);
             });
+            drawDebugInfo(g, go);
         }
+
     }
 }

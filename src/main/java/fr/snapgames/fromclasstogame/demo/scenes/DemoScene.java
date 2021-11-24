@@ -144,10 +144,10 @@ public class DemoScene extends AbstractScene {
                 .create(10)
                 .setFeeding(2)
                 .setEmitFrequency(500)
-                .add(new CopyObjectPosition(player, new Vector2d(7, 2)))
+                .add(new CopyObjectPosition(player, new Vector2d(7, -4)))
                 .setLayer(1)
-                .setPriority(1);
-        //.setDebug(3);
+                .setPriority(1)
+                .setDebug(3);
         add(ps);
 
         // add score display.
