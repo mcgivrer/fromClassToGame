@@ -98,6 +98,7 @@ public class Render extends System {
         if (renderHelpers.containsKey(goClazzName)) {
             RenderHelper rh = renderHelpers.get(goClazzName);
             rh.draw(g, go);
+            rh.drawDebugInfo(g, go);
         } else {
             g.setColor(go.color);
             g.drawRect((int) (go.position.x), (int) (go.position.y), (int) (go.width), (int) (go.height));

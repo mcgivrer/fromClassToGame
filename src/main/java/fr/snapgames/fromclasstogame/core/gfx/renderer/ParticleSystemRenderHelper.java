@@ -22,4 +22,9 @@ public class ParticleSystemRenderHelper extends AbstractRenderHelper implements 
             go.getChild().forEach(p -> drawPoint(g, p.position, (p.width + p.height) / 2, p.color));
         }
     }
+
+    @Override
+    public void drawDebugInfo(Graphics2D g, ParticleSystem go) {
+        super.drawDebugInfo(g, go);
+    }
 }

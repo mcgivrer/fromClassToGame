@@ -12,21 +12,37 @@ public class ParticleSystem extends GameObject {
     public List<Behavior<Particle>> pBehave = new ArrayList<>();
     private int nbMaxParticle = 20;
     private boolean restart = false;
+    private int feedNbParticle;
+    private long emitFreq = 100;
+    private long emitCpt = 0;
 
     public ParticleSystem(String objectName, Vector2d pos) {
         super(objectName, pos);
         this.life = -1;
     }
 
+    public ParticleSystem setFeeding(int feedNbParticle) {
+        this.feedNbParticle = feedNbParticle;
+        return this;
+    }
+
+    public ParticleSystem setEmitFrequency(long f) {
+        this.emitFreq = f;
+        return this;
+    }
 
     public ParticleSystem create(int nb) {
         nbMaxParticle = nb;
-        for (int i = 0; i < nbMaxParticle; i++) {
+        createParticles(nb);
+        return this;
+    }
+
+    private void createParticles(int nb) {
+        for (int i = 0; i < nb; i++) {
             Particle p = new Particle();
             onCreateParticle(p);
             child.add(p);
         }
-        return this;
     }
 
     private void onCreateParticle(Particle p) {
@@ -38,6 +54,11 @@ public class ParticleSystem extends GameObject {
     @Override
     public void update(long dt) {
         super.update(dt);
+        emitCpt += dt;
+        if (emitCpt > emitFreq) {
+            createParticles(feedNbParticle);
+            emitCpt = 0;
+        }
         if (pBehave.size() > 0) {
             for (GameObject go : child) {
                 Particle particle = (Particle) go;
