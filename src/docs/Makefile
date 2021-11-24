@@ -2,7 +2,7 @@
 DEPENDENCIES= toc preface about
 
 # Placement of your HTML files
-DOCS=docs/chapters
+DOCS=../../docs/chapters
 
 all: web
 
@@ -23,8 +23,8 @@ setup:
 
 $(DEPENDENCIES):
         @mkdir -p $(DOCS)/$@
-        @pandoc -s --toc web-metadata.yaml parts/$@.md \
-        -c /assets/pandoc.css -o $(DOCS)/$@/index.html
+        @pandoc -s --toc theme/web-metadata.yaml parts/$@.md \
+        -c /assets/ebook.css -o $(DOCS)/$@/index.html
 
 clean:
         @rm -rf $(DOCS)

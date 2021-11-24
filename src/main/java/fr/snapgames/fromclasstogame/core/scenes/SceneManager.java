@@ -35,7 +35,7 @@ public class SceneManager extends System {
 
     @Override
     public String getName() {
-        return SceneManager.class.getName();
+        return "Scene Manager";
     }
 
     @Override
@@ -105,7 +105,7 @@ public class SceneManager extends System {
                 s = instantiateScene(name);
             }
             if (s != null) {
-                s.activate();
+                s.setName(name);
                 setCurrent(s);
             }
         }

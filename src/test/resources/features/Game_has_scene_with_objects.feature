@@ -5,6 +5,7 @@ Feature: The game has scene with different types of GameObject.
   Scenario Outline: 01 - The Game has one GameObject
     Given the Game is instantiated
     And the Game is running
+    And I activate the scene "test1"
     And I add a GameObject named <name> at (<x>,<y>)
     And the <name> size is <w> x <h>
     Then the Game has <i> GameObject at window center.
@@ -15,6 +16,7 @@ Feature: The game has scene with different types of GameObject.
   Scenario: 02 - The Game has multiple GameObjects
     Given the Game is instantiated
     And the Game is running
+    And I activate the scene "test1"
     And I add a GameObject named "player" at (160.0,100.0)
     And I add a GameObject named "enemy_1" at (10.0,30.0)
     And I add a GameObject named "enemy_2" at (10.0,10.0)
@@ -25,6 +27,7 @@ Feature: The game has scene with different types of GameObject.
     When I prepare the arguments
     And I add argument "fps=60"
     And the Game is running
+    And I activate the scene "test1"
     And I add a GameObject named "player" at (160.0,100.0)
     And the "player" GameObject velocity is set to (5,5)
     Then I update 2 times the scene
@@ -35,6 +38,7 @@ Feature: The game has scene with different types of GameObject.
   Scenario: 04 - The Game can have TextObject
     Given the Game is instantiated
     And the Game is running
+    And I activate the scene "test1"
     And I add a TextObject named "score" at (10.0,10.0)
     And the text for "score" is "0000"
     Then the Game has 1 GameObject(s).
@@ -42,12 +46,14 @@ Feature: The game has scene with different types of GameObject.
   Scenario: 05 - The default TextObject text color is white
     Given the Game is instantiated
     And the Game is running
+    And I activate the scene "test1"
     And I add a TextObject named "score" at (10.0,10.0)
     Then the TextObject default color for "score" is White
 
   Scenario: 06 - there is no default font on TextObject
     Given the Game is instantiated
     And the Game is running
+    And I activate the scene "test1"
     And I add a TextObject named "score" at (10.0,10.0)
     Then the TextObject default font for "score" is null
 

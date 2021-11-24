@@ -1,4 +1,4 @@
-package features.system;
+package fr.snapgames.fromclasstogame.test.system;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;

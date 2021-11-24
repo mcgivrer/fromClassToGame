@@ -51,4 +51,6 @@ public interface Scene extends ActionHandler.ActionListener {
     List<Behavior<Scene>> getBehaviors();
 
     Game getGame();
+
+    void setName(String name);
 }

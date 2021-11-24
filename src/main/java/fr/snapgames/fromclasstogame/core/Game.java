@@ -106,7 +106,6 @@ public class Game implements ActionHandler.ActionListener {
 
         sceneManager = (SceneManager) SystemManager.get(SceneManager.class);
         logger.info("** > Game initialized at {}", System.currentTimeMillis());
-
     }
 
     /**

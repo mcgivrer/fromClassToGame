@@ -65,7 +65,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
         assertTrue("The TestObject " + objectName + " has not been rendered", to.getFlag());
     }
 
-    @And("I add a {string} as scene")
+    @And("I add a {string} as Scene")
     public void iAddATestScene(String sceneName) {
         SceneManager sm = (SceneManager) SystemManager.get(SceneManager.class);
         sm.addScene(sceneName);
