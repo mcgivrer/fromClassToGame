@@ -6,7 +6,6 @@ import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

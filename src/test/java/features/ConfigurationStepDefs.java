@@ -17,6 +17,7 @@ public class ConfigurationStepDefs implements En {
     public ConfigurationStepDefs() {
         Given("the Configuration object is initialized with {string}", (String configFilename) -> {
             config = new Configuration(configFilename);
+            config.parseArgs(new String[]{});
         });
         Then("the properties are loaded", () -> {
             assertNotNull("properties have not been loaded", config.defaultValues);

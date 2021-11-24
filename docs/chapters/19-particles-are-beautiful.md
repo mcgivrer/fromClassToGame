@@ -209,3 +209,6 @@ public class ParticleSystemRenderHelper extends AbstractRenderHelper implements 
 ### Using particle ?
 
 TODO
+
+## Special Effects
+TODO
