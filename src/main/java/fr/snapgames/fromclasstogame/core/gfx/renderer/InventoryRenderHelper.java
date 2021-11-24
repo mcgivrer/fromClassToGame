@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InventoryRenderHelper implements RenderHelper {
+public class InventoryRenderHelper extends AbstractRenderHelper implements RenderHelper<InventoryObject> {
     private BufferedImage selector;
     private BufferedImage selected;
     private int spacing = 2;
@@ -31,7 +31,7 @@ public class InventoryRenderHelper implements RenderHelper {
     }
 
     @Override
-    public void draw(Graphics2D g, Object o) {
+    public void draw(Graphics2D g, InventoryObject o) {
         InventoryObject go = (InventoryObject) o;
 
         // retrieve all object from the inventory
@@ -55,5 +55,10 @@ public class InventoryRenderHelper implements RenderHelper {
                         (int) ry + 1 + dy, null);
             }
         }
+    }
+
+    @Override
+    public void drawDebugInfo(Graphics2D g, InventoryObject go) {
+        super.drawDebugInfo(g, go);
     }
 }

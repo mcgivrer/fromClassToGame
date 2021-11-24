@@ -59,10 +59,8 @@ public class GameObject implements Entity {
      * List of behaviors to be applied on this GameObject
      */
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
-
-    /**
-     * Internal GameObject specific attributes.
-     */
+    public int debugOffsetX;
+    public int debugOffsetY;
     protected Map<String, Object> attributes = new HashMap<>();
 
     /**
@@ -149,12 +147,16 @@ public class GameObject implements Entity {
      * @return a list of String for debugging information display.
      */
     public List<String> getDebugInfo() {
+        this.debugOffsetX = 20;
+        this.debugOffsetY = 20;
         List<String> debugInfo = new ArrayList<>();
         debugInfo.add("n:" + name);
         debugInfo.add("pos:" + position.toString());
         debugInfo.add("vel:" + velocity.toString());
         debugInfo.add("acc:" + acceleration.toString());
-        debugInfo.add("friction:" + material.dynFriction);
+        if (material != null) {
+            debugInfo.add("friction:" + material.dynFriction);
+        }
         debugInfo.add("contact:" + getAttribute("touching", false));
         debugInfo.add("jumping:" + getAttribute("jumping", false));
         return debugInfo;

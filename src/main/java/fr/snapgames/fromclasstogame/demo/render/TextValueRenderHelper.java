@@ -1,11 +1,11 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
-import java.awt.Graphics2D;
-
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.demo.entity.TextValueObject;
+
+import java.awt.*;
 
 public class TextValueRenderHelper extends AbstractRenderHelper implements RenderHelper<TextValueObject> {
 
@@ -24,4 +24,8 @@ public class TextValueRenderHelper extends AbstractRenderHelper implements Rende
         return TextValueObject.class.getName();
     }
 
+    @Override
+    public void drawDebugInfo(Graphics2D g, TextValueObject go) {
+        super.drawDebugInfo(g, go);
+    }
 }
