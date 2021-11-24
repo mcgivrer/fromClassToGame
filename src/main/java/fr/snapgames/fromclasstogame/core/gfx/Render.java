@@ -58,9 +58,9 @@ public class Render extends System {
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
 
-        setCamera(g, -camera.position.x, -camera.position.y);
+        moveFocusToCamera(g, camera, -1);
         drawObjectList(g, objects);
-        setCamera(g, camera.position.x, camera.position.y);
+        moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
 
         g.dispose();
@@ -79,9 +79,9 @@ public class Render extends System {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
 
-    private void setCamera(Graphics2D g, double v, double v2) {
+    private void moveFocusToCamera(Graphics2D g, Camera camera, double direction) {
         if (camera != null) {
-            g.translate(v, v2);
+            g.translate(camera.position.x * direction, camera.position.y * direction);
         }
     }
 
@@ -162,7 +162,7 @@ public class Render extends System {
         return renderHelpers;
     }
 
-    public Render setCamera(Camera c) {
+    public Render moveFocusToCamera(Camera c) {
         camera = c;
         return this;
     }

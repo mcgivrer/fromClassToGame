@@ -21,7 +21,7 @@ public class PhysicEngine extends System {
 
     @Override
     public String getName() {
-        return PhysicEngine.class.getName();
+        return "PhysicEngine";
     }
 
     @Override
