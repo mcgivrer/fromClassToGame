@@ -305,6 +305,9 @@ public class DemoScene extends AbstractScene {
                     randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
                 });
                 break;
+            case KeyEvent.VK_F:
+                find("PS_").forEach(o -> o.active = !o.active);
+                break;
             case KeyEvent.VK_G:
                 ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.multiply(-1);
                 break;
