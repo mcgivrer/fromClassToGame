@@ -94,6 +94,7 @@ public class Configuration {
     public Configuration(String configurationPath) {
         try {
             cm = new CliManager();
+            this.configPath = configurationPath;
             initializeArgParser(configurationPath);
             logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath,
                     System.currentTimeMillis());
@@ -139,6 +140,7 @@ public class Configuration {
         ResourceBundle.clearCache(this.getClass().getClassLoader());
         ResourceBundle config = ResourceBundle.getBundle(this.configPath, Locale.ROOT,
                 this.getClass().getClassLoader());
+        this.defaultValues = config;
         if (config != null) {
             cm.parseConfigFile(config);
             getValuesFromCM();
@@ -166,11 +168,14 @@ public class Configuration {
     }
 
     public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
+        // parse argument a first time to detect a different config file is provided
         cm.parseArguments(argv);
         getValuesFromCM();
-
+        // read default values from config files
         readValuesFromFile();
-
+        // reparse args to override the mandatory attributes
+        cm.parseArguments(argv);
+        // retrieve the final values and set the useful config.
         getValuesFromCM();
         return this;
     }

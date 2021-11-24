@@ -63,7 +63,7 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (!cameras.containsKey(go.name)) {
                 cameras.put(go.name, (Camera) go);
-                game.getRender().setCamera((Camera) go);
+                game.getRender().moveFocusToCamera((Camera) go);
             }
             if (activeCamera == null) {
                 activeCamera = (Camera) go;
@@ -83,7 +83,7 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (cameras.containsKey(go.name)) {
                 cameras.remove(go.name);
-                game.getRender().setCamera(null);
+                game.getRender().moveFocusToCamera(null);
             }
             if (activeCamera.equals(go)) {
                 activeCamera = null;
@@ -175,6 +175,11 @@ public abstract class AbstractScene implements Scene {
 
     public String getName() {
         return sceneName;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.sceneName = name;
     }
 
     public Game getGame() {

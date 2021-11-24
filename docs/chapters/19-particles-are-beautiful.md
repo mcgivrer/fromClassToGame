@@ -164,3 +164,17 @@ TODO
 ### Update
 
 TODO
+
+## Special Effects
+
+The goal of the Particle System is mainly to provide special effects to the games. Here are some samples for fire and
+rain.
+
+### Fire
+
+TODO
+
+### Rain
+
+TODO
+
