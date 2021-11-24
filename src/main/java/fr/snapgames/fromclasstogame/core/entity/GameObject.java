@@ -92,6 +92,7 @@ public class GameObject implements Entity {
         }
         debugInfo.add("contact:" + getAttribute("touching", false));
         debugInfo.add("jumping:" + getAttribute("jumping", false));
+        debugInfo.add("active:"+(active?"on":"off"));
         return debugInfo;
     }
 
