@@ -21,7 +21,7 @@ public class PhysicEngine extends System {
 
     @Override
     public String getName() {
-        return PhysicEngine.class.getName();
+        return "PhysicEngine";
     }
 
     @Override
@@ -39,8 +39,10 @@ public class PhysicEngine extends System {
 
     public void update(long dt) {
         try {
-            for (GameObject go : getObjects()) {
-                update(go, dt);
+            if (!game.isPause()) {
+                for (GameObject go : getObjects()) {
+                    update(go, dt);
+                }
             }
         } catch (ConcurrentModificationException e) {
             logger.error("Unable to update the GameObjects");
@@ -87,6 +89,11 @@ public class PhysicEngine extends System {
             // Compute position
             go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
             go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
+
+            // apply Object behaviors computations
+            if (go.behaviors.size() > 0) {
+                go.behaviors.forEach(b -> b.onUpdate(go, dt));
+            }
 
 
             // test World space constrained

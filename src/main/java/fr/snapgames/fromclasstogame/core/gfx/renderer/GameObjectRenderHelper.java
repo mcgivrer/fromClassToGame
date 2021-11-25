@@ -1,14 +1,13 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
-import java.awt.*;
-
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
+
 public class GameObjectRenderHelper extends AbstractRenderHelper implements RenderHelper<GameObject> {
     private static final Logger logger = LoggerFactory.getLogger(GameObjectRenderHelper.class);
-
 
 
     @Override
@@ -38,27 +37,6 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
                 break;
         }
         drawDebugInfo(g, go);
-    }
-
-    private void drawDebugInfo(Graphics2D g, GameObject go) {
-        if (go.getDebug() > 1) {
-            setColor(g, debugBoxColor);
-            drawText(g, "#" + go.id, go.position.x, go.position.y);
-            drawRect(g, go.position, go.width, go.height, 1, 1, debugBoxColor);
-            if (go.getDebug() > 2) {
-                setFontSize(g, 9);
-                double offsetY = -40;
-                double offsetX = go.width + 8;
-                int height = ((go.getDebugInfo().size()+2)*9);
-                fillRect(g, go.position, 100, height, go.width + 1, offsetY - 12, debugBackgroundColor);
-                setColor(g, debugFrontColor);
-                int i = 0;
-                for (String line : go.getDebugInfo()) {
-                    drawText(g, line, go.position, offsetX, offsetY + i);
-                    i += 10;
-                }
-            }
-        }
     }
 
     @Override

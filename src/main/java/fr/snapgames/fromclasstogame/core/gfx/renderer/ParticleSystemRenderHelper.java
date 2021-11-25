@@ -20,8 +20,10 @@ public class ParticleSystemRenderHelper extends AbstractRenderHelper implements 
     public void draw(Graphics2D g, ParticleSystem go) {
         if (g != null) {
             go.particles.forEach(p -> {
-                drawPoint(g, p.position, p.size, color);
+                drawPoint(g, p.position, p.size, p.color);
             });
+            drawDebugInfo(g, go);
         }
+
     }
 }

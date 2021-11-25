@@ -1,7 +1,10 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.behaviors.particle.BasicParticleBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
+import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -16,10 +19,7 @@ import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
-import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
-import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
-import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
@@ -100,11 +100,11 @@ public class DemoScene extends AbstractScene {
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
                 .setLayer(1)
-                .setPriority(0)
+                .setPriority(2)
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                .setDebug(0)
+                //.setDebug(3)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
@@ -126,6 +126,7 @@ public class DemoScene extends AbstractScene {
 
 
         // add a background image
+
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
                 .setType(GameObject.GOType.IMAGE)
@@ -134,17 +135,28 @@ public class DemoScene extends AbstractScene {
         add(bckG);
 
         // add a ParticleSystem
-        ParticleSystem ps = new ParticleSystem("PS_test", player.position).create(100);
-        ps.addParticleBehavior(new BasicParticleBehavior(ps));
-        ps.add(new CopyObjectPosition(player));
-        ps.setLayer(1);
-        ps.setPriority(1);
-        ps.setDebug(3);
+        ParticleSystem ps = new ParticleSystem("PS_test", player.position);
+        ps.addParticleBehavior(
+                        new FireParticleBehavior(ps, 1200, true)
+                                .setColor(Color.YELLOW))
+                .create(10)
+                .setFeeding(2)
+                .setEmitFrequency(500)
+                .add(new CopyObjectPosition(player, new Vector2d(7, -4)))
+                .setLayer(1)
+                .setPriority(1)
+                .setDebug(3);
         add(ps);
 
         // add score display.
-        ScoreObject scoreTO = (ScoreObject) new ScoreObject("score", new Vector2d(10, 4)).setScore(score).relativeToCamera(true)
-                .setLayer(1).setColor(Color.WHITE).setPriority(10);
+        ScoreObject scoreTO = (ScoreObject) new ScoreObject(
+                "score",
+                new Vector2d(10, 4))
+                .setScore(score)
+                .relativeToCamera(true)
+                .setLayer(1)
+                .setColor(Color.WHITE)
+                .setPriority(10);
         add(scoreTO);
 
         LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).relativeToCamera(true);
@@ -170,9 +182,12 @@ public class DemoScene extends AbstractScene {
         // shuffle `enemy_*`'s object's position and acceleration
         randomizeFilteredGameObject("enemy_");
 
-        TextObject welcome = new TextObject("welcomeMsg", new Vector2d(40, 100))
+        // Welcome text at middle bottom center game screen
+        double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
+        double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
+        TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
-        welcome.setDuration(2000).setLayer(0).setPriority(1).relativeToCamera(true);
+        welcome.setDuration(5000).setLayer(0).setPriority(1).relativeToCamera(true);
 
         add(welcome);
 
@@ -192,7 +207,6 @@ public class DemoScene extends AbstractScene {
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
                     .setPriority(3)
                     .setSize(8, 8);
-
             randomizePosAndAccGameObject(e);
             add(e);
         }
@@ -214,7 +228,7 @@ public class DemoScene extends AbstractScene {
     }
 
     private synchronized void randomizeFilteredGameObject(String rootName) {
-        find(rootName).forEach(go -> randomizePosAndAccGameObject(go));
+        find(rootName).forEach(this::randomizePosAndAccGameObject);
     }
 
     private GameObject randomizePosAndAccGameObject(GameObject go) {
@@ -255,9 +269,7 @@ public class DemoScene extends AbstractScene {
         super.keyPressed(e);
         switch (e.getKeyCode()) {
             case KeyEvent.VK_S:
-                find("enemy_").forEach(o -> {
-                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-                });
+                find("enemy_").forEach(o -> randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6));
                 break;
             default:
                 break;
@@ -269,7 +281,7 @@ public class DemoScene extends AbstractScene {
         super.keyReleased(e);
         ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
         int nbEnemies = 10;
-        if (ah.getCtrl()) {
+        if (ah != null && ah.getCtrl()) {
             nbEnemies = 50;
         }
 
@@ -285,12 +297,16 @@ public class DemoScene extends AbstractScene {
                 removeEnemies(nbEnemies);
                 break;
             case KeyEvent.VK_S:
-                find("enemy_").forEach(o -> {
-                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-                });
+                find("enemy_").forEach(o -> randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6));
+                break;
+            case KeyEvent.VK_F:
+                find("PS_").forEach(o -> o.active = !o.active);
                 break;
             case KeyEvent.VK_G:
-                ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.multiply(-1);
+                World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
+                if (world != null) {
+                    world.gravity.multiply(-1);
+                }
                 break;
             default:
                 break;

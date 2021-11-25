@@ -58,10 +58,11 @@ public class Render extends System {
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
 
-        setCamera(g, -camera.position.x, -camera.position.y);
+        moveFocusToCamera(g, camera, -1);
         drawObjectList(g, objects);
-        setCamera(g, camera.position.x, camera.position.y);
+        moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
+        drawPauseText(g);
 
         g.dispose();
         if (renderScreenshot) {
@@ -69,8 +70,15 @@ public class Render extends System {
             renderScreenshot = false;
         }
 
-        objects.stream().filter(o -> !o.active).forEach(o -> objects.remove(o));
-        objectsRelativeToCamera.stream().filter(o -> !o.active).forEach(o -> objectsRelativeToCamera.remove(o));
+        //objects.stream().filter(o -> !o.active).forEach(o -> objects.remove(o));
+        //objectsRelativeToCamera.stream().filter(o -> !o.active).forEach(o -> objectsRelativeToCamera.remove(o));
+    }
+
+    private void drawPauseText(Graphics2D g) {
+        if (game.isPause()) {
+            g.setColor(Color.WHITE);
+            g.drawString("Game Paused", 10, this.buffer.getHeight() - 20);
+        }
     }
 
     private void setRenderingHintsList(Graphics2D g) {
@@ -79,9 +87,9 @@ public class Render extends System {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
 
-    private void setCamera(Graphics2D g, double v, double v2) {
+    private void moveFocusToCamera(Graphics2D g, Camera camera, double direction) {
         if (camera != null) {
-            g.translate(v, v2);
+            g.translate(camera.position.x * direction, camera.position.y * direction);
         }
     }
 
@@ -161,7 +169,7 @@ public class Render extends System {
         return renderHelpers;
     }
 
-    public Render setCamera(Camera c) {
+    public Render moveFocusToCamera(Camera c) {
         camera = c;
         return this;
     }

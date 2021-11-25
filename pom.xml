@@ -207,7 +207,7 @@
                 <configuration>
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
-                    <source>${java.version}</source>
+                    <source>1.8</source>
                     <show>public</show>
                     <failOnError>false</failOnError>
                     <failOnWarnings>false</failOnWarnings>
@@ -357,8 +357,13 @@
                         <configuration>
                             <projectName>${project.name}</projectName>
                             <outputDirectory>${project.build.directory}/site/cucumber-reports</outputDirectory>
+                            <jsonFiles>
+                                <!-- supports wildcard or name pattern -->
+                                <param>**/*.json</param>
+                            </jsonFiles>
                             <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
-                            <skippedFails>true</skippedFails>
+                            <skip>true</skip>
+                            <mergeFeaturesById>true</mergeFeaturesById>
                             <buildNumber>4</buildNumber>
                         </configuration>
                     </execution>
@@ -479,7 +484,7 @@
             </build>
         </profile>
         <profile>
-            <id>doc-epub</id>
+            <id>create-epub</id>
             <build>
                 <plugins>
                     <!-- generate and ebook (EPUB) width docs/ documentation content -->
@@ -495,9 +500,28 @@
                                     <executable>pandoc</executable>
                                     <workingDirectory/>
                                     <arguments>
-                                        <argument>docs/ebook-metadata.yml</argument>
-                                        <!--argument>docs/00-.md</argument -->
-                                        <argument>--resource-path=docs/</argument>
+                                        <argument>docs/epub-metadata.yml</argument>
+                                        <argument>docs/index.md</argument>
+                                        <argument>docs/chapters/01-a-class.md</argument>
+                                        <argument>docs/chapters/02-adding-a-structure.md</argument>
+                                        <argument>docs/chapters/03-delegate-things.md</argument>
+                                        <argument>docs/chapters/04-the-object-game.md</argument>
+                                        <argument>docs/chapters/05-input-handler.md</argument>
+                                        <argument>docs/chapters/06-new-components.md</argument>
+                                        <argument>docs/chapters/07-resource-manager.md</argument>
+                                        <argument>docs/chapters/08-scene-manager.md</argument>
+                                        <argument>docs/chapters/09-extract-configuration.md</argument>
+                                        <argument>docs/chapters/10-refactoring-packages.md</argument>
+                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/12-see-through-camera.md</argument>
+                                        <argument>docs/chapters/13-basic-physic-engine.md</argument>
+                                        <argument>docs/chapters/14-collision-system.md</argument>
+                                        <argument>docs/chapters/16-gameobject-and-behaviors.md</argument>
+                                        <argument>docs/chapters/17-inventory.md</argument>
+                                        <argument>docs/chapters/18-enhanced-behavior.md</argument>
+                                        <argument>docs/chapters/19-particles-are-beautiful.md</argument>
+                                        <argument>docs/chapters/100-architecture.md</argument>
+                                        <argument>--resource-path=docs/chapters</argument>
                                         <argument>--toc</argument>
                                         <argument>--toc-depth=2</argument>
                                         <argument>-t</argument>
@@ -516,7 +540,7 @@
             </build>
         </profile>
         <profile>
-            <id>doc-pdf</id>
+            <id>create-pdf</id>
             <build>
                 <plugins>
                     <!-- generate PDF width docs/ documentation content -->
@@ -532,8 +556,27 @@
                                     <executable>pandoc</executable>
                                     <workingDirectory/>
                                     <arguments>
-                                        <argument>docs/ebook-metadata.yml</argument>
-
+                                        <argument>docs/epub-metadata.yml</argument>
+                                        <argument>docs/index.md</argument>
+                                        <argument>docs/chapters/01-a-class.md</argument>
+                                        <argument>docs/chapters/02-adding-a-structure.md</argument>
+                                        <argument>docs/chapters/03-delegate-things.md</argument>
+                                        <argument>docs/chapters/04-the-object-game.md</argument>
+                                        <argument>docs/chapters/05-input-handler.md</argument>
+                                        <argument>docs/chapters/06-new-components.md</argument>
+                                        <argument>docs/chapters/07-resource-manager.md</argument>
+                                        <argument>docs/chapters/08-scene-manager.md</argument>
+                                        <argument>docs/chapters/09-extract-configuration.md</argument>
+                                        <argument>docs/chapters/10-refactoring-packages.md</argument>
+                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/12-see-through-camera.md</argument>
+                                        <argument>docs/chapters/13-basic-physic-engine.md</argument>
+                                        <argument>docs/chapters/14-collision-system.md</argument>
+                                        <argument>docs/chapters/16-gameobject-and-behaviors.md</argument>
+                                        <argument>docs/chapters/17-inventory.md</argument>
+                                        <argument>docs/chapters/18-enhanced-behavior.md</argument>
+                                        <argument>docs/chapters/19-particles-are-beautiful.md</argument>
+                                        <argument>docs/chapters/100-architecture.md</argument>
                                         <!--argument>docs/00-.md</argument -->
                                         <argument>--resource-path=docs/</argument>
                                         <argument>--toc</argument>
@@ -566,7 +609,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.21</version>
+                        <version>2.1.2</version>
                         <executions>
                             <execution>
                                 <id>l4j-clui</id>
