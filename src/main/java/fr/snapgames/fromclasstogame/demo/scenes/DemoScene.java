@@ -4,9 +4,7 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
 import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
-import fr.snapgames.fromclasstogame.core.behaviors.particle.BasicParticleBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
-import fr.snapgames.fromclasstogame.core.config.cli.Vector2dArgParser;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -185,8 +183,8 @@ public class DemoScene extends AbstractScene {
         randomizeFilteredGameObject("enemy_");
 
         // Welcome text at middle bottom center game screen
-        double tPosX = game.getRender().getBuffer().getWidth() / 3;
-        double tPosY = (game.getRender().getBuffer().getHeight() / 5) * 4;
+        double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
+        double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
         welcome.setDuration(5000).setLayer(0).setPriority(1).relativeToCamera(true);
@@ -230,7 +228,7 @@ public class DemoScene extends AbstractScene {
     }
 
     private synchronized void randomizeFilteredGameObject(String rootName) {
-        find(rootName).forEach(go -> randomizePosAndAccGameObject(go));
+        find(rootName).forEach(this::randomizePosAndAccGameObject);
     }
 
     private GameObject randomizePosAndAccGameObject(GameObject go) {
@@ -271,9 +269,7 @@ public class DemoScene extends AbstractScene {
         super.keyPressed(e);
         switch (e.getKeyCode()) {
             case KeyEvent.VK_S:
-                find("enemy_").forEach(o -> {
-                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-                });
+                find("enemy_").forEach(o -> randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6));
                 break;
             default:
                 break;
@@ -285,7 +281,7 @@ public class DemoScene extends AbstractScene {
         super.keyReleased(e);
         ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
         int nbEnemies = 10;
-        if (ah.getCtrl()) {
+        if (ah != null && ah.getCtrl()) {
             nbEnemies = 50;
         }
 
@@ -301,15 +297,16 @@ public class DemoScene extends AbstractScene {
                 removeEnemies(nbEnemies);
                 break;
             case KeyEvent.VK_S:
-                find("enemy_").forEach(o -> {
-                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-                });
+                find("enemy_").forEach(o -> randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6));
                 break;
             case KeyEvent.VK_F:
                 find("PS_").forEach(o -> o.active = !o.active);
                 break;
             case KeyEvent.VK_G:
-                ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.multiply(-1);
+                World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
+                if (world != null) {
+                    world.gravity.multiply(-1);
+                }
                 break;
             default:
                 break;

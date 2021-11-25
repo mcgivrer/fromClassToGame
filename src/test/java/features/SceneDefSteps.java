@@ -1,11 +1,5 @@
 package features;
 
-import static fr.snapgames.fromclasstogame.test.TestUtils.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.awt.Dimension;
-
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
@@ -14,12 +8,17 @@ import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
-import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.test.TestUtils;
 import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+
+import java.awt.*;
+
+import static fr.snapgames.fromclasstogame.test.TestUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SceneDefSteps extends CommonDefSteps {
 
@@ -67,7 +66,7 @@ public class SceneDefSteps extends CommonDefSteps {
 
     @Then("I activate the scene {string}")
     public void iCanActivateTheScene(String sceneName) {
-        TestUtils.activateScene(sceneName);
+        activateScene(sceneName);
     }
 
     @Then("I can dispose all scenes.")

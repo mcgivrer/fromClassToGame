@@ -1,11 +1,8 @@
 package fr.snapgames.fromclasstogame.core.behaviors.particle;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.Particle;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
@@ -14,7 +11,7 @@ import java.awt.*;
 public class FireParticleBehavior extends BasicParticleBehavior implements Behavior<Particle> {
 
     public FireParticleBehavior(ParticleSystem ps, int defaultLifeTimeMS, boolean restart) {
-        super(ps,defaultLifeTimeMS,restart);
+        super(ps, defaultLifeTimeMS, restart);
     }
 
     @Override
@@ -30,13 +27,8 @@ public class FireParticleBehavior extends BasicParticleBehavior implements Behav
     }
 
     @Override
-    public void onInput(Particle go, ActionHandler ih) {
-
-    }
-
-    @Override
     public void onUpdate(Particle p, long dt) {
-        super.onUpdate(p,dt);
+        super.onUpdate(p, dt);
         p.life -= dt;
         p.color = fade(p.color, dt);
         if (p.size > 0) {
@@ -48,25 +40,14 @@ public class FireParticleBehavior extends BasicParticleBehavior implements Behav
     }
 
     private Color fade(Color c0, float dt) {
-        Color c1 = new Color(
+        return new Color(
                 rollColor(c0.getRed(), dt),
                 rollColor(c0.getGreen(), dt),
                 rollColor(c0.getBlue(), dt),
                 rollColor(c0.getAlpha(), dt));
-        return c1;
     }
 
     private float rollColor(int c, float dt) {
         return (float) Utils.range(c - (dt / 255.0), 0.0, 1.0);
-    }
-
-    @Override
-    public void onRender(Particle go, Render r) {
-
-    }
-
-    @Override
-    public void onAction(Particle go, ActionHandler.ACTIONS action) {
-
     }
 }
