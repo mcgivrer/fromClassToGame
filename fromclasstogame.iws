@@ -5,10 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="491ff604-aa87-4d6b-9b85-867a48d78f40" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/fromclasstogame.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.ipr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fromclasstogame.iws" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.iws" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/Render.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/Render.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/PhysicEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/PhysicEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/Behavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/Behavior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/CopyObjectPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/CopyObjectPosition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/DebugSwitcherBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/DebugSwitcherBehavior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/PlayerActionBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/PlayerActionBehavior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/particle/BasicParticleBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/particle/BasicParticleBehavior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/io/ActionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/io/ActionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/scenes/AbstractScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/scenes/AbstractScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/scenes/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/scenes/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/scenes/SceneManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/scenes/SceneManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/behaviors/InventorySelectorBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/behaviors/InventorySelectorBehavior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/fr/snapgames/fromclasstogame/test/behaviors/TestBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/fr/snapgames/fromclasstogame/test/behaviors/TestBehavior.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
