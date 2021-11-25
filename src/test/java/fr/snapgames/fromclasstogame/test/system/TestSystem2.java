@@ -4,14 +4,17 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.system.System;
 
+/**
+ * This is also a TestSystem  for test purpose, avoiding mockup.
+ */
 public class TestSystem2 extends System {
+    public TestSystem2(Game g) {
+        super(g);
+    }
+
     @Override
     public String getName() {
         return TestSystem2.class.getName();
-    }
-
-    public TestSystem2(Game g) {
-        super(g);
     }
 
     @Override
@@ -21,6 +24,6 @@ public class TestSystem2 extends System {
 
     @Override
     public void dispose() {
-
+        // nothing specific to be implemented here, only for test purpose.
     }
 }
