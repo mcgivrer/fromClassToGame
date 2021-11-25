@@ -21,7 +21,7 @@ public class Material {
         RUBBER(new Material("rubber", 0.8, 0.88, 0.98, 0.3)),
         GLASS(new Material("glass", 0.4, 1, 1, 1)),
         ICE(new Material("ice", 0.1, 0.1, 1, 1)),
-        AIR(new Material("air", 1, 1, 1, 1)),
+        AIR(new Material("air", 1, 1, 1, 0.01)),
         STATIC(new Material("static", 0, 0, 0, 0)),
         NEUTRAL(new Material("neutral", 1, 1, 1, 1));
 
@@ -43,7 +43,7 @@ public class Material {
 
     public static final Map<String, Material> materials = new HashMap<>();
 
-    private final String name;
+    public String name;
 
     public double bounciness;
     public double dynFriction;
