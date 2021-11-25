@@ -15,16 +15,6 @@ import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownExc
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 public class Configuration {
-<<<<<<< HEAD
-        
-        private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
-
-        public ResourceBundle defaultValues = ResourceBundle.getBundle("config",Locale.ROOT);
-
-        public CliManager cm;
-        public String levelPath;
-        public String title = "fromClassToGame";
-=======
     /**
      * path to the default configuration file
      */
@@ -34,7 +24,6 @@ public class Configuration {
      * default scene code to be activated
      */
     private static final String CFG_KEY_SCENE = "scene";
->>>>>>> a29d340ad9fb966abeeb35e957958430525a0fac
 
     /**
      * list of scenes
@@ -105,6 +94,7 @@ public class Configuration {
     public Configuration(String configurationPath) {
         try {
             cm = new CliManager();
+            this.configPath = configurationPath;
             initializeArgParser(configurationPath);
             logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath,
                     System.currentTimeMillis());
@@ -148,8 +138,9 @@ public class Configuration {
     public void readValuesFromFile() {
 
         ResourceBundle.clearCache(this.getClass().getClassLoader());
-        ResourceBundle config = ResourceBundle.getBundle(this.configPath, Locale.ENGLISH,
+        ResourceBundle config = ResourceBundle.getBundle(this.configPath, Locale.ROOT,
                 this.getClass().getClassLoader());
+        this.defaultValues = config;
         if (config != null) {
             cm.parseConfigFile(config);
             getValuesFromCM();
@@ -177,11 +168,14 @@ public class Configuration {
     }
 
     public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
+        // parse argument a first time to detect a different config file is provided
         cm.parseArguments(argv);
         getValuesFromCM();
-
+        // read default values from config files
         readValuesFromFile();
-
+        // reparse args to override the mandatory attributes
+        cm.parseArguments(argv);
+        // retrieve the final values and set the useful config.
         getValuesFromCM();
         return this;
     }
