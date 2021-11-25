@@ -62,6 +62,7 @@ public class Render extends System {
         drawObjectList(g, objects);
         moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
+        drawPauseText(g);
 
         g.dispose();
         if (renderScreenshot) {
@@ -69,8 +70,15 @@ public class Render extends System {
             renderScreenshot = false;
         }
 
-        objects.stream().filter(o -> !o.active).forEach(o -> objects.remove(o));
-        objectsRelativeToCamera.stream().filter(o -> !o.active).forEach(o -> objectsRelativeToCamera.remove(o));
+        //objects.stream().filter(o -> !o.active).forEach(o -> objects.remove(o));
+        //objectsRelativeToCamera.stream().filter(o -> !o.active).forEach(o -> objectsRelativeToCamera.remove(o));
+    }
+
+    private void drawPauseText(Graphics2D g) {
+        if (game.isPause()) {
+            g.setColor(Color.WHITE);
+            g.drawString("Game Paused", 10, this.buffer.getHeight() - 20);
+        }
     }
 
     private void setRenderingHintsList(Graphics2D g) {

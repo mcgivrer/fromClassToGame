@@ -36,6 +36,7 @@ public class Game implements ActionHandler.ActionListener {
     private Configuration configuration;
     private CollisionSystem cs;
     private PhysicEngine pe;
+    private boolean pause = false;
 
     /**
      * the mandatory default constructor
@@ -244,6 +245,10 @@ public class Game implements ActionHandler.ActionListener {
             case KeyEvent.VK_ESCAPE:
                 this.exit = true;
                 break;
+            case KeyEvent.VK_P:
+            case KeyEvent.VK_PAUSE:
+                pause = !pause;
+                break;
             default:
                 break;
         }
@@ -282,4 +287,11 @@ public class Game implements ActionHandler.ActionListener {
         return (Render) SystemManager.get(Render.class);
     }
 
+    public boolean isPause() {
+        return this.pause;
+    }
+
+    public void setPause(boolean p) {
+        this.pause = p;
+    }
 }

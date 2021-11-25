@@ -6,13 +6,10 @@ import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 
 public class BasicParticleBehavior implements Behavior<Particle> {
-    private static final Logger logger = LoggerFactory.getLogger(BasicParticleBehavior.class);
 
     /**
      * Parent particle System
@@ -64,11 +61,23 @@ public class BasicParticleBehavior implements Behavior<Particle> {
         return this;
     }
 
+    /**
+     * The only purpose is to provide a default implementation for any Behavior that will take in account user input.
+     *
+     * @param go the particle to be impacted by user input.
+     * @param ih the ActionHandler providing input feedback.
+     */
     @Override
     public void onInput(Particle go, ActionHandler ih) {
 
     }
 
+    /**
+     * Compute the life and physic animation  for the particle.
+     *
+     * @param go the particle to be updated
+     * @param dt the elapsed time since previous call.
+     */
     @Override
     public void onUpdate(Particle go, long dt) {
         if (go.alive) {
@@ -85,7 +94,6 @@ public class BasicParticleBehavior implements Behavior<Particle> {
         go.velocity.add(go.acceleration);
         go.position.add(go.velocity);
 
-        //logger.info("p{}({}):p={},v={},a={}", go.id, time, go.position, go.velocity, go.acceleration);
     }
 
     @Override

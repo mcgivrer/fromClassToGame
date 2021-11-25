@@ -56,4 +56,3 @@ Feature: The game has scene with different types of GameObject.
     And I activate the scene "test1"
     And I add a TextObject named "score" at (10.0,10.0)
     Then the TextObject default font for "score" is null
-
