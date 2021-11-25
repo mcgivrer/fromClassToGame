@@ -172,9 +172,32 @@ rain.
 
 ### Fire
 
-TODO
+Fire is a very simple animation, just pop particle around a small area and apply a default negative and vertical
+acceleration with a small random horizontal deviation and set a short life duration, and repeat ;)
+
+A first basic implementation will set a mono color. but going further, we will apply a color range variation according
+to the particle life duration, moving from yellow, to range and then red, simulating the flam and finally gray to figure
+out the smoke.
+
+```text
++--------+--------+-------+-------------------+
+| yellow | orange |  red  |        gray       |
++--------+--------+-------+-------------------+
+Start                 ==>                   End
+```
+
+_figure 1 - the color range used to animate flam color._
+
+But we will separate animation and rendering.
+
+Animation wil be delegated to dedicated `Behavior`, and rendering, delegated to special `RenderHelper`.
+
+The Fire SFX[^1]
+
 
 ### Rain
 
 TODO
 
+
+[^1]: SFX stands for Special eFfect, and the _X_ is just a fancy decoration ;)
