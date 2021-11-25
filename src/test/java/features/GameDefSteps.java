@@ -220,12 +220,13 @@ public class GameDefSteps extends CommonDefSteps {
         assertNull("The default TextObject font is not null", to.font);
     }
 
-    @And("the Entity {string} as {string} Material")
-    public void theEntityAsMaterial(String entityName, String materialTypeName) {
+    @And("I set Material {string} to the GameObject {string}")
+    public void theEntityAsMaterial(String materialTypeName, String entityName) {
         Scene scene = getCurrentScene();
         GameObject e = scene.getGameObject(entityName);
         // TODO parse materialTypeName to use the right DefaultMaterial.
-        e.material = Material.DefaultMaterial.WOOD.getMaterial();
+        Material mat = Material.DefaultMaterial.valueOf(materialTypeName).getMaterial();
+        e.material = mat;
     }
 
     @Given("the Game is instantiated with config {string}")
@@ -235,4 +236,10 @@ public class GameDefSteps extends CommonDefSteps {
     }
 
 
+    @Then("the GameObject {string} has Material {string}")
+    public void theGameObjectHasMaterial(String entityName, String materialTypeName) {
+        Scene scene = getCurrentScene();
+        GameObject e = scene.getGameObject(entityName);
+        assertEquals("Material has not been set with the right material", materialTypeName, e.material.name);
+    }
 }
