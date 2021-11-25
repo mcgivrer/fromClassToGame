@@ -1,10 +1,6 @@
 ---
-title: From a Class to Game 
-chapter: 100 - Architecture
-author: Frédéric Delorme
-description: Some details about global architecture for the Game framework.
-created: 2021-08-01
-tags: gamedev, architecture
+title: From a Class to Game chapter: 100 - Architecture author: Frédéric Delorme description: Some details about global
+architecture for the Game framework. created: 2021-08-01 tags: gamedev, architecture
 ---
 
 ## Architecture
@@ -17,7 +13,6 @@ Here is the core package internal architecture:
 @startuml "Game Internal Architecture"
 hide members
 hide methods
-!theme sketchy-outline
 
 package "fr.snapgames.fromclasstogame" {
     package "core" <<Frame>>{
@@ -76,17 +71,40 @@ _Core package internal architecture_
 
 ### An implementation
 
+The following diagram expose our first Demo implementation.
+Not all aspect of our components and systems are exposed but most of these classes usage are described here.
+
 ```plantuml
 @startuml "Demonstration"
 hide members
 hide methods
-
+package "fr.snapgames.fromclasstogame" {
+    package "core"{
+        package "scene"{
+            AbstractScene -- GameObject:objects
+        }
+        package "gfx" {
+            interface RenderHelper
+            class AbstractRenderHelper
+            Render -- RenderHelper:renderHelpers
+        }
+    } 
     package "demo" {
-        class ScoreRenderHelper implements RenderHelper
-        class ScoreObject extends GameObject
-        class DemoScene extends AbstractScene
-        DemoScene -- ScoreObject
+        package "render"{
+            class TextRenderHelper extends AbstractRenderHelper implements RenderHelper
+            class LifeRenderHelper extends AbstractRenderHelper implements RenderHelper
+            class ScoreRenderHelper extends AbstractRenderHelper implements RenderHelper 
+        }
+        package "entity" {
+            class ScoreObject extends GameObject
+            class LifeObject extends GameObject
+            class TextObject extends GameObject
+        }
+        package "scenes"{
+            class DemoScene extends AbstractScene
+        }
     }
+}
 @enduml
 ```
 
