@@ -10,9 +10,7 @@ import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
-import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
-import fr.snapgames.fromclasstogame.test.TestUtils;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -25,8 +23,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.snapgames.fromclasstogame.test.TestUtils.getCurrentScene;
 import static org.junit.Assert.*;
-import static fr.snapgames.fromclasstogame.test.TestUtils.*;
 
 public class GameDefSteps extends CommonDefSteps {
 
@@ -111,8 +109,8 @@ public class GameDefSteps extends CommonDefSteps {
         GameObject go = scene.getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
                 scene.getObjectsList().size());
-        assertEquals("the GameObject is not horizontally centered", render.getBuffer().getWidth() / 2, go.position.x, 0.0);
-        assertEquals("the GameObject is not vertically centered", render.getBuffer().getHeight() / 2, go.position.y, 0.0);
+        assertEquals("the GameObject is not horizontally centered", render.getBuffer().getWidth() / 2.0, go.position.x, 0.0);
+        assertEquals("the GameObject is not vertically centered", render.getBuffer().getHeight() / 2.0, go.position.y, 0.0);
     }
 
     @Then("the Game has {int} GameObject\\(s).")
@@ -197,7 +195,7 @@ public class GameDefSteps extends CommonDefSteps {
     @And("I add a TextObject named {string} at \\({double},{double})")
     public void iAddATextObjectNamedAt(String name, Double x, Double y) {
         Scene scene = getCurrentScene();
-        TextObject to = new TextObject(name, x, y);
+        TextObject to = new TextObject(name, new Vector2d(x, y));
         scene.add(to);
     }
 
@@ -222,12 +220,13 @@ public class GameDefSteps extends CommonDefSteps {
         assertNull("The default TextObject font is not null", to.font);
     }
 
-    @And("the Entity {string} as {string} Material")
-    public void theEntityAsMaterial(String entityName, String materialTypeName) {
-        Scene scene = TestUtils.getCurrentScene();
+    @And("I set Material {string} to the GameObject {string}")
+    public void theEntityAsMaterial(String materialTypeName, String entityName) {
+        Scene scene = getCurrentScene();
         GameObject e = scene.getGameObject(entityName);
-        // TODO parse materialTypeName to use the right DefaultMaterial.
-        e.material = Material.DefaultMaterial.WOOD.getMaterial();
+
+        Material mat = Material.DefaultMaterial.valueOf(materialTypeName).getMaterial();
+        e.material = mat;
     }
 
     @Given("the Game is instantiated with config {string}")
@@ -237,4 +236,10 @@ public class GameDefSteps extends CommonDefSteps {
     }
 
 
+    @Then("the GameObject {string} has Material {string}")
+    public void theGameObjectHasMaterial(String entityName, String materialTypeName) {
+        Scene scene = getCurrentScene();
+        GameObject e = scene.getGameObject(entityName);
+        assertEquals("Material has not been set with the right material", materialTypeName, e.material.name);
+    }
 }

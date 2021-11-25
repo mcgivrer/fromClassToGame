@@ -4,16 +4,14 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
 import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
-import fr.snapgames.fromclasstogame.core.behaviors.particle.BasicParticleBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
-import fr.snapgames.fromclasstogame.core.config.cli.Vector2dArgParser;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.renderer.InventoryRenderHelper;
+import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -97,7 +95,7 @@ public class DemoScene extends AbstractScene {
         add(dvg);
 
         // add main character (player)
-        Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.80, 0.98);
+        Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 1, 0.98);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
@@ -271,9 +269,7 @@ public class DemoScene extends AbstractScene {
         super.keyPressed(e);
         switch (e.getKeyCode()) {
             case KeyEvent.VK_S:
-                for (GameObject o : find("enemy_")) {
-                    randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6);
-                }
+                find("enemy_").forEach(o -> randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6));
                 break;
             default:
                 break;
@@ -303,8 +299,14 @@ public class DemoScene extends AbstractScene {
             case KeyEvent.VK_S:
                 find("enemy_").forEach(o -> randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6));
                 break;
+            case KeyEvent.VK_F:
+                find("PS_").forEach(o -> o.active = !o.active);
+                break;
             case KeyEvent.VK_G:
-                ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.multiply(-1);
+                World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
+                if (world != null) {
+                    world.gravity.multiply(-1);
+                }
                 break;
             default:
                 break;
