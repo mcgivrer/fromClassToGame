@@ -25,7 +25,7 @@ public class InventorySelectorBehavior implements Behavior<GameObject> {
     }
 
     private void testKey(ActionHandler ih, InventoryObject io, int vk1, int placeHolderIndex) {
-        if (ih.get(vk1) && io.getNbPlaces() > placeHolderIndex-1) {
+        if (ih.get(vk1) && io.getNbPlaces() > placeHolderIndex - 1) {
             io.setSelectedIndex(placeHolderIndex);
         }
     }
@@ -41,7 +41,7 @@ public class InventorySelectorBehavior implements Behavior<GameObject> {
     }
 
     @Override
-    public void onAction(GameObject go, ActionHandler.ACTIONS action) {
+    public void onAction(GameObject go, Integer action) {
         // this behavior has nothing to do with action.
     }
 }

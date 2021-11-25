@@ -36,7 +36,7 @@ public class CopyObjectPosition implements Behavior {
     }
 
     @Override
-    public void onAction(Object go, ActionHandler.ACTIONS action) {
+    public void onAction(Object go, Integer action) {
 
     }
 }

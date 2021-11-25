@@ -33,7 +33,7 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
     }
 
     @Override
-    public void onAction(Scene go, ActionHandler.ACTIONS action) {
+    public void onAction(Scene go, Integer action) {
 
     }
 

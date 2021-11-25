@@ -65,10 +65,10 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
     }
 
     @Override
-    public void onAction(GameObject go, ActionHandler.ACTIONS action) {
-        accelStep = (Double) go.getAttribute("accelStep",0);
-        jumpAccel = (Double) go.getAttribute("jumpAccel",0);
-        jumping = (boolean) go.getAttribute("jumping",0);
+    public void onAction(GameObject go, Integer action) {
+        accelStep = (Double) go.getAttribute("accelStep", 0);
+        jumpAccel = (Double) go.getAttribute("jumpAccel", 0);
+        jumping = (boolean) go.getAttribute("jumping", 0);
 
         if (ah.getCtrl()) {
             accel = accelStep * 10;
@@ -77,20 +77,29 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
         } else {
             accel = accelStep;
         }
+
         switch (action) {
-            case UP:
-                jumping = (boolean) go.getAttribute("jumping",false);
+            case ActionHandler.UP:
+                jumping = (boolean) go.getAttribute("jumping", false);
                 if (!jumping) {
                     go.acceleration.y = jumpAccel * accel;
                     go.addAttribute("jumping", true);
                 }
                 break;
-            case FIRE1:
+            case ActionHandler.FIRE1:
                 go.acceleration.x = 0;
                 go.acceleration.y = 0;
                 go.velocity.x = 0;
                 go.velocity.y = 0;
                 break;
+
+            case ActionHandler.LEFT:
+                go.acceleration.x = -accel;
+                break;
+            case ActionHandler.RIGHT:
+                go.acceleration.x = accel;
+                break;
+
             default:
                 break;
         }
