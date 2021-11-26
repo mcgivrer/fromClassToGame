@@ -378,11 +378,15 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/changes/**/*.xml</directory>
+                <directory>src/java/resources</directory>
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <directory>src/docs/**/*.md</directory>
+                <directory>src/changes</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/docs</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
