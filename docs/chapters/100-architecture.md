@@ -9,7 +9,7 @@ The game has now an internal architecture we need to draw to well understand the
 
 Here is the core package internal architecture:
 
-![[Core package internal architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/mcgivrer/fromClassToGame/main/docs/original/architecture.txt)](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/mcgivrer/fromClassToGame/main/docs/original/architecture.txt)
+[![Core package internal architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/mcgivrer/fromClassToGame/main/docs/original/architecture.txt)](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/mcgivrer/fromClassToGame/main/docs/original/architecture.txt)
 _Core package internal architecture_
 
 ### An implementation
