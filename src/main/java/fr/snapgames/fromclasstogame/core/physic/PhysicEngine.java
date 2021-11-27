@@ -53,10 +53,16 @@ public class PhysicEngine extends System {
         double dtCorrected = dt * 0.01;
         if (go != null && !go.relativeToCamera) {
 
+            // update the bounding box for this GameObject.
+            go.bbox.update(go);
+
             boolean touching = (boolean) go.getAttribute("touching", false);
             // Acceleration is not already used in velocity & position computation
             Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
-            go.acceleration = go.acceleration.add(gravity).add(new Vector2d(0, go.mass));
+            go.acceleration = go.acceleration.add(gravity).multiply(go.mass);
+
+            // Apply World influence
+            applyInfluences(go);
 
             // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and `maxVerticalAcceleration`
             if (go.getAttributes().containsKey("maxHorizontalAcceleration")) {
@@ -95,7 +101,6 @@ public class PhysicEngine extends System {
                 go.behaviors.forEach(b -> b.onUpdate(go, dt));
             }
 
-
             // test World space constrained
             verifyGameConstraint(go);
             // update Bounding box for this GameObject.
@@ -105,6 +110,22 @@ public class PhysicEngine extends System {
         }
         // Update the Object itself
         go.update(dt);
+    }
+
+    /**
+     * Apply World influence Area to the {@link GameObject} <code>go</code>.
+     *
+     * @param go the {@link GameObject} to
+     */
+    private void applyInfluences(GameObject go) {
+        if (world.influenceAreas.size() > 0) {
+            for (InfluenceArea2d area : world.influenceAreas) {
+                if (area.influenceArea.intersect(go.bbox)) {
+                    double influence = area.getInfluenceAtPosition(go.position);
+                    go.acceleration.add(area.force.multiply(influence));
+                }
+            }
+        }
     }
 
     private double ceilValue(double x, double ceil) {
