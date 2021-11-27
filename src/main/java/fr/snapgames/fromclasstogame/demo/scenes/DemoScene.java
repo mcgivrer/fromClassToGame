@@ -11,11 +11,12 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.physic.*;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
-import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
@@ -85,6 +86,14 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         // Declare World playground
         World world = new World(800, 600);
+
+        // create a basic wind
+        Vector2d pos = new Vector2d(0, 0);
+        world.addInfluenceArea(
+                new InfluenceArea2d(
+                        new Vector2d(0.02, 0.03),
+                        new BoundingBox(pos, 300, 200, BoundingBox.BoundingBoxType.RECTANGLE),
+                        0.30));
         g.setWorld(world);
 
         // add Viewport Grid debug view
@@ -234,7 +243,9 @@ public class DemoScene extends AbstractScene {
     private GameObject randomizePosAndAccGameObject(GameObject go) {
         return go
                 .setPosition(Utils.randV2d(0, game.getPhysicEngine().getWorld().width, 0, game.getPhysicEngine().getWorld().height))
-                .setAcceleration(Utils.randV2d(-40, 40, 0, 0));
+                .setAcceleration(Utils.randV2d(-40, 40, 0, 0))
+                .setGravity(game.getPhysicEngine().getWorld().gravity);
+
     }
 
     private GameObject randomizeAccelerationAndFrictionAndBounciness(

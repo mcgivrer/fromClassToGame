@@ -25,18 +25,22 @@ public class GameObject implements Entity {
     public Vector2d position = new Vector2d();
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
+
+    public List<Vector2d> forces = new ArrayList<>();
+
+    public Material material;
+    public double mass = 1;
+    public Vector2d gravity = new Vector2d();
+
     public double width;
     public double height;
-    public BoundingBox bbox;
+    public BoundingBox bbox = new BoundingBox();
     public GOType type = GOType.RECTANGLE;
     public Color color;
     public BufferedImage image;
     public int layer;
     public boolean relativeToCamera;
     public int priority;
-    public double gravity = 0;
-    public Material material;
-    public double mass = 1;
     public int life = -1;
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
     public int debugOffsetX;
@@ -69,6 +73,7 @@ public class GameObject implements Entity {
     }
 
     public void update(long dt) {
+        bbox.update(this);
         if (life > -1) {
             if (life - dt >= 0) {
                 life -= dt;
@@ -92,7 +97,7 @@ public class GameObject implements Entity {
         }
         debugInfo.add("contact:" + getAttribute("touching", false));
         debugInfo.add("jumping:" + getAttribute("jumping", false));
-        debugInfo.add("active:"+(active?"on":"off"));
+        debugInfo.add("active:" + (active ? "on" : "off"));
         return debugInfo;
     }
 
@@ -199,6 +204,11 @@ public class GameObject implements Entity {
 
     public GameObject setDuration(int ms) {
         this.life = ms;
+        return this;
+    }
+
+    public GameObject setGravity(Vector2d gravity) {
+        this.gravity = gravity;
         return this;
     }
 

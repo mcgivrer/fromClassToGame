@@ -2,6 +2,9 @@ package fr.snapgames.fromclasstogame.core.physic;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The World Object is a GameObject that will never be rendered but used by others to.
  */
@@ -15,6 +18,12 @@ public class World extends GameObject {
      * default gravity in this world.
      */
     public Vector2d gravity = new Vector2d(0, -0.981);
+
+    /**
+     * Possible influence areas in this world (wind, magnetic, water flow, other ?)
+     */
+    public List<InfluenceArea2d> influenceAreas = new ArrayList<>();
+
 
     /**
      * Let's initialized the world playground.
@@ -36,6 +45,17 @@ public class World extends GameObject {
      */
     public World setGravity(Vector2d g) {
         this.gravity = g;
+        return this;
+    }
+
+    /**
+     * Add an Influence area to the world.
+     *
+     * @param area the InfluenceArea to add to the World.
+     * @return this updated World
+     */
+    public World addInfluenceArea(InfluenceArea2d area) {
+        influenceAreas.add(area);
         return this;
     }
 }
