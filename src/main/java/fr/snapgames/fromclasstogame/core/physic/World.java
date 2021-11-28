@@ -17,7 +17,7 @@ public class World extends GameObject {
     /**
      * default gravity in this world.
      */
-    public Vector2d gravity = new Vector2d(0, -0.981);
+    public Vector2d gravity = new Vector2d(0, 0.981);
 
     /**
      * Possible influence areas in this world (wind, magnetic, water flow, other ?)

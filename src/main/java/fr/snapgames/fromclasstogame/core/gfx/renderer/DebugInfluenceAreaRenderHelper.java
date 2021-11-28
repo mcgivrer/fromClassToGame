@@ -7,6 +7,11 @@ import java.awt.*;
 
 public class DebugInfluenceAreaRenderHelper extends AbstractRenderHelper implements RenderHelper<InfluenceArea2d> {
 
+
+    DebugInfluenceAreaRenderHelper(Render r) {
+        super(r);
+    }
+
     @Override
     public String getType() {
         return InfluenceArea2d.class.getName();
