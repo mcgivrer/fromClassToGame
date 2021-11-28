@@ -38,7 +38,10 @@ public class InfluenceArea2d {
     public double getInfluenceAtPosition(Vector2d otherPosition) {
         double dx = this.position.x - otherPosition.x;
         double dy = this.position.y - otherPosition.y;
-        return Math.sqrt(dx * dx + dy * dy) * energy;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        double factor = 100 / ((this.influenceArea.shape.width / 2) - distance);
+
+        return factor * energy;//
     }
 
     public List<String> getDebugInfo() {

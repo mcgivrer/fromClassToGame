@@ -1,6 +1,8 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
@@ -8,13 +10,14 @@ import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class LifeRenderHelper implements RenderHelper<LifeObject> {
+public class LifeRenderHelper extends AbstractRenderHelper implements RenderHelper<LifeObject> {
 
     BufferedImage figs[];
     BufferedImage heart;
     BufferedImage cross;
 
-    public LifeRenderHelper() {
+    public LifeRenderHelper(Render r) {
+        super(r);
         prepareFigures();
     }
 

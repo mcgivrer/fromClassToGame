@@ -75,25 +75,25 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new ScoreObject
-        g.getRender().addRenderHelper(new ScoreRenderHelper());
-        g.getRender().addRenderHelper(new TextValueRenderHelper());
-        g.getRender().addRenderHelper(new LifeRenderHelper());
-        g.getRender().addRenderHelper(new InventoryRenderHelper());
-        g.getRender().addRenderHelper(new ParticleSystemRenderHelper());
+        g.getRender().addRenderHelper(new ScoreRenderHelper(g.getRender()));
+        g.getRender().addRenderHelper(new TextValueRenderHelper(g.getRender()));
+        g.getRender().addRenderHelper(new LifeRenderHelper(g.getRender()));
+        g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
+        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender(), Color.RED));
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
+
         // Declare World playground
         World world = new World(800, 600);
-
-        // create a basic wind
-        Vector2d pos = new Vector2d(0, 0);
-        world.addInfluenceArea(
-                new InfluenceArea2d(
-                        new Vector2d(0.02, 0.03),
-                        new BoundingBox(pos, 300, 200, BoundingBox.BoundingBoxType.RECTANGLE),
-                        0.30));
+        // create a basic wind all over the play area
+        InfluenceArea2d iArea = new InfluenceArea2d(
+                new Vector2d(0.275, 0),
+                new BoundingBox(Vector2d.ZERO, 800, 600,
+                        BoundingBox.BoundingBoxType.RECTANGLE),
+                1.5);
+        world.addInfluenceArea(iArea);
         g.setWorld(world);
 
         // add Viewport Grid debug view
@@ -104,7 +104,7 @@ public class DemoScene extends AbstractScene {
         add(dvg);
 
         // add main character (player)
-        Material m = DefaultMaterial.newMaterial("player", 0.25, 0.3, 0.80, 0.98);
+        Material m = DefaultMaterial.newMaterial("playerMaterial", 0.25, 0.3, 0.80, 0.98);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
@@ -113,7 +113,7 @@ public class DemoScene extends AbstractScene {
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                //.setDebug(3)
+                .setDebug(3)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
@@ -133,9 +133,7 @@ public class DemoScene extends AbstractScene {
         // Add enemies(enemy_99)
         generateEnemies(10);
 
-
         // add a background image
-
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
                 .setType(GameObject.GOType.IMAGE)
@@ -150,11 +148,11 @@ public class DemoScene extends AbstractScene {
                                 .setColor(Color.YELLOW))
                 .create(10)
                 .setFeeding(2)
-                .setEmitFrequency(500)
+                .setEmitFrequency(1200)
                 .add(new CopyObjectPosition(player, new Vector2d(7, -4)))
+                //.setDebug(3)
                 .setLayer(1)
-                .setPriority(1)
-                .setDebug(3);
+                .setPriority(1);
         add(ps);
 
         // add score display.
@@ -168,6 +166,7 @@ public class DemoScene extends AbstractScene {
                 .setPriority(10);
         add(scoreTO);
 
+        // Add a Life display
         LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).relativeToCamera(true);
         add(lifeTO);
 
@@ -188,7 +187,7 @@ public class DemoScene extends AbstractScene {
         inventory.add(keyItem);
         add(inventory);
 
-        // shuffle `enemy_*`'s object's position and acceleration
+        // Shuffle `enemy_*`'s object's position and acceleration
         randomizeFilteredGameObject("enemy_");
 
         // Welcome text at middle bottom center game screen
@@ -197,9 +196,7 @@ public class DemoScene extends AbstractScene {
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
         welcome.setDuration(5000).setLayer(0).setPriority(1).relativeToCamera(true);
-
         add(welcome);
-
 
         // Add the Debug switcher capability to this scene
         addBehavior(new DebugSwitcherBehavior());
@@ -242,10 +239,11 @@ public class DemoScene extends AbstractScene {
 
     private GameObject randomizePosAndAccGameObject(GameObject go) {
         return go
-                .setPosition(Utils.randV2d(0, game.getPhysicEngine().getWorld().width, 0, game.getPhysicEngine().getWorld().height))
+                .setPosition(Utils.randV2d(
+                        0, game.getPhysicEngine().getWorld().width,
+                        0, game.getPhysicEngine().getWorld().height))
                 .setAcceleration(Utils.randV2d(-40, 40, 0, 0))
                 .setGravity(game.getPhysicEngine().getWorld().gravity);
-
     }
 
     private GameObject randomizeAccelerationAndFrictionAndBounciness(
@@ -257,7 +255,8 @@ public class DemoScene extends AbstractScene {
         Material m = go.material;
         m.dynFriction = Utils.rand(dynFriction - 0.1, dynFriction + 0.1);
         m.bounciness = Utils.rand(bounciness - 0.1, bounciness + 0.1);
-        return go.setAcceleration(Utils.randV2d(-accFactorX, accFactorX, -accFactorY, accFactorY));
+        go.forces.add(Utils.randV2d(-accFactorX, accFactorX, -accFactorY, accFactorY));
+        return go;
     }
 
     @Override
@@ -290,38 +289,61 @@ public class DemoScene extends AbstractScene {
     @Override
     public void keyReleased(KeyEvent e) {
         super.keyReleased(e);
+        // Getting the ActionHandler to access any input states.
         ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
-        int nbEnemies = 10;
-        if (ah != null && ah.getCtrl()) {
-            nbEnemies = 50;
-        }
+        int nbEnemies = getNbEnemiesToAdd(ah);
 
         switch (e.getKeyCode()) {
+
             case KeyEvent.VK_PAGE_UP:
+                // Create new enemies
                 try {
                     generateEnemies(nbEnemies);
                 } catch (UnknownResource ex) {
                     logger.error("Unable to generate enemies", ex);
                 }
                 break;
+
             case KeyEvent.VK_PAGE_DOWN:
+                // remove some enemies
                 removeEnemies(nbEnemies);
                 break;
+
             case KeyEvent.VK_S:
+                // shake all the objects named "enemy_"
                 find("enemy_").forEach(o -> randomizeAccelerationAndFrictionAndBounciness(o, 100, 100, 0.98, 0.6));
                 break;
+
             case KeyEvent.VK_F:
+                // switch Particles system on or off
                 find("PS_").forEach(o -> o.active = !o.active);
                 break;
+
             case KeyEvent.VK_G:
+                // inverse Gravity on this world !
                 World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
                 if (world != null) {
                     world.gravity.multiply(-1);
                 }
                 break;
+
             default:
                 break;
         }
+    }
+
+    /**
+     * Compute the number of enemies to generate according to the CTRL press status.
+     *
+     * @param ah the ActionHandler
+     * @return the number to be generated.
+     */
+    private int getNbEnemiesToAdd(ActionHandler ah) {
+        int nbEnemies = 10;
+        if (ah != null && ah.getCtrl()) {
+            nbEnemies = 50;
+        }
+        return nbEnemies;
     }
 
 }

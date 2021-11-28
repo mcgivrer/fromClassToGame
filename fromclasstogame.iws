@@ -5,9 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="491ff604-aa87-4d6b-9b85-867a48d78f40" name="Changes" comment="feat(AreaInfluencer): Add Area of influence in PhysicEngine&#10;&#10;- Add InfluenceArea2d object to define area with force of influence,&#10;- Update Physic Engine to apply this influence area to all objects defined,&#10;- Update the BoundingBox to add a toString()">
-      <change afterPath="$PROJECT_DIR$/docs/chapters/20-area-of-influence.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/DebugInfluenceAreaRenderHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fromclasstogame.iws" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/PlayerActionBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/behaviors/PlayerActionBehavior.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/Render.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/Render.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/AbstractRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/AbstractRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/DebugInfluenceAreaRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/DebugInfluenceAreaRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/DebugViewportGridRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/DebugViewportGridRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/GameObjectRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/GameObjectRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/ParticleSystemRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/ParticleSystemRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/TextRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/gfx/renderer/TextRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/InfluenceArea2d.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/InfluenceArea2d.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/PhysicEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/PhysicEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/Vector2d.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/physic/Vector2d.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/render/InventoryRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/render/InventoryRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/render/LifeRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/render/LifeRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/render/ScoreRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/render/ScoreRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/render/TextValueRenderHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/render/TextValueRenderHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -389,7 +404,21 @@
       <option name="project" value="LOCAL" />
       <updated>1638028698772</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat(AreaInfluencer): Add Area of influence in PhysicEngine&#10;&#10;- Add InfluenceArea2d object to define area with force of influence,&#10;- Update Physic Engine to apply this influence area to all objects defined,&#10;- Update the BoundingBox to add a toString()">
+      <created>1638119679394</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1638119679394</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat(AreaInfluencer): Add Area of influence in PhysicEngine&#10;&#10;- Add InfluenceArea2d object to define area with force of influence,&#10;- Update Physic Engine to apply this influence area to all objects defined,&#10;- Update the BoundingBox to add a toString()">
+      <created>1638119686045</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1638119686045</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -437,6 +466,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat(AreaInfluencer): Add Area of influence in PhysicEngine&#10;&#10;- Add InfluenceArea2d object to define area with force of influence,&#10;- Update Physic Engine to apply this influence area to all objects defined,&#10;- Update the BoundingBox to add a toString()" />
