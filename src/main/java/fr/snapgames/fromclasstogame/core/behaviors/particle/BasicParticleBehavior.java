@@ -93,7 +93,7 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     }
 
     @Override
-    public void onAction(Particle go, ActionHandler.ACTIONS action) {
+    public void onAction(Particle go, Integer action) {
 
     }
 }
