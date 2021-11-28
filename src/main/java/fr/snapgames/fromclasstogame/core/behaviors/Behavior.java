@@ -15,6 +15,6 @@ public interface Behavior<T> {
 
     void onRender(T go, Render r);
 
-    void onAction(T go, ActionHandler.ACTIONS action);
+    void onAction(T go, Integer action);
 
 }

@@ -37,6 +37,22 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 2021
  */
 public class ActionHandler extends System implements KeyListener {
+    public final static int UP = 1;
+    public final static int LEFT = 2;
+    public final static int RIGHT = 3;
+    public final static int DOWN = 4;
+    public final static int FIRE1 = 5;
+    public final static int FIRE2 = 6;
+    public final static int FIRE3 = 7;
+    public final static int FIRE4 = 8;
+    public final static int LT_FIRE = 9;
+    public final static int LB_FIRE = 10;
+    public final static int RT_FIRE = 11;
+    public final static int RB_FIRE = 12;
+    public final static int START = 13;
+    public final static int HOME = 14;
+    public final static int POWER = 15;
+
 
     private static final Logger logger = LoggerFactory.getLogger(ActionHandler.class);
     /*
@@ -49,8 +65,8 @@ public class ActionHandler extends System implements KeyListener {
     private final boolean[] previousKeys = new boolean[65536];
     private Window window;
     private List<ActionListener> listeners = new CopyOnWriteArrayList<>();
-    private Map<Integer, ACTIONS> keyMapping = new HashMap<>();
-    private Map<ACTIONS, Boolean> actions = new HashMap<>();
+    private Map<Integer, Integer> keyMapping = new HashMap<>();
+    private Map<Integer, Boolean> actions = new HashMap<>();
     private boolean ctrl;
     private boolean shift;
     private boolean alt;
@@ -73,22 +89,26 @@ public class ActionHandler extends System implements KeyListener {
 
     @Override
     public int initialize(Configuration config) {
-        this.keyMapping.put(KeyEvent.VK_ENTER, ACTIONS.START);
-        this.keyMapping.put(KeyEvent.VK_HOME, ACTIONS.HOME);
-        this.keyMapping.put(KeyEvent.VK_SCROLL_LOCK, ACTIONS.POWER);
-        this.keyMapping.put(KeyEvent.VK_UP, ACTIONS.UP);
-        this.keyMapping.put(KeyEvent.VK_DOWN, ACTIONS.DOWN);
-        this.keyMapping.put(KeyEvent.VK_LEFT, ACTIONS.LEFT);
-        this.keyMapping.put(KeyEvent.VK_RIGHT, ACTIONS.RIGHT);
-        this.keyMapping.put(KeyEvent.VK_SPACE, ACTIONS.FIRE1);
-        this.keyMapping.put(KeyEvent.VK_Y, ACTIONS.FIRE2);
-        this.keyMapping.put(KeyEvent.VK_A, ACTIONS.FIRE3);
-        this.keyMapping.put(KeyEvent.VK_B, ACTIONS.FIRE4);
-        this.keyMapping.put(KeyEvent.VK_F1, ACTIONS.LT_FIRE);
-        this.keyMapping.put(KeyEvent.VK_F2, ACTIONS.LB_FIRE);
-        this.keyMapping.put(KeyEvent.VK_F3, ACTIONS.RT_FIRE);
-        this.keyMapping.put(KeyEvent.VK_F4, ACTIONS.RB_FIRE);
+        this.keyMapping.put(KeyEvent.VK_ENTER, START);
+        this.keyMapping.put(KeyEvent.VK_HOME, HOME);
+        this.keyMapping.put(KeyEvent.VK_SCROLL_LOCK, POWER);
+        this.keyMapping.put(KeyEvent.VK_UP, UP);
+        this.keyMapping.put(KeyEvent.VK_DOWN, DOWN);
+        this.keyMapping.put(KeyEvent.VK_LEFT, LEFT);
+        this.keyMapping.put(KeyEvent.VK_RIGHT, RIGHT);
+        this.keyMapping.put(KeyEvent.VK_SPACE, FIRE1);
+        this.keyMapping.put(KeyEvent.VK_Y, FIRE2);
+        this.keyMapping.put(KeyEvent.VK_A, FIRE3);
+        this.keyMapping.put(KeyEvent.VK_B, FIRE4);
+        this.keyMapping.put(KeyEvent.VK_F1, LT_FIRE);
+        this.keyMapping.put(KeyEvent.VK_F2, LB_FIRE);
+        this.keyMapping.put(KeyEvent.VK_F3, RT_FIRE);
+        this.keyMapping.put(KeyEvent.VK_F4, RB_FIRE);
         return 0;
+    }
+
+    public void addAction(int ke, int customActionCode) {
+        this.keyMapping.put(ke, customActionCode);
     }
 
     @Override
@@ -117,7 +137,7 @@ public class ActionHandler extends System implements KeyListener {
      *
      * @param keyMapping
      */
-    public void setActionMap(Map<Integer, ACTIONS> keyMapping) {
+    public void setActionMap(Map<Integer, Integer> keyMapping) {
         this.keyMapping = keyMapping;
     }
 
@@ -185,7 +205,7 @@ public class ActionHandler extends System implements KeyListener {
      *
      * @return boolean value
      */
-    public boolean getAction(ACTIONS actionCode) {
+    public boolean getAction(Integer actionCode) {
         return this.actions.containsKey(actionCode) ? this.actions.get(actionCode) : false;
     }
 
@@ -205,15 +225,8 @@ public class ActionHandler extends System implements KeyListener {
         return altGr;
     }
 
-    public enum ACTIONS {
-        UP, LEFT, RIGHT, DOWN,
-        FIRE1, FIRE2, FIRE3, FIRE4,
-        LT_FIRE, LB_FIRE, RT_FIRE, RB_FIRE,
-        START, HOME, POWER
-    }
-
     public interface ActionListener extends KeyListener {
-        public void onAction(ACTIONS action);
+        public void onAction(Integer action);
     }
 
 }

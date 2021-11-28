@@ -188,7 +188,7 @@ public class SceneManager extends System {
         }
     }
 
-    public void onAction(ActionHandler.ACTIONS action) {
+    public void onAction(Integer action) {
         getCurrent().onAction(action);
         for (Behavior<Scene> b : getCurrent().getBehaviors()) {
             b.onAction(getCurrent(), action);
