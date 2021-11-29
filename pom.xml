@@ -55,10 +55,9 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/mcgivrer/fromclasstogame</url>
+            <url>https://maven.pkg.github.com/mcgivrer/fromClassToGame</url>
         </repository>
     </distributionManagement>
-
 
     <properties>
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
@@ -273,9 +272,10 @@
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>${mainClass}</mainClass>
                         </transformer>
-                        <!--transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                        <resource>src/main/resources/res</resource> <file>server.properties</file>
-                                        </transformer -->
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>src/main/resources/</resource>
+                        </transformer>
                     </transformers>
                     <!-- end of config -->
                 </configuration>
