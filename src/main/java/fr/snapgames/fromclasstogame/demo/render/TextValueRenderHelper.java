@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.demo.entity.TextValueObject;
@@ -8,6 +9,10 @@ import fr.snapgames.fromclasstogame.demo.entity.TextValueObject;
 import java.awt.*;
 
 public class TextValueRenderHelper extends AbstractRenderHelper implements RenderHelper<TextValueObject> {
+
+    public TextValueRenderHelper(Render r) {
+        super(r);
+    }
 
     @Override
     public void draw(Graphics2D g, TextValueObject tvo) {

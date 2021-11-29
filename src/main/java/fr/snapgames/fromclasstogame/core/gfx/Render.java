@@ -41,15 +41,22 @@ public class Render extends System {
     private World world;
     private boolean renderScreenshot = false;
 
+    private Font debugFont;
+
+    private Font pauseFont;
+
     public Render(Game g) {
         super(g);
     }
 
     public int initialize(Configuration config) {
         setViewport(config.width, config.height);
-        addRenderHelper(new GameObjectRenderHelper());
-        addRenderHelper(new TextRenderHelper());
-        addRenderHelper(new DebugViewportGridRenderHelper());
+        addRenderHelper(new GameObjectRenderHelper(this));
+        addRenderHelper(new TextRenderHelper(this));
+        addRenderHelper(new DebugViewportGridRenderHelper(this));
+        Graphics2D gri = (Graphics2D) buffer.getGraphics();
+        debugFont = gri.getFont().deriveFont(0.8f);
+        pauseFont = gri.getFont().deriveFont(1.8f);
         return 0;
     }
 
@@ -76,9 +83,22 @@ public class Render extends System {
 
     private void drawPauseText(Graphics2D g) {
         if (game.isPause()) {
-            g.setColor(Color.WHITE);
-            g.drawString("Game Paused", 10, this.buffer.getHeight() - 20);
+
+            drawTextWithBackground(g, "Game Paused", new Color(0.1f, 0.1f, 0.0f, 0.8f));
         }
+    }
+
+    private void drawTextWithBackground(Graphics2D g, String pauseText, Color color) {
+        int txtWidth = g.getFontMetrics().stringWidth(pauseText);
+        int txtHeight = g.getFontMetrics().getHeight();
+        g.setColor(color);
+        g.fillRect(
+                0,
+                (this.buffer.getHeight() / 2) - (txtHeight + 20),
+                this.buffer.getWidth(),
+                txtHeight + 4);
+        g.setColor(Color.WHITE);
+        g.drawString("Game Paused", (this.buffer.getWidth() - txtWidth) / 2, (this.buffer.getHeight() / 2) - 20);
     }
 
     private void setRenderingHintsList(Graphics2D g) {

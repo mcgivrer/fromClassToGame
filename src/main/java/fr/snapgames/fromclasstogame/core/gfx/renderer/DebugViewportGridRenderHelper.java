@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 
@@ -9,6 +10,11 @@ import java.awt.*;
 public class DebugViewportGridRenderHelper extends AbstractRenderHelper implements RenderHelper<DebugViewportGrid> {
 
     private Color gridColor = Color.BLUE;
+
+
+    public DebugViewportGridRenderHelper(Render r) {
+        super(r);
+    }
 
     @Override
     public String getType() {
