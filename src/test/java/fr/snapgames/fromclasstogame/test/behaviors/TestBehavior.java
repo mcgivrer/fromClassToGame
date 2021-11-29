@@ -25,7 +25,7 @@ public class TestBehavior implements Behavior<GameObject> {
     }
 
     @Override
-    public void onAction(GameObject go, ActionHandler.ACTIONS action) {
+    public void onAction(GameObject go, Integer action) {
         // this behavior has nothing to do with action.
     }
 }

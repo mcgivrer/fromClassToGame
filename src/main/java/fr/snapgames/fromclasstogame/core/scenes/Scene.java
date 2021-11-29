@@ -40,7 +40,7 @@ public interface Scene extends ActionHandler.ActionListener {
 
     void input(ActionHandler actionHandler);
 
-    void onAction(ActionHandler.ACTIONS action);
+    void onAction(Integer action);
 
     void render(Render render);
 

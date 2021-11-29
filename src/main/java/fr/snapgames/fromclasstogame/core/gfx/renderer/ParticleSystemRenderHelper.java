@@ -1,14 +1,16 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 
 import java.awt.*;
 
 public class ParticleSystemRenderHelper extends AbstractRenderHelper implements RenderHelper<ParticleSystem> {
     private Color color;
 
-    public ParticleSystemRenderHelper() {
-        this.color = Color.RED;
+    public ParticleSystemRenderHelper(Render r, Color c) {
+        super(r);
+        this.color = c;
     }
 
     @Override
