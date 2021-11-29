@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -15,7 +16,8 @@ public class LifeRenderHelper extends AbstractRenderHelper implements RenderHelp
     BufferedImage heart;
     BufferedImage cross;
 
-    public LifeRenderHelper() {
+    public LifeRenderHelper(Render r) {
+        super(r);
         prepareFigures();
     }
 

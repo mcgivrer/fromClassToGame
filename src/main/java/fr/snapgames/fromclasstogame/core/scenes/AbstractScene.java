@@ -162,7 +162,7 @@ public abstract class AbstractScene implements Scene {
         }
     }
 
-    public void onAction(ActionHandler.ACTIONS a) {
+    public void onAction(Integer a) {
         logger.debug("Action:" + a);
         objects.forEach((k, o) -> {
             if (!o.behaviors.isEmpty()) {
@@ -196,3 +196,7 @@ public abstract class AbstractScene implements Scene {
         return behaviors;
     }
 }
+
+
+
+

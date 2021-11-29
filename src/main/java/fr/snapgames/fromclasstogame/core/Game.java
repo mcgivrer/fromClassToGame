@@ -263,7 +263,7 @@ public class Game implements ActionHandler.ActionListener {
 
 
     @Override
-    public void onAction(ActionHandler.ACTIONS action) {
+    public void onAction(Integer action) {
         getSceneManager().onAction(action);
     }
 
