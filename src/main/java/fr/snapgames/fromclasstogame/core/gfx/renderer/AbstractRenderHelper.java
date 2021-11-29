@@ -2,10 +2,12 @@ package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.NoSuchElementException;
 
 /**
  * Internal Helpers to draw to the internal image buffer of the Render system.
@@ -17,6 +19,11 @@ public class AbstractRenderHelper {
     protected Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
     protected Color debugFrontColor = Color.ORANGE;
     protected Color debugBoxColor = Color.YELLOW;
+
+
+    public AbstractRenderHelper(Render r){
+
+    }
 
     /**
      * Simple set active Font
@@ -193,8 +200,12 @@ public class AbstractRenderHelper {
                 setFontSize(g, 9);
                 double offsetY = go.debugOffsetX;
                 double offsetX = go.width + go.debugOffsetY;
+
+                String largestString = go.getDebugInfo().stream().max((o1, o2) -> o1.length() > o2.length() ? 1 : -1).get();
+                int maxWidth = g.getFontMetrics().stringWidth(largestString);
+
                 int height = ((go.getDebugInfo().size() + 2) * 9);
-                fillRect(g, go.position, 100, height, go.width + 1, offsetY - 12, debugBackgroundColor);
+                fillRect(g, go.position, maxWidth+8, height, offsetX-4, offsetY - 12, debugBackgroundColor);
                 setColor(g, debugFrontColor);
                 int i = 0;
                 for (String line : go.getDebugInfo()) {

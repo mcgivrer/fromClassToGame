@@ -11,7 +11,7 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
  * The `target` {@link GameObject} is followed by the object having this behavior and set the "behavior" applied object with the
  * addition of the target position and a specified `offset`.
  */
-public class CopyObjectPosition implements Behavior {
+public class CopyObjectPosition implements Behavior<GameObject> {
     GameObject target;
     Vector2d offset;
 
@@ -36,12 +36,12 @@ public class CopyObjectPosition implements Behavior {
     }
 
     @Override
-    public void onInput(Object go, ActionHandler ih) {
+    public void onInput(GameObject go, ActionHandler ih) {
         // Nothing specific on the input event.
     }
 
     @Override
-    public void onUpdate(Object go, long dt) {
+    public void onUpdate(GameObject go, long dt) {
         GameObject cO = (GameObject) go;
         Vector2d zero = new Vector2d(0, 0);
         cO.setPosition(Utils.add(target.position, this.offset));
@@ -50,12 +50,13 @@ public class CopyObjectPosition implements Behavior {
     }
 
     @Override
-    public void onRender(Object go, Render r) {
+    public void onRender(GameObject go, Render r) {
         // Nothing specific on the render event.
     }
 
     @Override
-    public void onAction(Object go, ActionHandler.ACTIONS action) {
-        // Nothing specific on the action event.
+    public void onAction(GameObject go, Integer action) {
+
     }
+
 }

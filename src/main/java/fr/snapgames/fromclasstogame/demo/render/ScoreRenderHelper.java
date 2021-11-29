@@ -4,16 +4,19 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.nio.charset.StandardCharsets;
 
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 
-public class ScoreRenderHelper implements RenderHelper<ScoreObject> {
+public class ScoreRenderHelper extends AbstractRenderHelper implements RenderHelper<ScoreObject> {
 
     BufferedImage figuresImg;
     BufferedImage figs[];
 
-    public ScoreRenderHelper() {
+    public ScoreRenderHelper(Render r) {
+        super(r);
         prepareFigures();
     }
 
