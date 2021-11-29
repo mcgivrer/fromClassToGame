@@ -55,10 +55,9 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/mcgivrer/fromclasstogame</url>
+            <url>https://maven.pkg.github.com/mcgivrer/fromClassToGame</url>
         </repository>
     </distributionManagement>
-
 
     <properties>
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
@@ -122,19 +121,19 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java8</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -273,9 +272,10 @@
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>${mainClass}</mainClass>
                         </transformer>
-                        <!--transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                        <resource>src/main/resources/res</resource> <file>server.properties</file>
-                                        </transformer -->
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>src/main/resources/</resource>
+                        </transformer>
                     </transformers>
                     <!-- end of config -->
                 </configuration>
@@ -381,14 +381,14 @@
                 <directory>src/java/resources</directory>
                 <filtering>true</filtering>
             </resource>
-            <resource>
+            <!--resource>
                 <directory>src/changes</directory>
                 <filtering>true</filtering>
-            </resource>
-            <resource>
+            </resource-->
+            <!--resource>
                 <directory>src/docs</directory>
                 <filtering>true</filtering>
-            </resource>
+            </resource-->
         </resources>
     </build>
 
@@ -613,7 +613,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.21</version>
+                        <version>2.1.2</version>
                         <executions>
                             <execution>
                                 <id>l4j-clui</id>

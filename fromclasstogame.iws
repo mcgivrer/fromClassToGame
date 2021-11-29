@@ -461,7 +461,7 @@
   <component name="WebViewSettings"> 
     <webview flattenPackages="false" showMembers="false" autoscrollToSource="false"/> 
   </component>  
-  <component name="VcsManagerConfiguration">
-    <option name="ACTIVE_VCS_NAME" value="git"/>
-  </component>
+  <component name="VcsManagerConfiguration"> 
+    <option name="ACTIVE_VCS_NAME" value="git"/> 
+  </component> 
 </project>
