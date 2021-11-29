@@ -1,0 +1,31 @@
+@startuml "Demonstration"
+hide members
+hide methods
+package "fr.snapgames.fromclasstogame" {
+    package "core"{
+        package "scene"{
+            AbstractScene -- GameObject:objects
+        }
+        package "gfx" {
+            interface RenderHelper
+            class AbstractRenderHelper
+            Render -- RenderHelper:renderHelpers
+        }
+    } 
+    package "demo" {
+        package "render"{
+            class TextRenderHelper extends AbstractRenderHelper implements RenderHelper
+            class LifeRenderHelper extends AbstractRenderHelper implements RenderHelper
+            class ScoreRenderHelper extends AbstractRenderHelper implements RenderHelper 
+        }
+        package "entity" {
+            class ScoreObject extends GameObject
+            class LifeObject extends GameObject
+            class TextObject extends GameObject
+        }
+        package "scenes"{
+            class DemoScene extends AbstractScene
+        }
+    }
+}
+@enduml
