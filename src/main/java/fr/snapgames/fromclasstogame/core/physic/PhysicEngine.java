@@ -140,9 +140,6 @@ public class PhysicEngine extends System {
                     acc.add(accIA);
                 }
             }
-
-            // Update the Object itself
-            go.update(dt);
         }
         return acc;
     }

@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame.test.render;
 
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.test.entity.TestObject;
@@ -7,6 +8,10 @@ import fr.snapgames.fromclasstogame.test.entity.TestObject;
 import java.awt.*;
 
 public class TestRenderHelper extends AbstractRenderHelper implements RenderHelper<TestObject> {
+
+    public TestRenderHelper(Render r) {
+        super(r);
+    }
 
     @Override
     public String getType() {
