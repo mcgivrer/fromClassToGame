@@ -8,7 +8,7 @@ first feeling of the player about a game is the behavior of this camera.
 
 But how a camera is following a target ? Let's have a diagram to explain that.
 
-![figure large](../images/camera.jpg "A Camera in a viewport following a target")
+![figure large](../images/figure-camera.jpg "A Camera in a viewport following a target")
 
 _A Camera follows a target in a viewport_
 

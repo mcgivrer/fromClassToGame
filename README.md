@@ -79,7 +79,7 @@ mvn exec:java
 
 You will get the current display:
 
-![screenshot - DemoScene with objects](docs/images/demo-scene-structure.png "a screenshot of the current demo scene")
+![screenshot - DemoScene with objects](docs/images/figure-demo-scene-structure.png "a screenshot of the current demo scene")
 
 This sample demo will show :
 
@@ -90,7 +90,7 @@ This sample demo will show :
 
 The latest demo integrate the Fire `ParticleSystem` and the `InfluenceArea2d` world perturbation
 
-![screenshot - the latest evolution of the game framework with ParticleSystem and World InfluenceArea2d](docs/images/captrure-005.png "ParticleSystem simulating fire, and under World perturbation")
+![screenshot - the latest evolution of the game framework with ParticleSystem and World InfluenceArea2d](docs/images/capture-006.png "ParticleSystem simulating fire, and under World perturbation")
 
 
 Have Fun !
