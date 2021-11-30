@@ -12,8 +12,6 @@ import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 
 public class ScoreRenderHelper extends AbstractRenderHelper implements RenderHelper<ScoreObject> {
 
-public class ScoreRenderHelper extends AbstractRenderHelper implements RenderHelper<ScoreObject> {
-
     BufferedImage figuresImg;
     BufferedImage figs[];
 
