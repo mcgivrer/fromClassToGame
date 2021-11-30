@@ -113,7 +113,7 @@ public class DemoScene extends AbstractScene {
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                .setDebug(3)
+                //.setDebug(3)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
