@@ -38,7 +38,7 @@
         <url>https://github.com/mcgivrer/fromClassToGame</url>
         <connection>scm:git:git@github.com:mcgivrer/fromClassToGame.git</connection>
         <developerConnection>scm:git:https://github.com/mcgivrer/fromClassToGame.git</developerConnection>
-        <tag>fromclasstogame-1.0.0</tag>
+        <tag>v${project.version}</tag>
     </scm>
     <issueManagement>
         <system>GitHub</system>
