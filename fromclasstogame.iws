@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09a217eb-54ec-490f-bbf4-ff239e8ab8f9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/fromclasstogame.iws" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -202,6 +201,18 @@
     <option name="ADD_LABEL_ON_UNIT_TEST_PASSED" value="true" />
     <option name="ADD_LABEL_ON_UNIT_TEST_FAILED" value="true" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$USER_HOME$/Tools/maven/3.8.3" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="jdkForImporter" value="1.8" />
+      </MavenImportingSettings>
+    </option>
+  </component>
   <component name="PerforceConfiguration">
     <option name="PORT" value="magic:1666" />
     <option name="USER" value="" />
@@ -251,9 +262,11 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.21364653" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunManager" selected="Application.Game">
     <configuration selected="false" default="true" type="Applet" factoryName="Applet">
@@ -418,6 +431,17 @@
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="3" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="5" />
     </layout>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VssConfiguration">
     <CheckoutOptions>

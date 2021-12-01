@@ -86,3 +86,6 @@ This sample demo will show :
 Have Fun !
 
 McG.
+
+__SnapGames__<br/>
+![SnapGames Logo](./src/main/resources/images/logo/sg-logo-image.png)
