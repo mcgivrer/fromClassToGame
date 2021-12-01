@@ -1,0 +1,40 @@
+---
+title: <a href="/snapgames/toc/">SnapGames - From Class to Game</a>
+author: Frédéric Delorme
+rights: ${project.inceptionYear} Snapgames - MIT license
+header-includes:
+  - |
+    ```{=html}
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Gentium+Basic|Inconsolata" rel="stylesheet">
+    ```
+include-before:
+  - |
+    ```{=html}
+    <p>If you like this book, please consider
+        spreading the word or
+        <a href="https://www.buymeacoffee.com/programming">
+          buying me a coffee
+        </a>
+    </p>
+    ```
+include-after:
+  - |
+    ```{=html}
+    <div class="footnotes">
+      <hr>
+      <div class="container">
+          <nav class="pagination" role="pagination">
+            <ul>
+            <p>
+            <span class="page-number">Designed with</span>❤ <span class="page-number"> from Hochfelden, France</span>
+             </p>
+             <p>
+             <a rel="license" href="https://opensource.org/licenses/MIT"><img alt="MIT License" style="border-width:0" src="https://opensource.org/files/OSIApproved.png" /></a>
+             </p>
+             </ul>
+          </nav>
+      </div>
+    </div>
+    ```
+---

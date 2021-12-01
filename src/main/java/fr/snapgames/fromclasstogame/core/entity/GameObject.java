@@ -5,51 +5,49 @@ import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class GameObject implements Entity {
 
 
-    public enum GOType {
-        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
-    }
-
     private static int index = 0;
-
     public int id = ++index;
     public String name = "noname_" + id;
+
+    public boolean active = true;
 
     public Vector2d position = new Vector2d();
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
 
-    public double width;
-    public double height;
-
-    public BoundingBox bbox;
-
-    public GOType type = GOType.RECTANGLE;
-
-    public Color color;
-    public BufferedImage image;
-
-    public int layer;
-    public boolean relativeToCamera;
-    public int priority;
-
-    public double gravity = 0;
+    public List<Vector2d> forces = new ArrayList<>();
 
     public Material material;
     public double mass = 1;
+    public Vector2d gravity = new Vector2d();
 
+    public double width;
+    public double height;
+    public BoundingBox bbox = new BoundingBox();
+    public GOType type = GOType.RECTANGLE;
+    public Color color;
+    public BufferedImage image;
+    public int layer;
+    public boolean relativeToCamera;
+    public int priority;
+    public int life = -1;
+    public List<Behavior<GameObject>> behaviors = new ArrayList<>();
+    public int debugOffsetX;
+    public int debugOffsetY;
     protected Map<String, Object> attributes = new HashMap<>();
-
-    public List<Behavior> behaviors = new ArrayList<>();
+    private List<String> debugData = new ArrayList<>();
+    private int debug;
 
     public GameObject(String objectName) {
         this.name = objectName;
@@ -70,7 +68,39 @@ public class GameObject implements Entity {
         this.relativeToCamera = false;
     }
 
+    public static int getIndex() {
+        return index;
+    }
+
     public void update(long dt) {
+        bbox.update(this);
+        if (life > -1) {
+            if (life - dt >= 0) {
+                life -= dt;
+            } else {
+                active = false;
+                life = -1;
+            }
+        }
+    }
+
+    public List<String> getDebugInfo() {
+        this.debugOffsetX = 20;
+        this.debugOffsetY = 20;
+        List<String> debugInfo = new ArrayList<>();
+        debugInfo.add("n:" + name);
+        debugInfo.add("pos:" + position.toString());
+        debugInfo.add("vel:" + velocity.toString());
+        debugInfo.add("acc:" + acceleration.toString());
+        debugInfo.add("mass:" + mass);
+        if (material != null) {
+            debugInfo.add("mat:" + material.name);
+            debugInfo.add("frict:" + material.dynFriction);
+        }
+        debugInfo.add("contact:" + getAttribute("touching", false));
+        debugInfo.add("jumping:" + getAttribute("jumping", false));
+        debugInfo.add("active:" + (active ? "on" : "off"));
+        return debugInfo;
     }
 
     public GameObject setType(GOType type) {
@@ -141,6 +171,15 @@ public class GameObject implements Entity {
         return this;
     }
 
+    public int getDebug() {
+        return this.debug;
+    }
+
+    public GameObject setDebug(int d) {
+        this.debug = d;
+        return this;
+    }
+
     public GameObject add(Behavior b) {
         if (!behaviors.contains(b)) {
             behaviors.add(b);
@@ -153,11 +192,30 @@ public class GameObject implements Entity {
         return this;
     }
 
-    public Object getAttribute(String name) {
-        return attributes.get(name);
+    public Object getAttribute(String name, Object defaultValue) {
+        if (attributes.containsKey(name)) {
+            return attributes.get(name);
+        } else {
+            return defaultValue;
+        }
     }
 
     public Map<String, Object> getAttributes() {
         return attributes;
     }
+
+    public GameObject setDuration(int ms) {
+        this.life = ms;
+        return this;
+    }
+
+    public GameObject setGravity(Vector2d gravity) {
+        this.gravity = gravity;
+        return this;
+    }
+
+    public enum GOType {
+        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
+    }
+
 }

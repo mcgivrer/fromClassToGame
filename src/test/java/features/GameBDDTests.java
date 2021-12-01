@@ -20,6 +20,7 @@ import io.cucumber.junit.CucumberOptions;
         "json:target/cucumber.json", 
         "pretty:target/cucumber-pretty.txt",
         "usage:target/cucumber-usage.json", 
-        "junit:target/cucumber-results.xml", })
+        "junit:target/cucumber-results.xml" },
+    tags = "not @ignore")
 class GameBDDTests {
 }

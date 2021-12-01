@@ -1,17 +1,21 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
-import java.awt.Graphics2D;
-
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GameObjectRenderHelper implements RenderHelper {
+import java.awt.*;
+
+public class GameObjectRenderHelper extends AbstractRenderHelper implements RenderHelper<GameObject> {
     private static final Logger logger = LoggerFactory.getLogger(GameObjectRenderHelper.class);
 
+    public GameObjectRenderHelper(Render r) {
+        super(r);
+    }
+
     @Override
-    public void draw(Graphics2D g, Object o) {
-        GameObject go = (GameObject) o;
+    public void draw(Graphics2D g, GameObject go) {
         switch (go.type) {
             case POINT:
                 g.setColor(go.color);
@@ -27,7 +31,7 @@ public class GameObjectRenderHelper implements RenderHelper {
                 break;
             case IMAGE:
                 if (go.image != null) {
-                    g.drawImage(go.image, (int) (go.position.x), (int) (go.position.y), null);
+                    drawImage(g, go.image, go.position, go.width, go.height);
                 } else {
                     logger.error("GameObject named {} : image attribute is not defined", go.name);
                 }
@@ -36,6 +40,7 @@ public class GameObjectRenderHelper implements RenderHelper {
                 logger.error("GameObject named {} : type attribute is unknown", go.name);
                 break;
         }
+        drawDebugInfo(g, go);
     }
 
     @Override
