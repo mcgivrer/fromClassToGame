@@ -74,11 +74,16 @@ public class DemoScene extends AbstractScene {
         // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
-        // Add a specific Render for the new ScoreObject
+        // Add a specific Render for the new GameObject implementation for
+        // - ScoreObject
         g.getRender().addRenderHelper(new ScoreRenderHelper(g.getRender()));
+        // - TestValue
         g.getRender().addRenderHelper(new TextValueRenderHelper(g.getRender()));
+        // - LifeObject
         g.getRender().addRenderHelper(new LifeRenderHelper(g.getRender()));
+        // - InventoryObject
         g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
+        // - ParticleSystem
         g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender(), Color.RED));
     }
 
