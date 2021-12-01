@@ -1,20 +1,27 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
+import java.awt.Graphics2D;
+
+import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.demo.entity.TextValueObject;
 
-import java.awt.*;
+public class TextValueRenderHelper extends AbstractRenderHelper implements RenderHelper<TextValueObject> {
 
-public class TextValueRenderHelper extends ScoreRenderHelper {
+    public TextValueRenderHelper(Render r) {
+        super(r);
+    }
 
     @Override
-    public void draw(Graphics2D g, Object o) {
+    public void draw(Graphics2D g, TextValueObject tvo) {
         double maxBorderWidth = 1;
-        TextValueObject so = (TextValueObject) o;
-        g.setColor(so.color);
-        g.setFont(so.font);
-        drawBorder(g, maxBorderWidth, so);
-        g.setColor(so.color);
-        g.drawString(so.text, (int) (so.position.x), (int) (so.position.y));
+        g.setColor(tvo.color);
+        g.setFont(tvo.font);
+        drawTextBorder(g, maxBorderWidth, (TextObject) tvo);
+        g.setColor(tvo.color);
+        g.drawString(tvo.text, (int) (tvo.position.x), (int) (tvo.position.y));
     }
 
     @Override
