@@ -25,8 +25,12 @@ public class TestUtils {
      * @return the current active {@link Scene}.
      */
     public static Scene getCurrentScene() {
-        Scene scene = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene scene = getSceneManager().getCurrent();
         return scene;
+    }
+
+    private static SceneManager getSceneManager() {
+        return (SceneManager) SystemManager.get(SceneManager.class);
     }
 
     /**
@@ -36,11 +40,15 @@ public class TestUtils {
      * @param ts        the corresponding Scene instance to be added
      */
     public static void addScene(String sceneName, Scene ts) {
-        ((SceneManager) SystemManager.get(SceneManager.class)).add(sceneName, ts);
+        getSceneManager().add(sceneName, ts);
     }
 
     public static void activateScene(String sceneName) {
-        ((SceneManager) SystemManager.get(SceneManager.class)).activate(sceneName);
+        getSceneManager().activate(sceneName);
     }
 
+    public static void createSceneInstance(String sceneName) {
+        SceneManager sm = getSceneManager();
+        sm.addScene(sceneName);
+    }
 }

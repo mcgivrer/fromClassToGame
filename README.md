@@ -38,6 +38,11 @@ Added some valuable features like:
 - Some `Behavior` capability to GameObject,
 - A Map of `attributes` to GameObject
 - A new `InventoryObject` to manage a player inventory with its own render helper and behavior,
+- Bring the `RenderingHelper` mechanism to easily extend the `Render` capability,
+- A evolution of the  `PhysicEngine` by adding `InfluenceArea2d` bringing some perturbation to the `World`,
+- Adding `Particle` and `ParticleSystem` to create special effects like rain and fire,
+- Replace the good old `InputHandler` by an `ActionHandler` (WIP) to support input command mapping,
+- Add a `DebugViewportGrid` object and its rendering helper.
 
 ## More to come
 
@@ -74,7 +79,7 @@ mvn exec:java
 
 You will get the current display:
 
-![screenshot - DemoScene with objects](docs/images/demo-scene-structure.png "a screenshot of the current demo scene")
+![screenshot - DemoScene with objects](docs/images/figure-demo-scene-structure.png "a screenshot of the current demo scene")
 
 This sample demo will show :
 
@@ -82,6 +87,11 @@ This sample demo will show :
 2. the `ScoreObject`, displaying score (sic),
 3. the `LifeObject` showing the remaining number of life,
 4. the `InventoryObject`, showing a qick inventory to select an available item.
+
+The latest demo integrate the Fire `ParticleSystem` and the `InfluenceArea2d` world perturbation
+
+![screenshot - the latest evolution of the game framework with ParticleSystem and World InfluenceArea2d](docs/images/capture-006-800x500.png "ParticleSystem simulating fire, and under World perturbation")
+
 
 Have Fun !
 
