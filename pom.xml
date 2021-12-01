@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>core</groupId>
     <artifactId>fromclasstogame</artifactId>
@@ -58,7 +57,6 @@
             <url>https://maven.pkg.github.com/mcgivrer/fromClassToGame</url>
         </repository>
     </distributionManagement>
-
 
     <properties>
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
@@ -122,19 +120,19 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java8</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -269,13 +267,13 @@
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>shaded</shadedClassifierName>
                     <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>${mainClass}</mainClass>
                         </transformer>
-                        <!--transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                        <resource>src/main/resources/res</resource> <file>server.properties</file>
-                                        </transformer -->
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>src/main/resources/</resource>
+                        </transformer>
                     </transformers>
                     <!-- end of config -->
                 </configuration>
@@ -380,14 +378,14 @@
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
             </resource>
-            <!--resource>
-                <directory>src/changes/</directory>
-                <filtering>true</filtering>
+            <resource>
+                <directory>src/changes</directory>
+                <filtering>false</filtering>
             </resource>
             <resource>
-                <directory>src/docs/</directory>
-                <filtering>true</filtering>
-            </resource-->
+                <directory>src/docs</directory>
+                <filtering>false</filtering>
+            </resource>
         </resources>
     </build>
 
@@ -501,7 +499,7 @@
                                 <phase>site</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory/>
+                                    <workingDirectory />
                                     <arguments>
                                         <argument>docs/epub-metadata.yml</argument>
                                         <argument>docs/index.md</argument>
@@ -557,7 +555,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory/>
+                                    <workingDirectory />
                                     <arguments>
                                         <argument>docs/epub-metadata.yml</argument>
                                         <argument>docs/index.md</argument>

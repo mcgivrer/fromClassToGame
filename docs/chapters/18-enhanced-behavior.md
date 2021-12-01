@@ -121,6 +121,6 @@ class DemoScene extends AbstractScene {
 
 And now running the `Game`, and pressing the D more than 300ms, you will obtain :
 
-![A Scene Behavior enhancing the debug feature activation](../images/debug-switcher-behavior.png "the debug switcher ad a new Scene Behavior")
+![A Scene Behavior enhancing the debug feature activation](../images/figure-debug-switcher-behavior.png "the debug switcher ad a new Scene Behavior")
 
 A bunch of debug information is displayed about any `GameObject` having their debug flag set to value greater than 0.

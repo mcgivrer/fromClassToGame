@@ -71,6 +71,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
     public void iAddATestScene(String sceneName) {
         SceneManager sm = (SceneManager) SystemManager.get(SceneManager.class);
         sm.addScene(sceneName);
+        TestUtils.createSceneInstance(sceneName);
     }
 
     @And("I add a TestObject named {string}")
