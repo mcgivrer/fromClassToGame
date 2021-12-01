@@ -6,7 +6,7 @@ keywords: java, 2d, platform, pattern
 category: gamedev, java, 2D, platform
 description: This small how-to is an introduction to java 2D game development, guiding java developer to abc patterns used for beginners. Starting with some simple classes, Chapter to chapter will be brings new concepts and new way to manager things in a game.
 lang: en-US
-cover-image: docs/images/covers/en_front.jpg
+cover-image: docs/images/covers/en_front.png
 css: src/docs/assets/ebook.css
 header: From Class to Game - 2021
 footer: SnapGames / fredericDOTdelormeATgmailDOTcom  <[p]>
