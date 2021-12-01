@@ -4,7 +4,7 @@ import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Project: From Class To Game
@@ -24,7 +23,7 @@ import java.awt.event.KeyListener;
  * @author Frédéric Delorme
  * @since 0.0.1
  */
-public class Game implements KeyListener {
+public class Game implements ActionHandler.ActionListener {
 
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
     public boolean exit = false;
@@ -32,11 +31,12 @@ public class Game implements KeyListener {
     private long realFPS = 60;
     private Window window;
     private Render renderer;
-    private InputHandler inputHandler;
+    private ActionHandler actionHandler;
     private SceneManager sceneManager;
     private Configuration configuration;
     private CollisionSystem cs;
     private PhysicEngine pe;
+    private boolean pause = false;
 
     /**
      * the mandatory default constructor
@@ -87,7 +87,7 @@ public class Game implements KeyListener {
 
         SystemManager.add(Render.class);
         SystemManager.add(PhysicEngine.class);
-        SystemManager.add(InputHandler.class);
+        SystemManager.add(ActionHandler.class);
         SystemManager.add(SceneManager.class);
         SystemManager.add(CollisionSystem.class);
 
@@ -96,18 +96,17 @@ public class Game implements KeyListener {
         renderer = (Render) SystemManager.get(Render.class);
         renderer.setDebugLevel(configuration.debugLevel);
 
-        window = new Window(configuration.title, (int) (configuration.width * configuration.scale),
-                (int) (configuration.height * configuration.scale));
+        window = new Window(configuration);
 
         pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
         cs = (CollisionSystem) SystemManager.get(CollisionSystem.class);
-        inputHandler = (InputHandler) SystemManager.get(InputHandler.class);
-        inputHandler.setWindow(window);
-        inputHandler.addKeyListener(this);
+
+        actionHandler = (ActionHandler) SystemManager.get(ActionHandler.class);
+        actionHandler.setWindow(window);
+        actionHandler.add(this);
 
         sceneManager = (SceneManager) SystemManager.get(SceneManager.class);
         logger.info("** > Game initialized at {}", System.currentTimeMillis());
-
     }
 
     /**
@@ -128,7 +127,7 @@ public class Game implements KeyListener {
 
     private void createScene() {
         sceneManager.activate();
-        inputHandler.addKeyListener(sceneManager.getCurrent());
+        actionHandler.add(sceneManager.getCurrent());
     }
 
     /**
@@ -161,7 +160,8 @@ public class Game implements KeyListener {
             long elapsed = System.currentTimeMillis() - start;
             if (elapsed > 0 && elapsed < frameDuration) {
                 try {
-                    Thread.sleep(frameDuration - (System.currentTimeMillis() - start));
+                    long waitTime = frameDuration - (System.currentTimeMillis() - start);
+                    Thread.sleep(waitTime);
                 } catch (InterruptedException e) {
                     logger.error("The Game Thread has been interrupted");
                     Thread.currentThread().interrupt();
@@ -175,7 +175,7 @@ public class Game implements KeyListener {
      * Manage the input
      */
     private void input() {
-        sceneManager.getCurrent().input(inputHandler);
+        sceneManager.input(actionHandler);
     }
 
     /**
@@ -186,7 +186,7 @@ public class Game implements KeyListener {
         if (pe != null) {
             pe.update(dt);
         }
-        sceneManager.getCurrent().update(dt);
+        sceneManager.update(dt);
     }
 
     /**
@@ -194,6 +194,7 @@ public class Game implements KeyListener {
      */
     private void draw() {
         renderer.render();
+        sceneManager.render(renderer);
         window.draw(realFPS, renderer.getBuffer());
     }
 
@@ -235,10 +236,18 @@ public class Game implements KeyListener {
                 renderer.requestScreenShot();
                 break;
             case KeyEvent.VK_F11:
-                window.switchFullScreen();
+                if (actionHandler.getCtrl()) {
+                    window.switchScreen();
+                } else {
+                    window.switchFullScreen();
+                }
                 break;
             case KeyEvent.VK_ESCAPE:
                 this.exit = true;
+                break;
+            case KeyEvent.VK_P:
+            case KeyEvent.VK_PAUSE:
+                pause = !pause;
                 break;
             default:
                 break;
@@ -252,8 +261,14 @@ public class Game implements KeyListener {
         return this;
     }
 
+
+    @Override
+    public void onAction(Integer action) {
+        getSceneManager().onAction(action);
+    }
+
     public SceneManager getSceneManager() {
-        return this.sceneManager;
+        return (SceneManager) SystemManager.get(SceneManager.class);
     }
 
     public Configuration getConfiguration() {
@@ -272,4 +287,11 @@ public class Game implements KeyListener {
         return (Render) SystemManager.get(Render.class);
     }
 
+    public boolean isPause() {
+        return this.pause;
+    }
+
+    public void setPause(boolean p) {
+        this.pause = p;
+    }
 }

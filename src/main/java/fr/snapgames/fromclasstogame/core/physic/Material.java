@@ -13,7 +13,7 @@ import java.util.Map;
  * Static     Density : 0.0  Restitution : 0.0
  */
 public class Material {
-    
+
     public enum DefaultMaterial {
         ROCK(new Material("rock", 0.6, 1, 1, 1)),
         WOOD(new Material("wood", 0.1, 0.69, 0.69, 0.3)),
@@ -21,7 +21,7 @@ public class Material {
         RUBBER(new Material("rubber", 0.8, 0.88, 0.98, 0.3)),
         GLASS(new Material("glass", 0.4, 1, 1, 1)),
         ICE(new Material("ice", 0.1, 0.1, 1, 1)),
-        AIR(new Material("air", 1, 1, 1, 1)),
+        AIR(new Material("air", 1, 1, 1, 0.01)),
         STATIC(new Material("static", 0, 0, 0, 0)),
         NEUTRAL(new Material("neutral", 1, 1, 1, 1));
 
@@ -34,23 +34,28 @@ public class Material {
         public Material getMaterial() {
             return this.material;
         }
+
+        public static Material newMaterial(
+                String title, double bounciness, double density, double dynamicFriction, double staticFriction) {
+            return new Material(title, bounciness, dynamicFriction, staticFriction, density);
+        }
     }
 
     public static final Map<String, Material> materials = new HashMap<>();
 
-    private final String name;
+    public String name;
 
     public double bounciness;
     public double dynFriction;
     public double staticFriction;
     public double density;
 
-    public Material(String name, double b, double df, double sf, double d) {
+    public Material(String name, double bounciness, double dynamicFriction, double staticFriction, double density) {
         this.name = name;
-        this.bounciness = b;
-        this.dynFriction = df;
-        this.staticFriction = sf;
-        this.density = d;
+        this.bounciness = bounciness;
+        this.dynFriction = dynamicFriction;
+        this.staticFriction = staticFriction;
+        this.density = density;
     }
 
 

@@ -1,8 +1,11 @@
 package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The {@link SceneManager} is a game states switcher to activate one of the
@@ -21,8 +24,8 @@ import java.util.Map;
 public class SceneManager extends System {
     private final static Logger logger = LoggerFactory.getLogger(SceneManager.class);
 
-    Map<String, Class<?>> scenesClasses = new HashMap<>();
-    Map<String, Scene> scenesInstances = new HashMap<>();
+    Map<String, Class<?>> scenesClasses = new ConcurrentHashMap<>();
+    Map<String, Scene> scenesInstances = new ConcurrentHashMap<>();
 
     private Scene current;
 
@@ -32,7 +35,7 @@ public class SceneManager extends System {
 
     @Override
     public String getName() {
-        return SceneManager.class.getName();
+        return "Scene Manager";
     }
 
     @Override
@@ -75,7 +78,9 @@ public class SceneManager extends System {
     }
 
     public void activate() {
-        activate(game.getConfiguration().defaultScene);
+        String defaultScene = game.getConfiguration().defaultScene;
+        logger.debug("Activate the default scene '" + defaultScene + "'");
+        activate(defaultScene);
     }
 
     /**
@@ -100,11 +105,9 @@ public class SceneManager extends System {
                 s = instantiateScene(name);
             }
             if (s != null) {
-                this.current = s;
-                s.activate();
+                s.setName(name);
+                setCurrent(s);
             }
-
-            setCurrent(s);
         }
 
     }
@@ -113,20 +116,13 @@ public class SceneManager extends System {
         Scene s = null;
         try {
             Class<?> clazzScene = scenesClasses.get(name);
-            final Constructor<?> sceneConstructor = clazzScene.getConstructor(new Class[]{Game.class});
+            final Constructor<?> sceneConstructor = clazzScene.getConstructor(Game.class);
             s = (Scene) sceneConstructor.newInstance(game);
             add(name, s);
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             logger.error("Unable to instantiate class {}", name);
         }
         return s;
-    }
-
-    private void setCurrent(Scene s) {
-        if (s != null) {
-            this.current = s;
-            s.activate();
-        }
     }
 
     /**
@@ -156,11 +152,47 @@ public class SceneManager extends System {
         scenesClasses.clear();
     }
 
-    public Scene getCurrent() {
+    public synchronized Scene getCurrent() {
         if (current == null) {
             activate();
         }
         return this.current;
+    }
+
+    private void setCurrent(Scene s) {
+        if (s != null) {
+            this.current = s;
+            s.activate();
+        }
+    }
+
+    public void input(ActionHandler ah) {
+        getCurrent().input(ah);
+        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
+            b.onInput(getCurrent(), ah);
+        }
+    }
+
+    public void render(Render r) {
+        getCurrent().render(r);
+        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
+            b.onRender(getCurrent(), r);
+        }
+
+    }
+
+    public void update(long dt) {
+        getCurrent().update(dt);
+        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
+            b.onUpdate(getCurrent(), dt);
+        }
+    }
+
+    public void onAction(Integer action) {
+        getCurrent().onAction(action);
+        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
+            b.onAction(getCurrent(), action);
+        }
     }
 
     public Collection<?> getScenes() {

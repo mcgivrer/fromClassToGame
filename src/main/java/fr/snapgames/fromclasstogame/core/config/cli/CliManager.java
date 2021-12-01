@@ -30,7 +30,7 @@ public class CliManager {
         logger.debug("add cli parser for '{}'", ap.getDescription());
     }
 
-    public void parse(String[] args) throws ArgumentUnknownException {
+    public void parseArguments(String[] args) throws ArgumentUnknownException {
         if (args != null) {
             for (String arg : args) {
                 if (arg.equals("h") || arg.equals("help")) {
@@ -65,7 +65,7 @@ public class CliManager {
         }
     }
 
-    public Object getValue(String key) throws ArgumentUnknownException {
+    public Object getValue(String key){
         if (values.containsKey(key)) {
             return values.get(key);
         } else {
@@ -73,11 +73,11 @@ public class CliManager {
         }
     }
 
-    public boolean isExists(String key) {
+    public boolean isExist(String key) {
         return values.containsKey(key);
     }
 
-    public void parse(ResourceBundle configFile) {
+    public void parseConfigFile(ResourceBundle configFile) {
         Enumeration<String> configItems = configFile.getKeys();
         while (configItems.hasMoreElements()) {
             String k = configItems.nextElement();
@@ -87,7 +87,7 @@ public class CliManager {
                 String name = ap.getName();
                 Object value = ap.getValue();
                 values.put(name, value);
-                logger.info("- " + ap.getName() + ":" + ap.getValue() + " (" + ap.getDescription() + ")");
+                logger.info("read parameter from file :" + ap.getName() + "=" + ap.getValue() + " (" + ap.getDescription() + ")");
             } else {
                 logger.error("The key {} is unknown", k);
             }

@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame.core.system;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -33,7 +34,7 @@ public class SystemManager {
     }
 
     public static System get(Class<? extends System> systemClass) {
-        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
+        Optional<Map<Class<? extends System>, System>> oSystemInstances = Optional.ofNullable(systemInstances);
         if (oSystemInstances.isPresent() && systemInstances.containsKey(systemClass)) {
             return systemInstances.get(systemClass);
         }
@@ -108,5 +109,9 @@ public class SystemManager {
                 e.getValue().clearObjects();
             });
         }
+    }
+
+    public static int getNbObjects() {
+        return get(SceneManager.class).objects.size();
     }
 }

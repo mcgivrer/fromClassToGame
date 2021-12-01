@@ -1,6 +1,8 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
@@ -8,13 +10,14 @@ import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class LifeRenderHelper implements RenderHelper {
+public class LifeRenderHelper extends AbstractRenderHelper implements RenderHelper<LifeObject> {
 
     BufferedImage figs[];
     BufferedImage heart;
     BufferedImage cross;
 
-    public LifeRenderHelper() {
+    public LifeRenderHelper(Render r) {
+        super(r);
         prepareFigures();
     }
 
@@ -33,10 +36,9 @@ public class LifeRenderHelper implements RenderHelper {
     }
 
     @Override
-    public void draw(Graphics2D g, Object o) {
-        LifeObject so = (LifeObject) o;
-        g.setColor(so.color);
-        drawLife(g, so.value, (int) (so.position.x), (int) (so.position.y));
+    public void draw(Graphics2D g, LifeObject lo) {
+        g.setColor(lo.color);
+        drawLife(g, lo.value, (int) (lo.position.x), (int) (lo.position.y));
     }
 
     /**
@@ -50,7 +52,7 @@ public class LifeRenderHelper implements RenderHelper {
     private void drawLife(Graphics2D g, int value, int x, int y) {
         g.drawImage(heart, x, y, null);
         g.drawImage(cross, x + 8, y + 10, null);
-        drawFig(g, value, x + 12, y );
+        drawFig(g, value, x + 12, y);
     }
 
     /**

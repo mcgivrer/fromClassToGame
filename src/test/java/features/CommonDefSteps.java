@@ -3,5 +3,5 @@ package features;
 import fr.snapgames.fromclasstogame.core.Game;
 
 public class CommonDefSteps {
-    protected Game game;
+    protected static Game game;
 }

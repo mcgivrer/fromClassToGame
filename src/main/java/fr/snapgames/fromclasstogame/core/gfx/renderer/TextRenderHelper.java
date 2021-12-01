@@ -1,17 +1,22 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 
-public class TextRenderHelper implements RenderHelper {
+public class TextRenderHelper extends AbstractRenderHelper implements RenderHelper<TextObject> {
+    private Color shadowColor = new Color(0.2f, 0.2f, 0.2f, 0.6f);
+
+    public TextRenderHelper(Render r) {
+        super(r);
+    }
 
     @Override
-    public void draw(Graphics2D g, Object go) {
-        TextObject to = (TextObject) go;
-        g.setFont(to.font);
-        g.setColor(to.color);
-        g.drawString(to.text, (int) (to.position.x), (int) (to.position.y));
+    public void draw(Graphics2D g, TextObject to) {
+        drawTextBorder(g, 2, to);
+        setColor(g, to.color);
+        drawText(g, to.text, to.position);
     }
 
     @Override
