@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * - a `dispose()` method to free all system needed resources.
  *
  * @author Frédéric Delorme
- * @since 1.1
+ * @since 1.0.0
  */
 public abstract class System {
 
