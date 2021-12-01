@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="83e31175-cda9-4b92-8ad6-a71a564817e9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="491ff604-aa87-4d6b-9b85-867a48d78f40" name="Changes" comment="feat(AreaInfluencer): Add Area of influence in PhysicEngine&#10;&#10;- Add InfluenceArea2d object to define area with force of influence,&#10;- Update Physic Engine to apply this influence area to all objects defined,&#10;- Update the BoundingBox to add a toString()">
+      <change beforePath="$PROJECT_DIR$/fromclasstogame.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.ipr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fromclasstogame.iws" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/features/RenderHelperStepDefs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/features/RenderHelperStepDefs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/fr/snapgames/fromclasstogame/test/TestUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/fr/snapgames/fromclasstogame/test/TestUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/features/Game_can_render_multiple_objects.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/Game_can_render_multiple_objects.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/core/entity/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -89,10 +89,10 @@ public class DemoScene extends AbstractScene {
         World world = new World(800, 600);
         // create a basic wind all over the play area
         InfluenceArea2d iArea = new InfluenceArea2d(
-                new Vector2d(0.275, 0),
+                new Vector2d(0.475, 0),
                 new BoundingBox(Vector2d.ZERO, 800, 600,
                         BoundingBox.BoundingBoxType.RECTANGLE),
-                1.5);
+                3);
         world.addInfluenceArea(iArea);
         g.setWorld(world);
 
