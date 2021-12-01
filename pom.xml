@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>core</groupId>
     <artifactId>fromclasstogame</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>FromClassToGame</name>
     <description>Journey from a simple class to a Game, with the Java language</description>
     <inceptionYear>2021</inceptionYear>
@@ -39,7 +38,7 @@
         <url>https://github.com/mcgivrer/fromClassToGame</url>
         <connection>scm:git:git@github.com:mcgivrer/fromClassToGame.git</connection>
         <developerConnection>scm:git:https://github.com/mcgivrer/fromClassToGame.git</developerConnection>
-        <tag>${project.id}-${project.version}</tag>
+        <tag>v${project.version}</tag>
     </scm>
     <issueManagement>
         <system>GitHub</system>
@@ -50,16 +49,30 @@
         <system>github-actions</system>
     </ciManagement>
 
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/mcgivrer/fromClassToGame</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
     <!-- Project Dependencies -->
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -107,19 +120,19 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java8</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>6.11.0</version>
+            <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -135,16 +148,13 @@
                 <version>3.8.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>11</source>
-                    <target>11</target>
-                    <release>11</release>
                 </configuration>
             </plugin>
             <!-- Resource parsing -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
@@ -154,17 +164,16 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.6</version>
+                <version>0.8.7</version>
                 <executions>
                     <execution>
-                        <id>default-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>default-report</id>
-                        <phase>prepare-package</phase>
+                        <id>report</id>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -176,7 +185,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -192,25 +201,27 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.3.1</version>
                 <configuration>
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
                     <source>1.8</source>
-                    <javadocVersion>11</javadocVersion>
-                    <show>private</show>
+                    <show>public</show>
                     <failOnError>false</failOnError>
                     <failOnWarnings>false</failOnWarnings>
-                    <linksource>true</linksource>
+                    <useStandardDocletOptions>false</useStandardDocletOptions>
+                    <linksource>false</linksource>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
                     <overview>${project.basedir}/README.md</overview>
                     <bottom>
                         <![CDATA[<em>Copyright © \\${project.inceptionYear} - SnapGames.</em>]]>
                     </bottom>
-                    <links>
+                    <!--links>
                         <link>${project.issueManagement.url}</link>
                         <link>${project.ciManagement.url}</link>
-                        <link>[https://docs.oracle.com/en/java/javase/11/docs/api/]</link>
-                    </links>
+                        <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
+                    </links-->
                     <!--doclet>ch.raffael.mddoclet.MarkdownDoclet</doclet>
                     <docletArtifact>
                         <groupId>ch.raffael.markdown-doclet</groupId>
@@ -234,7 +245,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <index>true</index>
@@ -250,19 +261,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.4</version>
                 <configuration>
                     <!-- put your configurations here -->
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>shaded</shadedClassifierName>
                     <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>${mainClass}</mainClass>
                         </transformer>
-                        <!--transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                        <resource>src/main/resources/res</resource> <file>server.properties</file>
-                                        </transformer -->
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>src/main/resources/</resource>
+                        </transformer>
                     </transformers>
                     <!-- end of config -->
                 </configuration>
@@ -284,6 +295,7 @@
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
+                    <tagNameFormat>v${project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
@@ -292,7 +304,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -317,7 +329,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.1</version>
+                <version>2.22.2</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
                     <includes>
@@ -332,7 +344,7 @@
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
-                <version>2.0.0</version>
+                <version>5.6.2</version>
                 <executions>
                     <execution>
                         <id>execution</id>
@@ -343,8 +355,13 @@
                         <configuration>
                             <projectName>${project.name}</projectName>
                             <outputDirectory>${project.build.directory}/site/cucumber-reports</outputDirectory>
+                            <jsonFiles>
+                                <!-- supports wildcard or name pattern -->
+                                <param>**/*.json</param>
+                            </jsonFiles>
                             <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
-                            <skippedFails>true</skippedFails>
+                            <skip>true</skip>
+                            <mergeFeaturesById>true</mergeFeaturesById>
                             <buildNumber>4</buildNumber>
                         </configuration>
                     </execution>
@@ -354,9 +371,23 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.9.0</version>
+                <version>3.9.1</version>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/changes</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/docs</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
     </build>
 
     <reporting>
@@ -365,12 +396,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.0.0-M5</version>
             </plugin>
+            <!-- Code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.2</version>
+                <version>0.8.7</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -380,6 +412,17 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+            <!-- Javadoc reporting -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <stylesheetfile>${basedir}/docs/styles/javadoc.css</stylesheetfile>
+                    <show>public</show>
+                </configuration>
+            </plugin>
+
             <!-- Generate the Release Notes for this version (linked to github issues
                       list) -->
             <plugin>
@@ -443,7 +486,7 @@
             </build>
         </profile>
         <profile>
-            <id>doc-epub</id>
+            <id>create-epub</id>
             <build>
                 <plugins>
                     <!-- generate and ebook (EPUB) width docs/ documentation content -->
@@ -454,24 +497,33 @@
                         <executions>
                             <execution>
                                 <id>pandoc-epub</id>
-                                <phase>package</phase>
+                                <phase>site</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory/>
+                                    <workingDirectory />
                                     <arguments>
-                                        <argument>docs/theme/ebook-metadata.yml</argument>
-                                        <argument>docs/chapters/00-introduction.md</argument>
+                                        <argument>docs/epub-metadata.yml</argument>
+                                        <argument>docs/index.md</argument>
                                         <argument>docs/chapters/01-a-class.md</argument>
-                                        <argument>docs/chapters/02-game_object.md</argument>
-                                        <argument>docs/chapters/03-scene_and_manager_system.md</argument>
-                                        <argument>docs/chapters/04-renderer.md</argument>
-                                        <argument>docs/chapters/05-camera.md</argument>
-                                        <argument>docs/chapters/06-system_manager.md</argument>
-                                        <argument>docs/chapters/07-behaviors_and_lua_scripts.md</argument>
-                                        <argument>docs/chapters/08-physic_engine_system.md</argument>
-                                        <argument>docs/chapters/09-maplevel.md</argument>
-                                        <!--argument>docs/00-.md</argument -->
-                                        <argument>--resource-path=docs/</argument>
+                                        <argument>docs/chapters/02-adding-a-structure.md</argument>
+                                        <argument>docs/chapters/03-delegate-things.md</argument>
+                                        <argument>docs/chapters/04-the-object-game.md</argument>
+                                        <argument>docs/chapters/05-input-handler.md</argument>
+                                        <argument>docs/chapters/06-new-components.md</argument>
+                                        <argument>docs/chapters/07-resource-manager.md</argument>
+                                        <argument>docs/chapters/08-scene-manager.md</argument>
+                                        <argument>docs/chapters/09-extract-configuration.md</argument>
+                                        <argument>docs/chapters/10-refactoring-packages.md</argument>
+                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/12-see-through-camera.md</argument>
+                                        <argument>docs/chapters/13-basic-physic-engine.md</argument>
+                                        <argument>docs/chapters/14-collision-system.md</argument>
+                                        <argument>docs/chapters/16-gameobject-and-behaviors.md</argument>
+                                        <argument>docs/chapters/17-inventory.md</argument>
+                                        <argument>docs/chapters/18-enhanced-behavior.md</argument>
+                                        <argument>docs/chapters/19-particles-are-beautiful.md</argument>
+                                        <argument>docs/chapters/100-architecture.md</argument>
+                                        <argument>--resource-path=docs/chapters</argument>
                                         <argument>--toc</argument>
                                         <argument>--toc-depth=2</argument>
                                         <argument>-t</argument>
@@ -490,7 +542,7 @@
             </build>
         </profile>
         <profile>
-            <id>doc-pdf</id>
+            <id>create-pdf</id>
             <build>
                 <plugins>
                     <!-- generate PDF width docs/ documentation content -->
@@ -504,20 +556,29 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory/>
+                                    <workingDirectory />
                                     <arguments>
-                                        <argument>docs/ebbok-metadata.yml</argument>
-                                        <argument>docs/00-introduction.md</argument>
-                                        <argument>docs/01-game.md</argument>
-                                        <argument>docs/02-game_object.md</argument>
-                                        <argument>docs/03-scene_and_manager_system.md</argument>
-                                        <argument>docs/04-renderer.md</argument>
-                                        <argument>docs/05-camera.md</argument>
-                                        <argument>docs/06-system_manager.md</argument>
-                                        <argument>docs/07-behaviors_and_lua_scripts.md</argument>
-                                        <argument>docs/08-physic_engine_system.md</argument>
-                                        <argument>docs/09-maplevel.md</argument>
-                                        <argument>docs/10-the_maven_project.md</argument>
+                                        <argument>docs/epub-metadata.yml</argument>
+                                        <argument>docs/index.md</argument>
+                                        <argument>docs/chapters/01-a-class.md</argument>
+                                        <argument>docs/chapters/02-adding-a-structure.md</argument>
+                                        <argument>docs/chapters/03-delegate-things.md</argument>
+                                        <argument>docs/chapters/04-the-object-game.md</argument>
+                                        <argument>docs/chapters/05-input-handler.md</argument>
+                                        <argument>docs/chapters/06-new-components.md</argument>
+                                        <argument>docs/chapters/07-resource-manager.md</argument>
+                                        <argument>docs/chapters/08-scene-manager.md</argument>
+                                        <argument>docs/chapters/09-extract-configuration.md</argument>
+                                        <argument>docs/chapters/10-refactoring-packages.md</argument>
+                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/12-see-through-camera.md</argument>
+                                        <argument>docs/chapters/13-basic-physic-engine.md</argument>
+                                        <argument>docs/chapters/14-collision-system.md</argument>
+                                        <argument>docs/chapters/16-gameobject-and-behaviors.md</argument>
+                                        <argument>docs/chapters/17-inventory.md</argument>
+                                        <argument>docs/chapters/18-enhanced-behavior.md</argument>
+                                        <argument>docs/chapters/19-particles-are-beautiful.md</argument>
+                                        <argument>docs/chapters/100-architecture.md</argument>
                                         <!--argument>docs/00-.md</argument -->
                                         <argument>--resource-path=docs/</argument>
                                         <argument>--toc</argument>

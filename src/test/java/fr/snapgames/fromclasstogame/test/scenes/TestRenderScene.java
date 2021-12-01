@@ -2,14 +2,14 @@ package fr.snapgames.fromclasstogame.test.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.io.ActionHandler;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.test.entity.TestObject;
 
 public class TestRenderScene extends AbstractScene {
 
     public TestRenderScene(Game g) {
-        super(g, "render-scene");
+        super(g, "testrender");
     }
 
     @Override
@@ -24,12 +24,7 @@ public class TestRenderScene extends AbstractScene {
     }
 
     @Override
-    public void input(InputHandler inputHandler) {
-        // Nothing to do there for test only purpose
-    }
-
-    @Override
-    public void render() {
+    public void input(ActionHandler actionHandler) {
         // Nothing to do there for test only purpose
     }
 

@@ -2,10 +2,12 @@
 
 [![Java CI with Maven](https://github.com/mcgivrer/fromClassToGame/actions/workflows/maven.yml/badge.svg)](https://github.com/mcgivrer/fromClassToGame/actions/workflows/maven.yml)
 [![Codacy Quality Badge](https://app.codacy.com/project/badge/Grade/0b6d37e6859d48e99c0493c08efa4d63)](https://www.codacy.com/gh/mcgivrer/fromClassToGame/dashboard?utm_source=github.com&utm_medium=referral&utm_content=mcgivrer/fromClassToGame&utm_campaign=Badge_Grade)
+[![CodeQL](https://github.com/mcgivrer/fromClassToGame/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mcgivrer/fromClassToGame/actions/workflows/codeql-analysis.yml)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmcgivrer%2FfromClassToGame.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmcgivrer%2FfromClassToGame?ref=badge_shield)
 [![Known Vulnerabilities](https://snyk.io//test/github/mcgivrer/fromClassToGame/badge.svg?targetFile=pom.xml)](https://snyk.io//test/github/mcgivrer/fromClassToGame?targetFile=pom.xml)
 [![Codacy Coverage Badge](https://app.codacy.com/project/badge/Coverage/0b6d37e6859d48e99c0493c08efa4d63)](https://www.codacy.com/gh/mcgivrer/fromClassToGame/dashboard?utm_source=github.com&utm_medium=referral&utm_content=mcgivrer/fromClassToGame&utm_campaign=Badge_Coverage)
 [![Cucumber Reports](https://messages.cucumber.io/api/report-collections/dce051b0-e607-40d6-af37-8bf5b67deb97/badge)](https://reports.cucumber.io/report-collections/dce051b0-e607-40d6-af37-8bf5b67deb97 "See the latest Cucumber Reports")
+[![OpenHub](https://img.shields.io/badge/OH-OpenHub-blue)](https://www.openhub.net/p/fromClassToGame "See the Open Hub project page")
 
 ## Description
 
@@ -23,25 +25,31 @@ using a bit of TDD to develop and refactor
 
 Added some valuable features like:
 
--  A Core `Game` class,
--  A standard central `GameObject`,
--  an `InputHandler` to capture player interaction
--  A `ResourceManager` service,
--  A `SceneManager` service,
--  A `SystemManager` and convert any service to `System` interface,
--  Implement a `Render` upon Graphics2D and `RenderHelper`,
--  Some fancy other objects like `TextObject`, `LifeObject` or `ScoreObject`,
--  A `Camera` to move view with following a specific target, 
--  A `PhysicEngine` to compute more realistic moves,
--  Some `Behavior` capability to GameObject,
--  A Map of `attributes` to GameObject
--  A new `InventoryObject` to manage a player inventory with its own render helper and behavior,
+- A Core `Game` class,
+- A standard central `GameObject`,
+- an `InputHandler` to capture player interaction
+- A `ResourceManager` service,
+- A `SceneManager` service,
+- A `SystemManager` and convert any service to `System` interface,
+- Implement a `Render` upon Graphics2D and `RenderHelper`,
+- Some fancy other objects like `TextObject`, `LifeObject` or `ScoreObject`,
+- A `Camera` to move view with following a specific target,
+- A `PhysicEngine` to compute more realistic moves,
+- Some `Behavior` capability to GameObject,
+- A Map of `attributes` to GameObject
+- A new `InventoryObject` to manage a player inventory with its own render helper and behavior,
+- Bring the `RenderingHelper` mechanism to easily extend the `Render` capability,
+- A evolution of the  `PhysicEngine` by adding `InfluenceArea2d` bringing some perturbation to the `World`,
+- Adding `Particle` and `ParticleSystem` to create special effects like rain and fire,
+- Replace the good old `InputHandler` by an `ActionHandler` (WIP) to support input command mapping,
+- Add a `DebugViewportGrid` object and its rendering helper.
 
 ## More to come
 
--  A `CollisionSystem` is a work in progress
--  Some `TileMap` object to display beautiful game level graphic set and all its dependencies (`Tile`, `TileSet` and `TileLayer`) are also work in progress !
--  A Mouse and Gamepad events integration to rules'em all !
+- A `CollisionSystem` is a work in progress
+- Some `TileMap` object to display beautiful game level graphic set and all its dependencies (`Tile`, `TileSet`
+  and `TileLayer`) are also work in progress !
+- A Mouse and Gamepad events integration to rules'em all !
 
 ## Build, Run and See
 
@@ -71,4 +79,20 @@ mvn exec:java
 
 You will get the current display:
 
-![screenshot-004](docs/images/../../src/docs/images/capture-004.png "a screenshot of the current sample demo")
+![screenshot - DemoScene with objects](docs/images/figure-demo-scene-structure.png "a screenshot of the current demo scene")
+
+This sample demo will show :
+
+1. Some `GameObject` as player (the red one), and some random spawning enemies (orange ones),
+2. the `ScoreObject`, displaying score (sic),
+3. the `LifeObject` showing the remaining number of life,
+4. the `InventoryObject`, showing a qick inventory to select an available item.
+
+The latest demo integrate the Fire `ParticleSystem` and the `InfluenceArea2d` world perturbation
+
+![screenshot - the latest evolution of the game framework with ParticleSystem and World InfluenceArea2d](docs/images/capture-006-800x500.png "ParticleSystem simulating fire, and under World perturbation")
+
+
+Have Fun !
+
+McG.
