@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="09a217eb-54ec-490f-bbf4-ff239e8ab8f9" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/docs/images/capture-006.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
@@ -12,6 +13,9 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/snapgames/fromclasstogame/demo/scenes/DemoScene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.properties" afterDir="false" />
     </list>
+=======
+    <list default="true" id="09a217eb-54ec-490f-bbf4-ff239e8ab8f9" name="Changes" comment="" />
+>>>>>>> 1.0.1
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -450,6 +454,10 @@
         </entry>
       </map>
     </option>
+<<<<<<< HEAD
+=======
+    <option name="oldMeFiltersMigrated" value="true" />
+>>>>>>> 1.0.1
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

@@ -38,7 +38,7 @@
         <url>https://github.com/mcgivrer/fromClassToGame</url>
         <connection>scm:git:git@github.com:mcgivrer/fromClassToGame.git</connection>
         <developerConnection>scm:git:https://github.com/mcgivrer/fromClassToGame.git</developerConnection>
-        <tag>fromclasstogame-1.0.0</tag>
+        <tag>v1.0.1-SNAPSHOT</tag>
     </scm>
     <issueManagement>
         <system>GitHub</system>
@@ -376,17 +376,17 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
+                <directory>src/resources/*.properties</directory>
+                <filtering>true</filtering>
             </resource>
-            <!--resource>
-                <directory>src/changes</directory>
+            <resource>
+                <directory>src/changes/*.xml</directory>
                 <filtering>true</filtering>
-            </resource-->
-            <!--resource>
-                <directory>src/docs</directory>
+            </resource>
+            <resource>
+                <directory>src/docs/*.md</directory>
                 <filtering>true</filtering>
-            </resource-->
+            </resource>
         </resources>
     </build>
 
