@@ -11,18 +11,35 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 /**
- * <p>The {@link PhysicEngine} is the heart of move in te game framework we intend to develop here.</p>
- *
- * <p>As a {@link System} itself, it handles a list of {@link GameObject} to animate and move according to their
- * own physic characteristics and rules, using {@link Material} to support those characteristics.</p>
- *
- * <p>Material is attached to a GameObject, and World provide constraints ({@link InfluenceArea2d} applied to all objects
- * managed by the PhysicEngine.</p>
- * <p>By the way, the gravity (if necessary) is provided by the {@link World} object.</p>
  * <p>
+ * The {@link PhysicEngine} is the heart of move in te game framework we intend
+ * to develop here.
+ * </p>
  *
- * <p>Usage of this system is as other, Add it to the {@link fr.snapgames.fromclasstogame.core.system.SystemManager} at Game initialization,
- * and you just ahe to add a GameObject to the SystemManager, it will be automatically supported by.</p>
+ * <p>
+ * As a {@link System} itself, it handles a list of {@link GameObject} to
+ * animate and move according to their
+ * own physic characteristics and rules, using {@link Material} to support those
+ * characteristics.
+ * </p>
+ *
+ * <p>
+ * Material is attached to a GameObject, and World provide constraints
+ * ({@link InfluenceArea2d} applied to all objects
+ * managed by the PhysicEngine.
+ * </p>
+ * <p>
+ * By the way, the gravity (if necessary) is provided by the {@link World}
+ * object.
+ * </p>
+ *
+ * <p>
+ * Usage of this system is as other, Add it to the
+ * {@link fr.snapgames.fromclasstogame.core.system.SystemManager} at Game
+ * initialization,
+ * and you just ahe to add a GameObject to the SystemManager, it will be
+ * automatically supported by.
+ * </p>
  *
  * <pre>
  *     // At game initialization:
@@ -49,10 +66,14 @@ import java.util.ConcurrentModificationException;
 public class PhysicEngine extends System {
     private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
 
+    /**
+     * The current World object managed by the PhysicEngine.
+     */
     private World world = new World(0, 0);
 
     /**
-     * Initialization of the {@link PhysicEngine} System with its parent {@link Game}.
+     * Initialization of the {@link PhysicEngine} System with its parent
+     * {@link Game}.
      *
      * @param g the parent game using this System.
      */
@@ -71,11 +92,12 @@ public class PhysicEngine extends System {
     }
 
     /**
-     * Initialization with configuration parameters of the PhysicEngine, called by SystemManager
+     * Initialization with configuration parameters of the PhysicEngine, called by
+     * SystemManager
      * during initialization phase.
      *
      * @param config the {@link Configuration} object containing properties.
-     * @return
+     * @return 1 if intilization is OK.
      */
     @Override
     public int initialize(Configuration config) {
@@ -85,17 +107,22 @@ public class PhysicEngine extends System {
         return 1;
     }
 
+    /**
+     * release all resources.
+     */
     @Override
     public void dispose() {
         objects.clear();
     }
 
     /**
-     * THe heart of the system, updating all objects bu applying {@link GameObject#forces} and
-     * {@link World#influenceAreas} constrains to the list of managed objects. This process is active until the
+     * THe heart of the system, updating all objects bu applying
+     * {@link GameObject#forces} and
+     * {@link World#influenceAreas} constrains to the list of managed objects. This
+     * process is active until the
      * {@link Game#isPause()} state is up.
      *
-     * @param dt
+     * @param dt elapsed time since previous call.
      */
     public void update(long dt) {
         try {
@@ -113,7 +140,7 @@ public class PhysicEngine extends System {
      * Internal GameObject update according to elapsed time.
      *
      * @param go The GameObject to be updated.
-     * @param dt
+     * @param dt elapsed time since previous call.
      */
     private void update(GameObject go, long dt) {
         double dtCorrected = dt * 0.01;
@@ -126,43 +153,16 @@ public class PhysicEngine extends System {
                 go.bbox.update(go);
 
                 // Acceleration is not already used in velocity & position computation
-                Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
-                // Apply World influence
-                Vector2d massAppliedToGravity = new Vector2d();
-                massAppliedToGravity.add(gravity).multiply(go.mass);
-                go.forces.add(massAppliedToGravity);
-
-
-                Vector2d acc = applyInfluences(go);
-                for (Vector2d f : go.forces) {
-                    acc.add(f);
-                }
-
-                go.acceleration.add(acc);
-
-
-                // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and `maxVerticalAcceleration`
-                applyMaxThreshold(go, "maxHorizontalAcceleration", "maxVerticalAcceleration", go.acceleration);
+                computeAcceleration(go);
 
                 // Compute velocity
-                double friction = go.material != null ? go.material.staticFriction : 1;
-                go.velocity = go.velocity.add(go.acceleration.multiply(dtCorrected)).multiply(friction);
-
-                // if the GameObject is touching anything, apply some friction !
-                boolean touching = (boolean) go.getAttribute("touching", false);
-                if (touching && Math.abs(go.acceleration.x) < 0.5 && Math.abs(go.acceleration.y) < 0.5) {
-                    double dynFriction = go.material != null ? go.material.dynFriction : 1;
-                    go.velocity = go.velocity.multiply(dynFriction);
-                }
-
-                // limit velocity with GameObject threshold `maxHorizontalVelocity` and `maxVerticalVelocity`
-                applyMaxThreshold(go, "maxHorizontalVelocity", "maxVerticalVelocity", go.velocity);
+                computeVelocity(go, dtCorrected);
                 // Compute position
                 go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
                 go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
 
                 // apply Object behaviors computations
-                if (go.behaviors.size() > 0) {
+                if (go.behaviors.isEmpty()) {
                     go.behaviors.forEach(b -> b.onUpdate(go, dt));
                 }
 
@@ -179,7 +179,64 @@ public class PhysicEngine extends System {
         }
     }
 
-    private void applyMaxThreshold(GameObject go, String maxHorizontalThreshold, String maxVerticalThreshold, Vector2d acceleration) {
+    /**
+     * Compute velocity for the {@link GameObject} go, applying a dtCorrected
+     * 
+     * @param go          The GameObject to compute velocity.
+     * @param dtCorrected the corrected elapsed time
+     */
+    private void computeVelocity(GameObject go, double dtCorrected) {
+        double friction = go.material != null ? go.material.staticFriction : 1;
+        go.velocity = go.velocity.add(go.acceleration.multiply(dtCorrected)).multiply(friction);
+
+        // if the GameObject is touching anything, apply some friction !
+        boolean touching = (boolean) go.getAttribute("touching", false);
+        if (touching && Math.abs(go.acceleration.x) < 0.5 && Math.abs(go.acceleration.y) < 0.5) {
+            double dynFriction = go.material != null ? go.material.dynFriction : 1;
+            go.velocity = go.velocity.multiply(dynFriction);
+        }
+
+        // limit velocity with GameObject threshold `maxHorizontalVelocity` and
+        // `maxVerticalVelocity`
+        applyMaxThreshold(go, "maxHorizontalVelocity", "maxVerticalVelocity", go.velocity);
+    }
+
+    /**
+     * Compute the acceleration to be applied to {@link GameObject} go.
+     * 
+     * @param go The GameObject to compute velocity.
+     */
+    private void computeAcceleration(GameObject go) {
+        Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
+        // Apply World influence
+        Vector2d massAppliedToGravity = new Vector2d();
+        massAppliedToGravity.add(gravity).multiply(go.mass);
+        go.forces.add(massAppliedToGravity);
+
+        Vector2d acc = applyInfluences(go);
+        for (Vector2d f : go.forces) {
+            acc.add(f);
+        }
+
+        go.acceleration.add(acc);
+
+        // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and
+        // `maxVerticalAcceleration`
+        applyMaxThreshold(go, "maxHorizontalAcceleration", "maxVerticalAcceleration", go.acceleration);
+    }
+
+    /**
+     * Apply max and min thresold to the computed values to set value limits.
+     * 
+     * @param go                     The Game obejct to apply threshold on
+     * @param maxHorizontalThreshold the max horizontal threshold attribute name for
+     *                               this object
+     * @param maxVerticalThreshold   the max vertical threshold attribute name for
+     *                               this object
+     * @param acceleration           the acceleration to be applied.
+     */
+    private void applyMaxThreshold(GameObject go, String maxHorizontalThreshold, String maxVerticalThreshold,
+            Vector2d acceleration) {
         if (go.getAttributes().containsKey(maxHorizontalThreshold)) {
             double ax = (Double) go.getAttribute(maxHorizontalThreshold, 0);
             acceleration.x = Math.abs(acceleration.x) > ax ? Math.signum(acceleration.x) * ax : acceleration.x;
@@ -197,7 +254,7 @@ public class PhysicEngine extends System {
      */
     private Vector2d applyInfluences(GameObject go) {
         Vector2d acc = new Vector2d();
-        if (world.influenceAreas.size() > 0 && !go.relativeToCamera) {
+        if (world.influenceAreas.isEmpty() && !go.relativeToCamera) {
             for (InfluenceArea2d area : world.influenceAreas) {
                 if (area.influenceArea.intersect(go.bbox)) {
                     double influence = area.getInfluenceAtPosition(go.position);
@@ -233,7 +290,6 @@ public class PhysicEngine extends System {
         return ceilValue(Math.copySign((Math.abs(x) > max ? max : x), x), min);
     }
 
-
     /**
      * Constrain {@link GameObject} to not be out of the {@link World} area.
      *
@@ -259,7 +315,7 @@ public class PhysicEngine extends System {
             go.velocity.y = -go.velocity.y * bounciness;
         }
 
-        //Touching ?
+        // Touching ?
         if (go.position.y + go.height >= world.height) {
             go.addAttribute("touching", true);
             go.addAttribute("jumping", false);
@@ -276,10 +332,13 @@ public class PhysicEngine extends System {
     }
 
     /**
-     * define the {@link World} to be applied to the {@link PhysicEngine} GameObject processing.
+     * define the {@link World} to be applied to the {@link PhysicEngine} GameObject
+     * processing.
      *
-     * @param w the {@link World} object to be used in {@link GameObject} computations
-     * @return the {@link PhysicEngine} itself updated with the new {@link World} defined.
+     * @param w the {@link World} object to be used in {@link GameObject}
+     *          computations
+     * @return the {@link PhysicEngine} itself updated with the new {@link World}
+     *         defined.
      */
     public PhysicEngine setWorld(World w) {
         this.world = w;
