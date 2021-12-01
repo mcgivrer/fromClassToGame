@@ -7,6 +7,7 @@ import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
+import fr.snapgames.fromclasstogame.test.TestUtils;
 import fr.snapgames.fromclasstogame.test.entity.TestObject;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -69,11 +70,12 @@ public class RenderHelperStepDefs extends CommonDefSteps {
     public void iAddATestScene(String sceneName) {
         SceneManager sm = (SceneManager) SystemManager.get(SceneManager.class);
         sm.addScene(sceneName);
+        TestUtils.createSceneInstance(sceneName);
     }
 
     @And("I add a TestObject named {string}")
     public void iAddATestObjectNamed(String arg0) {
-        Scene sc = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
+        Scene sc = TestUtils.getCurrentScene();
         sc.add(new TestObject("test", 0, 0));
     }
 }

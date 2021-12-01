@@ -90,7 +90,7 @@ This sample demo will show :
 
 The latest demo integrate the Fire `ParticleSystem` and the `InfluenceArea2d` world perturbation
 
-![screenshot - the latest evolution of the game framework with ParticleSystem and World InfluenceArea2d](docs/images/capture-006.png "ParticleSystem simulating fire, and under World perturbation")
+![screenshot - the latest evolution of the game framework with ParticleSystem and World InfluenceArea2d](docs/images/capture-006-800x500.png "ParticleSystem simulating fire, and under World perturbation")
 
 
 Have Fun !
