@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83e31175-cda9-4b92-8ad6-a71a564817e9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/fromclasstogame.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fromclasstogame.iws" beforeDir="false" afterPath="$PROJECT_DIR$/fromclasstogame.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/features/RenderHelperStepDefs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/features/RenderHelperStepDefs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/fr/snapgames/fromclasstogame/test/TestUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/fr/snapgames/fromclasstogame/test/TestUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/Game_can_render_multiple_objects.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/Game_can_render_multiple_objects.feature" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,6 +197,9 @@
     <option name="ADD_LABEL_ON_UNIT_TEST_PASSED" value="true" />
     <option name="ADD_LABEL_ON_UNIT_TEST_FAILED" value="true" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="PerforceConfiguration">
     <option name="PORT" value="magic:1666" />
     <option name="USER" value="" />
@@ -263,6 +269,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="All Features in: features" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java" temporary="true" nameIsGenerated="true">
+      <option name="CUCUMBER_CORE_VERSION" value="5" />
+      <option name="FILE_PATH" value="$PROJECT_DIR$/src/test/resources/features" />
+      <option name="GLUE" value="features" />
+      <option name="MAIN_CLASS_NAME" value="io.cucumber.core.cli.Main" />
+      <module name="fromclasstogame" />
+      <option name="PROGRAM_PARAMETERS" value=" --plugin org.jetbrains.plugins.cucumber.java.run.CucumberJvm5SMFormatter" />
+      <option name="SUGGESTED_NAME" value="All Features in: features" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.cucumber.core.cli.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -274,6 +299,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Cucumber Java.All Features in: features" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="StarteamConfiguration">
