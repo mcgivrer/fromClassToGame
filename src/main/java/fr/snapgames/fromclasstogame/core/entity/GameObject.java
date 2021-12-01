@@ -92,6 +92,7 @@ public class GameObject implements Entity {
         debugInfo.add("pos:" + position.toString());
         debugInfo.add("vel:" + velocity.toString());
         debugInfo.add("acc:" + acceleration.toString());
+        debugInfo.add("mass:" + mass);
         if (material != null) {
             debugInfo.add("mat:" + material.name);
             debugInfo.add("frict:" + material.dynFriction);
