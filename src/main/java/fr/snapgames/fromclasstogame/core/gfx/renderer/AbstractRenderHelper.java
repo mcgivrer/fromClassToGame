@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame.core.gfx.renderer;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.awt.*;
@@ -16,13 +17,14 @@ import java.util.NoSuchElementException;
  * @since 1.0.0
  */
 public class AbstractRenderHelper {
+    private final Render render;
     protected Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
     protected Color debugFrontColor = Color.ORANGE;
     protected Color debugBoxColor = Color.YELLOW;
 
 
-    public AbstractRenderHelper(Render r){
-
+    public AbstractRenderHelper(Render r) {
+        this.render = r;
     }
 
     /**
@@ -191,12 +193,19 @@ public class AbstractRenderHelper {
                 (int) size);
     }
 
+    /**
+     * If {@link GameObject#getDebug()} >= {@link Window#getDebug()}, and  {@link Window#getDebug()}>0, display the debug information.
+     *
+     * @param g  the Graphics API to use to draw information
+     * @param go the GameObject to be processed
+     */
     public void drawDebugInfo(Graphics2D g, GameObject go) {
-        if (go.getDebug() > 1) {
+        int winDbgLevel = render.getGame().getWindow().getDebug();
+        if (winDbgLevel > 0 && winDbgLevel >= go.getDebug()) {
             setColor(g, debugBoxColor);
             drawText(g, "#" + go.id, go.position.x, go.position.y);
             drawRect(g, go.position, go.width, go.height, 1, 1, debugBoxColor);
-            if (go.getDebug() > 2) {
+            if (go.getDebug() >= 2) {
                 setFontSize(g, 9);
                 double offsetY = go.debugOffsetX;
                 double offsetX = go.width + go.debugOffsetY;
@@ -205,7 +214,7 @@ public class AbstractRenderHelper {
                 int maxWidth = g.getFontMetrics().stringWidth(largestString);
 
                 int height = ((go.getDebugInfo().size() + 2) * 9);
-                fillRect(g, go.position, maxWidth+8, height, offsetX-4, offsetY - 12, debugBackgroundColor);
+                fillRect(g, go.position, maxWidth + 8, height, offsetX - 4, offsetY - 12, debugBackgroundColor);
                 setColor(g, debugFrontColor);
                 int i = 0;
                 for (String line : go.getDebugInfo()) {

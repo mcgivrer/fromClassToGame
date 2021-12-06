@@ -4,7 +4,7 @@ import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.particles.Particle;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
 
 import java.awt.*;

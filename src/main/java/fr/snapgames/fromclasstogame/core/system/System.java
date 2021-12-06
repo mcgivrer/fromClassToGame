@@ -59,4 +59,9 @@ public abstract class System {
     public synchronized List<GameObject> getObjects() {
         return objects;
     }
+
+
+    public Game getGame() {
+        return this.game;
+    }
 }

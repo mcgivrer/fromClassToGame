@@ -3,8 +3,7 @@ package fr.snapgames.fromclasstogame.test.behaviors;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
-import fr.snapgames.fromclasstogame.core.io.InputHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 
 public class TestBehavior implements Behavior<GameObject> {
     @Override

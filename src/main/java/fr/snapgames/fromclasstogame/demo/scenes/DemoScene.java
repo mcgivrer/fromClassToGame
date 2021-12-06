@@ -2,7 +2,6 @@ package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
-import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
@@ -15,7 +14,7 @@ import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
@@ -44,6 +43,7 @@ import java.util.List;
 public class DemoScene extends AbstractScene {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoScene.class);
+
 
     private int score = 0;
     private int life = 5;
@@ -89,7 +89,7 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-
+        super.create(g);
         // Declare World playground
         World world = new World(800, 600);
         // create a basic wind all over the play area
@@ -118,7 +118,7 @@ public class DemoScene extends AbstractScene {
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                //.setDebug(3)
+                .setDebug(3)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
@@ -155,8 +155,9 @@ public class DemoScene extends AbstractScene {
                 .setFeeding(2)
                 .setEmitFrequency(1200)
                 .add(new CopyObjectPosition(player, new Vector2d(7, -4)))
-                //.setDebug(3)
+                .setDebug(4)
                 .setLayer(1)
+                .setDebugOffset(-100, -100)
                 .setPriority(1);
         add(ps);
 
@@ -203,8 +204,6 @@ public class DemoScene extends AbstractScene {
         welcome.setDuration(5000).setLayer(0).setPriority(1).relativeToCamera(true);
         add(welcome);
 
-        // Add the Debug switcher capability to this scene
-        addBehavior(new DebugSwitcherBehavior());
 
     }
 
