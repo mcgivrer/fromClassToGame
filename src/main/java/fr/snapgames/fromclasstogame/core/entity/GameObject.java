@@ -163,6 +163,7 @@ public class GameObject implements Entity {
         debugInfo.add("contact:" + getAttribute("touching", false));
         debugInfo.add("jumping:" + getAttribute("jumping", false));
         debugInfo.add("active:" + (active ? "on" : "off"));
+        debugInfo.add("dbgLvl:" + debug);
         return debugInfo;
     }
 
@@ -270,6 +271,12 @@ public class GameObject implements Entity {
 
     public GameObject setGravity(Vector2d gravity) {
         this.gravity = gravity;
+        return this;
+    }
+
+    public GameObject setDebugOffset(int dox, int doy) {
+        this.debugOffsetX = dox;
+        this.debugOffsetY = doy;
         return this;
     }
 
