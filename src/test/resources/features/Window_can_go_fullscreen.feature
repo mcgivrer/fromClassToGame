@@ -11,6 +11,7 @@ Feature: A Window can switch from and to Full screen mode
     When I switched window to full screen mode
     Then the window is in fullscreen mode
 
+  @ignore
   Scenario: 03 - A Window can be switched between screens
     Given A fullscreen Window
     When multiple screens are available

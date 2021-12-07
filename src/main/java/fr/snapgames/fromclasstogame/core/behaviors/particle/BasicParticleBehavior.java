@@ -4,21 +4,30 @@ import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.particles.Particle;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
 
 import java.awt.*;
 
 public class BasicParticleBehavior implements Behavior<Particle> {
 
+    /**
+     * Parent particle System
+     */
     protected ParticleSystem parent;
-    protected long defaultLifeTime;
-    protected Color defaultColor = Color.WHITE;
+    /**
+     * Default life duration initialisation
+     */
+    protected long defaultLifeDuration;
+    /**
+     * Default color for particle ar initialization
+     */
+    private Color defaultColor = Color.WHITE;
 
     public BasicParticleBehavior(ParticleSystem ps, int defaultLifeTimeMS, boolean restart) {
         super();
         this.parent = ps;
-        this.defaultLifeTime = defaultLifeTimeMS;
+        this.defaultLifeDuration = defaultLifeTimeMS;
         ps.setRestart(restart);
     }
 
@@ -26,15 +35,15 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     public void onCreate(Particle p) {
         Behavior.super.onCreate(p);
         p.alive = true;
-        p.life = defaultLifeTime;
+        p.life = defaultLifeDuration;
         p.color = defaultColor;
     }
 
     /**
      * Define the default Color for the new particle
      *
-     * @param c the Color to be assigned to the particle
-     * @return this BasicParticleBehavior
+     * @param c color to be set.
+     * @return the Modified BasicParticleBehavior object
      */
     public BasicParticleBehavior setColor(Color c) {
         this.defaultColor = c;
@@ -44,11 +53,11 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     /**
      * Set the default lifetime t for the new particle.
      *
-     * @param t the life duration time for this particle.
-     * @return this BasicParticleBehavior
+     * @param t is the default life duration for this particle
+     * @return the modified `BasicParticleBehavior` object
      */
-    public BasicParticleBehavior setLifeTime(int t) {
-        this.defaultLifeTime = t;
+    public BasicParticleBehavior setLifeDuration(int t) {
+        this.defaultLifeDuration = t;
         return this;
     }
 
@@ -74,9 +83,9 @@ public class BasicParticleBehavior implements Behavior<Particle> {
         if (go.alive) {
 
             if (go.life - dt >= 0) {
-                go.life = go.life - dt;
+                go.life -= dt;
             } else {
-                go.life = 0;
+                go.life = -1;
                 go.alive = false;
             }
         }
@@ -89,7 +98,7 @@ public class BasicParticleBehavior implements Behavior<Particle> {
 
     @Override
     public void onRender(Particle go, Render r) {
-
+        // Nothing special to do
     }
 
     @Override

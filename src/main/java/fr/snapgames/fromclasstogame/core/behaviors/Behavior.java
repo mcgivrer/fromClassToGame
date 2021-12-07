@@ -1,7 +1,7 @@
 package fr.snapgames.fromclasstogame.core.behaviors;
 
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 
 public interface Behavior<T> {
 

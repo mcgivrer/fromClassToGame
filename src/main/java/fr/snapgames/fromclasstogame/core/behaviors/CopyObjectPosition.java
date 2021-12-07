@@ -2,7 +2,7 @@ package fr.snapgames.fromclasstogame.core.behaviors;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 

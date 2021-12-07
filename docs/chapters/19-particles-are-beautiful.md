@@ -165,10 +165,52 @@ TODO
 
 TODO
 
-## Special Effects
+## Drawing Particle ?
 
-The goal of the Particle System is mainly to provide special effects to the games. Here are some samples for fire and
-rain.
+TODO
+
+### Principle
+
+As seen before, the `RenderHelper` is the way we implement our specific rendering process according to the type of
+`GameObject` we need to render. So to render some  `ParticleSystem` we must provide a dedicated implmentation of the
+RenderHelper interface to draw the requested particles.
+
+Let's implement a default Particle rendering process.
+
+### ParticleRenderHelper
+
+If we need to draw particles from a ParticleSystem, we must first explain we are going to process `ParticleSystem` :
+
+```java
+public class ParticleSystemRenderHelper extends AbstractRenderHelper implements RenderHelper<ParticleSystem> {
+    @Override
+    public String getType() {
+        return ParticleSystem.class.getName();
+    }
+}
+```
+
+And then, we have to parse all the Particle items in the particles array to draw those simple ones. Here we are going to
+draw particles as simple colored points.
+
+```java
+public class ParticleSystemRenderHelper extends AbstractRenderHelper implements RenderHelper<ParticleSystem> {
+  //...
+  @Override
+  public void draw(Graphics2D g, ParticleSystem go) {
+    if (g != null) {
+      go.particles.forEach(p -> drawPoint(g, p.position, p.size, p.color));
+    }
+  }
+  //...
+}
+```
+
+### Using particle ?
+
+TODO
+
+## Special Effects
 
 ### Fire
 
