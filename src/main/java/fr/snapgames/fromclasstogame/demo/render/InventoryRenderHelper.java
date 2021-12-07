@@ -63,4 +63,9 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
             }
         }
     }
+
+    @Override
+    public void drawDebugInfo(Graphics2D g, InventoryObject go) {
+        super.drawDebugInfo(g, go);
+    }
 }

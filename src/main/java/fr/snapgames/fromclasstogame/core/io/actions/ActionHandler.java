@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.core.io;
+package fr.snapgames.fromclasstogame.core.io.actions;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
@@ -105,6 +105,15 @@ public class ActionHandler extends System implements KeyListener {
         this.keyMapping.put(KeyEvent.VK_F3, RT_FIRE);
         this.keyMapping.put(KeyEvent.VK_F4, RB_FIRE);
         return 0;
+    }
+
+    public ActionHandler registerAction(int actionCode, int keyCode) throws ActionAlreadyExistsException {
+        if (!this.keyMapping.containsValue(actionCode)) {
+            this.keyMapping.put(keyCode, actionCode);
+        } else {
+            throw new ActionAlreadyExistsException("The action code %d is already declared");
+        }
+        return this;
     }
 
     public void addAction(int ke, int customActionCode) {

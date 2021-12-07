@@ -359,7 +359,6 @@
                                 <!-- supports wildcard or name pattern -->
                                 <param>**/*.json</param>
                             </jsonFiles>
-                            <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
                             <skip>true</skip>
                             <mergeFeaturesById>true</mergeFeaturesById>
                             <buildNumber>4</buildNumber>
@@ -611,7 +610,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>2.1.2</version>
+                        <version>1.7.21</version>
                         <executions>
                             <execution>
                                 <id>l4j-clui</id>

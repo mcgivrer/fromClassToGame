@@ -41,6 +41,11 @@ public class LifeRenderHelper extends AbstractRenderHelper implements RenderHelp
         drawLife(g, lo.value, (int) (lo.position.x), (int) (lo.position.y));
     }
 
+    @Override
+    public void drawDebugInfo(Graphics2D g, LifeObject go) {
+        super.drawDebugInfo(g,go);
+    }
+
     /**
      * Draw score with digital characters
      *

@@ -2,11 +2,13 @@ package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionAlreadyExistsException;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,11 @@ import java.util.stream.Collectors;
 public abstract class AbstractScene implements Scene {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
+
+    // new action defined for all scenes.
+    public static final int DEBUG_NEXT_ELEMENT = ActionHandler.POWER + 100;
+    public static final int DEBUG_LEVEL_PLUS = ActionHandler.POWER + 101;
+    public static final int DEBUG_LEVEL_MINUS = ActionHandler.POWER + 102;
 
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
@@ -40,10 +47,21 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void initialize(Game g) {
         this.game = g;
+
+        ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
+        try {
+            ah.registerAction(this.DEBUG_NEXT_ELEMENT, KeyEvent.VK_TAB);
+            ah.registerAction(this.DEBUG_LEVEL_PLUS, KeyEvent.VK_PLUS);
+            ah.registerAction(this.DEBUG_LEVEL_MINUS, KeyEvent.VK_MINUS);
+        } catch (ActionAlreadyExistsException e) {
+            logger.error("Unable to add new action to ActionHandler", e);
+        }
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
+        // Add the Debug switcher capability to this scene
+        addBehavior(new DebugSwitcherBehavior());
         // will be updated into the implemented scene
     }
 

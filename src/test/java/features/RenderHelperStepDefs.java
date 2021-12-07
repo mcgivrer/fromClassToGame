@@ -39,8 +39,8 @@ public class RenderHelperStepDefs extends CommonDefSteps {
     @And("the RenderHelper for {string} is ready")
     public void theRenderHelperForIsReady(String objectName) {
         Render render = (Render) SystemManager.get(Render.class);
-        Map<String, RenderHelper> renderHelpers = render.getRenderHelpers();
-        RenderHelper rh = renderHelpers.get(objectName);
+        Map<String, RenderHelper<?>> renderHelpers = render.getRenderHelpers();
+        RenderHelper<?> rh = renderHelpers.get(objectName);
         assertEquals("The '" + objectName + "' RenderHelper is not defined", objectName, rh.getType());
     }
 
@@ -48,8 +48,9 @@ public class RenderHelperStepDefs extends CommonDefSteps {
     public void iAddANewForA(String className, String EntityName) {
         try {
             Class<?> rhc = Class.forName(className);
-            RenderHelper rh = (RenderHelper) rhc.getConstructors()[0].newInstance();
+
             Render render = (Render) SystemManager.get(Render.class);
+            RenderHelper<?> rh = (RenderHelper<?>) rhc.getConstructors()[0].newInstance(render);
             render.addRenderHelper(rh);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             fail("Unable to add the RenderHelper named " + className + ": " + e.getMessage());
@@ -74,8 +75,8 @@ public class RenderHelperStepDefs extends CommonDefSteps {
     }
 
     @And("I add a TestObject named {string}")
-    public void iAddATestObjectNamed(String arg0) {
+    public void iAddATestObjectNamed(String objectName) {
         Scene sc = TestUtils.getCurrentScene();
-        sc.add(new TestObject("test", 0, 0));
+        sc.add(new TestObject(objectName, 0, 0));
     }
 }
