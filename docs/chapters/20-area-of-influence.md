@@ -53,20 +53,7 @@ public class InfluenceArea2d {
 
 To understand what is an InfluenceArea, a little diagram will help a lot.
 
-```text
-play area
-+---------------------------------------+
-|   (x1,y1)                             |
-|   +------------+ InfluenceArea_1      |
-|   |        ^   |                      |
-|   |       /    |    (x2,y2)           |
-| h1|      / F   |       +---------+ InfluenceArea_2
-|   |     o      |       |    w2   |    |
-|   |            |     h2|    o    |    |
-|   |            |       |     \   |    |
-|   |     w1     |       +------v--+    |
-+---+------------+----------------------+
-```
+![Diagram about Influence Area](../images/illustrations/diagram-20-1-influence_area.svg/)
 
 So in the play area, we've defined here 2 areas:
 
@@ -106,3 +93,9 @@ public class PhysicEngine extends AbstractSystem {
 }
 
 ```
+
+## Adding some debug visual information
+
+Another RenderHelper must be added to the stack to render the `InfluenceAre` to get visual debugging information, to help developers understand possible issue. This is the `DebugInfluenceAreaRenderHelper`.
+
+**TODO** _Modify InfluenceArea2d to inherit from `GameObject` and modify World to use its new attributes_

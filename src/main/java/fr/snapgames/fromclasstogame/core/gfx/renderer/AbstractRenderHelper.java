@@ -8,7 +8,6 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.NoSuchElementException;
 
 /**
  * Internal Helpers to draw to the internal image buffer of the Render system.
@@ -204,7 +203,7 @@ public class AbstractRenderHelper {
         if (winDbgLevel > 0 && winDbgLevel >= go.getDebug()) {
             setColor(g, debugBoxColor);
             drawText(g, "#" + go.id, go.position.x, go.position.y);
-            drawRect(g, go.position, go.width, go.height, 1, 1, debugBoxColor);
+            drawRect(g, go.position, go.width-1, go.height-1, 1, 1, debugBoxColor);
             if (go.getDebug() >= 2) {
                 setFontSize(g, 9);
                 double offsetY = go.debugOffsetX;
