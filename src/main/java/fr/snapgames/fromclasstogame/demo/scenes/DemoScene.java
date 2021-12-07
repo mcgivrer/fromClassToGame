@@ -44,10 +44,6 @@ public class DemoScene extends AbstractScene {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoScene.class);
 
-
-    private int score = 0;
-    private int life = 5;
-
     /**
      * Create the Demo.
      *
@@ -71,7 +67,7 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
         // inventory objects item.
         ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
-        ResourceManager.getSlicedImage("images/tiles01.png", "potion", 32, 16, 16, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "potion", 34, 18, 14, 15);
         // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
@@ -125,6 +121,8 @@ public class DemoScene extends AbstractScene {
                 .addAttribute("jumpAccel", -20.0)
                 .addAttribute("maxHorizontalVelocity", 20.0)
                 .addAttribute("maxVerticalVelocity", 30.0)
+                .addAttribute("score", 0)
+                .addAttribute("lifes", 5)
                 .add(new PlayerActionBehavior());
         add(player);
 
@@ -163,6 +161,7 @@ public class DemoScene extends AbstractScene {
         add(ps);
 
         // add score display.
+        int score = (int) (player.getAttribute("score", 0));
         ScoreObject scoreTO = (ScoreObject) new ScoreObject(
                 "score",
                 new Vector2d(10, 4))
@@ -174,6 +173,8 @@ public class DemoScene extends AbstractScene {
         add(scoreTO);
 
         // Add a Life display
+        int life = (int) player.getAttribute("lifes", 0);
+
         LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).setRelativeToCamera(true);
         add(lifeTO);
 
@@ -214,6 +215,11 @@ public class DemoScene extends AbstractScene {
 
     }
 
+    /**
+     * Generate a random set of nbEnemies on screen?
+     * @param nbEnemies
+     * @throws UnknownResource
+     */
     private void generateEnemies(int nbEnemies) throws UnknownResource {
         for (int i = 0; i < nbEnemies; i++) {
             GameObject e = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
@@ -241,7 +247,7 @@ public class DemoScene extends AbstractScene {
     public void activate() {
         randomizeFilteredGameObject("enemy_");
         randomizeFilteredGameObject("player");
-        this.score = 0;
+        objects.get("player").addAttribute("score", 0);
     }
 
     private synchronized void randomizeFilteredGameObject(String rootName) {
@@ -257,6 +263,17 @@ public class DemoScene extends AbstractScene {
                 .setGravity(game.getPhysicEngine().getWorld().gravity);
     }
 
+    /**
+     * generate randomly {@link Material#dynFriction}, {@link Material#bounciness} and {@link GameObject#acceleration}
+     * into some max values for the {@link GameObject} <code>go</code>.
+     *
+     * @param go          the GameObject to be randomly updated
+     * @param accFactorX  the +/- range factor for X acceleration
+     * @param accFactorY  the +/- range factor for Y acceleration
+     * @param dynFriction dynamic friction for the {@link GameObject#material}
+     * @param bounciness  bounciness factor for the {@link GameObject#material}
+     * @return the modified GameObject
+     */
     private GameObject randomizeAccelerationAndFrictionAndBounciness(
             GameObject go,
             double accFactorX,
@@ -274,9 +291,12 @@ public class DemoScene extends AbstractScene {
     public void update(long dt) {
 
         super.update(dt);
+        GameObject player = objects.get("player");
+        int score = (int) player.getAttribute("score", 0);
         ScoreObject scoreTO = (ScoreObject) objects.get("score");
         score++;
         scoreTO.setScore(score);
+        player.addAttribute("score", score);
     }
 
     @Override

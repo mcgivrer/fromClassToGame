@@ -203,7 +203,7 @@ public class AbstractRenderHelper {
         if (winDbgLevel > 0 && winDbgLevel >= go.getDebug()) {
             setColor(g, debugBoxColor);
             drawText(g, "#" + go.id, go.position.x, go.position.y);
-            drawRect(g, go.position, go.width, go.height, 1, 1, debugBoxColor);
+            drawRect(g, go.position, go.width-1, go.height-1, 1, 1, debugBoxColor);
             if (go.getDebug() >= 2) {
                 setFontSize(g, 9);
                 double offsetY = go.debugOffsetX;

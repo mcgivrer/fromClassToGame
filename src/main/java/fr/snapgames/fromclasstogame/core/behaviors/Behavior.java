@@ -9,12 +9,24 @@ public interface Behavior<T> {
         // Nothing specific to do by default.
     }
 
-    void onInput(T go, ActionHandler ih);
+    default void onInput(T go, ActionHandler ih) {
+        // Nothing specific to do by default.
 
-    void onUpdate(T go, long dt);
+    }
 
-    void onRender(T go, Render r);
+    default void onUpdate(T go, long dt) {
+        // Nothing specific to do by default.
 
-    void onAction(T go, Integer action);
+    }
+
+    default void onRender(T go, Render r) {
+        // Nothing specific to do by default.
+
+    }
+
+    default void onAction(T go, Integer action) {
+        // Nothing specific to do by default.
+
+    }
 
 }

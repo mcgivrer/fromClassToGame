@@ -36,27 +36,12 @@ public class CopyObjectPosition implements Behavior<GameObject> {
     }
 
     @Override
-    public void onInput(GameObject go, ActionHandler ih) {
-        // Nothing specific on the input event.
-    }
-
-    @Override
     public void onUpdate(GameObject go, long dt) {
         GameObject cO = (GameObject) go;
         Vector2d zero = new Vector2d(0, 0);
         cO.setPosition(Utils.add(target.position, this.offset));
         cO.setVelocity(zero);
         cO.setAcceleration(zero);
-    }
-
-    @Override
-    public void onRender(GameObject go, Render r) {
-        // Nothing specific on the render event.
-    }
-
-    @Override
-    public void onAction(GameObject go, Integer action) {
-
     }
 
 }

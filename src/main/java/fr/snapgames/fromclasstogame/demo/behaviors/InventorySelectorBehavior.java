@@ -30,18 +30,4 @@ public class InventorySelectorBehavior implements Behavior<GameObject> {
         }
     }
 
-    @Override
-    public void onUpdate(GameObject go, long dt) {
-        // this behavior has nothing on update side
-    }
-
-    @Override
-    public void onRender(GameObject go, Render r) {
-        // this behavior has nothing on render side
-    }
-
-    @Override
-    public void onAction(GameObject go, Integer action) {
-        // this behavior has nothing to do with action.
-    }
 }
