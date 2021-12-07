@@ -2,7 +2,6 @@ package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
-import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
@@ -15,7 +14,7 @@ import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
@@ -45,6 +44,7 @@ public class DemoScene extends AbstractScene {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoScene.class);
 
+
     private int score = 0;
     private int life = 5;
 
@@ -71,20 +71,26 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
         // inventory objects item.
         ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
+        ResourceManager.getSlicedImage("images/tiles01.png", "potion", 32, 16, 16, 16);
         // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
-        // Add a specific Render for the new ScoreObject
+        // Add a specific Render for the new GameObject implementation for
+        // - ScoreObject
         g.getRender().addRenderHelper(new ScoreRenderHelper(g.getRender()));
+        // - TestValue
         g.getRender().addRenderHelper(new TextValueRenderHelper(g.getRender()));
+        // - LifeObject
         g.getRender().addRenderHelper(new LifeRenderHelper(g.getRender()));
+        // - InventoryObject
         g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
-        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender(), Color.RED));
+        // - ParticleSystem
+        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
-
+        super.create(g);
         // Declare World playground
         World world = new World(800, 600);
         // create a basic wind all over the play area
@@ -113,7 +119,7 @@ public class DemoScene extends AbstractScene {
                 .setImage(ResourceManager.getImage("images/tiles01.png:player"))
                 .setMaterial(m)
                 .setMass(10)
-                //.setDebug(3)
+                .setDebug(3)
                 .addAttribute("jumping", false)
                 .addAttribute("accelStep", 10.0)
                 .addAttribute("jumpAccel", -20.0)
@@ -150,8 +156,9 @@ public class DemoScene extends AbstractScene {
                 .setFeeding(2)
                 .setEmitFrequency(1200)
                 .add(new CopyObjectPosition(player, new Vector2d(7, -4)))
-                //.setDebug(3)
+                .setDebug(4)
                 .setLayer(1)
+                .setDebugOffset(-100, -100)
                 .setPriority(1);
         add(ps);
 
@@ -160,31 +167,37 @@ public class DemoScene extends AbstractScene {
                 "score",
                 new Vector2d(10, 4))
                 .setScore(score)
-                .relativeToCamera(true)
+                .setRelativeToCamera(true)
                 .setLayer(1)
                 .setColor(Color.WHITE)
                 .setPriority(10);
         add(scoreTO);
 
         // Add a Life display
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).relativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).setRelativeToCamera(true);
         add(lifeTO);
 
         // prepare the inventory item image
         BufferedImage keyItemImg = ResourceManager.getImage("images/tiles01.png:key");
+        BufferedImage potionItemImg = ResourceManager.getImage("images/tiles01.png:potion");
         // create the Key Item object
         GameObject keyItem = new GameObject("key", new Vector2d(0, 0))
                 .setImage(keyItemImg)
                 .addAttribute("inventory", keyItemImg);
+        // create the Key Item object
+        GameObject potionItem = new GameObject("potion", new Vector2d(0, 0))
+                .setImage(potionItemImg)
+                .addAttribute("inventory", potionItemImg);
         // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
                 .setNbPlace(6)
                 .setSelectedIndex(1)
-                .relativeToCamera(true)
+                .setRelativeToCamera(true)
                 .add(new InventorySelectorBehavior());
         // add a first object (a key !)
         inventory.add(keyItem);
+        inventory.add(potionItem);
         add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration
@@ -195,11 +208,9 @@ public class DemoScene extends AbstractScene {
         double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
-        welcome.setDuration(5000).setLayer(0).setPriority(1).relativeToCamera(true);
+        welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
         add(welcome);
 
-        // Add the Debug switcher capability to this scene
-        addBehavior(new DebugSwitcherBehavior());
 
     }
 

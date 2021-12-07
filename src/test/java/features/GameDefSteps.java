@@ -224,7 +224,7 @@ public class GameDefSteps extends CommonDefSteps {
     public void theEntityAsMaterial(String materialTypeName, String entityName) {
         Scene scene = getCurrentScene();
         GameObject e = scene.getGameObject(entityName);
-        // TODO parse materialTypeName to use the right DefaultMaterial.
+
         Material mat = Material.DefaultMaterial.valueOf(materialTypeName).getMaterial();
         e.material = mat;
     }

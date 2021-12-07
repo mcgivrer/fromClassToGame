@@ -34,6 +34,11 @@ public class ScoreRenderHelper extends AbstractRenderHelper implements RenderHel
         drawScore(g, so.text, (int) (so.position.x), (int) (so.position.y));
     }
 
+    @Override
+    public void drawDebugInfo(Graphics2D g, ScoreObject go) {
+        super.drawDebugInfo(g, go);
+    }
+
     /**
      * Draw score with digital characters
      *
