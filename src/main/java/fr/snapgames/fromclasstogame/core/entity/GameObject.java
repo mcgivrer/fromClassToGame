@@ -151,19 +151,25 @@ public class GameObject implements Entity {
         this.debugOffsetX = -40;
         this.debugOffsetY = 10;
         List<String> debugInfo = new ArrayList<>();
-        debugInfo.add("n:" + name);
-        debugInfo.add("pos:" + position.toString());
-        debugInfo.add("vel:" + velocity.toString());
-        debugInfo.add("acc:" + acceleration.toString());
-        debugInfo.add("mass:" + mass);
-        if (material != null) {
-            debugInfo.add("mat:" + material.name);
-            debugInfo.add("frict:" + material.dynFriction);
+        if (debug > 0) {
+            debugInfo.add("n:" + name);
+            debugInfo.add("dbgLvl:" + debug);
+            if (debug > 2) {
+                debugInfo.add("pos:" + position.toString());
+                debugInfo.add("vel:" + velocity.toString());
+                debugInfo.add("acc:" + acceleration.toString());
+                if (debug > 3) {
+                    debugInfo.add("mass:" + mass);
+                    if (material != null) {
+                        debugInfo.add("mat:" + material.name);
+                        debugInfo.add("frict:" + material.dynFriction);
+                    }
+                    debugInfo.add("contact:" + getAttribute("touching", false));
+                    debugInfo.add("jumping:" + getAttribute("jumping", false));
+                }
+            }
+            debugInfo.add("active:" + (active ? "on" : "off"));
         }
-        debugInfo.add("contact:" + getAttribute("touching", false));
-        debugInfo.add("jumping:" + getAttribute("jumping", false));
-        debugInfo.add("active:" + (active ? "on" : "off"));
-        debugInfo.add("dbgLvl:" + debug);
         return debugInfo;
     }
 
