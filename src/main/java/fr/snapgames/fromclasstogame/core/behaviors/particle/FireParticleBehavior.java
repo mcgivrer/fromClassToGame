@@ -31,11 +31,11 @@ public class FireParticleBehavior extends BasicParticleBehavior implements Behav
         super.onUpdate(p, dt);
         p.life -= dt;
         p.color = fade(p.color, dt);
-        if (p.size > 0) {
-            p.size *= 0.98;
+        if (p.width > 0) {
+            p.width *= 0.98;
         } else {
             p.life = 0;
-            p.size = 1;
+            p.width = 1;
         }
     }
 
