@@ -56,16 +56,6 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
     }
 
     @Override
-    public void onUpdate(GameObject go, long dt) {
-
-    }
-
-    @Override
-    public void onRender(GameObject go, Render r) {
-
-    }
-
-    @Override
     public void onAction(GameObject go, Integer action) {
         accelStep = (Double) go.getAttribute("accelStep", 0);
         jumpAccel = (Double) go.getAttribute("jumpAccel", 0);
