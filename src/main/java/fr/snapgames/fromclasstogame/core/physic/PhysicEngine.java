@@ -161,18 +161,20 @@ public class PhysicEngine extends System {
                 go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
                 go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
 
-                // apply Object behaviors computations
-                if (go.behaviors.isEmpty()) {
-                    go.behaviors.forEach(b -> b.onUpdate(go, dt));
-                }
-
                 // test World space constrained
                 verifyGameConstraint(go);
+
+
                 // update Bounding box for this GameObject.
                 if (go.bbox != null) {
                     go.bbox.update(go);
                 }
                 go.forces.clear();
+            }
+
+            // apply Object behaviors computations
+            if (!go.behaviors.isEmpty()) {
+                go.behaviors.forEach(b -> b.onUpdate(go, dt));
             }
             // Update the Object itself
             go.update(dt);
@@ -181,7 +183,7 @@ public class PhysicEngine extends System {
 
     /**
      * Compute velocity for the {@link GameObject} go, applying a dtCorrected
-     * 
+     *
      * @param go          The GameObject to compute velocity.
      * @param dtCorrected the corrected elapsed time
      */
@@ -203,7 +205,7 @@ public class PhysicEngine extends System {
 
     /**
      * Compute the acceleration to be applied to {@link GameObject} go.
-     * 
+     *
      * @param go The GameObject to compute velocity.
      */
     private void computeAcceleration(GameObject go) {
@@ -227,7 +229,7 @@ public class PhysicEngine extends System {
 
     /**
      * Apply max and min thresold to the computed values to set value limits.
-     * 
+     *
      * @param go                     The Game obejct to apply threshold on
      * @param maxHorizontalThreshold the max horizontal threshold attribute name for
      *                               this object
@@ -236,7 +238,7 @@ public class PhysicEngine extends System {
      * @param acceleration           the acceleration to be applied.
      */
     private void applyMaxThreshold(GameObject go, String maxHorizontalThreshold, String maxVerticalThreshold,
-            Vector2d acceleration) {
+                                   Vector2d acceleration) {
         if (go.getAttributes().containsKey(maxHorizontalThreshold)) {
             double ax = (Double) go.getAttribute(maxHorizontalThreshold, 0);
             acceleration.x = Math.abs(acceleration.x) > ax ? Math.signum(acceleration.x) * ax : acceleration.x;
@@ -338,7 +340,7 @@ public class PhysicEngine extends System {
      * @param w the {@link World} object to be used in {@link GameObject}
      *          computations
      * @return the {@link PhysicEngine} itself updated with the new {@link World}
-     *         defined.
+     * defined.
      */
     public PhysicEngine setWorld(World w) {
         this.world = w;

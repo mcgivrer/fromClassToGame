@@ -25,16 +25,6 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
     }
 
     @Override
-    public void onUpdate(Scene go, long dt) {
-
-    }
-
-    @Override
-    public void onRender(Scene go, Render r) {
-
-    }
-
-    @Override
     public void onAction(Scene scene, Integer action) {
         switch (action) {
             case AbstractScene.DEBUG_NEXT_ELEMENT:
@@ -49,7 +39,6 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
             default:
                 break;
         }
-
     }
 
     private void rotateDebugActiveElement(Scene scene) {

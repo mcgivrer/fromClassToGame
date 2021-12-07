@@ -71,6 +71,7 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
         // inventory objects item.
         ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
+        ResourceManager.getSlicedImage("images/tiles01.png", "potion", 34, 18, 14, 15);
         // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
@@ -84,7 +85,7 @@ public class DemoScene extends AbstractScene {
         // - InventoryObject
         g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
         // - ParticleSystem
-        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender(), Color.RED));
+        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
     }
 
     @Override
@@ -166,31 +167,37 @@ public class DemoScene extends AbstractScene {
                 "score",
                 new Vector2d(10, 4))
                 .setScore(score)
-                .relativeToCamera(true)
+                .setRelativeToCamera(true)
                 .setLayer(1)
                 .setColor(Color.WHITE)
                 .setPriority(10);
         add(scoreTO);
 
         // Add a Life display
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).relativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).setRelativeToCamera(true);
         add(lifeTO);
 
         // prepare the inventory item image
         BufferedImage keyItemImg = ResourceManager.getImage("images/tiles01.png:key");
+        BufferedImage potionItemImg = ResourceManager.getImage("images/tiles01.png:potion");
         // create the Key Item object
         GameObject keyItem = new GameObject("key", new Vector2d(0, 0))
                 .setImage(keyItemImg)
                 .addAttribute("inventory", keyItemImg);
+        // create the Key Item object
+        GameObject potionItem = new GameObject("potion", new Vector2d(0, 0))
+                .setImage(potionItemImg)
+                .addAttribute("inventory", potionItemImg);
         // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
                 .setNbPlace(6)
                 .setSelectedIndex(1)
-                .relativeToCamera(true)
+                .setRelativeToCamera(true)
                 .add(new InventorySelectorBehavior());
         // add a first object (a key !)
         inventory.add(keyItem);
+        inventory.add(potionItem);
         add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration
@@ -201,7 +208,7 @@ public class DemoScene extends AbstractScene {
         double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
-        welcome.setDuration(5000).setLayer(0).setPriority(1).relativeToCamera(true);
+        welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
         add(welcome);
 
 
