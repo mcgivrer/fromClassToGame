@@ -10,19 +10,19 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.physic.*;
-import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
-import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
+import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
@@ -57,7 +57,7 @@ public class DemoScene extends AbstractScene {
     public void initialize(Game g) {
         super.initialize(g);
         // Load resources
-        ResourceManager.getFont("fonts/FreePixel.ttf");
+        ResourceManager.getFont("./fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
@@ -207,8 +207,9 @@ public class DemoScene extends AbstractScene {
         // Welcome text at middle bottom center game screen
         double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
         double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
+        Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
-                .setText("Welcome on Board");
+                .setText("Welcome on Board").setFont(welcomeFont);
         welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
         add(welcome);
 
@@ -249,6 +250,8 @@ public class DemoScene extends AbstractScene {
         randomizeFilteredGameObject("enemy_");
         randomizeFilteredGameObject("player");
         objects.get("player").addAttribute("score", 0);
+        objects.get("welcomeMsg").setDuration(5000).active = true;
+
     }
 
     private synchronized void randomizeFilteredGameObject(String rootName) {

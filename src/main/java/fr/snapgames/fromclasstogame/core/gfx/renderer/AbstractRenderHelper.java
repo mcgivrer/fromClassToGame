@@ -27,6 +27,16 @@ public class AbstractRenderHelper {
     }
 
     /**
+     * Set the current active font.
+     *
+     * @param g    the Graphics 2D interface
+     * @param font the font to be activated.
+     */
+    public void setFont(Graphics2D g, Font font) {
+        g.setFont(font);
+    }
+
+    /**
      * Simple set active Font
      *
      * @param g    the Graphics 2D interface
@@ -67,7 +77,8 @@ public class AbstractRenderHelper {
      * @param pos  the position where to draw
      */
     public void drawText(Graphics2D g, String text, Vector2d pos) {
-        drawText(g, text, pos.x, pos.y);
+        int yOffset = g.getFontMetrics().getHeight() - g.getFontMetrics().getDescent();
+        drawText(g, text, pos.x, pos.y + yOffset);
     }
 
     /**
@@ -79,10 +90,11 @@ public class AbstractRenderHelper {
      */
     public void drawTextBorder(Graphics2D g, double maxBorderWidth, TextObject to) {
         // draw black border
+        int yOffset = g.getFontMetrics().getHeight() - g.getFontMetrics().getDescent();
         g.setColor(Color.BLACK);
         for (double x = to.position.x - maxBorderWidth; x < to.position.x + maxBorderWidth; x++) {
             for (double y = to.position.y - maxBorderWidth; y < to.position.y + maxBorderWidth; y++) {
-                g.drawString(to.text, (int) (x), (int) (y));
+                g.drawString(to.text, (int) (x), (int) (y) + yOffset);
             }
         }
     }
@@ -201,17 +213,23 @@ public class AbstractRenderHelper {
     public void drawDebugInfo(Graphics2D g, GameObject go) {
         int winDbgLevel = render.getGame().getWindow().getDebug();
         if (winDbgLevel > 0 && winDbgLevel >= go.getDebug()) {
+            Vector2d pos = go.position;
+            int gw = (int) go.width;
+            int gh = (int) go.height;
+
             setColor(g, debugBoxColor);
             setFontSize(g, 8.0f);
-            drawText(g, "#" + go.id, go.position.x, go.position.y);
-            drawRect(g, go.position, go.width - 1, go.height - 1, 1, 1, debugBoxColor);
+            drawText(g, "#" + go.id, pos.x, pos.y);
+
+            setColor(g, Color.ORANGE);
+            drawRect(g, pos, gw - 1, gh - 1, 1, 1, debugBoxColor);
             if (go.life > -1) {
-                drawGauge(g, go, go.position.x, go.position.y, 0, go.lifeStart, go.life, 40, 2);
+                drawGauge(g, go, pos.x, pos.y, 0, go.lifeStart, go.life, (go.width > 40 ? go.width : 40), 3);
             }
             if (go.getDebug() >= 2) {
                 setFontSize(g, 9);
                 double offsetY = go.debugOffsetX;
-                double offsetX = go.width + go.debugOffsetY;
+                double offsetX = gw + go.debugOffsetY;
 
                 String largestString = go.getDebugInfo().stream().max((o1, o2) -> o1.length() > o2.length() ? 1 : -1).get();
                 int maxWidth = g.getFontMetrics().stringWidth(largestString);
@@ -230,7 +248,7 @@ public class AbstractRenderHelper {
 
     private void drawGauge(Graphics2D g, GameObject go, double x, double y, double min, double max, double value, double width, double height) {
         double lifeValue = width * ((min + value) / max);
-        drawRect(g, new Vector2d(x - 21, y - 21), width, height, 0, 0, Color.DARK_GRAY);
-        fillRect(g, new Vector2d(x - 20, y - 20), lifeValue, 1, 0, 0, Color.BLUE);
+        drawRect(g, new Vector2d(x - 1, y - 11), width, height, 0, 0, Color.DARK_GRAY);
+        fillRect(g, new Vector2d(x, y - 10), lifeValue, height - 1, 0, 0, Color.RED);
     }
 }
