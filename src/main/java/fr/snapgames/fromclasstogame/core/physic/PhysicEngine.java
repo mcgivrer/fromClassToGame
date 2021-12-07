@@ -162,7 +162,7 @@ public class PhysicEngine extends System {
                 go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
 
                 // apply Object behaviors computations
-                if (go.behaviors.isEmpty()) {
+                if (!go.behaviors.isEmpty()) {
                     go.behaviors.forEach(b -> b.onUpdate(go, dt));
                 }
 
