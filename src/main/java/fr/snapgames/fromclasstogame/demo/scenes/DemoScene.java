@@ -215,6 +215,11 @@ public class DemoScene extends AbstractScene {
 
     }
 
+    /**
+     * Generate a random set of nbEnemies on screen?
+     * @param nbEnemies
+     * @throws UnknownResource
+     */
     private void generateEnemies(int nbEnemies) throws UnknownResource {
         for (int i = 0; i < nbEnemies; i++) {
             GameObject e = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
@@ -258,6 +263,17 @@ public class DemoScene extends AbstractScene {
                 .setGravity(game.getPhysicEngine().getWorld().gravity);
     }
 
+    /**
+     * generate randomly {@link Material#dynFriction}, {@link Material#bounciness} and {@link GameObject#acceleration}
+     * into some max values for the {@link GameObject} <code>go</code>.
+     *
+     * @param go          the GameObject to be randomly updated
+     * @param accFactorX  the +/- range factor for X acceleration
+     * @param accFactorY  the +/- range factor for Y acceleration
+     * @param dynFriction dynamic friction for the {@link GameObject#material}
+     * @param bounciness  bounciness factor for the {@link GameObject#material}
+     * @return the modified GameObject
+     */
     private GameObject randomizeAccelerationAndFrictionAndBounciness(
             GameObject go,
             double accFactorX,
