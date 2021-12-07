@@ -21,10 +21,18 @@ public class ScoreObject extends TextObject {
         score = 0;
         this.color = Color.WHITE;
     }
+
     public ScoreObject setScore(int s) {
         score = s;
         text = String.format("%06d", score);
         return this;
+    }
+
+    @Override
+    public void update(long dt) {
+        super.update(dt);
+        this.width = text.length() * 8;
+        this.height = 16;
     }
 
 }
