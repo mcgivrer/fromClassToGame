@@ -202,8 +202,12 @@ public class AbstractRenderHelper {
         int winDbgLevel = render.getGame().getWindow().getDebug();
         if (winDbgLevel > 0 && winDbgLevel >= go.getDebug()) {
             setColor(g, debugBoxColor);
+            setFontSize(g, 8.0f);
             drawText(g, "#" + go.id, go.position.x, go.position.y);
-            drawRect(g, go.position, go.width-1, go.height-1, 1, 1, debugBoxColor);
+            drawRect(g, go.position, go.width - 1, go.height - 1, 1, 1, debugBoxColor);
+            if (go.life > -1) {
+                drawGauge(g, go, go.position.x, go.position.y, 0, go.lifeStart, go.life, 40, 2);
+            }
             if (go.getDebug() >= 2) {
                 setFontSize(g, 9);
                 double offsetY = go.debugOffsetX;
@@ -222,5 +226,11 @@ public class AbstractRenderHelper {
                 }
             }
         }
+    }
+
+    private void drawGauge(Graphics2D g, GameObject go, double x, double y, double min, double max, double value, double width, double height) {
+        double lifeValue = width * ((min + value) / max);
+        drawRect(g, new Vector2d(x - 21, y - 21), width, height, 0, 0, Color.DARK_GRAY);
+        fillRect(g, new Vector2d(x - 20, y - 20), lifeValue, 1, 0, 0, Color.BLUE);
     }
 }

@@ -91,8 +91,8 @@ public class DemoScene extends AbstractScene {
         World world = new World(800, 600);
         // create a basic wind all over the play area
         InfluenceArea2d iArea = new InfluenceArea2d(
-                new Vector2d(0.475, 0),
-                new BoundingBox(Vector2d.ZERO, 800, 600,
+                new Vector2d(0.475, 0.0),
+                new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
                         BoundingBox.BoundingBoxType.RECTANGLE),
                 3);
         world.addInfluenceArea(iArea);
@@ -217,6 +217,7 @@ public class DemoScene extends AbstractScene {
 
     /**
      * Generate a random set of nbEnemies on screen?
+     *
      * @param nbEnemies
      * @throws UnknownResource
      */
