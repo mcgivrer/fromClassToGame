@@ -81,6 +81,7 @@ public class ParticleSystem extends GameObject {
     public ParticleSystem create(int nb) {
         nbMaxParticle = nb;
         createParticles(nb);
+        debugOffsetX = -100;
         return this;
     }
 
