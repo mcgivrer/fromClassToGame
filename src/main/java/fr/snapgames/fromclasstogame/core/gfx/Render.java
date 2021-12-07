@@ -34,7 +34,7 @@ public class Render extends System {
     private Camera camera;
 
     private List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
-    private Map<String, RenderHelper> renderHelpers = new HashMap<>();
+    private Map<String, RenderHelper<?>> renderHelpers = new HashMap<>();
     private Dimension viewport;
     private Color debugColor = Color.ORANGE;
     private int debug = 0;
@@ -42,7 +42,6 @@ public class Render extends System {
     private boolean renderScreenshot = false;
 
     private Font debugFont;
-
     private Font pauseFont;
 
     public Render(Game g) {
@@ -76,9 +75,6 @@ public class Render extends System {
             saveScreenshot();
             renderScreenshot = false;
         }
-
-        //objects.stream().filter(o -> !o.active).forEach(o -> objects.remove(o));
-        //objectsRelativeToCamera.stream().filter(o -> !o.active).forEach(o -> objectsRelativeToCamera.remove(o));
     }
 
     private void drawPauseText(Graphics2D g) {
@@ -133,8 +129,8 @@ public class Render extends System {
         }
     }
 
-
-    public void add(GameObject go) {
+    @Override
+    public synchronized void add(GameObject go) {
         if (go.relativeToCamera) {
             addAndSortObjectToList(objectsRelativeToCamera, go);
         } else {
@@ -182,11 +178,11 @@ public class Render extends System {
         }
     }
 
-    public void addRenderHelper(RenderHelper rh) {
+    public void addRenderHelper(RenderHelper<?> rh) {
         renderHelpers.put(rh.getType(), rh);
     }
 
-    public Map<String, RenderHelper> getRenderHelpers() {
+    public Map<String, RenderHelper<?>> getRenderHelpers() {
         return renderHelpers;
     }
 
@@ -204,7 +200,6 @@ public class Render extends System {
     public Dimension getViewport() {
         return viewport;
     }
-
 
     public Graphics2D getGraphics() {
         return (Graphics2D) buffer.getGraphics();

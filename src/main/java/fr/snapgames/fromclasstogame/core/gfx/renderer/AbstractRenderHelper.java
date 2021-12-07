@@ -8,7 +8,6 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.NoSuchElementException;
 
 /**
  * Internal Helpers to draw to the internal image buffer of the Render system.

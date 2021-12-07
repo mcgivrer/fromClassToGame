@@ -148,8 +148,8 @@ public class GameObject implements Entity {
      * @return a list of String for debugging information display.
      */
     public List<String> getDebugInfo() {
-        this.debugOffsetX = 20;
-        this.debugOffsetY = 20;
+        this.debugOffsetX = -40;
+        this.debugOffsetY = 10;
         List<String> debugInfo = new ArrayList<>();
         debugInfo.add("n:" + name);
         debugInfo.add("pos:" + position.toString());
@@ -220,7 +220,7 @@ public class GameObject implements Entity {
         return this;
     }
 
-    public GameObject relativeToCamera(boolean rtc) {
+    public GameObject setRelativeToCamera(boolean rtc) {
         this.relativeToCamera = rtc;
         return this;
     }

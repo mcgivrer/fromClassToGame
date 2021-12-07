@@ -20,7 +20,7 @@ public class RainParticleBehavior extends BasicParticleBehavior {
      */
     public RainParticleBehavior(ParticleSystem ps, World world, Camera camera) {
         super(ps, -1, true);
-        parent.relativeToCamera(true);
+        parent.setRelativeToCamera(true);
 
         // compute window rendering view for rain
 
