@@ -44,10 +44,6 @@ public class DemoScene extends AbstractScene {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoScene.class);
 
-
-    private int score = 0;
-    private int life = 5;
-
     /**
      * Create the Demo.
      *
@@ -125,6 +121,8 @@ public class DemoScene extends AbstractScene {
                 .addAttribute("jumpAccel", -20.0)
                 .addAttribute("maxHorizontalVelocity", 20.0)
                 .addAttribute("maxVerticalVelocity", 30.0)
+                .addAttribute("score", 0)
+                .addAttribute("lifes", 5)
                 .add(new PlayerActionBehavior());
         add(player);
 
@@ -163,6 +161,7 @@ public class DemoScene extends AbstractScene {
         add(ps);
 
         // add score display.
+        int score = (int) (player.getAttribute("score", 0));
         ScoreObject scoreTO = (ScoreObject) new ScoreObject(
                 "score",
                 new Vector2d(10, 4))
@@ -174,6 +173,8 @@ public class DemoScene extends AbstractScene {
         add(scoreTO);
 
         // Add a Life display
+        int life = (int) player.getAttribute("lifes", 0);
+
         LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).setRelativeToCamera(true);
         add(lifeTO);
 
@@ -241,7 +242,7 @@ public class DemoScene extends AbstractScene {
     public void activate() {
         randomizeFilteredGameObject("enemy_");
         randomizeFilteredGameObject("player");
-        this.score = 0;
+        objects.get("player").addAttribute("score", 0);
     }
 
     private synchronized void randomizeFilteredGameObject(String rootName) {
@@ -274,9 +275,12 @@ public class DemoScene extends AbstractScene {
     public void update(long dt) {
 
         super.update(dt);
+        GameObject player = objects.get("player");
+        int score = (int) player.getAttribute("score", 0);
         ScoreObject scoreTO = (ScoreObject) objects.get("score");
         score++;
         scoreTO.setScore(score);
+        player.addAttribute("score", score);
     }
 
     @Override
