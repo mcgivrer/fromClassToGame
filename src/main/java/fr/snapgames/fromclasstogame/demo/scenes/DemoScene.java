@@ -57,7 +57,7 @@ public class DemoScene extends AbstractScene {
     public void initialize(Game g) {
         super.initialize(g);
         // Load resources
-        ResourceManager.getFont("./fonts/FreePixel.ttf");
+        ResourceManager.getFont("fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
