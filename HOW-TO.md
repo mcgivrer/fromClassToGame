@@ -25,12 +25,12 @@ Main keys (in *AbstractScene*) :
 - `Ctrl`+ `F11` switch gale between multiple screens (when multiscreen available)
 - `P` or `PAUSE` switch game to pause mode
 
-Player Keys (in *DemoScene*):
+Player keys (in *DemoScene*):
 - `UP`,`DOWN`,`LEFT`,`SPACE`, move left, right and jump player, stop player.
 - `Z` reset scene
 - 
 
-Debug functions (in *AbstractScene* and some Debug *behaviors*)
+Debug functions keys (in *AbstractScene* and some Debug *behaviors*)
 - `D` Activate and rotate global debug level for visual debug display information,
 - `F` Stop/Start `ParticleSystem` animation,
 - `TAB` switch debug focus on next current active scene's `GameObject`
