@@ -165,6 +165,7 @@ public class Render extends System {
     private void saveScreenshot() {
         final String path = FileUtils.getBasePathForClass(Render.class);
 
+
         Path targetDir = Paths.get(path + File.separator + "screenshots");
         int i = screenShotIndex++;
         String filename = String.format("%s%s%s-%d.png", targetDir, File.separator, java.lang.System.nanoTime(), i);
@@ -181,8 +182,7 @@ public class Render extends System {
             logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }
     }
-
-
+        
     public void addRenderHelper(RenderHelper<?> rh) {
         renderHelpers.put(rh.getType(), rh);
     }
