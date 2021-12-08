@@ -2,7 +2,7 @@
 
 This small file intends to answers some of the basic question about this program.
 
-# run the demo
+## Run the demo
 
 Execute the following command in any terminal:
 
