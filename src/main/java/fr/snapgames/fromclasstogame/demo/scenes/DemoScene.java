@@ -210,7 +210,7 @@ public class DemoScene extends AbstractScene {
         Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board").setFont(welcomeFont);
-        welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
+        welcome.setDuration(50000).setLayer(0).setPriority(1).setRelativeToCamera(true).setDebug(3);
         add(welcome);
 
 

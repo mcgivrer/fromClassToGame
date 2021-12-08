@@ -217,13 +217,16 @@ public class PhysicEngine extends System {
 
         Vector2d acc = applyInfluences(go);
         for (Vector2d f : go.forces) {
-            acc.add(f);
+            if (acc != null) {
+                acc.add(f);
+            }
         }
 
         go.acceleration.add(acc);
 
-        // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and
-        // `maxVerticalAcceleration`
+        /* limit acceleration with GameObject threshold `maxHorizontalAcceleration` and
+         * `maxVerticalAcceleration`
+         */
         applyMaxThreshold(go, "maxHorizontalAcceleration", "maxVerticalAcceleration", go.acceleration);
     }
 
