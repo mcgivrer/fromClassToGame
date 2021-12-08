@@ -20,10 +20,12 @@ public class AbstractRenderHelper {
     protected Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
     protected Color debugFrontColor = Color.ORANGE;
     protected Color debugBoxColor = Color.YELLOW;
+    protected Font debugFont;
 
 
     public AbstractRenderHelper(Render r) {
         this.render = r;
+        debugFont = r.getBuffer().getGraphics().getFont().deriveFont(9.0f);
     }
 
     /**
@@ -223,24 +225,32 @@ public class AbstractRenderHelper {
 
             setColor(g, Color.ORANGE);
             drawRect(g, pos, gw - 1, gh - 1, 1, 1, debugBoxColor);
-            if (go.life > -1) {
-                drawGauge(g, go, pos.x, pos.y, 0, go.lifeStart, go.life, (go.width > 40 ? go.width : 40), 3);
-            }
-            if (go.getDebug() >= 2) {
-                setFontSize(g, 9);
+            if (go.getDebug() >= 1) {
                 double offsetY = go.debugOffsetX;
                 double offsetX = gw + go.debugOffsetY;
 
+                setFontSize(g, 9);
                 String largestString = go.getDebugInfo().stream().max((o1, o2) -> o1.length() > o2.length() ? 1 : -1).get();
-                int maxWidth = g.getFontMetrics().stringWidth(largestString);
+                int maxWidth = g.getFontMetrics().stringWidth(largestString) < 80 ? 80 : g.getFontMetrics().stringWidth(largestString);
 
-                int height = ((go.getDebugInfo().size() + 2) * 9);
-                fillRect(g, go.position, maxWidth + 8, height, offsetX - 4, offsetY - 12, debugBackgroundColor);
+                int fontHeight = g.getFontMetrics().getHeight();
+                int height = ((go.getDebugInfo().size()) * fontHeight);
+                if (go.life != -1) {
+                    drawGauge(g, go,
+                            pos.x + offsetX - 3,
+                            pos.y + offsetY - 15,
+                            0, go.lifeStart,
+                            go.life,
+                            maxWidth + 7,
+                            3);
+                }
+                fillRect(g, go.position, maxWidth + 8, height, offsetX - 4, offsetY - fontHeight+2, debugBackgroundColor);
                 setColor(g, debugFrontColor);
+                setFont(g, debugFont);
                 int i = 0;
                 for (String line : go.getDebugInfo()) {
                     drawText(g, line, go.position, offsetX, offsetY + i);
-                    i += 10;
+                    i += fontHeight;
                 }
             }
         }
@@ -248,7 +258,7 @@ public class AbstractRenderHelper {
 
     private void drawGauge(Graphics2D g, GameObject go, double x, double y, double min, double max, double value, double width, double height) {
         double lifeValue = width * ((min + value) / max);
-        drawRect(g, new Vector2d(x - 1, y - 11), width, height, 0, 0, Color.DARK_GRAY);
-        fillRect(g, new Vector2d(x, y - 10), lifeValue, height - 1, 0, 0, Color.RED);
+        drawRect(g, new Vector2d(x - 1, y - 1), width, height, 0, 0, Color.BLACK);
+        fillRect(g, new Vector2d(x, y), lifeValue, height - 1, 0, 0, Color.RED);
     }
 }
