@@ -8,6 +8,7 @@ import fr.snapgames.fromclasstogame.core.gfx.renderer.DebugViewportGridRenderHel
 import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
+import fr.snapgames.fromclasstogame.core.io.FileUtils;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
@@ -18,6 +19,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -157,13 +160,14 @@ public class Render extends System {
 
     /**
      * Save a screenshot of the current buffer.
+     * capture from https://stackoverflow.com/questions/320542/how-to-get-the-path-of-a-running-jar-file#answer-44071072
      */
     private void saveScreenshot() {
-        final String path = this.getClass().getResource("/").getPath().substring(1);
+        final String path = FileUtils.getBasePathForClass(Render.class);
 
-        Path targetDir = Paths.get(path + "/screenshots");
+        Path targetDir = Paths.get(path + File.separator + "screenshots");
         int i = screenShotIndex++;
-        String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
+        String filename = String.format("%s%s%s-%d.png", targetDir, File.separator, java.lang.System.nanoTime(), i);
 
         try {
             if (!Files.exists(targetDir)) {
@@ -177,6 +181,7 @@ public class Render extends System {
             logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }
     }
+
 
     public void addRenderHelper(RenderHelper<?> rh) {
         renderHelpers.put(rh.getType(), rh);
