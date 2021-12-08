@@ -182,7 +182,7 @@ public class Render extends System {
             logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }
     }
-        
+
     public void addRenderHelper(RenderHelper<?> rh) {
         renderHelpers.put(rh.getType(), rh);
     }
