@@ -18,6 +18,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -157,13 +159,14 @@ public class Render extends System {
 
     /**
      * Save a screenshot of the current buffer.
+     * capture from https://stackoverflow.com/questions/320542/how-to-get-the-path-of-a-running-jar-file#answer-44071072
      */
     private void saveScreenshot() {
-        final String path = this.getClass().getResource("/").getPath().substring(1);
+        final String path = getBasePathForClass(Render.class);
 
-        Path targetDir = Paths.get(path + "/screenshots");
+        Path targetDir = Paths.get(path + File.separator + "screenshots");
         int i = screenShotIndex++;
-        String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
+        String filename = String.format("%s%s%s-%d.png", targetDir, File.separator, java.lang.System.nanoTime(), i);
 
         try {
             if (!Files.exists(targetDir)) {
@@ -176,6 +179,69 @@ public class Render extends System {
         } catch (IOException e) {
             logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }
+    }
+
+    /**
+     * Returns the absolute path of the current directory in which the given
+     * class
+     * file is.
+     *
+     * @param classs
+     * @return The absolute path of the current directory in which the class
+     * file is.
+     * @author GOXR3PLUS[StackOverFlow user] + bachden [StackOverFlow user]
+     */
+    public static final String getBasePathForClass(Class<?> classs) {
+
+        // Local variables
+        File file;
+        String basePath = "";
+        boolean failed = false;
+
+        // Let's give a first try
+        try {
+            file = new File(classs.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+
+            if (file.isFile() || file.getPath().endsWith(".jar") || file.getPath().endsWith(".zip")) {
+                basePath = file.getParent();
+            } else {
+                basePath = file.getPath();
+            }
+        } catch (URISyntaxException ex) {
+            failed = true;
+            logger.error(
+                    "Cannot firgue out base path for class with way (1): ", ex);
+        }
+
+        // The above failed?
+        if (failed) {
+            try {
+                file = new File(classs.getClassLoader().getResource("").toURI().getPath());
+                basePath = file.getAbsolutePath();
+
+                // the below is for testing purposes...
+                // starts with File.separator?
+                // String l = local.replaceFirst("[" + File.separator +
+                // "/\\\\]", "")
+            } catch (URISyntaxException ex) {
+                logger.error("Cannot figure out base path for class with way (2): ", ex);
+            }
+        }
+
+        // fix to run inside eclipse
+        if (basePath.endsWith(File.separator + "lib") || basePath.endsWith(File.separator + "bin")
+                || basePath.endsWith("bin" + File.separator) || basePath.endsWith("lib" + File.separator)) {
+            basePath = basePath.substring(0, basePath.length() - 4);
+        }
+        // fix to run inside netbeans
+        if (basePath.endsWith(File.separator + "build" + File.separator + "classes")) {
+            basePath = basePath.substring(0, basePath.length() - 14);
+        }
+        // end fix
+        if (!basePath.endsWith(File.separator)) {
+            basePath = basePath + File.separator;
+        }
+        return basePath;
     }
 
     public void addRenderHelper(RenderHelper<?> rh) {
