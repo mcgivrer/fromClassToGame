@@ -3,10 +3,6 @@ package fr.snapgames.fromclasstogame.core.io;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,12 +28,11 @@ public class FileAttributes {
      */
     public static FileAttributes read(String fileName) {
         FileAttributes fa = new FileAttributes();
-        String strLevelsPath = FileAttributes.class.getResource("/").getPath().substring(1);
-            List<String> f = ResourceManager.getFile(fileName);
-            for (String l : f) {
-                String[] values = l.split(":");
-                attributes.put(values[0], values[1]);
-            }
+        List<String> f = ResourceManager.getFile(fileName);
+        for (String l : f) {
+            String[] values = l.split(":");
+            attributes.put(values[0], values[1]);
+        }
         return fa;
     }
 

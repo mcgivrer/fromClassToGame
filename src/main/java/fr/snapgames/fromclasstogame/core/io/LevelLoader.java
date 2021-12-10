@@ -7,7 +7,6 @@ import fr.snapgames.fromclasstogame.core.entity.tilemap.TileLayer;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileSet;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
@@ -18,16 +17,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class TileMapLoader extends System {
-    private static final Logger logger = LoggerFactory.getLogger(TileMapLoader.class);
+public class LevelLoader extends System {
+    private static final Logger logger = LoggerFactory.getLogger(LevelLoader.class);
     /**
      * the default file path to the level files
      */
     private static String defaultLvlFilePath;
 
-    public TileMapLoader(Game g) {
+    public LevelLoader(Game g) {
         super(g);
     }
 
@@ -128,7 +126,7 @@ public class TileMapLoader extends System {
 
     @Override
     public String getName() {
-        return TileMapLoader.class.getName();
+        return LevelLoader.class.getName();
     }
 
     @Override
