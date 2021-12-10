@@ -3,7 +3,7 @@ package fr.snapgames.fromclasstogame.demo.behaviors;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 
 import java.awt.event.KeyEvent;
@@ -30,18 +30,4 @@ public class InventorySelectorBehavior implements Behavior<GameObject> {
         }
     }
 
-    @Override
-    public void onUpdate(GameObject go, long dt) {
-        // this behavior has nothing on update side
-    }
-
-    @Override
-    public void onRender(GameObject go, Render r) {
-        // this behavior has nothing on render side
-    }
-
-    @Override
-    public void onAction(GameObject go, Integer action) {
-        // this behavior has nothing to do with action.
-    }
 }

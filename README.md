@@ -96,3 +96,6 @@ The latest demo integrate the Fire `ParticleSystem` and the `InfluenceArea2d` wo
 Have Fun !
 
 McG.
+
+__SnapGames__<br/>
+![SnapGames Logo](./src/main/resources/images/logo/sg-logo-image.png)
