@@ -83,8 +83,6 @@ public class DemoScene extends AbstractScene {
         // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
-        // Add a specific Render for the new ScoreObject
-        g.getRender().addRenderHelper(new TileMapRenderHelper());
         // Add a specific Render for the new GameObject implementation for
         // - ScoreObject
         g.getRender().addRenderHelper(new ScoreRenderHelper(g.getRender()));
@@ -225,11 +223,6 @@ public class DemoScene extends AbstractScene {
                 .setText("Welcome on Board");
         welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
         add(welcome);
-
-
-        // add a TileMap object
-        TileMap tm = tmLoader.load("levels/lvl0101.properties");
-        add(tm);
 
         randomizeFilteredGameObject("enemy_");
     }

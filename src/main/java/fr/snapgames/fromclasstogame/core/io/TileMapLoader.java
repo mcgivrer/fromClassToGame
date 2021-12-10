@@ -8,6 +8,7 @@ import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileSet;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,14 @@ public class TileMapLoader extends System {
         super(g);
     }
 
-    public TileMap load(String fileName) {
-        TileMap tm = new TileMap("", Vector2d.ZERO);
+    /**
+     * Load tilemap and all its objects from the level file named <code>fileName</code>.
+     *
+     * @param fileName name of the level file (*.lvl)
+     * @return a brand new TileMap fully initialized.
+     */
+    public TileMap load(Scene scene, String fileName) {
+        TileMap tm = new TileMap();
         FileAttributes fa = FileAttributes.read(fileName);
         tm.name = fa.get("title");
         tm.setTileSets(parseTileSet(tm, fa));
