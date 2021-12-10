@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 
@@ -53,16 +53,6 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
         if (ih.get(KeyEvent.VK_RIGHT)) {
             go.forces.add(new Vector2d(accel, 0.0));
         }
-    }
-
-    @Override
-    public void onUpdate(GameObject go, long dt) {
-
-    }
-
-    @Override
-    public void onRender(GameObject go, Render r) {
-
     }
 
     @Override

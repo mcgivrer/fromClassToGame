@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Window {
 
@@ -22,6 +24,9 @@ public class Window {
     private int defaultScreen = -1;
     private int currentScreen = 0;
     private GraphicsDevice currentDevice;
+
+    // Debug information on the debug status line
+    private Map<String, String> debugElementInfo = new HashMap<>();
 
     public Window(String title, int width, int height) {
         setFrame(title, width, height);
@@ -63,19 +68,24 @@ public class Window {
         }
         g.drawImage(img, 0, 30, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
 
+        drawDebugStatusInfo(realFPS, g);
+        g.dispose();
+        bs.show();
+    }
+
+    private void drawDebugStatusInfo(long realFPS, Graphics2D g) {
         if (this.debug > 0) {
             g.setFont(debugFont);
             g.setColor(Color.ORANGE);
             int nbObjs = SystemManager.getNbObjects();
             double gravity = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld().gravity.y;
-            g.drawString(
-                    String.format("[ DBG:%1d | FPS:%03d | nbObj:%03d | g: %1.3f ]",
-                            this.debug, realFPS, nbObjs, gravity),
-                    10,
-                    frame.getHeight() - 20);
-            g.dispose();
+            String debugStatusLine = String.format("DBG:%1d | FPS:%03d | nbObj:%03d | g: %1.3f",
+                    this.debug, realFPS, nbObjs, gravity);
+            for (Map.Entry<String, String> e : debugElementInfo.entrySet()) {
+                debugStatusLine = debugStatusLine + e.getKey() + ":" + e.getValue();
+            }
+            g.drawString("[ " + debugStatusLine + " ]", 10, frame.getHeight() - 20);
         }
-        bs.show();
     }
 
 
@@ -168,6 +178,16 @@ public class Window {
             device = devs[currentScreen];
         }
         return device;
+    }
+
+    /**
+     * Add a new Debug info element, named `elementName` on the debug status line a,d having the `elementValue` value.
+     *
+     * @param elementName  name of this element to be displayed on the status line
+     * @param elementValue Value of this debug element on the status line
+     */
+    public void addDebugStatusElement(String elementName, String elementValue) {
+        this.debugElementInfo.put(elementName, elementValue);
     }
 
     public int getMaxScreen() {
