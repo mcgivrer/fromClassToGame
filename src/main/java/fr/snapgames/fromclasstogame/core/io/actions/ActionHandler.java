@@ -53,6 +53,10 @@ public class ActionHandler extends System implements KeyListener {
     public final static int HOME = 14;
     public final static int POWER = 15;
 
+    public final static int ACTIONS_INTERNAL = 100;
+
+    public final static int ACTIONS_CUSTOM = 200;
+
 
     private static final Logger logger = LoggerFactory.getLogger(ActionHandler.class);
     /*
@@ -107,11 +111,11 @@ public class ActionHandler extends System implements KeyListener {
         return 0;
     }
 
-    public ActionHandler registerAction(int actionCode, int keyCode) throws ActionAlreadyExistsException {
+    public ActionHandler registerAction(int actionCode, int keyCode) {
         if (!this.keyMapping.containsValue(actionCode)) {
             this.keyMapping.put(keyCode, actionCode);
         } else {
-            throw new ActionAlreadyExistsException("The action code %d is already declared");
+            logger.warn(String.format("The action code %d is already declared", actionCode));
         }
         return this;
     }

@@ -53,6 +53,7 @@ public class GameObject implements Entity {
      * life duration of this object (default is -1 = infinite).
      */
     public long life = -1;
+    public long lifeStart = -1;
     public boolean alive = true;
 
     /**
@@ -104,6 +105,8 @@ public class GameObject implements Entity {
     public GameObject(String objectName, Vector2d position) {
         this.name = objectName;
         setPosition(position);
+        life = -1;
+        lifeStart = -1;
     }
 
     @Deprecated
@@ -271,6 +274,7 @@ public class GameObject implements Entity {
     }
 
     public GameObject setDuration(int ms) {
+        this.lifeStart = ms;
         this.life = ms;
         return this;
     }

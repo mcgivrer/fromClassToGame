@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -46,9 +47,23 @@ public class PlayScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
-        // TODO: Load resources
-        // ResourceManager.getFont("fonts/FreePixel.ttf");
-        // ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
+        if (g.getConfiguration().debugLevel > 0) {
+            // Add the Debug switcher capability to this scene
+            addBehavior(new DebugSwitcherBehavior());
+        }
+
+        // Load resources
+        ResourceManager.getFont("fonts/FreePixel.ttf");
+        ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
+        // inventory selector states
+        ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selector", 5 * 16, 3 * 16, 17, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
+        // inventory objects item.
+        ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
+        ResourceManager.getSlicedImage("images/tiles01.png", "potion", 34, 18, 14, 15);
+        // Background image resource
+        ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new ScoreObject
         g.getRender().addRenderHelper(new TileMapRenderHelper(g.getRender()));
@@ -63,11 +78,13 @@ public class PlayScene extends AbstractScene {
         g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
         // - ParticleSystem
         g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+
+        // Initialize the Tilemap loader
+        tmLoader = new TileMapLoader(game);
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
-        super.create(g);
         super.create(g);
         // Declare World playground
         World world = new World(800, 600);
@@ -89,7 +106,7 @@ public class PlayScene extends AbstractScene {
 
 
         // add a TileMap object
-        TileMap tm = tmLoader.load(this, "levels/lvl0101.properties");
+        TileMap tm = tmLoader.load(this, "./levels/lvl0101.properties");
         add(tm);
 
         try {
