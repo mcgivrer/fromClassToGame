@@ -1,19 +1,8 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.util.List;
-
-import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
-import fr.snapgames.fromclasstogame.core.gfx.renderer.TileMapRenderHelper;
-import fr.snapgames.fromclasstogame.core.io.TileMapLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
@@ -22,19 +11,19 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.physic.*;
-import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
-import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
+import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
@@ -68,12 +57,14 @@ public class DemoScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
+        if (g.getConfiguration().debugLevel > 0) {
+            // Add the Debug switcher capability to this scene
+            addBehavior(new DebugSwitcherBehavior());
+        }
         // Load resources
-        ResourceManager.getFont("fonts/FreePixel.ttf");
+        ResourceManager.getFont("./fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
-        ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
-        ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
         // inventory selector states
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selector", 5 * 16, 3 * 16, 17, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
@@ -82,6 +73,10 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "potion", 34, 18, 14, 15);
         // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
+
+        // movng object resources
+        ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
 
         // Add a specific Render for the new GameObject implementation for
         // - ScoreObject
@@ -103,8 +98,8 @@ public class DemoScene extends AbstractScene {
         World world = new World(800, 600);
         // create a basic wind all over the play area
         InfluenceArea2d iArea = new InfluenceArea2d(
-                new Vector2d(0.475, 0),
-                new BoundingBox(Vector2d.ZERO, 800, 600,
+                new Vector2d(0.475, 0.0),
+                new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
                         BoundingBox.BoundingBoxType.RECTANGLE),
                 3);
         world.addInfluenceArea(iArea);
@@ -219,9 +214,10 @@ public class DemoScene extends AbstractScene {
         // Welcome text at middle bottom center game screen
         double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
         double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
+        Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
-                .setText("Welcome on Board");
-        welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
+                .setText("Welcome on Board").setFont(welcomeFont);
+        welcome.setDuration(50000).setLayer(0).setPriority(1).setRelativeToCamera(true).setDebug(3);
         add(welcome);
 
         randomizeFilteredGameObject("enemy_");
@@ -229,6 +225,7 @@ public class DemoScene extends AbstractScene {
 
     /**
      * Generate a random set of nbEnemies on screen?
+     *
      * @param nbEnemies
      * @throws UnknownResource
      */
@@ -260,6 +257,8 @@ public class DemoScene extends AbstractScene {
         randomizeFilteredGameObject("enemy_");
         randomizeFilteredGameObject("player");
         objects.get("player").addAttribute("score", 0);
+        objects.get("welcomeMsg").setDuration(5000).active = true;
+
     }
 
     private synchronized void randomizeFilteredGameObject(String rootName) {

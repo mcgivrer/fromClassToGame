@@ -49,6 +49,7 @@ public class Window {
         frame.setSize(dim);
         frame.setPreferredSize(dim);
         frame.setMaximumSize(dim);
+        frame.setFocusTraversalKeysEnabled(false);
         //frame.setUndecorated(true);
         frame.setMenuBar(null);
         frame.setLocation(new Point((int) (currentDevice.getDisplayMode().getWidth() - dim.width) / 2,
@@ -82,7 +83,7 @@ public class Window {
             String debugStatusLine = String.format("DBG:%1d | FPS:%03d | nbObj:%03d | g: %1.3f",
                     this.debug, realFPS, nbObjs, gravity);
             for (Map.Entry<String, String> e : debugElementInfo.entrySet()) {
-                debugStatusLine = debugStatusLine + e.getKey() + ":" + e.getValue();
+                debugStatusLine = debugStatusLine + " | " + e.getKey() + ":" + e.getValue();
             }
             g.drawString("[ " + debugStatusLine + " ]", 10, frame.getHeight() - 20);
         }

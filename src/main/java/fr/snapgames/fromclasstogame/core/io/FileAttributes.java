@@ -32,12 +32,12 @@ public class FileAttributes {
      */
     public static FileAttributes read(String fileName) {
         FileAttributes fa = new FileAttributes();
-        String strLevelsPath = FileAttributes.class.getResource("/").getPath().substring(1);
-            List<String> f = ResourceManager.getFile(fileName);
-            for (String l : f) {
-                String[] values = l.split(":");
-                attributes.put(values[0], values[1]);
-            }
+        String strLevelsPath = FileAttributes.class.getClassLoader().getResource("/").getPath().substring(1);
+        List<String> f = ResourceManager.getFile(fileName);
+        for (String l : f) {
+            String[] values = l.split(":");
+            attributes.put(values[0], values[1]);
+        }
         return fa;
     }
 
