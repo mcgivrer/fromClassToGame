@@ -28,6 +28,7 @@ public class FileAttributes {
      */
     public static FileAttributes read(String fileName) {
         FileAttributes fa = new FileAttributes();
+
         List<String> f = ResourceManager.getFile(fileName);
         for (String l : f) {
             String[] values = l.split(":");
