@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
@@ -28,7 +29,7 @@ public class TitleScene extends AbstractScene {
     public void initialize(Game g) {
         super.initialize(g);
         // font for title and text display
-        titleFont = ResourceManager.getFont("fonts/FreeFont.ttf");
+        titleFont = ResourceManager.getFont("./fonts/FreePixel.ttf");
         // Background image resource
         bckImage = ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
@@ -37,6 +38,12 @@ public class TitleScene extends AbstractScene {
     @Override
     public void create(Game g) throws UnknownResource {
         super.create(g);
+        if (g.getConfiguration().debugLevel > 0) {
+            // Add the Debug switcher capability to this scene
+            addBehavior(new DebugSwitcherBehavior());
+        }
+
+
         // Define the camera following the player object.
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
 
@@ -45,14 +52,19 @@ public class TitleScene extends AbstractScene {
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
                 .setType(GameObject.GOType.IMAGE)
                 .setLayer(100)
-                .setPriority(100);
+                .setPriority(100)
+                .setRelativeToCamera(true);
         add(bckG);
 
         // add Title
-        double gtx = vp.width / 2.0;
-        double gty = vp.height / 2.0;
-        TextObject gameTitle = new TextObject("gameTitle", new Vector2d(gtx, gty)).setText("Play The Platform Game").setFont(titleFont);
-        gameTitle.setColor(Color.WHITE);
+        double gtx = vp.width / 4.0;
+        double gty = (vp.height / 5.0) * 2.0;
+        Font mainTitleFont = titleFont.deriveFont(16.0f);
+        TextObject gameTitle = new TextObject("gameTitle", new Vector2d(gtx, gty))
+                .setText("Play The Platform Game")
+                .setFont(mainTitleFont);
+        gameTitle.setColor(Color.WHITE)
+                .setRelativeToCamera(true);
         add(gameTitle);
 
         // Add camera

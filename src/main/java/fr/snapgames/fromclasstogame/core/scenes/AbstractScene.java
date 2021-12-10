@@ -2,12 +2,10 @@ package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
-import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionAlreadyExistsException;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
@@ -17,15 +15,25 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * The {@link AbstractScene} implements all the basics for any Scene you want to create.
+ * It also supports some DEBUG keys to display (see {@link fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper})
+ * The active keys are:
+ * <strong>Debug</strong>
+ * <ul>
+ *     <li><kbd>D</kbd> Activate global debug mode</li>
+ *     <li><kbd>TAB</kbd> next {@link GameObject} in scene's object list</li>
+ *     <li><kbd>BACKSPACE</kbd> previous {@link GameObject} in scene's object list</li>
+ *     <li><kbd>N</kbd> up debug level for current selected object</li>
+ *     <li><kbd>B</kbd> down debug level for current selected object</li>
+ *     <li><kbd>Z</kbd> reset the current scene by calling {@link Scene#create(Game)} ()}</li>
+ * </ul>
+ * Any new custom action can bee added to the {@link ActionHandler} with an action code from ACTION_CUSTOM (= 200).
+ * <strong></strong>
+ */
 public abstract class AbstractScene implements Scene {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
-
-    // new action defined for all scenes.
-    public static final int DEBUG_NEXT_ELEMENT = ActionHandler.POWER + 100;
-    public static final int DEBUG_LEVEL_PLUS = ActionHandler.POWER + 101;
-    public static final int DEBUG_LEVEL_MINUS = ActionHandler.POWER + 102;
-
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
     protected List<Behavior<Scene>> behaviors = new ArrayList<>();
@@ -48,20 +56,11 @@ public abstract class AbstractScene implements Scene {
     public void initialize(Game g) {
         this.game = g;
 
-        ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
-        try {
-            ah.registerAction(this.DEBUG_NEXT_ELEMENT, KeyEvent.VK_TAB);
-            ah.registerAction(this.DEBUG_LEVEL_PLUS, KeyEvent.VK_PLUS);
-            ah.registerAction(this.DEBUG_LEVEL_MINUS, KeyEvent.VK_MINUS);
-        } catch (ActionAlreadyExistsException e) {
-            logger.error("Unable to add new action to ActionHandler", e);
-        }
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
-        // Add the Debug switcher capability to this scene
-        addBehavior(new DebugSwitcherBehavior());
+
         // will be updated into the implemented scene
     }
 

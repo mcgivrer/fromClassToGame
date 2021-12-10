@@ -256,7 +256,7 @@ public class PhysicEngine extends System {
      */
     private Vector2d applyInfluences(GameObject go) {
         Vector2d acc = new Vector2d();
-        if (world.influenceAreas.isEmpty() && !go.relativeToCamera) {
+        if (!world.influenceAreas.isEmpty() && !go.relativeToCamera) {
             for (InfluenceArea2d area : world.influenceAreas) {
                 if (area.influenceArea.intersect(go.bbox)) {
                     double influence = area.getInfluenceAtPosition(go.position);

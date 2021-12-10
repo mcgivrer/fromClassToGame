@@ -106,7 +106,7 @@ public class Vector2d {
      */
     @Override
     public String toString() {
-        return String.format("(%03.3f,%03.3f)", x, y);
+        return String.format("(%04.02f,%04.03f)", x, y);
     }
 
     /**

@@ -121,18 +121,18 @@ public class ResourceManager {
         }
     }
 
-    private static List<String> readTextFile(String attributesFilename) {
+    private static List<String> readTextFile(String filename) {
         List<String> values = new ArrayList<>();
 
         try {
-            InputStream is = ResourceManager.class.getResourceAsStream(attributesFilename);
+            InputStream is = ResourceManager.class.getResourceAsStream(filename);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = br.readLine()) != null) {
                 values.add(line);
             }
         } catch (IOException ioe) {
-            logger.error("Unable to read file " + attributesFilename, ioe);
+            logger.error("Unable to read file " + filename, ioe);
 
         }
 
