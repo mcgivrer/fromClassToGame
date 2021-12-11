@@ -9,6 +9,59 @@ So, if you want to code some platform game, you need a technology to display suc
 
 Here is where w are going to talk about `Tile`, `TileSet`, `TileLayer` and `TileMap`.
 
+A `TileMap` will be composed of or more `TileLayer`, containing map referencing `Tile` 
+from one or more `TileSet`.
+
+```text
+TileMap
+|_ List<TileSet>
+   |_List<Tile>
+|_ List<TileLayer>
+```
+
+The main `TileLayer` could correspond to the schema :
+
+```text
+Play Area
++-(width x height)--------------------------------------------+
+|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░|
+|░░░░▒                                                     ▓░░|
+|░░░░▒Camera                                               ▓░░|
+|░░░░▒+-(cx,cy)--------------------+                       ▓░░|
+|░░░░░|░░░░░░░░░░░░░░░░░░░░░░░░░░░░|░░░░░░░░░░░░▒    ▓░░░░░░░░|
+|░░░░░|░░░░░░░░░░░░░░░░░░░░░░░░░░░░|░░░░░░░░░░░░▒    ▓░░░░░░░░|
+|░░░▒ |                            |   ░░░░░░░░░▒    ▓░░░░░░░░|
+|░░▒  |   ○     ○    ○             |       ░░░░░▒    ▓░░░░░░░░|
+|░░░░░|░░░░░░░░░░░░░░░░░░░░▒       |                 ▓░░░░░░░░|
+|░░░░▒|           ☻ (x,y)          |    ○           √▓░░░░░░░░|
+|░░░░▒|      ▓░░░░░░░░░░░░░░░░░░░░░|░░░░░░░░░░░░░░░░░░░░░░░░░░|
+|░░░░▒|      v░░░░░░░░░░░░░░░░░░░▒ |     ▓░░░░░░░░░░░░░░░░░░░░|
+|░░░░▒+----------------------------+               ▓░░░░░░░░░░|
+|░░░░▒                                               ♥ ▓░░░░░░|
+|░░░░▒       ▓░░░░░░░▒    ○   ○   ○          ▓░░░░░░░░░░░░░░░░|
+|░░░░▒       ▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░|
+|░░░░▒       ▓░░░░▒                                           |
+|░░░░▒√                                ■   ■   ■   ■   ■      |
+|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░|
++-------------------------------------------------------------+
+```
+
+A `TileSet` could be a set of Tile :
+
+```text
+tile  name  attributes
+ ░  wall 1  block
+ ▒  wall 2  block
+ ▓  wall 3  block
+ √  spring  hurt   -10
+ ○  coin    money  +10
+ ■  chest   money  +25
+ ♥  life    energy +100
+```
+
+
+
+
 ## What is a Tile ?
 
 So the basic graphic element we need to use in our worlds levels are tiles.
