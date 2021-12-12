@@ -20,6 +20,8 @@ public class TitleScene extends AbstractScene {
 
     Font titleFont;
     BufferedImage bckImage;
+    BufferedImage logoImage;
+    Dimension vp;
 
     public TitleScene(Game g) {
         super(g, "title");
@@ -28,11 +30,16 @@ public class TitleScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
-        // font for title and text display
-        titleFont = ResourceManager.getFont("./fonts/FreePixel.ttf");
-        // Background image resource
-        bckImage = ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
-
+        try {
+            // font for title and text display
+            titleFont = ResourceManager.getFont("./fonts/FreePixel.ttf");
+            // Background image resource
+            bckImage = ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
+            // Icon logo SnapGames
+            logoImage = ResourceManager.getImage("images/logo/sg-logo-image.png");
+        } catch (UnknownResource e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -43,9 +50,8 @@ public class TitleScene extends AbstractScene {
             addBehavior(new DebugSwitcherBehavior());
         }
 
-
         // Define the camera following the player object.
-        Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
+        vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
 
         // add a background image
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
@@ -53,8 +59,16 @@ public class TitleScene extends AbstractScene {
                 .setType(GameObject.GOType.IMAGE)
                 .setLayer(100)
                 .setPriority(100)
-                .setRelativeToCamera(true);
+                .setAcceleration(new Vector2d(0.02, -0.03));
         add(bckG);
+
+        // add Logo.
+        GameObject logo = new GameObject("logo", new Vector2d(10, 9 * (vp.getHeight() / 10)))
+                .setType(GameObject.GOType.IMAGE)
+                .setLayer(1)
+                .setPriority(1)
+                .setRelativeToCamera(true);
+        add(logo);
 
         // add Title
         double gtx = vp.width / 4.0;
@@ -64,6 +78,8 @@ public class TitleScene extends AbstractScene {
                 .setText("Play The Platform Game")
                 .setFont(mainTitleFont);
         gameTitle.setColor(Color.WHITE)
+                .setPriority(1)
+                .setLayer(1)
                 .setRelativeToCamera(true);
         add(gameTitle);
 
@@ -77,7 +93,20 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public void dispose() {
+        ResourceManager.clear();
+    }
 
+
+    @Override
+    public void update(long dt) {
+        super.update(dt);
+        GameObject bckGo = getGameObject("background");
+        if (bckGo.position.x < 0 || bckGo.position.x > bckGo.width - vp.width) {
+            bckGo.acceleration.x *= -1;
+        }
+        if (bckGo.position.y < 0 || bckGo.position.y > bckGo.height - vp.height) {
+            bckGo.acceleration.y *= -1;
+        }
     }
 
     @Override
