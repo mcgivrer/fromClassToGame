@@ -25,7 +25,7 @@ public class InventoryObject extends GameObject {
     }
 
     public InventoryObject add(GameObject gio) {
-        if (!gio.getAttribute("inventory","none").equals("none")) {
+        if (!gio.getAttribute("inventory", "none").equals("none")) {
             items.add(gio);
         }
         return this;
@@ -61,5 +61,12 @@ public class InventoryObject extends GameObject {
     public InventoryObject setSelectedIndex(int index) {
         this.selectedIndex = index;
         return this;
+    }
+
+    @Override
+    public List<String> getDebugInfo() {
+        List<String> dbgInfo = super.getDebugInfo();
+        dbgInfo.add(String.format("nbObj: %d", this.items.size()));
+        return dbgInfo;
     }
 }

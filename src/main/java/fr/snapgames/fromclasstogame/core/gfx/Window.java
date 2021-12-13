@@ -1,6 +1,8 @@
 package fr.snapgames.fromclasstogame.core.gfx;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
@@ -8,70 +10,101 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.*;
 
 public class Window {
 
     private static final Logger logger = LoggerFactory.getLogger(Window.class);
+
+    private Configuration config;
+    private GraphicsDevice currentDevice;
+    private Dimension dim;
     private JFrame frame;
+
     private Font debugFont;
     private int debug = 0;
+
     private boolean fullscreen;
     private int defaultScreen = -1;
     private int currentScreen = 0;
-    private GraphicsDevice currentDevice;
 
     // Debug information on the debug status line
     private Map<String, String> debugElementInfo = new HashMap<>();
 
+    List<EventListener> listenersBck = new ArrayList<>();
+
+    @Deprecated
     public Window(String title, int width, int height) {
         setFrame(title, width, height);
         defaultScreen = -1;
     }
 
     public Window(Configuration config) {
-        setFrame(config.title, (int) (config.width * config.scale), (int) (config.height * config.scale));
+        this.config = config;
+        createFrame();
         defaultScreen = config.defaultScreen;
     }
 
+    public Window createFrame() {
+        setFrame(config.title, (int) (config.width * config.scale), (int) (config.height * config.scale));
+        return this;
+    }
+
+
     public Window setFrame(String title, int width, int height) {
         frame = new JFrame(title);
+
+        try {
+            frame.setIconImage(ResourceManager.getImage("images/logo/sg-logo-image.png"));
+        } catch (UnknownResource e) {
+            logger.warn("unable to read window icon from 'images/logo/sg-logo-image.png'");
+        }
         currentDevice = getGraphicsDevice(currentScreen);
         Insets ins = frame.getContentPane().getInsets();
-        Dimension dim = new Dimension(width, height + ins.top);
+        dim = new Dimension(width, height + ins.top);
         frame.setLayout(null);
         frame.setLocationByPlatform(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(dim);
         frame.setPreferredSize(dim);
         frame.setMaximumSize(dim);
+        frame.setIgnoreRepaint(true);
+        frame.enableInputMethods(true);
         frame.setFocusTraversalKeysEnabled(false);
-        //frame.setUndecorated(true);
-        frame.setMenuBar(null);
-        frame.setLocation(new Point((int) (currentDevice.getDisplayMode().getWidth() - dim.width) / 2,
-                (int) (currentDevice.getDisplayMode().getHeight() - dim.height) / 2));
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(true);
+        frame.setUndecorated(isFullScreen());
         frame.pack();
         frame.setVisible(true);
-        frame.createBufferStrategy(3);
+        BufferStrategy bs = frame.getBufferStrategy();
+        if (bs == null) {
+            frame.createBufferStrategy(2);
+        }
         return this;
     }
 
     public void draw(long realFPS, BufferedImage img) {
-        BufferStrategy bs = frame.getBufferStrategy();
-        Graphics2D g = (Graphics2D) bs.getDrawGraphics();
+        if (frame != null) {
+            BufferStrategy bs = frame.getBufferStrategy();
+            if (bs != null && bs.getDrawGraphics() != null) {
+                Graphics2D g = (Graphics2D) bs.getDrawGraphics();
 
-        if (debugFont == null) {
-            debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 11);
+                if (debugFont == null) {
+                    debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 11);
+                }
+                int menuHeight = isFullScreen() ? 0 : 30;
+                g.drawImage(img, 0, menuHeight, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
+
+                drawDebugStatusInfo(realFPS, g);
+                g.dispose();
+                bs.show();
+            }
         }
-        g.drawImage(img, 0, 30, frame.getWidth(), frame.getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
-
-        drawDebugStatusInfo(realFPS, g);
-        g.dispose();
-        bs.show();
     }
 
     private void drawDebugStatusInfo(long realFPS, Graphics2D g) {
@@ -119,23 +152,26 @@ public class Window {
     public void switchFullScreen() {
         currentDevice = getGraphicsDevice(currentScreen);
         if (!fullscreen && currentDevice.isFullScreenSupported()) {
-            backupListeners();
-            currentDevice.setFullScreenWindow(frame);
-            restoreListeners();
             fullscreen = true;
+            frame.setVisible(false);
+            frame.dispose();
+            createFrame();
+            currentDevice.setFullScreenWindow(frame);
+            frame.setVisible(true);
+            restoreListeners();
         } else {
+            fullscreen = false;
+            frame.setVisible(false);
+            frame.dispose();
+            createFrame();
             currentDevice.setFullScreenWindow(null);
             frame.setVisible(true);
-            fullscreen = false;
+            restoreListeners();
         }
     }
 
     private void restoreListeners() {
-
-    }
-
-    private void backupListeners() {
-
+        listenersBck.stream().forEach(l -> frame.addKeyListener((KeyListener) l));
     }
 
     /**
@@ -209,5 +245,10 @@ public class Window {
 
     public GraphicsDevice getScreenDevice() {
         return currentDevice;
+    }
+
+    public void addListener(KeyListener listener) {
+        this.listenersBck.add(listener);
+        frame.addKeyListener(listener);
     }
 }
