@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +27,15 @@ public class ResourceManager {
     private static Font readFont(String path) {
         Font font = null;
         try {
+            String rootPath = ResourceManager.class.getClassLoader().getResource(path).toURI().getPath();
+            logger.info("read front from {}", rootPath);
             InputStream is = ResourceManager.class.getClassLoader().getResourceAsStream(path);
             font = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (FontFormatException | IOException e) {
             logger.error("Unable to read font", e);
             e.printStackTrace();
+        } catch (URISyntaxException e) {
+            logger.error("Unable to find resource at {}", path, e);
         }
         return font;
     }
