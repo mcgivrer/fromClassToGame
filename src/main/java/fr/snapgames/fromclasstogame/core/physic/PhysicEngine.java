@@ -129,6 +129,7 @@ public class PhysicEngine extends System {
             if (!game.isPause()) {
                 for (GameObject go : getObjects()) {
                     update(go, dt);
+                    go.getChild().forEach(co -> update(co, dt));
                 }
             }
         } catch (ConcurrentModificationException e) {

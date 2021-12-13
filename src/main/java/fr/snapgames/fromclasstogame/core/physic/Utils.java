@@ -8,6 +8,10 @@ public class Utils {
         return (Math.random() * (max - min)) + min;
     }
 
+    public static int rand(int min, int max) {
+        return (int) (Math.random() * (max - min)) + min;
+    }
+
     public static Vector2d randV2d(double minX, double maxX, double minY, double maxY) {
         return new Vector2d(Utils.rand(minX, maxX), Utils.rand(minY, maxY));
     }
