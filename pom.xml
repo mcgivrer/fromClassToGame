@@ -148,6 +148,8 @@
                 <version>3.8.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <!-- Resource parsing -->
@@ -376,7 +378,17 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.ttf</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
                 <filtering>false</filtering>
+                <includes>
+                    <include>**/*.ttf</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/changes</directory>

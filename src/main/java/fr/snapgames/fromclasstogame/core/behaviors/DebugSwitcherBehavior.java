@@ -1,11 +1,7 @@
 package fr.snapgames.fromclasstogame.core.behaviors;
 
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
-
-import java.awt.event.KeyEvent;
 
 public class DebugSwitcherBehavior implements Behavior<Scene> {
     private static int cpt = 0;
@@ -13,22 +9,16 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
     int debugLevel = 2;
 
     @Override
-    public void onInput(Scene go, ActionHandler ah) {
-        if (ah.get(KeyEvent.VK_D)) {
-            cpt++;
-            if (cpt > 20) {
-                cpt = 0;
-                switchDebugLevel(go);
-            }
-        }
-
-    }
-
-    @Override
     public void onAction(Scene scene, Integer action) {
         switch (action) {
+            case AbstractScene.DEBUG_ACTIVE_FLAG:
+                switchDebugLevel(scene);
+
             case AbstractScene.DEBUG_NEXT_ELEMENT:
-                rotateDebugActiveElement(scene);
+                rotateDebugActiveElement(scene, 1);
+                break;
+            case AbstractScene.DEBUG_PREV_ELEMENT:
+                rotateDebugActiveElement(scene, -1);
                 break;
             case AbstractScene.DEBUG_LEVEL_PLUS:
                 switchCurrentElementLevelDebug(scene, +1);
@@ -41,14 +31,16 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
         }
     }
 
-    private void rotateDebugActiveElement(Scene scene) {
-        if (objIdx + 1 < scene.getObjectsList().size()) {
-            switchCurrentElementLevelDebug(scene, 0);
-            objIdx++;
-            switchCurrentElementLevelDebug(scene, 0);
-        } else {
-            switchCurrentElementLevelDebug(scene, 0);
+    private void rotateDebugActiveElement(Scene scene, int direction) {
+        objIdx += direction;
+        if (objIdx < 0) {
+            objIdx = scene.getObjectsList().size() - 1;
+        }
+        if (objIdx > scene.getObjectsList().size()) {
             objIdx = 0;
+        }
+
+        if (objIdx + direction < scene.getObjectsList().size() && objIdx > -1) {
             switchCurrentElementLevelDebug(scene, 0);
         }
 
