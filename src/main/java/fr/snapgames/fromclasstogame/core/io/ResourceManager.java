@@ -10,11 +10,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class ResourceManager {
 
@@ -32,12 +31,24 @@ public class ResourceManager {
 
     private static Font readFont(String path) {
         Font font = null;
+        Optional<InputStream> ois;
         try {
-            InputStream is = ResourceManager.class.getProtectionDomain().getClassLoader().getResourceAsStream(path);
-            font = Font.createFont(Font.TRUETYPE_FONT, is);
+            ois = Optional.ofNullable(ResourceManager.class.getResourceAsStream(path));
+            if (ois.isEmpty()) {
+                ois = Optional.ofNullable(ResourceManager.class.getProtectionDomain().getClassLoader().getResourceAsStream(path));
+            }
+            if (ois.isEmpty()) {
+                ois = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(path));
+            }
+            if (ois.isPresent()) {
+                font = Font.createFont(Font.TRUETYPE_FONT, ois.get());
+            }
         } catch (FontFormatException | IOException e) {
             logger.error("Unable to read font {}, use default one", path, e);
-            font = game.getRender().getGraphics().getFont();
+        } finally {
+            if (font == null) {
+                font = game.getRender().getGraphics().getFont();
+            }
         }
         return font;
     }

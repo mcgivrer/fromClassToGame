@@ -141,7 +141,7 @@ public class ActionHandler extends System implements KeyListener {
 
     public ActionHandler setWindow(Window window) {
         this.window = window;
-        window.getFrame().addKeyListener(this);
+        window.addListener(this);
         return this;
     }
 
