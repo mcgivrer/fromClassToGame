@@ -32,5 +32,4 @@ public class TextObject extends GameObject {
         this.font = f;
         return this;
     }
-
 }

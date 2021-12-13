@@ -80,21 +80,26 @@ public class Render extends System {
     private void drawPauseText(Graphics2D g) {
         if (game.isPause()) {
 
-            drawTextWithBackground(g, "Game Paused", new Color(0.1f, 0.1f, 0.0f, 0.8f));
+            drawTextWithBackground(g,
+                    "Game Paused",
+                    new Color(0.1f, 0.1f, 0.4f, 0.8f),
+                    (this.buffer.getWidth()) / 2,
+                    ((this.buffer.getHeight() / 3) * 2));
         }
     }
 
-    private void drawTextWithBackground(Graphics2D g, String pauseText, Color color) {
+    private void drawTextWithBackground(Graphics2D g, String pauseText, Color color, double x, double y) {
+        g.setColor(color);
+        g.setFont(g.getFont().deriveFont(16.0f));
         int txtWidth = g.getFontMetrics().stringWidth(pauseText);
         int txtHeight = g.getFontMetrics().getHeight();
-        g.setColor(color);
         g.fillRect(
                 0,
-                (this.buffer.getHeight() / 2) - (txtHeight + 20),
+                (int)(y - txtHeight),
                 this.buffer.getWidth(),
                 txtHeight + 4);
         g.setColor(Color.WHITE);
-        g.drawString("Game Paused", (this.buffer.getWidth() - txtWidth) / 2, (this.buffer.getHeight() / 2) - 20);
+        g.drawString("Game Paused", (int) (x - (txtWidth / 2)), (int) y);
     }
 
     private void setRenderingHintsList(Graphics2D g) {

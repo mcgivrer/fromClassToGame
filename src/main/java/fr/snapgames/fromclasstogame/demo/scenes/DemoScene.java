@@ -10,19 +10,19 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.physic.*;
-import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
-import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
 import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
+import fr.snapgames.fromclasstogame.demo.render.InventoryRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.LifeRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.ScoreRenderHelper;
 import fr.snapgames.fromclasstogame.demo.render.TextValueRenderHelper;
@@ -91,8 +91,8 @@ public class DemoScene extends AbstractScene {
         World world = new World(800, 600);
         // create a basic wind all over the play area
         InfluenceArea2d iArea = new InfluenceArea2d(
-                new Vector2d(0.475, 0),
-                new BoundingBox(Vector2d.ZERO, 800, 600,
+                new Vector2d(0.475, 0.0),
+                new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
                         BoundingBox.BoundingBoxType.RECTANGLE),
                 3);
         world.addInfluenceArea(iArea);
@@ -195,6 +195,7 @@ public class DemoScene extends AbstractScene {
                 .setNbPlace(6)
                 .setSelectedIndex(1)
                 .setRelativeToCamera(true)
+                .setDebug(3)
                 .add(new InventorySelectorBehavior());
         // add a first object (a key !)
         inventory.add(keyItem);
@@ -207,9 +208,10 @@ public class DemoScene extends AbstractScene {
         // Welcome text at middle bottom center game screen
         double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
         double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
+        Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
-                .setText("Welcome on Board");
-        welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
+                .setText("Welcome on Board").setFont(welcomeFont);
+        welcome.setDuration(50000).setLayer(0).setPriority(1).setRelativeToCamera(true).setDebug(3);
         add(welcome);
 
 
@@ -217,6 +219,7 @@ public class DemoScene extends AbstractScene {
 
     /**
      * Generate a random set of nbEnemies on screen?
+     *
      * @param nbEnemies
      * @throws UnknownResource
      */
@@ -248,6 +251,8 @@ public class DemoScene extends AbstractScene {
         randomizeFilteredGameObject("enemy_");
         randomizeFilteredGameObject("player");
         objects.get("player").addAttribute("score", 0);
+        objects.get("welcomeMsg").setDuration(5000).active = true;
+
     }
 
     private synchronized void randomizeFilteredGameObject(String rootName) {

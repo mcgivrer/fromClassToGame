@@ -43,7 +43,10 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
 
         // retrieve all object from the inventory
         List<GameObject> itemImages = go.getItems().stream().filter((v) -> !v.getAttribute("inventory", "none").equals("none")).collect(Collectors.toList());
-
+        int iw = (selector.getWidth() + spacing) * go.getNbPlaces();
+        int ih = (selector.getHeight() + spacing);
+        go.width = iw;
+        go.height = ih;
         // parse all available places and display corresponding object.
         for (int i = 0; i < go.getNbPlaces(); i++) {
             int rx = (int) go.position.x - (selector.getWidth() + spacing) * go.getNbPlaces();

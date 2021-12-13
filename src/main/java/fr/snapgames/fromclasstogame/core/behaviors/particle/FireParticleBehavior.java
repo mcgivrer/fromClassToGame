@@ -10,16 +10,22 @@ import java.awt.*;
 
 public class FireParticleBehavior extends BasicParticleBehavior implements Behavior<Particle> {
 
+    private Color colorStart = Color.YELLOW;
+    private Color colorEnd = Color.RED;
+    private int colorTransitionDuration = 0;
+
+
     public FireParticleBehavior(ParticleSystem ps, int defaultLifeTimeMS, boolean restart) {
         super(ps, defaultLifeTimeMS, restart);
+        colorTransitionDuration = 0;
     }
 
     @Override
     public void onCreate(Particle p) {
         super.onCreate(p);
-        p.life = (long) Utils.rand(200, 400);
+        p.life = 300;
         p.alive = true;
-        p.color = Utils.randomColor(Color.RED, Color.YELLOW);
+        p.color = colorStart;
         p.setSize(2 + (int) (Math.random() * 6));
         p.setPosition(Utils.add(parent.position, Utils.randV2d(-3, 3, -2, 2)));
         p.setVelocity(new Vector2d(0.0, 0.0));

@@ -53,6 +53,10 @@ public class ActionHandler extends System implements KeyListener {
     public final static int HOME = 14;
     public final static int POWER = 15;
 
+    public final static int ACTIONS_INTERNAL = 100;
+
+    public final static int ACTIONS_CUSTOM = 200;
+
 
     private static final Logger logger = LoggerFactory.getLogger(ActionHandler.class);
     /*
@@ -137,7 +141,7 @@ public class ActionHandler extends System implements KeyListener {
 
     public ActionHandler setWindow(Window window) {
         this.window = window;
-        window.getFrame().addKeyListener(this);
+        window.addListener(this);
         return this;
     }
 
