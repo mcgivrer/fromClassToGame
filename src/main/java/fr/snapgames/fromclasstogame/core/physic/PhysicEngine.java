@@ -153,7 +153,7 @@ public class PhysicEngine extends System {
                 go.bbox.update(go);
 
                 // Acceleration is not already used in velocity & position computation
-                computeAcceleration(go);
+                computeAccelerationForGameObject(go);
 
                 // Compute velocity
                 computeVelocity(go, dtCorrected);
@@ -208,14 +208,14 @@ public class PhysicEngine extends System {
      *
      * @param go The GameObject to compute velocity.
      */
-    private void computeAcceleration(GameObject go) {
+    private void computeAccelerationForGameObject(GameObject go) {
         Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
         // Apply World influence
         Vector2d massAppliedToGravity = new Vector2d();
         massAppliedToGravity.add(gravity).multiply(go.mass);
         go.forces.add(massAppliedToGravity);
 
-        Vector2d acc = applyInfluences(go);
+        Vector2d acc = applyWorldInfluenceArea2dList(go);
         for (Vector2d f : go.forces) {
             acc.add(f);
         }
@@ -254,7 +254,7 @@ public class PhysicEngine extends System {
      *
      * @param go the {@link GameObject} to apply constraint and computation to.
      */
-    private Vector2d applyInfluences(GameObject go) {
+    private Vector2d applyWorldInfluenceArea2dList(GameObject go) {
         Vector2d acc = new Vector2d();
         if (!world.influenceAreas.isEmpty() && !go.relativeToCamera) {
             for (InfluenceArea2d area : world.influenceAreas) {

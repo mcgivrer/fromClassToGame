@@ -238,7 +238,7 @@ public class AbstractRenderHelper {
                 if (go.life != -1) {
                     drawGauge(g, go,
                             pos.x + offsetX - 3,
-                            pos.y + offsetY - 15,
+                            pos.y + offsetY - 12,
                             0, go.lifeStart,
                             go.life,
                             maxWidth + 7,
@@ -258,7 +258,7 @@ public class AbstractRenderHelper {
 
     private void drawGauge(Graphics2D g, GameObject go, double x, double y, double min, double max, double value, double width, double height) {
         double lifeValue = width * ((min + value) / max);
-        drawRect(g, new Vector2d(x - 1, y - 1), width, height, 0, 0, Color.BLACK);
-        fillRect(g, new Vector2d(x, y), lifeValue, height - 1, 0, 0, Color.RED);
+        drawRect(g, new Vector2d(x - 1, y - 1), width, height, 0, 0, debugBackgroundColor);
+        fillRect(g, new Vector2d(x, y), lifeValue, height - 1, 0, 0, Color.ORANGE);
     }
 }

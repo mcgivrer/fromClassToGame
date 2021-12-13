@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame.core.io;
 
+import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,22 +21,23 @@ public class ResourceManager {
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
     private static Map<String, Object> resources = new HashMap<>();
+    private static Game game;
 
     private ResourceManager() {
+    }
+
+    public static void initialize(Game g) {
+        game = g;
     }
 
     private static Font readFont(String path) {
         Font font = null;
         try {
-            String rootPath = ResourceManager.class.getClassLoader().getResource(path).toURI().getPath();
-            logger.info("read front from {}", rootPath);
-            InputStream is = ResourceManager.class.getClassLoader().getResourceAsStream(path);
+            InputStream is = ResourceManager.class.getProtectionDomain().getClassLoader().getResourceAsStream(path);
             font = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (FontFormatException | IOException e) {
-            logger.error("Unable to read font", e);
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            logger.error("Unable to find resource at {}", path, e);
+            logger.error("Unable to read font {}, use default one", path, e);
+            font = game.getRender().getGraphics().getFont();
         }
         return font;
     }
