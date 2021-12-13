@@ -95,7 +95,7 @@ public class Render extends System {
         int txtHeight = g.getFontMetrics().getHeight();
         g.fillRect(
                 0,
-                (int)(y - txtHeight),
+                (int) (y - txtHeight),
                 this.buffer.getWidth(),
                 txtHeight + 4);
         g.setColor(Color.WHITE);
@@ -118,6 +118,7 @@ public class Render extends System {
         for (GameObject go : objects) {
             if (go.active) {
                 draw(g, go);
+                go.getChild().forEach(co -> draw(g, co));
             }
         }
     }
