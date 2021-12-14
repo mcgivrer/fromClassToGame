@@ -189,7 +189,7 @@ public class DemoScene extends AbstractScene {
         add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration
-        randomizeFilteredGameObject("enemy_");
+        randomizeFilteredGameObject("enemy_",true);
 
         // Welcome text at middle bottom center game screen
         Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
@@ -224,7 +224,6 @@ public class DemoScene extends AbstractScene {
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
                     .setPriority(3)
-                    .setDuration(Utils.rand(5000, 10000))
                     .setSize(8, 8);
             // add a ParticleSystem
             ParticleSystem ps = new ParticleSystem("PS_test_" + GameObject.getIndex(), e.position);
@@ -261,15 +260,20 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void activate() {
-        randomizeFilteredGameObject("enemy_");
-        randomizeFilteredGameObject("player");
+        randomizeFilteredGameObject("enemy_", true);
+        randomizeFilteredGameObject("player", false);
         objects.get("player").addAttribute("score", 0);
         objects.get("welcomeMsg").setDuration(5000).active = true;
 
     }
 
-    private synchronized void randomizeFilteredGameObject(String rootName) {
-        find(rootName).forEach(this::randomizePosAndAccGameObject);
+    private synchronized void randomizeFilteredGameObject(String rootName, boolean randomDuration) {
+        find(rootName).forEach(go -> {
+            randomizePosAndAccGameObject(go);
+            if (randomDuration) {
+                go.setDuration(Utils.rand(2000, 10000));
+            }
+        });
     }
 
     private GameObject randomizePosAndAccGameObject(GameObject go) {
