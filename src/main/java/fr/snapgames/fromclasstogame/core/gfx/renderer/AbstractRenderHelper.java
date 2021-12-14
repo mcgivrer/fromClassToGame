@@ -236,15 +236,15 @@ public class AbstractRenderHelper {
                 int fontHeight = g.getFontMetrics().getHeight();
                 int height = ((go.getDebugInfo().size()) * fontHeight);
                 if (go.life != -1) {
-                    drawGauge(g, go,
+                    drawGauge(g,
                             pos.x + offsetX - 3,
-                            pos.y + offsetY - 15,
+                            pos.y + offsetY - 12,
                             0, go.lifeStart,
                             go.life,
                             maxWidth + 7,
                             3);
                 }
-                fillRect(g, go.position, maxWidth + 8, height, offsetX - 4, offsetY - fontHeight+2, debugBackgroundColor);
+                fillRect(g, go.position, maxWidth + 8, height, offsetX - 4, offsetY - fontHeight + 2, debugBackgroundColor);
                 setColor(g, debugFrontColor);
                 setFont(g, debugFont);
                 int i = 0;
@@ -256,9 +256,24 @@ public class AbstractRenderHelper {
         }
     }
 
-    private void drawGauge(Graphics2D g, GameObject go, double x, double y, double min, double max, double value, double width, double height) {
+    /**
+     * draw debug gauge on screen at (x,y)
+     * spread on (width x height) rectangle,
+     * from min => max value
+     * using the Graphics2D g interface.
+     *
+     * @param g      the Graphics interface to be used.
+     * @param x      the horizontal position of the gauge
+     * @param y      the vertical position of the gauge
+     * @param min    the minimum value of the gauge
+     * @param max    the maximum value of the gauge
+     * @param value  the current value of the gauge
+     * @param width  width of the rectangle containing the gauge
+     * @param height height of the rectangle containing the gauge
+     */
+    private void drawGauge(Graphics2D g, double x, double y, double min, double max, double value, double width, double height) {
         double lifeValue = width * ((min + value) / max);
-        drawRect(g, new Vector2d(x - 1, y - 1), width, height, 0, 0, Color.BLACK);
-        fillRect(g, new Vector2d(x, y), lifeValue, height - 1, 0, 0, Color.RED);
+        drawRect(g, new Vector2d(x - 1, y - 1), width, height, 0, 0, debugBackgroundColor);
+        fillRect(g, new Vector2d(x, y), lifeValue, height - 1, 0, 0, Color.ORANGE);
     }
 }
