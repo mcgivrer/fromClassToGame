@@ -207,9 +207,9 @@ public class Window {
             device = env.getDefaultScreenDevice();
         } else {
             GraphicsDevice[] devs = env.getScreenDevices();
-            logger.info("list of devices : ");
+            logger.debug("List of connected display devices : ");
             for (GraphicsDevice d : devs) {
-                logger.info(String.format("%s: (%d x %d)", d.getIDstring(), d.getDisplayMode().getWidth(), d.getDisplayMode().getHeight()));
+                logger.debug(String.format("%s: (%d x %d)", d.getIDstring(), d.getDisplayMode().getWidth(), d.getDisplayMode().getHeight()));
             }
             assert (currentScreen >= 0 && currentScreen < devs.length);
             device = devs[currentScreen];
@@ -250,5 +250,9 @@ public class Window {
     public void addListener(KeyListener listener) {
         this.listenersBck.add(listener);
         frame.addKeyListener(listener);
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.config = configuration;
     }
 }
