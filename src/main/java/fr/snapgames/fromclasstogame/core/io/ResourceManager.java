@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.List;
 
 public class ResourceManager {
 
@@ -127,7 +127,7 @@ public class ResourceManager {
 
     }
 
-    public static List<String> getFile(String attributesFilename) {
+    public static java.util.List<String> getFile(String attributesFilename) {
         if (resources.containsKey(attributesFilename)) {
             return (List<String>) resources.get(attributesFilename);
         } else {

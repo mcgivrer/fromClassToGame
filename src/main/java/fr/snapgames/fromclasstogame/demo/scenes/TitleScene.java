@@ -6,6 +6,7 @@ import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.io.I18n;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
@@ -18,10 +19,13 @@ import java.awt.image.BufferedImage;
 
 public class TitleScene extends AbstractScene {
 
-    Font titleFont;
+    Font screenFont;
     BufferedImage bckImage;
     BufferedImage logoImage;
     Dimension vp;
+
+    double accelX = -0.2;
+    double accelY = -0.2;
 
     public TitleScene(Game g) {
         super(g, "title");
@@ -32,9 +36,9 @@ public class TitleScene extends AbstractScene {
         super.initialize(g);
         try {
             // font for title and text display
-            titleFont = ResourceManager.getFont("./fonts/FreePixel.ttf");
+            screenFont = ResourceManager.getFont("./fonts/FreePixel.ttf");
             // Background image resource
-            bckImage = ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
+            bckImage = ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 100, 21, 800, 600);
             // Icon logo SnapGames
             logoImage = ResourceManager.getImage("images/logo/sg-logo-image.png");
         } catch (UnknownResource e) {
@@ -54,34 +58,56 @@ public class TitleScene extends AbstractScene {
         vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
 
         // add a background image
-        GameObject bckG = new GameObject("background", Vector2d.ZERO)
+        GameObject bckG = new GameObject("background", new Vector2d(0.0, 0.0))
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
                 .setType(GameObject.GOType.IMAGE)
-                .setLayer(100)
-                .setPriority(100)
-                .setAcceleration(new Vector2d(0.02, -0.03));
+                .setLayer(10)
+                .setPriority(1)
+                .setRelativeToCamera(true);
         add(bckG);
 
         // add Logo.
-        GameObject logo = new GameObject("logo", new Vector2d(10, 9 * (vp.getHeight() / 10)))
+        GameObject logo = new GameObject("logo",
+                new Vector2d(10, 7.5 * (vp.getHeight() / 10)))
+                .setImage(ResourceManager.getImage("images/logo/sg-logo-image.png"))
                 .setType(GameObject.GOType.IMAGE)
-                .setLayer(1)
-                .setPriority(1)
+                .setLayer(10)
+                .setPriority(10)
                 .setRelativeToCamera(true);
         add(logo);
 
         // add Title
-        double gtx = vp.width / 4.0;
-        double gty = (vp.height / 5.0) * 2.0;
-        Font mainTitleFont = titleFont.deriveFont(16.0f);
-        TextObject gameTitle = new TextObject("gameTitle", new Vector2d(gtx, gty))
-                .setText("Play The Platform Game")
-                .setFont(mainTitleFont);
+        Graphics r = game.getRender().getGraphics();
+        Font titleFont = screenFont.deriveFont(16.0f);
+        Font textFont = screenFont.deriveFont(8.0f);
+
+        r.setFont(titleFont);
+        String textTitle = I18n.getMessage("scene.title.main.text");
+        TextObject gameTitle = new TextObject("gameTitle",
+                new Vector2d(
+                        (vp.width - r.getFontMetrics().stringWidth(textTitle)) / 2,
+                        (vp.height / 6.0) * 2.0))
+                .setText(textTitle)
+                .setFont(titleFont);
         gameTitle.setColor(Color.WHITE)
                 .setPriority(1)
                 .setLayer(1)
                 .setRelativeToCamera(true);
         add(gameTitle);
+
+        String textStart = I18n.getMessage("scene.title.start.text");
+        r.setFont(textFont);
+        TextObject startTextObject = new TextObject(textStart,
+                new Vector2d(
+                        (vp.width - r.getFontMetrics().stringWidth(textStart)) / 2,
+                        (vp.height / 6.0) * 4.0))
+                .setText(textStart)
+                .setFont(titleFont);
+        startTextObject.setColor(Color.WHITE)
+                .setPriority(1)
+                .setLayer(1)
+                .setRelativeToCamera(true);
+        add(startTextObject);
 
         // Add camera
         Camera camera = new Camera("cam01")
@@ -96,16 +122,26 @@ public class TitleScene extends AbstractScene {
         ResourceManager.clear();
     }
 
+    @Override
+    public void input(ActionHandler ah) {
+        super.input(ah);
+        GameObject bckGo = getGameObject("background");
+
+    }
 
     @Override
     public void update(long dt) {
         super.update(dt);
         GameObject bckGo = getGameObject("background");
-        if (bckGo.position.x < 0 || bckGo.position.x > bckGo.width - vp.width) {
-            bckGo.acceleration.x *= -1;
+
+        bckGo.position.x += accelX;
+        bckGo.position.y += accelY;
+
+        if (bckGo.position.x < 0 || bckGo.position.x + bckGo.width > vp.width) {
+            accelX *= -1;
         }
         if (bckGo.position.y < 0 || bckGo.position.y > bckGo.height - vp.height) {
-            bckGo.acceleration.y *= -1;
+            accelY *= -1;
         }
     }
 

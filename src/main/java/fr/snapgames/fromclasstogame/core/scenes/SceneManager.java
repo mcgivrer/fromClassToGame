@@ -7,6 +7,7 @@ import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.System;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -186,6 +187,8 @@ public class SceneManager extends System {
     private void setCurrent(Scene s) {
         if (s != null) {
             this.current = s;
+
+            SystemManager.clearObjects();
             s.activate();
         }
     }
