@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame.core.io;
 
+import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,30 +8,47 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class ResourceManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
     private static Map<String, Object> resources = new HashMap<>();
+    private static Game game;
 
     private ResourceManager() {
     }
 
+    public static void initialize(Game g) {
+        game = g;
+    }
+
     private static Font readFont(String path) {
         Font font = null;
+        Optional<InputStream> ois;
         try {
-            InputStream is = ResourceManager.class.getClassLoader().getResourceAsStream(path);
-            font = Font.createFont(Font.TRUETYPE_FONT, is);
+            ois = Optional.ofNullable(ResourceManager.class.getResourceAsStream(path));
+            if (ois.isEmpty()) {
+                ois = Optional.ofNullable(ResourceManager.class.getProtectionDomain().getClassLoader().getResourceAsStream(path));
+            }
+            if (ois.isEmpty()) {
+                ois = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResourceAsStream(path));
+            }
+            if (ois.isPresent()) {
+                font = Font.createFont(Font.TRUETYPE_FONT, ois.get());
+            }
         } catch (FontFormatException | IOException e) {
-            logger.error("Unable to read font", e);
-            e.printStackTrace();
+            logger.error("Unable to read font {}, use default one", path, e);
+        } finally {
+            if (font == null) {
+                font = game.getRender().getGraphics().getFont();
+            }
         }
         return font;
     }

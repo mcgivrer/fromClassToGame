@@ -12,6 +12,7 @@ import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
+import fr.snapgames.fromclasstogame.core.io.I18n;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.*;
@@ -62,7 +63,7 @@ public class DemoScene extends AbstractScene {
             addBehavior(new DebugSwitcherBehavior());
         }
         // Load resources
-        ResourceManager.getFont("./fonts/FreePixel.ttf");
+        ResourceManager.getFont("fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
         // inventory selector states
@@ -202,6 +203,7 @@ public class DemoScene extends AbstractScene {
                 .setNbPlace(6)
                 .setSelectedIndex(1)
                 .setRelativeToCamera(true)
+                .setDebug(3)
                 .add(new InventorySelectorBehavior());
         // add a first object (a key !)
         inventory.add(keyItem);
@@ -212,12 +214,19 @@ public class DemoScene extends AbstractScene {
         randomizeFilteredGameObject("enemy_");
 
         // Welcome text at middle bottom center game screen
-        double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
-        double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
         Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
+        String msg = I18n.getMessage("demo.message.welcome");
+        int msgWidth = game.getRender().getGraphics().getFontMetrics().stringWidth(msg);
+        double tPosX = (game.getRender().getBuffer().getWidth() - msgWidth) / 2.0;
+        double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
-                .setText("Welcome on Board").setFont(welcomeFont);
-        welcome.setDuration(50000).setLayer(0).setPriority(1).setRelativeToCamera(true).setDebug(3);
+                .setText(msg)
+                .setFont(welcomeFont);
+        welcome.setDuration(50000)
+                .setLayer(0)
+                .setPriority(1)
+                .setRelativeToCamera(true)
+                .setDebug(3);
         add(welcome);
 
         randomizeFilteredGameObject("enemy_");

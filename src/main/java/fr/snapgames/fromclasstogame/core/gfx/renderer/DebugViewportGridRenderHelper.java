@@ -9,7 +9,7 @@ import fr.snapgames.fromclasstogame.core.physic.World;
 
 public class DebugViewportGridRenderHelper extends AbstractRenderHelper implements RenderHelper<DebugViewportGrid> {
 
-    private Color gridColor = Color.BLUE;
+    private Color gridColor = new Color(0.1f,0.4f,0.8f,0.4f);
 
 
     public DebugViewportGridRenderHelper(Render r) {
