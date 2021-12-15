@@ -32,7 +32,7 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
     /**
      * Initialize new short keys to activate/deactivate debug features.
      */
-    public DebugSwitcherBehavior(Game g) {
+    public DebugSwitcherBehavior() {
         ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
         try {
             ah.registerAction(this.DEBUG_ACTIVE_FLAG, KeyEvent.VK_D);
