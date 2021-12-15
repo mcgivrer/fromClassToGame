@@ -24,8 +24,8 @@ public class TitleScene extends AbstractScene {
     BufferedImage logoImage;
     Dimension vp;
 
-    double accelX = -0.2;
-    double accelY = -0.2;
+    double accelX = 20;
+    double accelY = 20;
 
     public TitleScene(Game g) {
         super(g, "title");
@@ -63,7 +63,8 @@ public class TitleScene extends AbstractScene {
                 .setType(GameObject.GOType.IMAGE)
                 .setLayer(10)
                 .setPriority(1)
-                .setRelativeToCamera(true);
+                .setDebug(3);
+
         add(bckG);
 
         // add Logo.
@@ -71,8 +72,8 @@ public class TitleScene extends AbstractScene {
                 new Vector2d(10, 7.5 * (vp.getHeight() / 10)))
                 .setImage(ResourceManager.getImage("images/logo/sg-logo-image.png"))
                 .setType(GameObject.GOType.IMAGE)
-                .setLayer(10)
-                .setPriority(10)
+                .setLayer(5)
+                .setPriority(5)
                 .setRelativeToCamera(true);
         add(logo);
 
@@ -97,7 +98,7 @@ public class TitleScene extends AbstractScene {
 
         String textStart = I18n.getMessage("scene.title.start.text");
         r.setFont(textFont);
-        TextObject startTextObject = new TextObject(textStart,
+        TextObject startTextObject = new TextObject("startText",
                 new Vector2d(
                         (vp.width - r.getFontMetrics().stringWidth(textStart)) / 2,
                         (vp.height / 6.0) * 4.0))
@@ -126,21 +127,17 @@ public class TitleScene extends AbstractScene {
     public void input(ActionHandler ah) {
         super.input(ah);
         GameObject bckGo = getGameObject("background");
-
+        bckGo.forces.add(new Vector2d(accelX, accelY));
     }
 
     @Override
     public void update(long dt) {
         super.update(dt);
         GameObject bckGo = getGameObject("background");
-
-        bckGo.position.x += accelX;
-        bckGo.position.y += accelY;
-
-        if (bckGo.position.x < 0 || bckGo.position.x + bckGo.width > vp.width) {
+        if (bckGo.position.x <= 0 || bckGo.position.x + bckGo.width >= vp.width) {
             accelX *= -1;
         }
-        if (bckGo.position.y < 0 || bckGo.position.y > bckGo.height - vp.height) {
+        if (bckGo.position.y <= 0 || bckGo.position.y + bckGo.height >= vp.height) {
             accelY *= -1;
         }
     }
