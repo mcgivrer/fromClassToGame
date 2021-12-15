@@ -66,7 +66,7 @@ public class InventoryObject extends GameObject {
     @Override
     public List<String> getDebugInfo() {
         List<String> dbgInfo = super.getDebugInfo();
-        dbgInfo.add(String.format("nbObj: %d", this.items.size()));
+        dbgInfo.add(String.format("size: %d", this.items.size()));
         return dbgInfo;
     }
 }
