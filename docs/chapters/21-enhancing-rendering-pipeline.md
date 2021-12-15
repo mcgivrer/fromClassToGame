@@ -92,4 +92,8 @@ And many utilities are implemented and delegated to this class:
 - `drawPoint()` to draw a single point of a defined size,
 - `drawGauge()` to draw a bar graph single information.
 
-> **INFO**<br/>These rendering utilities will be moved to the Render class itself in a next release (e.g. the 1.0.3 release)
+> **[!] WARN**<br/>These rendering utilities will be moved to the Render class itself in a
+> next release (e.g. the 1.0.3 release)
+
+> **[?] INFO**<br/>`2021-DEC-15` The `Render` class has been simplified with having in mind the main goal
+> to remove any `Graphics2D` from method signature. 
