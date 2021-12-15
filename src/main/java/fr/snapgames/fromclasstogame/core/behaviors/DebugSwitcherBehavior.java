@@ -98,7 +98,7 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
         if (objIdx < 0) {
             objIdx = scene.getObjectsList().size() - 1;
         }
-        if (objIdx > scene.getObjectsList().size()) {
+        if (objIdx > scene.getObjectsList().size()-1) {
             objIdx = 0;
         }
 
