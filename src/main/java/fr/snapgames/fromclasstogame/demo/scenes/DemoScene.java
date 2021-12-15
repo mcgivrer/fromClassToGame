@@ -181,7 +181,7 @@ public class DemoScene extends AbstractScene {
                 .setNbPlace(6)
                 .setSelectedIndex(1)
                 .setRelativeToCamera(true)
-                .setDebug(3)
+                .setDebug(1)
                 .add(new InventorySelectorBehavior());
         // add a first object (a key !)
         inventory.add(keyItem);

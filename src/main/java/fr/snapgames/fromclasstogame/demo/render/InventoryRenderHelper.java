@@ -92,9 +92,9 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
     @Override
     public void drawDebugInfo(Graphics2D g, InventoryObject go) {
         super.drawDebugInfo(g, go);
-        if (go.getDebug() >= 1) {
-            Color itemColorSelected = new Color(0.1f, 0.8f, 0.3f, 0.7f);
-            Color itemColorEmpty = new Color(0.8f, 0.3f, 0.1f, 0.7f);
+        if (go.getDebug() > 2) {
+            Color itemColorSelected = new Color(0.1f, 0.8f, 0.3f, 0.4f);
+            Color itemColorEmpty = new Color(0.8f, 0.3f, 0.1f, 0.4f);
             List<GameObject> itemImages = go.getItems().stream().filter((v) -> !v.getAttribute("inventory", "none").equals("none")).collect(Collectors.toList());
             int iw = (selector.getWidth() + spacing) * go.getNbPlaces();
             int ih = (selector.getHeight() + spacing);
@@ -109,10 +109,18 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
                 } else {
                     g.setColor(itemColorEmpty);
                 }
-                g.drawRect(
+                g.fillRect(
                         (int) rx + (i * (selector.getWidth()) + spacing + 1),
                         (int) ry + 1,
-                        selector.getWidth(), selector.getHeight());
+                        selector.getWidth() - 2, selector.getHeight() - 2);
+                if (i == go.getSelectedIndex()) {
+                    g.setColor(new Color(0.9f, 0.9f, 0.0f, 0.5f));
+                    g.drawRect(
+                            (int) rx + (i * (selector.getWidth()) + spacing + 1),
+                            (int) ry + 1,
+                            selector.getWidth() - 2, selector.getHeight() - 2);
+
+                }
 
             }
         }
