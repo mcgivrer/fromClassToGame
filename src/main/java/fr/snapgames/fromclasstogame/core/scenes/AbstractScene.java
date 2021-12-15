@@ -63,7 +63,7 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void create(Game g) throws UnknownResource {
         // Add the Debug switcher capability to this scene
-        addBehavior(new DebugSwitcherBehavior(g));
+        addBehavior(new DebugSwitcherBehavior());
         // will be updated into the implemented scene
     }
 
