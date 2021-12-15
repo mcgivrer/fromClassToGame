@@ -140,9 +140,12 @@ public class PhysicEngine extends System {
     public void update(long dt) {
         try {
             if (!game.isPause()) {
-                for (GameObject go : getObjects()) {
+                getObjects().stream().forEach(go -> {
                     update(go, dt);
-                }
+                    go.getChild().forEach(co -> {
+                        update(co, dt);
+                    });
+                });
             }
         } catch (ConcurrentModificationException e) {
             logger.error("Unable to update the GameObjects");
