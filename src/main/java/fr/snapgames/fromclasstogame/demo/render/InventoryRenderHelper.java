@@ -7,6 +7,8 @@ import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,17 +19,25 @@ import java.util.stream.Collectors;
  * Draw InventoryObject
  */
 public class InventoryRenderHelper extends AbstractRenderHelper implements RenderHelper<InventoryObject> {
+
+    private static final Logger logger = LoggerFactory.getLogger(InventoryRenderHelper.class);
+
     private BufferedImage selector;
     private BufferedImage selected;
     private int spacing = 2;
 
+    /**
+     * Prepare resources for Inventory rendering.
+     *
+     * @param r
+     */
     public InventoryRenderHelper(Render r) {
         super(r);
         try {
             selector = ResourceManager.getImage("images/tiles01.png:inventory_selector");
             selected = ResourceManager.getImage("images/tiles01.png:inventory_selected");
         } catch (UnknownResource e) {
-            System.err.println("Unable to load resource: " + e.getMessage());
+            logger.error("Unable to load resource: " + e.getMessage());
         }
     }
 
@@ -37,6 +47,12 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
         return InventoryObject.class.getName();
     }
 
+    /**
+     * Draw all inventory placeholder and object if filled.
+     *
+     * @param g
+     * @param o
+     */
     @Override
     public void draw(Graphics2D g, InventoryObject o) {
         InventoryObject go = (InventoryObject) o;
@@ -67,8 +83,38 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
         }
     }
 
+    /**
+     * Add specific inventory rendering
+     *
+     * @param g
+     * @param go
+     */
     @Override
     public void drawDebugInfo(Graphics2D g, InventoryObject go) {
         super.drawDebugInfo(g, go);
+        if (go.getDebug() >= 1) {
+            Color itemColorSelected = new Color(0.1f, 0.8f, 0.3f, 0.7f);
+            Color itemColorEmpty = new Color(0.8f, 0.3f, 0.1f, 0.7f);
+            List<GameObject> itemImages = go.getItems().stream().filter((v) -> !v.getAttribute("inventory", "none").equals("none")).collect(Collectors.toList());
+            int iw = (selector.getWidth() + spacing) * go.getNbPlaces();
+            int ih = (selector.getHeight() + spacing);
+            go.width = iw;
+            go.height = ih;
+            // parse all available places and display corresponding object.
+            for (int i = 0; i < go.getNbPlaces(); i++) {
+                int rx = (int) go.position.x - (selector.getWidth() + spacing) * go.getNbPlaces();
+                int ry = (int) go.position.y - (selector.getHeight() + spacing);
+                if (!itemImages.isEmpty() && itemImages.size() > i) {
+                    g.setColor(itemColorSelected);
+                } else {
+                    g.setColor(itemColorEmpty);
+                }
+                g.drawRect(
+                        (int) rx + (i * (selector.getWidth()) + spacing + 1),
+                        (int) ry + 1,
+                        selector.getWidth(), selector.getHeight());
+
+            }
+        }
     }
 }
