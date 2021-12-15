@@ -1,34 +1,96 @@
 package fr.snapgames.fromclasstogame.core.behaviors;
 
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionAlreadyExistsException;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.event.KeyEvent;
 
 public class DebugSwitcherBehavior implements Behavior<Scene> {
+
+    private static final Logger logger = LoggerFactory.getLogger(DebugSwitcherBehavior.class);
+
+    // new action defined for all scenes.
+    public static final int DEBUG_ACTIVE_FLAG = ActionHandler.ACTIONS_INTERNAL + 0;
+    public static final int DEBUG_NEXT_ELEMENT = ActionHandler.ACTIONS_INTERNAL + 1;
+    public static final int DEBUG_PREV_ELEMENT = ActionHandler.ACTIONS_INTERNAL + 2;
+    public static final int DEBUG_LEVEL_PLUS = ActionHandler.ACTIONS_INTERNAL + 3;
+    public static final int DEBUG_LEVEL_MINUS = ActionHandler.ACTIONS_INTERNAL + 4;
+    public static final int DEBUG_FLAG_PE_INFLUENCERS = ActionHandler.ACTIONS_INTERNAL + 5;
+    public static final int DEBUG_FLAG_PE_GRAVITY = ActionHandler.ACTIONS_INTERNAL + 6;
+
     private static int cpt = 0;
     int objIdx = 0;
     int debugLevel = 2;
 
+    /**
+     * Initialize new short keys to activate/deactivate debug features.
+     */
+    public DebugSwitcherBehavior() {
+        ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
+        try {
+            ah.registerAction(this.DEBUG_ACTIVE_FLAG, KeyEvent.VK_D);
+            ah.registerAction(this.DEBUG_NEXT_ELEMENT, KeyEvent.VK_TAB);
+            ah.registerAction(this.DEBUG_PREV_ELEMENT, KeyEvent.VK_BACK_SPACE);
+            ah.registerAction(this.DEBUG_LEVEL_PLUS, KeyEvent.VK_N);
+            ah.registerAction(this.DEBUG_LEVEL_MINUS, KeyEvent.VK_B);
+            ah.registerAction(this.DEBUG_FLAG_PE_INFLUENCERS, KeyEvent.VK_I);
+            ah.registerAction(this.DEBUG_FLAG_PE_GRAVITY, KeyEvent.VK_G);
+        } catch (ActionAlreadyExistsException e) {
+            logger.error("Unable to add new action to ActionHandler", e);
+        }
+    }
+
+
     @Override
     public void onAction(Scene scene, Integer action) {
         switch (action) {
-            case AbstractScene.DEBUG_ACTIVE_FLAG:
+            case DEBUG_ACTIVE_FLAG:
                 switchDebugLevel(scene);
 
-            case AbstractScene.DEBUG_NEXT_ELEMENT:
+            case DEBUG_NEXT_ELEMENT:
                 rotateDebugActiveElement(scene, 1);
                 break;
-            case AbstractScene.DEBUG_PREV_ELEMENT:
+            case DEBUG_PREV_ELEMENT:
                 rotateDebugActiveElement(scene, -1);
                 break;
-            case AbstractScene.DEBUG_LEVEL_PLUS:
+            case DEBUG_LEVEL_PLUS:
                 switchCurrentElementLevelDebug(scene, +1);
                 break;
-            case AbstractScene.DEBUG_LEVEL_MINUS:
+            case DEBUG_LEVEL_MINUS:
                 switchCurrentElementLevelDebug(scene, -1);
+                break;
+            case DEBUG_FLAG_PE_INFLUENCERS:
+                switchInfluencers();
+                break;
+            case DEBUG_FLAG_PE_GRAVITY:
+                switchGravity();
                 break;
             default:
                 break;
         }
+        scene.getGame().getWindow().addDebugStatusElement("actDbgElt", "[" + objIdx + "]" + scene.getObjectsList().get(objIdx).name);
+        // add debug info about PhysicEngine.
+        PhysicEngine pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
+        pe.getDebugInfo().forEach((k, v) -> scene.getGame().getWindow().addDebugStatusElement(k, v.toString()));
+    }
+
+    private void switchInfluencers() {
+        PhysicEngine pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
+        boolean dif = pe.getDebugFlag(PhysicEngine.DEBUG_FLAG_INFLUENCERS);
+        pe.setDebugFlag(PhysicEngine.DEBUG_FLAG_INFLUENCERS, !dif);
+    }
+
+    private void switchGravity() {
+        PhysicEngine pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
+        boolean dif = pe.getDebugFlag(PhysicEngine.DEBUG_FLAG_GRAVITY);
+        pe.setDebugFlag(PhysicEngine.DEBUG_FLAG_GRAVITY, !dif);
     }
 
     private void rotateDebugActiveElement(Scene scene, int direction) {
@@ -43,8 +105,6 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
         if (objIdx + direction < scene.getObjectsList().size() && objIdx > -1) {
             switchCurrentElementLevelDebug(scene, 0);
         }
-
-        scene.getGame().getWindow().addDebugStatusElement("actDbgElt", "[" + objIdx + "]" + scene.getObjectsList().get(objIdx).name);
     }
 
     private void switchCurrentElementLevelDebug(Scene scene, int upDown) {
