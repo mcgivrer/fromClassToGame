@@ -5,6 +5,7 @@
 
 package features;
 
+import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import io.cucumber.java8.En;
 
@@ -22,6 +23,7 @@ public class WindowDefSteps implements En {
     public WindowDefSteps() {
         Given("A Window is created", () -> {
             win = new Window("test", 320, 200);
+            win.setConfiguration(new Configuration("no-scene"));
         });
 
         Then("the window is in Windowed mode", () -> {
@@ -37,8 +39,9 @@ public class WindowDefSteps implements En {
             assertTrue("The window has net been set to windowed mode", win.isFullScreen());
         });
 
-        Given("A fullscreen Window", () -> {
+        Given("A fullscreen Window is created", () -> {
             win = new Window("test", 320, 200);
+            win.setConfiguration(new Configuration("no-scene"));
             win.switchFullScreen();
         });
 
