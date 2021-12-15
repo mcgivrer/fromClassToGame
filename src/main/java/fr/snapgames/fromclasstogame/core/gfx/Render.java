@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class Render extends System {
 
@@ -95,7 +96,7 @@ public class Render extends System {
         int txtHeight = g.getFontMetrics().getHeight();
         g.fillRect(
                 0,
-                (int)(y - txtHeight),
+                (int) (y - txtHeight),
                 this.buffer.getWidth(),
                 txtHeight + 4);
         g.setColor(Color.WHITE);
@@ -114,13 +115,29 @@ public class Render extends System {
         }
     }
 
+
     private void drawObjectList(Graphics2D g, List<GameObject> objects) {
+        objects.stream().filter(f -> f.active)
+                .collect(Collectors.toList())
+                .forEach(go -> {
+                    draw(g, go);
+                    // process child
+                    go.getChild().stream()
+                            .filter(c -> c.active)
+                            .collect(Collectors.toList())
+                            .forEach(co -> draw(g, co));
+                });
+    }
+
+
+    /*private void drawObjectList(Graphics2D g, List<GameObject> objects) {
         for (GameObject go : objects) {
             if (go.active) {
                 draw(g, go);
+                go.getChild().forEach(co -> draw(g, co));
             }
         }
-    }
+    }*/
 
     private void draw(Graphics2D g, GameObject go) {
         String goClazzName = go.getClass().getName();

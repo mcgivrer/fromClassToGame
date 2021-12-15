@@ -87,7 +87,7 @@ public class CliManager {
                 String name = ap.getName();
                 Object value = ap.getValue();
                 values.put(name, value);
-                logger.info("read parameter from file :" + ap.getName() + "=" + ap.getValue() + " (" + ap.getDescription() + ")");
+                logger.debug("read parameter from file :" + ap.getName() + "=" + ap.getValue() + " (" + ap.getDescription() + ")");
             } else {
                 logger.error("The key {} is unknown", k);
             }

@@ -164,6 +164,7 @@ public class Game implements ActionHandler.ActionListener {
             if (elapsed > 0 && elapsed < frameDuration) {
                 try {
                     long waitTime = frameDuration - (System.currentTimeMillis() - start);
+                    waitTime = waitTime > 0 ? waitTime : 1;
                     Thread.sleep(waitTime);
                 } catch (InterruptedException e) {
                     logger.error("The Game Thread has been interrupted");
