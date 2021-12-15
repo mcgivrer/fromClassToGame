@@ -12,6 +12,7 @@ public class FireParticleBehavior extends BasicParticleBehavior implements Behav
 
     private Color colorStart = Color.YELLOW;
     private Color colorEnd = Color.RED;
+
     private int colorTransitionDuration = 0;
 
 
