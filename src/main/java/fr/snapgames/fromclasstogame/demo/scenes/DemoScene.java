@@ -153,21 +153,6 @@ public class DemoScene extends AbstractScene {
                 .setPriority(100);
         add(bckG);
 
-        // add a ParticleSystem
-        ParticleSystem ps = new ParticleSystem("PS_test", player.position);
-        ps.addParticleBehavior(
-                        new FireParticleBehavior(ps, 1200, true)
-                                .setColor(Color.YELLOW))
-                .create(10)
-                .setFeeding(2)
-                .setEmitFrequency(1200)
-                .add(new CopyObjectPosition(player, new Vector2d(7, -4)))
-                .setDebug(4)
-                .setLayer(1)
-                .setDebugOffset(-100, -100)
-                .setPriority(1);
-        add(ps);
-
         // add score display.
         int score = (int) (player.getAttribute("score", 0));
         ScoreObject scoreTO = (ScoreObject) new ScoreObject(
@@ -203,7 +188,7 @@ public class DemoScene extends AbstractScene {
                 .setNbPlace(6)
                 .setSelectedIndex(1)
                 .setRelativeToCamera(true)
-                .setDebug(3)
+                .setDebug(1)
                 .add(new InventorySelectorBehavior());
         // add a first object (a key !)
         inventory.add(keyItem);
@@ -211,7 +196,7 @@ public class DemoScene extends AbstractScene {
         add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration
-        randomizeFilteredGameObject("enemy_");
+        randomizeFilteredGameObject("enemy_",true);
 
         // Welcome text at middle bottom center game screen
         Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
@@ -240,6 +225,7 @@ public class DemoScene extends AbstractScene {
      */
     private void generateEnemies(int nbEnemies) throws UnknownResource {
         for (int i = 0; i < nbEnemies; i++) {
+            // create an enemy
             GameObject e = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
                     .setType(GameObject.GOType.IMAGE)
                     .setPosition(Utils.rand(0, game.getPhysicEngine().getWorld().width),
@@ -248,6 +234,21 @@ public class DemoScene extends AbstractScene {
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
                     .setPriority(3)
                     .setSize(8, 8);
+            // add a ParticleSystem
+            ParticleSystem ps = new ParticleSystem("PS_test_" + GameObject.getIndex(), e.position);
+            ps.addParticleBehavior(
+                            new FireParticleBehavior(ps, 1200, true)
+                                    .setColor(Color.YELLOW))
+                    .create(10)
+                    .setFeeding(2)
+                    .setEmitFrequency(1200)
+                    .add(new CopyObjectPosition(e, new Vector2d(7, -4)))
+                    .setDebug(4)
+                    .setLayer(1)
+                    .setDebugOffset(-100, -100)
+                    .setPriority(1);
+            e.getChild().add(ps);
+
             randomizePosAndAccGameObject(e);
             add(e);
         }
@@ -257,21 +258,31 @@ public class DemoScene extends AbstractScene {
         List<GameObject> obj = find("enemy_");
         for (int i = 0; i < nbEnemiesToRemove; i++) {
             GameObject o = obj.get(i);
+            if (!o.getChild().isEmpty()) {
+                o.getChild().stream().forEach(oc -> {
+                    remove(oc);
+                });
+            }
             remove(o);
         }
     }
 
     @Override
     public void activate() {
-        randomizeFilteredGameObject("enemy_");
-        randomizeFilteredGameObject("player");
+        randomizeFilteredGameObject("enemy_", true);
+        randomizeFilteredGameObject("player", false);
         objects.get("player").addAttribute("score", 0);
         objects.get("welcomeMsg").setDuration(5000).active = true;
 
     }
 
-    private synchronized void randomizeFilteredGameObject(String rootName) {
-        find(rootName).forEach(this::randomizePosAndAccGameObject);
+    private synchronized void randomizeFilteredGameObject(String rootName, boolean randomDuration) {
+        find(rootName).forEach(go -> {
+            randomizePosAndAccGameObject(go);
+            if (randomDuration) {
+                go.setDuration(Utils.rand(2000, 10000));
+            }
+        });
     }
 
     private GameObject randomizePosAndAccGameObject(GameObject go) {
@@ -370,10 +381,12 @@ public class DemoScene extends AbstractScene {
                 break;
 
             case KeyEvent.VK_G:
-                // inverse Gravity on this world !
-                World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
-                if (world != null) {
-                    world.gravity.multiply(-1);
+                if (ah.getShift()) {
+                    // inverse Gravity on this world !
+                    World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
+                    if (world != null) {
+                        world.gravity.multiply(-1);
+                    }
                 }
                 break;
 

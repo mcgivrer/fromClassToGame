@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -67,9 +69,17 @@ public class PhysicEngine extends System {
     private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
 
     /**
+     * Flag to activate/deactivate internal computation for debug purpose.
+     */
+    public static final String DEBUG_FLAG_INFLUENCERS = "flagInfluencers";
+    public static final String DEBUG_FLAG_GRAVITY = "flagGravity";
+
+    /**
      * The current World object managed by the PhysicEngine.
      */
     private World world = new World(0, 0);
+
+    private Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
 
     /**
      * Initialization of the {@link PhysicEngine} System with its parent
@@ -79,6 +89,9 @@ public class PhysicEngine extends System {
      */
     public PhysicEngine(Game g) {
         super(g);
+        // set default values for flag.
+        this.debugFlags.put(DEBUG_FLAG_INFLUENCERS, true);
+        this.debugFlags.put(DEBUG_FLAG_GRAVITY, true);
     }
 
     /**
@@ -127,9 +140,12 @@ public class PhysicEngine extends System {
     public void update(long dt) {
         try {
             if (!game.isPause()) {
-                for (GameObject go : getObjects()) {
+                getObjects().stream().forEach(go -> {
                     update(go, dt);
-                }
+                    go.getChild().forEach(co -> {
+                        update(co, dt);
+                    });
+                });
             }
         } catch (ConcurrentModificationException e) {
             logger.error("Unable to update the GameObjects");
@@ -210,16 +226,21 @@ public class PhysicEngine extends System {
      */
     private void computeAccelerationForGameObject(GameObject go) {
         Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
-        // Apply World influence
-        Vector2d massAppliedToGravity = new Vector2d();
-        massAppliedToGravity.add(gravity).multiply(go.mass);
-        go.forces.add(massAppliedToGravity);
 
-        Vector2d acc = applyWorldInfluenceArea2dList(go);
+        if (debugFlags.containsKey(DEBUG_FLAG_GRAVITY) && debugFlags.get(DEBUG_FLAG_GRAVITY)) {
+            // Apply World influence
+            Vector2d massAppliedToGravity = new Vector2d();
+            massAppliedToGravity.add(gravity).multiply(go.mass);
+            go.forces.add(massAppliedToGravity);
+        }
+
+        Vector2d acc = new Vector2d();
         for (Vector2d f : go.forces) {
             acc.add(f);
         }
-
+        if (debugFlags.containsKey(DEBUG_FLAG_INFLUENCERS) && debugFlags.get(DEBUG_FLAG_INFLUENCERS)) {
+            acc.add(applyWorldInfluenceArea2dList(go));
+        }
         go.acceleration.add(acc);
 
         // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and
@@ -345,5 +366,34 @@ public class PhysicEngine extends System {
     public PhysicEngine setWorld(World w) {
         this.world = w;
         return this;
+    }
+
+    /**
+     * retrieve debug flag status for this debugFlagKey service.
+     *
+     * @param debugFlagKey
+     * @return
+     */
+    public Boolean getDebugFlag(String debugFlagKey) {
+        return debugFlags.get(debugFlagKey);
+    }
+
+    /**
+     * set debug flag status for this debugFlagKey service.
+     *
+     * @param debugFlagKey
+     * @param value
+     */
+    public void setDebugFlag(String debugFlagKey, Boolean value) {
+        debugFlags.put(debugFlagKey, value);
+    }
+
+    /**
+     * retrieve values for the
+     *
+     * @return
+     */
+    public Map<String,Boolean> getDebugInfo() {
+        return debugFlags;
     }
 }

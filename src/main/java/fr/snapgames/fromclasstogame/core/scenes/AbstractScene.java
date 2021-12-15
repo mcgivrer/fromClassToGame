@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractScene implements Scene {
 
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
@@ -55,7 +56,6 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void initialize(Game g) {
         this.game = g;
-
     }
 
     @Override
