@@ -35,12 +35,6 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractScene implements Scene {
 
-    // new action defined for all scenes.
-    public static final int DEBUG_ACTIVE_FLAG = ActionHandler.ACTIONS_INTERNAL + 0;
-    public static final int DEBUG_NEXT_ELEMENT = ActionHandler.ACTIONS_INTERNAL + 1;
-    public static final int DEBUG_PREV_ELEMENT = ActionHandler.ACTIONS_INTERNAL + 2;
-    public static final int DEBUG_LEVEL_PLUS = ActionHandler.ACTIONS_INTERNAL + 3;
-    public static final int DEBUG_LEVEL_MINUS = ActionHandler.ACTIONS_INTERNAL + 4;
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
     protected Map<String, GameObject> objects = new HashMap<>();
@@ -64,19 +58,6 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void initialize(Game g) {
         this.game = g;
-
-        ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
-        try {
-
-
-            ah.registerAction(this.DEBUG_ACTIVE_FLAG, KeyEvent.VK_D);
-            ah.registerAction(this.DEBUG_NEXT_ELEMENT, KeyEvent.VK_TAB);
-            ah.registerAction(this.DEBUG_PREV_ELEMENT, KeyEvent.VK_BACK_SPACE);
-            ah.registerAction(this.DEBUG_LEVEL_PLUS, KeyEvent.VK_N);
-            ah.registerAction(this.DEBUG_LEVEL_MINUS, KeyEvent.VK_B);
-        } catch (ActionAlreadyExistsException e) {
-            logger.error("Unable to add new action to ActionHandler", e);
-        }
     }
 
     @Override
