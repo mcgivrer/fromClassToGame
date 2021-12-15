@@ -91,7 +91,7 @@ public class Window {
     public void draw(long realFPS, BufferedImage img) {
         if (frame != null) {
             BufferStrategy bs = frame.getBufferStrategy();
-            if (bs != null && bs.getDrawGraphics() != null) {
+            if (bs != null && frame.isDisplayable()) {
                 Graphics2D g = (Graphics2D) bs.getDrawGraphics();
 
                 if (debugFont == null) {

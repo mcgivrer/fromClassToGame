@@ -8,6 +8,7 @@ import fr.snapgames.fromclasstogame.core.gfx.renderer.DebugViewportGridRenderHel
 import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
+import fr.snapgames.fromclasstogame.core.io.I18n;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
@@ -45,8 +46,11 @@ public class Render extends System {
     private Font debugFont;
     private Font pauseFont;
 
-    public Render(Game g) {
-        super(g);
+
+    private Graphics2D g;
+
+    public Render(Game game) {
+        super(game);
     }
 
     public int initialize(Configuration config) {
@@ -61,16 +65,22 @@ public class Render extends System {
     }
 
     public void render() {
-        Graphics2D g = this.buffer.createGraphics();
+        start();
+        moveFocusToCamera(camera, -1);
+        drawObjectList(objects);
+        moveFocusToCamera(camera, 1);
+        drawObjectList(objectsRelativeToCamera);
+        drawPauseText();
+        end();
+    }
+
+    private void start() {
+        g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
-        setRenderingHintsList(g);
+        setRenderingHintsList();
+    }
 
-        moveFocusToCamera(g, camera, -1);
-        drawObjectList(g, objects);
-        moveFocusToCamera(g, camera, 1);
-        drawObjectList(g, objectsRelativeToCamera);
-        drawPauseText(g);
-
+    private void end() {
         g.dispose();
         if (renderScreenshot) {
             saveScreenshot();
@@ -78,10 +88,10 @@ public class Render extends System {
         }
     }
 
-    private void drawPauseText(Graphics2D g) {
+    private void drawPauseText() {
         if (game.isPause()) {
 
-            drawTextWithBackground(g,
+            drawTextWithBackground(
                     "Game Paused",
                     new Color(0.1f, 0.1f, 0.4f, 0.8f),
                     (this.buffer.getWidth()) / 2,
@@ -89,7 +99,7 @@ public class Render extends System {
         }
     }
 
-    private void drawTextWithBackground(Graphics2D g, String pauseText, Color color, double x, double y) {
+    private void drawTextWithBackground(String pauseText, Color color, double x, double y) {
         g.setColor(color);
         g.setFont(g.getFont().deriveFont(16.0f));
         int txtWidth = g.getFontMetrics().stringWidth(pauseText);
@@ -99,33 +109,50 @@ public class Render extends System {
                 (int) (y - txtHeight),
                 this.buffer.getWidth(),
                 txtHeight + 4);
-        g.setColor(Color.WHITE);
-        g.drawString("Game Paused", (int) (x - (txtWidth / 2)), (int) y);
+
+        drawTextWithShadow(I18n.getMessage("game.pause.text"), x, y, Color.WHITE, 4, Color.BLACK);
     }
 
-    private void setRenderingHintsList(Graphics2D g) {
+
+    private void drawText(String text, double posX, double posY, Color textColor) {
+        int txtWidth = g.getFontMetrics().stringWidth(text);
+        int txtHeight = g.getFontMetrics().getHeight();
+        g.setColor(textColor);
+        g.drawString(text, (int) (posX - (txtWidth / 2)), (int) posY);
+    }
+
+    private void drawTextWithShadow(String text, double posX, double posY, Color textColor, int borderSize, Color borderColor) {
+        for (int dx = -borderSize / 2; dx <= borderSize / 2; dx++) {
+            for (int dy = -borderSize / 2; dy <= borderSize / 2; dy++) {
+                drawText(text, posX + dx, posY + dy, borderColor);
+            }
+        }
+        drawText(text, posX, posY, textColor);
+    }
+
+    private void setRenderingHintsList() {
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
 
-    private void moveFocusToCamera(Graphics2D g, Camera camera, double direction) {
+    private void moveFocusToCamera(Camera camera, double direction) {
         if (camera != null) {
             g.translate(camera.position.x * direction, camera.position.y * direction);
         }
     }
 
 
-    private void drawObjectList(Graphics2D g, List<GameObject> objects) {
+    private void drawObjectList(List<GameObject> objects) {
         objects.stream().filter(f -> f.active)
                 .collect(Collectors.toList())
                 .forEach(go -> {
-                    draw(g, go);
+                    draw(go);
                     // process child
                     go.getChild().stream()
                             .filter(c -> c.active)
                             .collect(Collectors.toList())
-                            .forEach(co -> draw(g, co));
+                            .forEach(co -> draw(co));
                 });
     }
 
@@ -139,7 +166,7 @@ public class Render extends System {
         }
     }*/
 
-    private void draw(Graphics2D g, GameObject go) {
+    private void draw(GameObject go) {
         String goClazzName = go.getClass().getName();
         if (renderHelpers.containsKey(goClazzName)) {
             RenderHelper rh = renderHelpers.get(goClazzName);
