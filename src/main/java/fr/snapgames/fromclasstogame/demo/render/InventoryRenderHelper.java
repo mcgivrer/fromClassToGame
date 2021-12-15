@@ -118,6 +118,7 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
                     g.drawRect(
                             (int) rx + (i * (selector.getWidth()) + spacing),
                             (int) ry,
+
                             selector.getWidth(), selector.getHeight());
 
                 }
