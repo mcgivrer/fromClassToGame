@@ -110,15 +110,15 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
                     g.setColor(itemColorEmpty);
                 }
                 g.fillRect(
-                        (int) rx + (i * (selector.getWidth()) + spacing + 1),
-                        (int) ry + 1,
-                        selector.getWidth() - 2, selector.getHeight() - 2);
-                if (i == go.getSelectedIndex()) {
+                        (int) rx + (i * (selector.getWidth()) + spacing ),
+                        (int) ry,
+                        selector.getWidth() , selector.getHeight() );
+                if (i == go.getSelectedIndex()-1) {
                     g.setColor(new Color(0.9f, 0.9f, 0.0f, 0.5f));
                     g.drawRect(
-                            (int) rx + (i * (selector.getWidth()) + spacing + 1),
-                            (int) ry + 1,
-                            selector.getWidth() - 2, selector.getHeight() - 2);
+                            (int) rx + (i * (selector.getWidth()) + spacing),
+                            (int) ry ,
+                            selector.getWidth(), selector.getHeight());
 
                 }
 
