@@ -364,10 +364,12 @@ public class DemoScene extends AbstractScene {
                 break;
 
             case KeyEvent.VK_G:
-                // inverse Gravity on this world !
-                World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
-                if (world != null) {
-                    world.gravity.multiply(-1);
+                if (ah.getShift()) {
+                    // inverse Gravity on this world !
+                    World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
+                    if (world != null) {
+                        world.gravity.multiply(-1);
+                    }
                 }
                 break;
 
