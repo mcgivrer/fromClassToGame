@@ -222,12 +222,10 @@ public class AbstractRenderHelper {
             setColor(g, debugBoxColor);
             setFontSize(g, 8.0f);
             drawText(g, "#" + go.id, pos.x, pos.y);
-
-            setColor(g, Color.ORANGE);
-            drawRect(g, pos, gw - 1, gh - 1, 1, 1, debugBoxColor);
+            drawBox(g, pos, gw, gh);
             if (go.getDebug() >= 1) {
-                double offsetY = go.debugOffsetX;
-                double offsetX = gw + go.debugOffsetY;
+                double offsetY = go.debugOffsetY;
+                double offsetX = gw + go.debugOffsetX;
 
                 setFontSize(g, 9);
                 String largestString = go.getDebugInfo().stream().max((o1, o2) -> o1.length() > o2.length() ? 1 : -1).get();
@@ -245,6 +243,7 @@ public class AbstractRenderHelper {
                             3);
                 }
                 fillRect(g, go.position, maxWidth + 8, height, offsetX - 4, offsetY - fontHeight + 2, debugBackgroundColor);
+                // display debug info
                 setColor(g, debugFrontColor);
                 setFont(g, debugFont);
                 int i = 0;
@@ -254,6 +253,11 @@ public class AbstractRenderHelper {
                 }
             }
         }
+    }
+
+    public void drawBox(Graphics2D g, Vector2d pos, int gw, int gh) {
+        setColor(g, Color.ORANGE);
+        drawRect(g, pos, gw - 1, gh - 1, 1, 1, debugBoxColor);
     }
 
     /**

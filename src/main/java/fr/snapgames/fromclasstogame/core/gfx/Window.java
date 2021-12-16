@@ -20,23 +20,18 @@ import java.util.*;
 public class Window {
 
     private static final Logger logger = LoggerFactory.getLogger(Window.class);
-
+    List<EventListener> listenersBck = new ArrayList<>();
     private Configuration config;
     private GraphicsDevice currentDevice;
     private Dimension dim;
     private JFrame frame;
-
     private Font debugFont;
     private int debug = 0;
-
     private boolean fullscreen;
     private int defaultScreen = -1;
     private int currentScreen = 0;
-
     // Debug information on the debug status line
     private Map<String, String> debugElementInfo = new HashMap<>();
-
-    List<EventListener> listenersBck = new ArrayList<>();
 
     @Deprecated
     public Window(String title, int width, int height) {
@@ -91,7 +86,7 @@ public class Window {
     public void draw(long realFPS, BufferedImage img) {
         if (frame != null) {
             BufferStrategy bs = frame.getBufferStrategy();
-            if (bs != null && frame.isDisplayable()) {
+            if (bs != null && frame.isDisplayable() && !bs.contentsLost()) {
                 Graphics2D g = (Graphics2D) bs.getDrawGraphics();
 
                 if (debugFont == null) {

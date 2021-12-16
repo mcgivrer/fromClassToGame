@@ -158,8 +158,8 @@ public class PlayScene extends AbstractScene {
                     .setRelativeToCamera(true)
                     .add(new InventorySelectorBehavior());
             // add a first object (a key !)
-            inventory.add(keyItem);
-            inventory.add(potionItem);
+            inventory.addItem(keyItem);
+            inventory.addItem(potionItem);
             add(inventory);
         } catch (UnkownGameObjectException ugo) {
             logger.error("Unable to load level {} and initialize objects", tm.name, ugo);

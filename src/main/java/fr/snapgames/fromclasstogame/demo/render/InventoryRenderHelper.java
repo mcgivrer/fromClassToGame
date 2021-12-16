@@ -6,6 +6,7 @@ import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,17 +57,22 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
     @Override
     public void draw(Graphics2D g, InventoryObject o) {
         InventoryObject go = (InventoryObject) o;
+        Render r = (Render) SystemManager.get(Render.class);
 
         // retrieve all object from the inventory
         List<GameObject> itemImages = go.getItems().stream().filter((v) -> !v.getAttribute("inventory", "none").equals("none")).collect(Collectors.toList());
-        int iw = (selector.getWidth() + spacing) * go.getNbPlaces();
+        int iw = go.getNbPlaces() * (selector.getWidth() + spacing);
         int ih = (selector.getHeight() + spacing);
-        go.width = iw;
-        go.height = ih;
+        go.width = selector.getWidth() * go.getNbPlaces()+ spacing;
+        go.height = selector.getHeight();
         // parse all available places and display corresponding object.
+        go.position.x = spacing + r.getViewport().width - iw;
+        go.position.y = r.getViewport().height - ih;
+
+        int rx = (int) go.position.x;
+        int ry = (int) go.position.y;
         for (int i = 0; i < go.getNbPlaces(); i++) {
-            int rx = (int) go.position.x - (selector.getWidth() + spacing) * go.getNbPlaces();
-            int ry = (int) go.position.y - (selector.getHeight() + spacing);
+
             BufferedImage sel = go.getSelectedIndex() == i + 1 ? selected : selector;
             g.drawImage(sel,
                     (int) rx + (i * (selector.getWidth()) + spacing),
@@ -96,14 +102,11 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
             Color itemColorSelected = new Color(0.1f, 0.8f, 0.3f, 0.4f);
             Color itemColorEmpty = new Color(0.8f, 0.3f, 0.1f, 0.4f);
             List<GameObject> itemImages = go.getItems().stream().filter((v) -> !v.getAttribute("inventory", "none").equals("none")).collect(Collectors.toList());
-            int iw = (selector.getWidth() + spacing) * go.getNbPlaces();
-            int ih = (selector.getHeight() + spacing);
-            go.width = iw;
-            go.height = ih;
             // parse all available places and display corresponding object.
+            int rx = (int) go.position.x;
+            int ry = (int) go.position.y;
             for (int i = 0; i < go.getNbPlaces(); i++) {
-                int rx = (int) go.position.x - (selector.getWidth() + spacing) * go.getNbPlaces();
-                int ry = (int) go.position.y - (selector.getHeight() + spacing);
+
                 if (!itemImages.isEmpty() && itemImages.size() > i) {
                     g.setColor(itemColorSelected);
                 } else {
@@ -122,10 +125,11 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
 
                 }
                 g.setColor(Color.YELLOW);
-                g.drawString("" + (i + 1), (int) rx + ((i+1) * (selector.getWidth())) -2,
+                g.drawString("" + (i + 1), (int) rx + ((i + 1) * (selector.getWidth())) - 2,
                         (int) ry + selector.getHeight() - 2);
 
             }
+
         }
     }
 }

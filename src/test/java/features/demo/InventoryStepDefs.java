@@ -40,7 +40,7 @@ public class InventoryStepDefs {
     public void iAddTheGameObjectToInventoryObject(String gameObjectName, String inventoryObjectName) {
         InventoryObject invt = (InventoryObject) testScene.getGameObject(inventoryObjectName);
         GameObject itm = testScene.getGameObject(gameObjectName);
-        invt.add(itm);
+        invt.addItem(itm);
     }
 
     @Then("the InventoryObject {string} has {int} Item.")

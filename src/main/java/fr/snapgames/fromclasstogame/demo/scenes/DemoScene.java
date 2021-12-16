@@ -184,15 +184,15 @@ public class DemoScene extends AbstractScene {
                 .addAttribute("inventory", potionItemImg);
         // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
-                new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
+                new Vector2d())
                 .setNbPlace(6)
                 .setSelectedIndex(1)
                 .setRelativeToCamera(true)
                 .setDebug(1)
                 .add(new InventorySelectorBehavior());
         // add a first object (a key !)
-        inventory.add(keyItem);
-        inventory.add(potionItem);
+        inventory.addItem(keyItem);
+        inventory.addItem(potionItem);
         add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration

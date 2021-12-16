@@ -151,8 +151,8 @@ public class GameObject implements Entity {
      * @return a list of String for debugging information display.
      */
     public List<String> getDebugInfo() {
-        this.debugOffsetX = -40;
-        this.debugOffsetY = 10;
+        this.debugOffsetX = 10;
+        this.debugOffsetY = -40;
         List<String> debugInfo = new ArrayList<>();
         if (debug > 0) {
             debugInfo.add("n:" + name);

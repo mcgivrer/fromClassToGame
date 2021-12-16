@@ -1,30 +1,29 @@
 package fr.snapgames.fromclasstogame.demo.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class InventoryObject extends GameObject {
 
+    List<GameObject> items = new ArrayList<>();
     private int nbPlaces = 1;
     private int selectedIndex = 1;
 
-    List<GameObject> items = new ArrayList<>();
-
     @Deprecated
     public InventoryObject(String name, double x, double y) {
-        super(name, new Vector2d(x, y));
+        this(name, new Vector2d(x, y));
+
 
     }
 
     public InventoryObject(String name, Vector2d position) {
         super(name, position);
-
     }
 
-    public InventoryObject add(GameObject gio) {
+    public InventoryObject addItem(GameObject gio) {
         if (!gio.getAttribute("inventory", "none").equals("none")) {
             items.add(gio);
         }
@@ -65,6 +64,9 @@ public class InventoryObject extends GameObject {
 
     @Override
     public List<String> getDebugInfo() {
+
+        debugOffsetX = -80;
+        debugOffsetY = -20;
         List<String> dbgInfo = super.getDebugInfo();
         dbgInfo.add(String.format("size: %d", this.items.size()));
         return dbgInfo;
