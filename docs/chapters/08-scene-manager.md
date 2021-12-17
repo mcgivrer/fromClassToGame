@@ -15,6 +15,9 @@ It will have an `initialize()` method called just after instantiation, an a `cre
 
 A `dispose()` method will be called at end of game juste before closing.
 
+> **INFO**<br/>See [Scene_can_have_GameObject.feature](../../src/test/resources/features/Scene_can_have_GameObject.feature) 
+> for corresponding implementation test.
+
 ## SceneManager
 
 The `SceneManager` will support all `Scene`, and can switch between each one.
@@ -26,3 +29,17 @@ The active `Scene` will have an 'active' boolean flag.
 An `initialize()` method will be called at `Game` initialization time.
 
 A `dispose()` method will be called at `Game` exit to release all loaded resources from scenes, calling all `Scene.dispose()`.
+
+An `activate` method is activating a current scene on its name.
+
+## Loading scene from configuration file
+
+The `SceneManager` contains also a useful utility to load the scene classes list from the configuration file, ans create instances at activation.
+
+The `Scene`'s to be listed in the game engine are loaded from some configuration file attributes and the classes are loaded from classpath while the `intiialize()` method is called from `Game`.
+
+At activation time, the required 'named' scene class is instantiated from already class listed ones and store in the scenes instances list.
+
+Then it is declare `current` and game focus is set on this scene.
+
+> **INFO**<br/>See the - [Game_has_scene_with_objects.feature](../../src/test/resources/features/Game_has_scene_with_objects.feature) test scenarii for functional verification.
