@@ -22,6 +22,35 @@ Because, during development of any solution, the engaged design evolve taking ac
 
 In the first chapter you will notice how the code was reorganize while we add new features and classes, to make it undestandable and readable by common human developers.
 
+## Maven project
+
+To organise a little bit the project, we will rely on tha basis of a Maven project structure, with some enhancement to be able to publish our doc to the github pages platform, and build properly the Game.
+
+```text
+fromClassToGame
+|_ docs
+|_ src
+|  |_ main
+|  | |_ java
+|  | |_ resources
+|  |_ test
+|  | |_ java
+|  | |_ resources
+|  |    |_ features
+|_ README.md
+|_ HOW-TO.md
+|_ pom.xml
+|_ .gitignore
+```
+
+The standard `src/main`,`src/test` will contain code ans tests, while the `docs` directory will contain the `*.md` file of the story book.
+Note that the  `src/test/resources/features` will host the `*.feature` files describing the use cases with the gherkin language.
+
+
+## But who is Gherkin ?
+
+*TODO*
+
 
 Let's go !
 
