@@ -52,7 +52,36 @@ Note that the  `src/test/resources/features` will host the `*.feature` files des
 
 ## But who is Gherkin ?
 
-*TODO*
+Do you know cucumber ?  the Gherkin is the little version of cucumber ! (see https://en.wikipedia.org/wiki/Pickled_cucumber#Gherkin)
+
+![The Gherkin, an english word for Pickle](https://upload.wikimedia.org/wikipedia/commons/b/bb/Pickle.jpg "The english Pickel: the Gherkin !")
+
+Ok, no, in our context, its a little bit different, [Gherkin](https://cucumber.io/docs/guides/overview/#what-is-gherkin "see and discover the real gherkin cucumber langage") is a functional description language to explain the user requirement in common english words.
+
+Based on simple structure, each use case is described by listing, the who, the what and the when.
+
+Nothing better than an example, let's dive in the file `Game_hsa_scene_with_objetcs.feature` :
+
+```gherkin
+Feature: The game has scene with different types of GameObject.
+
+  The Game class is started normally by initializing with arguments or default values.
+
+  Scenario Outline: 01 - The Game has one GameObject
+    Given the Game is instantiated
+    And the Game is running
+    And I activate the scene "test1"
+    And I add a GameObject named <name> at (<x>,<y>)
+    And the <name> size is <w> x <h>
+    Then the Game has <i> GameObject at window center.
+    Examples:
+      | name     | x     | y     | w  | h  | i |
+      | "player" | 160.0 | 100.0 | 16 | 16 | 1 |
+```
+
+Here is a first extract of the GameObject's scene management requirement. We clearly explain what the Scene object intends to do with GameObject. It is very technical on this sample text because we build a game and its framework.
+
+Looking at the project `docs/08-scene-manager.md` you can see in this book's chapter described the corresponding implementation to serve the GameObject from Scene.
 
 
 Let's go !
