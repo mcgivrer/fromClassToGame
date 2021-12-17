@@ -38,9 +38,12 @@ fromClassToGame
 |  | |_ resources
 |  |    |_ features
 |_ README.md
+|_ LICENSE
 |_ HOW-TO.md
 |_ pom.xml
 |_ .gitignore
+|_ run.sh
+|_ run.bat
 ```
 
 The standard `src/main`,`src/test` will contain code ans tests, while the `docs` directory will contain the `*.md` file of the story book.
