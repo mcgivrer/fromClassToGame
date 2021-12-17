@@ -84,6 +84,8 @@ Here is a first extract of the GameObject's scene management requirement. We cle
 Looking at the project `docs/08-scene-manager.md` you can see in this book's chapter described the corresponding implementation to serve the GameObject from Scene.
 
 
-Let's go !
+## Ready ? Go !
+
+We all have understood what we are doing now and there.  No ? you, young guy, you have any question ? NO ?  OK, so let's go, and HAVE FUN !
 
 Mc G.
