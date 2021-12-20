@@ -11,10 +11,9 @@ import io.cucumber.java8.En;
 
 import java.awt.*;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class WindowDefSteps implements En {
+public class WindowDefSteps extends CommonDefSteps implements En {
 
     Window win;
     boolean multiScreenStation;
@@ -64,6 +63,19 @@ public class WindowDefSteps implements En {
         Then("Window is in fullscreen on the next screen.", () -> {
             GraphicsDevice dev1 = win.getScreenDevice();
             assertNotEquals("The Window has not switched to another screen", dev0.getIDstring(), dev1.getIDstring());
+        });
+
+        Then("the Window is get from the Game", () -> {
+            win = game.getWindow();
+        });
+
+        And("the Window width is set to {int}", (Integer width) -> {
+            assertEquals("The Window has nos been set with the right width.", width, java.util.Optional.of(win.getFrame().getWidth()).get());
+        });
+        And("the Window height is set to {int}", (Integer height) -> {
+            assertEquals("The Window has nos been set with the right height.", height, java.util.Optional.of(win.getFrame().getHeight()).get());
+        });
+        Then("the Window draw the Render content", () -> {
         });
     }
 }

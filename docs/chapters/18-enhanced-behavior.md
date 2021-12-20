@@ -48,6 +48,8 @@ public class MySceneBehavior implements Behavior<Scene> {
 }
 ```
 
+> **TIPS**<wbr/> The Scene behavior are tested with the [Scene_can_have_behaviors.feature](../../src/test/resources/features/Scene_can_have_behaviors.feature) feature file.
+
 ## The Debug switcher
 
 Here is the opportunity to capture the <kbd>D</kbd> key and activate> some incredible stuff.
