@@ -1,11 +1,12 @@
 # The Object Game
 
-The GameObject entity will be used by every element in the gae to be rendered, interact with and updated.
-This is the how-to manage thing into your game.
+The GameObject entity will be used by every element in the gae to be rendered, interact with and updated. This is the
+how-to manage thing into your game.
 
 ## Physics
 
-Some basic information must be provided to let an object managed by the game; position, speed, and size are the basical ones.
+Some basic information must be provided to let an object managed by the game; position, speed, and size are the basical
+ones.
 
 ```java
 public class GameObject {
@@ -25,7 +26,8 @@ Those attributes are the minimum ones to move any object on a 2D space.
 - `dx,dy` are double defining the speed for this object,
 - `width,height` are setting the max object size.
 
-But as developers are humans, they need more usable identifiers to debug and manage those objects. But the machine needs also some internal identifiers.
+But as developers are humans, they need more usable identifiers to debug and manage those objects. But the machine needs
+also some internal identifiers.
 
 Let's now add some useful things:
 
@@ -47,12 +49,14 @@ public class GameObject {
 }
 ```
 
-The `id` is a unique identifier for each `GameObject` instance. The static `index` is the internal counter used to create the `id` value.
-The `name` is default initialized with a `noname_xx` value, where xx is the id value.
+The `id` is a unique identifier for each `GameObject` instance. The static `index` is the internal counter used to
+create the `id` value. The `name` is default initialized with a `noname_xx` value, where xx is the id value.
 
-And finally as we also need to display those object, and this is mainly the main goal, you need to get `color` for rendering little things. The `priority` attribute will be used to sort all the object before rendering, managing a depth level between object at rendering time.
-The `image` will be used to render an... image with a `BufferedImage` :)
-If this `image` attributes is null, a rectangle of size `width x height` will be rendered (see the chapter 03 at `Render` class).
+And finally as we also need to display those object, and this is mainly the main goal, you need to get `color` for
+rendering little things. The `priority` attribute will be used to sort all the object before rendering, managing a depth
+level between object at rendering time. The `image` will be used to render an... image with a `BufferedImage` :)
+If this `image` attributes is null, a rectangle of size `width x height` will be rendered (see the chapter 03
+at `Render` class).
 
 ```java
 public class GameObject {
@@ -79,10 +83,10 @@ public class GameObject {
 Ok now that we know what to render, we need to add some moves.
 
 ```java
-public void update(long dt) {
-    x += dx * dt;
-    y += dy * dt;
-}
+public void update(long dt){
+        x+=dx*dt;
+        y+=dy*dt;
+        }
 ```
 
 This is a code corresponding formula to compute position depending on its speed:
@@ -106,8 +110,8 @@ public class Game {
     Map<String, GameObject> objects = new HashMap<>();
     ...
 
-    public void add(GameObject go){
-        if(!objects.containsKey(go.name)){
+    public void add(GameObject go) {
+        if (!objects.containsKey(go.name)) {
             objects.put(go.name, go);
             objectsList.add(go);
             renderer.add(go)
@@ -116,18 +120,19 @@ public class Game {
 
     ...
 
-      /**
-   * Update all the game mechanism
-   */
+    /**
+     * Update all the game mechanism
+     */
     private void update(long dt) {
-        for(GameObject e:objectsList){
+        for (GameObject e : objectsList) {
             e.update(dt);
         }
     }
 }
 ```
 
-A new `add(GameObject)` method will add the GameObject to the Game objects list and a map. The list and the Map are shortcut to easily manage the object into the Game.
+A new `add(GameObject)` method will add the GameObject to the Game objects list and a map. The list and the Map are
+shortcut to easily manage the object into the Game.
 
 The update method has been modified to update all the objects.
 
@@ -144,6 +149,7 @@ We need to maintain a list of object to be rendered, and a method to add one.
 ```java
 public class Render {
     ...
+
     public Render add(GameObject go) {
         if (!objects.contains(go)) {
             objects.add(go);
@@ -154,6 +160,7 @@ public class Render {
         return this;
     }
     ...
+
     private void draw(Graphics2D g, GameObject go) {
         g.setColor(go.color);
         if (go.image != null) {
@@ -165,6 +172,10 @@ public class Render {
 }
 ```
 
-The `add()` will add a GameObject to the "rendering list", and the `draw()` method will render a corresponding image (if not null) or draw a rectangle.
+The `add()` will add a GameObject to the "rendering list", and the `draw()` method will render a corresponding image (if
+not null) or draw a rectangle.
 
-So now, calling the `render()` method will parse in the priority sort order all the `GameObject` in the objects list, and draw each of those items.
+So now, calling the `render()` method will parse in the priority sort order all the `GameObject` in the objects list,
+and draw each of those items.
+
+> **TIPS**<br/> The GameObject rendering is test by the [Render_draw_GameObject.feature](../../src/test/resources/features/Render_draw_GameObject.feature) Feature file.
