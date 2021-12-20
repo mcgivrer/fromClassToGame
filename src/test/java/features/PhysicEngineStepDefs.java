@@ -1,13 +1,17 @@
 package features;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import io.cucumber.java8.En;
 
-import static org.junit.Assert.assertEquals;
+import java.util.List;
 
-public class PhysicEngineStepDefs implements En {
+import static org.junit.Assert.*;
+
+public class PhysicEngineStepDefs extends CommonDefSteps implements En {
 
     Configuration config;
     PhysicEngine pe;
@@ -34,5 +38,20 @@ public class PhysicEngineStepDefs implements En {
                     Vector2d vg = new Vector2d(vx, vy);
                     assertEquals("The world gravity is not set to " + vg, vg, pe.getWorld().gravity);
                 });
+
+        Then("the PhysicEngine has no object", () -> {
+            assertTrue("The list of object in the PhysicEngine is not empty", pe.getObjects().isEmpty());
+        });
+
+        And("the PhysicEngine is initialized", () -> {
+            pe = game.getPhysicEngine();
+            assertNotNull("The PhysicEngine has not been initialized", pe);
+        });
+
+        Then("the PhysicEngine has {int} objects", (Integer nbObjectInPE) -> {
+            PhysicEngine pe2 = (PhysicEngine) SystemManager.get(PhysicEngine.class);
+            List<GameObject> objs = pe2.getObjects();
+            assertEquals("The Number of object managed by the PhysicEngine is not reached", nbObjectInPE, Integer.valueOf(objs.size()));
+        });
     }
 }

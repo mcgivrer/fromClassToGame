@@ -26,6 +26,8 @@ public interface Scene extends ActionHandler.ActionListener {
 
     void add(GameObject go);
 
+    void addBehavior(Behavior<Scene> b);
+
     GameObject getGameObject(String name);
 
     List<GameObject> find(String filteredName);

@@ -129,16 +129,6 @@ public class Render extends System {
                 });
     }
 
-
-    /*private void drawObjectList(Graphics2D g, List<GameObject> objects) {
-        for (GameObject go : objects) {
-            if (go.active) {
-                draw(g, go);
-                go.getChild().forEach(co -> draw(g, co));
-            }
-        }
-    }*/
-
     private void draw(Graphics2D g, GameObject go) {
         String goClazzName = go.getClass().getName();
         if (renderHelpers.containsKey(goClazzName)) {
@@ -242,6 +232,10 @@ public class Render extends System {
     @Override
     public String getName() {
         return Render.class.getName();
+    }
+
+    public Camera getCamera() {
+        return this.camera;
     }
 
     @Override

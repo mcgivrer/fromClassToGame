@@ -242,4 +242,9 @@ public class GameDefSteps extends CommonDefSteps {
         GameObject e = scene.getGameObject(entityName);
         assertEquals("Material has not been set with the right material", materialTypeName, e.material.name);
     }
+
+    @Then("the Game has a Window.")
+    public void theGameHasAWindow() {
+        assertNotNull("The game has no window !", game.getWindow());
+    }
 }
