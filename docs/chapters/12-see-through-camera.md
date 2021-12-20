@@ -52,6 +52,10 @@ according to its own position.
 > - _Add a method to add a Camera_
 > - _Sort and filter objects to split Camera and others_
 
+> **TIPS*<br/>The Render manages Camera tests are verufy by the  [](../../src/test/resources/features/Render_manages_Camera.feature)
+> 
+
+
 ## Modify Scene and AbstractScene classes
 
 > **TODO** modify the Scene and the AbstractScene
