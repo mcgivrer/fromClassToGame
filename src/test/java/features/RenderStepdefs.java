@@ -1,17 +1,13 @@
 package features;
 
 import fr.snapgames.fromclasstogame.core.entity.Camera;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
-import fr.snapgames.fromclasstogame.test.entity.TestObject;
-import io.cucumber.java.en.And;
 import io.cucumber.java8.En;
-import org.junit.Assert;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +17,7 @@ public class RenderStepdefs extends CommonDefSteps implements En {
 
         And("the Render is a System.", () -> {
             Render r = (Render) SystemManager.get(Render.class);
-            Assert.assertNotNull("Render is not a managed Game System", r);
+            assertNotNull("Render is not a managed Game System", r);
         });
         Then("the GameObject named {string} is rendered.", (String renderedObjectName) -> {
             Render r = (Render) SystemManager.get(Render.class);
