@@ -1,0 +1,13 @@
+{
+'name':'test-level-tileset',
+'tileSets': [
+  { 'id':'t01',
+    'name':'myTileSet',
+    'pixelsImage':'images/tiles/tiles01.png',
+    'tiles':[
+      {'code':'b','pos':(0,32),'size':(16,16),attributes:{'block':true}},
+      {'code':'o','pos':(32,32),'size':(16,16),attributes:{'collectible':true,'money':5}},
+      {'code':'n','pos':(64,0),'size':(16,16),attributes:{'collectible':true,'energy':20}}
+    ]
+ }]
+}
