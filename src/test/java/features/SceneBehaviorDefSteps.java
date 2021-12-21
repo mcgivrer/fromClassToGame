@@ -1,7 +1,5 @@
 package features;
 
-import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
-import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.test.behaviors.TestSceneBehavior;
 import fr.snapgames.fromclasstogame.test.scenes.TestScene;
 import io.cucumber.java8.En;
