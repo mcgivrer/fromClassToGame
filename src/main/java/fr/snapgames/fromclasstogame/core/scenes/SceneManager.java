@@ -188,7 +188,7 @@ public class SceneManager extends System {
         if (s != null) {
             this.current = s;
 
-            SystemManager.clearObjects();
+            //SystemManager.clearObjects();
             s.activate();
         }
     }
