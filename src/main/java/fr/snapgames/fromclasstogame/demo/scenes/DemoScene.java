@@ -10,6 +10,7 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.I18n;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -18,6 +19,9 @@ import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
+import fr.snapgames.fromclasstogame.core.scenes.transition.FadeToBlackCentricCircleTransition;
+import fr.snapgames.fromclasstogame.core.scenes.transition.Transition;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
@@ -83,6 +87,7 @@ public class DemoScene extends AbstractScene {
         g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
         // - ParticleSystem
         g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+        addTransition(new FadeToBlackCentricCircleTransition(g.getRender(), 2000, 0.6f));
     }
 
     @Override
@@ -97,7 +102,7 @@ public class DemoScene extends AbstractScene {
                         BoundingBox.BoundingBoxType.RECTANGLE),
                 3);
         world.addInfluenceArea(iArea);
-        g.setWorld(world);
+        setWorld(world);
 
         // add Viewport Grid debug view
         DebugViewportGrid dvg = new DebugViewportGrid("vpgrid", world, 32, 32);
@@ -189,7 +194,7 @@ public class DemoScene extends AbstractScene {
         add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration
-        randomizeFilteredGameObject("enemy_",true);
+        randomizeFilteredGameObject("enemy_", true);
 
         // Welcome text at middle bottom center game screen
         Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);

@@ -7,8 +7,11 @@ import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionAlreadyExistsException;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.physic.World;
+import fr.snapgames.fromclasstogame.core.scenes.transition.AbstractSceneTransition;
+import fr.snapgames.fromclasstogame.core.scenes.transition.FadeToBlackCentricCircleTransition;
+import fr.snapgames.fromclasstogame.core.scenes.transition.Transition;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +42,11 @@ public abstract class AbstractScene implements Scene {
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
+    protected List<GameObject> objectsCameraRelativeList = new ArrayList<>();
     protected List<Behavior<Scene>> behaviors = new ArrayList<>();
+    protected List<Transition<Render, Scene>> transitionList = new ArrayList<>();
+
+    protected World world;
 
     protected Map<String, Camera> cameras = new HashMap<>();
 
@@ -83,16 +90,17 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (!cameras.containsKey(go.name)) {
                 cameras.put(go.name, (Camera) go);
-                game.getRender().moveFocusToCamera((Camera) go);
+                //game.getRender().moveFocusToCamera((Camera) go);
             }
             if (activeCamera == null) {
                 activeCamera = (Camera) go;
             }
         } else if (!objects.containsKey(go.name)) {
             objects.put(go.name, go);
-            objectsList.add(go);
+            ((Render) SystemManager.get(Render.class)).add(this, go);
             SystemManager.add(go);
         }
+
     }
 
     public void addBehavior(Behavior<Scene> b) {
@@ -202,19 +210,59 @@ public abstract class AbstractScene implements Scene {
         this.sceneName = name;
     }
 
+    @Override
     public Game getGame() {
         return game;
     }
 
-
+    @Override
     public void render(Render r) {
 
     }
 
+    /**
+     * Define the World context for this scene.
+     *
+     * @param w the World context to be applied to the scene.
+     * @return
+     */
+    public AbstractScene setWorld(World w) {
+        this.world = w;
+        return this;
+    }
 
+    public World getWorld() {
+        return this.world;
+    }
+
+    @Override
     public List<Behavior<Scene>> getBehaviors() {
         return behaviors;
     }
+
+    public List<GameObject> getObjectsCameraRelativeList() {
+        return objectsCameraRelativeList;
+    }
+
+    /**
+     * return true of the Scene has some transition.
+     *
+     * @return
+     */
+    public boolean hasTransition() {
+        return !transitionList.isEmpty();
+    }
+
+    public List<Transition<Render, Scene>> getTransitionList() {
+        return this.transitionList;
+    }
+
+    public void addTransition(Transition<Render, Scene> st) {
+        this.transitionList.add(st);
+
+    }
+
+
 }
 
 

@@ -28,6 +28,7 @@ public class SceneManager extends System {
     Map<String, Scene> scenesInstances = new ConcurrentHashMap<>();
 
     private Scene current;
+    private Scene previousScene;
 
     public SceneManager(Game g) {
         super(g);
@@ -128,14 +129,14 @@ public class SceneManager extends System {
     /**
      * This is an adding possibility to add dynamically a new Scene programmatically.
      *
-     * @param s the instance of the {@link Scene} to be added.
+     * @param scene the instance of the {@link Scene} to be added.
      */
-    public void add(String name, Scene s) {
+    public void add(String name, Scene scene) {
         try {
-            scenesInstances.put(name, s);
-            scenesClasses.put(name, s.getClass());
-            s.initialize(game);
-            s.create(game);
+            scenesInstances.put(name, scene);
+            scenesClasses.put(name, scene.getClass());
+            scene.initialize(game);
+            scene.create(game);
         } catch (UnknownResource e) {
             e.printStackTrace();
         }
@@ -159,10 +160,23 @@ public class SceneManager extends System {
         return this.current;
     }
 
-    private void setCurrent(Scene s) {
-        if (s != null) {
-            this.current = s;
-            s.activate();
+    /**
+     * Define the current Scene. backing up the previousScene and call the new Scene transition list.
+     *
+     * @param newScene the scene to be activated.
+     */
+    private void setCurrent(Scene newScene) {
+        if (newScene != null) {
+            this.previousScene = this.current;
+            this.current = newScene;
+            newScene.activate();
+            if (newScene.hasTransition()) {
+                newScene.getTransitionList().stream().forEach(transition -> {
+                    if (transition.isActive()) {
+                        transition.start(previousScene, 0);
+                    }
+                });
+            }
         }
     }
 
@@ -174,7 +188,16 @@ public class SceneManager extends System {
     }
 
     public void render(Render r) {
-        getCurrent().render(r);
+        Scene scene = getCurrent();
+        if (scene.hasTransition()) {
+            scene.getTransitionList().stream().forEach(transition -> {
+                if (transition.isActive()) {
+                    transition.render(scene, r);
+                }
+            });
+        } else {
+            scene.render(r);
+        }
         for (Behavior<Scene> b : getCurrent().getBehaviors()) {
             b.onRender(getCurrent(), r);
         }
@@ -182,9 +205,17 @@ public class SceneManager extends System {
     }
 
     public void update(long dt) {
-        getCurrent().update(dt);
-        for (Behavior<Scene> b : getCurrent().getBehaviors()) {
-            b.onUpdate(getCurrent(), dt);
+        Scene scene = getCurrent();
+        if (scene.hasTransition()) {
+            scene.getTransitionList().stream().forEach(transition -> {
+                if (transition.isActive()) {
+                    transition.update(scene, dt);
+                }
+            });
+        }
+        scene.update(dt);
+        for (Behavior<Scene> b : scene.getBehaviors()) {
+            b.onUpdate(scene, dt);
         }
     }
 
@@ -205,5 +236,9 @@ public class SceneManager extends System {
 
     public Scene getScene(String sceneName) {
         return scenesInstances.get(sceneName);
+    }
+
+    public Scene getPreviousScene() {
+        return this.previousScene;
     }
 }

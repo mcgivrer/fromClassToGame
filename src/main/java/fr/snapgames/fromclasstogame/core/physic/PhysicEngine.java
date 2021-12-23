@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame.core.physic;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,18 +130,44 @@ public class PhysicEngine extends System {
     }
 
     /**
-     * THe heart of the system, updating all objects bu applying
+     * The heart of the system, updating all objects bu applying
      * {@link GameObject#forces} and
      * {@link World#influenceAreas} constrains to the list of managed objects. This
      * process is active until the
      * {@link Game#isPause()} state is up.
      *
      * @param dt elapsed time since previous call.
+     * @deprecated use the {@link PhysicEngine#update(Scene, long)} instead/
      */
     public void update(long dt) {
         try {
             if (!game.isPause()) {
                 getObjects().stream().forEach(go -> {
+                    update(go, dt);
+                    go.getChild().forEach(co -> {
+                        update(co, dt);
+                    });
+                });
+            }
+        } catch (ConcurrentModificationException e) {
+            logger.error("Unable to update the GameObjects");
+        }
+    }
+
+    /**
+     * THe heart of the system, updating all objects bu applying
+     * {@link GameObject#forces} and
+     * {@link World#influenceAreas} constrains to the list of managed objects. This
+     * process is active until the
+     * {@link Game#isPause()} state is up.
+     *
+     * @param scene the scene to be updated.
+     * @param dt    elapsed time since previous call.
+     */
+    public void update(Scene scene, long dt) {
+        try {
+            if (!game.isPause()) {
+                scene.getObjectsList().stream().forEach(go -> {
                     update(go, dt);
                     go.getChild().forEach(co -> {
                         update(co, dt);
@@ -393,7 +420,7 @@ public class PhysicEngine extends System {
      *
      * @return
      */
-    public Map<String,Boolean> getDebugInfo() {
+    public Map<String, Boolean> getDebugInfo() {
         return debugFlags;
     }
 }

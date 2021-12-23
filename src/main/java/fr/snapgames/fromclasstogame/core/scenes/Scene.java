@@ -7,6 +7,8 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.scenes.transition.AbstractSceneTransition;
+import fr.snapgames.fromclasstogame.core.scenes.transition.Transition;
 
 import java.util.List;
 
@@ -55,4 +57,10 @@ public interface Scene extends ActionHandler.ActionListener {
     Game getGame();
 
     void setName(String name);
+
+    List<GameObject> getObjectsCameraRelativeList();
+
+    boolean hasTransition();
+
+    List<Transition<Render, Scene>> getTransitionList();
 }

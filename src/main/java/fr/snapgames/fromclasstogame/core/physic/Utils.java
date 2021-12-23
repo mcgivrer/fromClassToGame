@@ -36,15 +36,15 @@ public class Utils {
         int bMin = Math.min(c1.getBlue(), c2.getBlue());
         int aMin = Math.min(c1.getAlpha(), c2.getAlpha());
 
-        float r = (float) range((Math.random() * rMax + rMin), 0.0, 1.0);
-        float g = (float) range((Math.random() * gMax + gMin), 0.0, 1.0);
-        float b = (float) range((Math.random() * bMax + bMin), 0.0, 1.0);
-        float a = (float) range((Math.random() * aMax + aMin), 0.0, 1.0);
+        float r = (float) fixThreshold((Math.random() * rMax + rMin), 0.0, 1.0);
+        float g = (float) fixThreshold((Math.random() * gMax + gMin), 0.0, 1.0);
+        float b = (float) fixThreshold((Math.random() * bMax + bMin), 0.0, 1.0);
+        float a = (float) fixThreshold((Math.random() * aMax + aMin), 0.0, 1.0);
 
         return new Color(r, g, b, a);
     }
 
-    public static double range(double c, double min, double max) {
+    public static double fixThreshold(double c, double min, double max) {
         return Math.max(min, Math.min(c, max));
     }
 

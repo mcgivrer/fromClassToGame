@@ -9,6 +9,7 @@ import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
@@ -188,7 +189,8 @@ public class Game implements ActionHandler.ActionListener {
     public void update(long dt) {
 
         if (pe != null) {
-            pe.update(dt);
+            //pe.update(dt);
+            pe.update(sceneManager.getCurrent(), dt);
         }
         sceneManager.update(dt);
     }
@@ -197,7 +199,14 @@ public class Game implements ActionHandler.ActionListener {
      * Draw the things from the game.
      */
     private void draw() {
-        renderer.render();
+        Scene scene = sceneManager.getCurrent();
+        if (scene.hasTransition()) {
+            scene.getTransitionList().stream().forEach(t -> {
+                t.process(renderer, scene, sceneManager.getPreviousScene());
+            });
+        } else {
+            renderer.render(sceneManager.getCurrent());
+        }
         sceneManager.render(renderer);
         window.draw(realFPS, renderer.getBuffer());
     }

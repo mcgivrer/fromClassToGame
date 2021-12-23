@@ -89,7 +89,7 @@ public class BasicParticleBehavior implements Behavior<Particle> {
                 go.alive = false;
             }
         }
-        double time = Utils.range(dt * 0.125, 0, 16);
+        double time = Utils.fixThreshold(dt * 0.125, 0, 16);
         go.acceleration.multiply(time * 0.5);
         go.velocity.add(go.acceleration);
         go.position.add(go.velocity);

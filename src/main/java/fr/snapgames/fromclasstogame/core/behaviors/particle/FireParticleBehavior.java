@@ -55,6 +55,6 @@ public class FireParticleBehavior extends BasicParticleBehavior implements Behav
     }
 
     private float rollColor(int c, float dt) {
-        return (float) Utils.range(c - (dt / 255.0), 0.0, 1.0);
+        return (float) Utils.fixThreshold(c - (dt / 255.0), 0.0, 1.0);
     }
 }

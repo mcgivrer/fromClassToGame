@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame.core.system;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
 
 import java.util.ArrayList;
 import java.util.List;

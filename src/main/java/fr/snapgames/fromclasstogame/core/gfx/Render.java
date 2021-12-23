@@ -9,6 +9,7 @@ import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
 import fr.snapgames.fromclasstogame.core.physic.World;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,11 @@ public class Render extends System {
         return 0;
     }
 
+    /**
+     * The render method is now deprecated, please use the {@link Render#render(Scene)} instead.
+     *
+     * @deprecated
+     */
     public void render() {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
@@ -69,6 +75,30 @@ public class Render extends System {
         drawObjectList(g, objects);
         moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
+        drawPauseText(g);
+
+        g.dispose();
+        if (renderScreenshot) {
+            saveScreenshot();
+            renderScreenshot = false;
+        }
+    }
+
+
+    /**
+     * Render all the objects and camera relative objects of a <code>scene</code>
+     *
+     * @param scene the Scene to be rendered.
+     */
+    public void render(Scene scene) {
+        Graphics2D g = this.buffer.createGraphics();
+        g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
+        setRenderingHintsList(g);
+
+        moveFocusToCamera(g, scene.getActiveCamera(), -1);
+        drawObjectList(g, scene.getObjectsList());
+        moveFocusToCamera(g, scene.getActiveCamera(), 1);
+        drawObjectList(g, scene.getObjectsCameraRelativeList());
         drawPauseText(g);
 
         g.dispose();
@@ -141,12 +171,17 @@ public class Render extends System {
         }
     }
 
-    @Override
-    public synchronized void add(GameObject go) {
+    /**
+     * Add the scene GameObject go to the corresponding rendering list for
+     *
+     * @param scene
+     * @param go
+     */
+    public synchronized void add(Scene scene, GameObject go) {
         if (go.relativeToCamera) {
-            addAndSortObjectToList(objectsRelativeToCamera, go);
+            addAndSortObjectToList(scene.getObjectsCameraRelativeList(), go);
         } else {
-            addAndSortObjectToList(objects, go);
+            addAndSortObjectToList(scene.getObjectsList(), go);
         }
     }
 
@@ -157,10 +192,6 @@ public class Render extends System {
                 return a.layer < b.layer ? 1 : a.priority < b.priority ? 1 : -1;
             });
         }
-    }
-
-    public void clear() {
-        objects.clear();
     }
 
     public BufferedImage getBuffer() {
@@ -240,16 +271,19 @@ public class Render extends System {
 
     @Override
     public void dispose() {
-        objects.clear();
-        objectsRelativeToCamera.clear();
     }
 
     @Override
     public boolean isReady() {
-        return !renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
+        return !renderHelpers.isEmpty();
     }
 
     public void requestScreenShot() {
         renderScreenshot = true;
+    }
+
+    public void fillRectangle(int width, int height, Color color) {
+        getGraphics().setColor(color);
+        getGraphics().fillRect(0, 0, width, height);
     }
 }

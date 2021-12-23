@@ -14,7 +14,6 @@ import fr.snapgames.fromclasstogame.core.system.System;
 public class CollisionSystem extends System {
 
 
-
     @Override
     public String getName() {
         return "CollisionSystem";
@@ -29,23 +28,22 @@ public class CollisionSystem extends System {
         return 0;
     }
 
-    public void update(long dt){
-        objects.forEach(o->{
+    public void update(long dt) {
+        objects.forEach(o -> {
             for (GameObject object : objects) {
-                if(collide(o,object)){
-                    collisionResponse(o,object);
-
+                if (collide(o, object)) {
+                    collisionResponse(o, object);
                 }
             }
         });
     }
 
-    public boolean collide(GameObject o1, GameObject o2){
+    public boolean collide(GameObject o1, GameObject o2) {
 
         return o1.bbox.intersect(o2.bbox);
     }
 
-    public void collisionResponse(GameObject o1, GameObject o2){
+    public void collisionResponse(GameObject o1, GameObject o2) {
 
     }
 
