@@ -62,7 +62,7 @@ public class Window extends JPanel {
     private Configuration config;
     private GraphicsDevice currentDevice;
     private Dimension dim;
-
+    private float ratio;
     private Font debugFont;
     private int debug = 0;
 
@@ -132,28 +132,35 @@ public class Window extends JPanel {
             logger.warn("unable to read window icon from 'images/logo/sg-logo-image.png'");
         }
         currentDevice = getGraphicsDevice(currentScreen);
-        //Insets ins = frame.getContentPane().getInsets();
-        dim = new Dimension(width, height);
+        DisplayMode dm = currentDevice.getDisplayMode();
+        ratio = (float) ((1.0f * dm.getWidth()) / (1.0f * dm.getHeight()));
+
+        Insets ins = frame.getContentPane().getInsets();
+        dim = new Dimension(width, height + ins.top + ins.right);
         //frame.setLocationByPlatform(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // define Window content and size.
         frame.setLayout(new GridLayout());
-        frame.setPreferredSize(dim);
-        frame.setSize(dim);
-        frame.setMaximumSize(dim);
-        frame.setMinimumSize(dim);
+        getLayout().layoutContainer(frame);
 
         frame.setContentPane(this);
         frame.getContentPane().setPreferredSize(dim);
-        frame.getContentPane().setSize(dim);
-        frame.getContentPane().setMaximumSize(dim);
-        frame.getContentPane().setMinimumSize(dim);
+
+        setSize(dim);
+        setMaximumSize(dim);
+        setMinimumSize(dim);
 
         frame.setIgnoreRepaint(true);
         frame.enableInputMethods(true);
         frame.setFocusTraversalKeysEnabled(false);
-        frame.setLocationRelativeTo(null);
+
+        frame.setLocationByPlatform(false);
+        frame.setLocation(((currentDevice.getDisplayMode().getWidth() - dim.width) / 2), ((currentDevice.getDisplayMode().getHeight() - dim.height) / 2));
+        logger.info("display at ({},{})",
+                (currentDevice.getDisplayMode().getWidth() - dim.width / 2),
+                (currentDevice.getDisplayMode().getHeight() - dim.height / 2));
+        //frame.setLocationRelativeTo(null);
         frame.setResizable(true);
         frame.setUndecorated(isFullScreen());
         frame.pack();
@@ -181,11 +188,12 @@ public class Window extends JPanel {
         }
         if (g != null && frame.isDisplayable()) {
             int yPos = !isFullScreen() ? 32 : 0;
-            g.scale(1.0, ((float) getWidth() / getHeight()) / (16.0 / 10.0));
-            g.drawImage(img, 0, yPos, getWidth(), getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
+            g.scale(1.0, ((float) getWidth() / getHeight()) / ratio);
+            g.drawImage(img, 0, yPos, getWidth() + 10, getHeight(), 0, 0, img.getWidth(), img.getHeight(), null);
             if (debugFont == null) {
                 debugFont = g.getFont().deriveFont(Font.CENTER_BASELINE, 11);
             }
+            g.scale(1.0, 1.0);
             drawDebugStatusInfo(realFPS, g);
             g.dispose();
             if (frame.getBufferStrategy() != null) {
