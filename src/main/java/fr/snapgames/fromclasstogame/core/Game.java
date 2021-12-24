@@ -27,7 +27,7 @@ import java.awt.event.KeyEvent;
 public class Game implements ActionHandler.ActionListener {
 
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
-    public boolean exit = false;
+    public static boolean exit = false;
     public boolean testMode = false;
     private long realFPS = 60;
     private Window window;
@@ -218,7 +218,7 @@ public class Game implements ActionHandler.ActionListener {
      * Request the game to exit.
      */
     public void requestExit() {
-        this.exit = true;
+        exit = true;
         logger.info("** > User Request to quit the game");
     }
 
