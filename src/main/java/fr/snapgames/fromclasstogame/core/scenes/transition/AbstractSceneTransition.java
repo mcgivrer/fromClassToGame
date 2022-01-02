@@ -31,7 +31,7 @@ public abstract class AbstractSceneTransition implements Transition<Render, Scen
     }
 
     /**
-     * this methd is called by the SceneManager at rendering time.
+     * this method is called by the SceneManager at rendering time.
      *
      * @param end    the second object to be rendered by transition
      * @param render The {@link Render} object to delegate rendering operation to.
@@ -41,12 +41,29 @@ public abstract class AbstractSceneTransition implements Transition<Render, Scen
         process(render, startScene, end);
     }
 
-    abstract public void process(Render render, Scene start, Scene end);
+    /**
+     * Rendering the transition from start to end scene.
+     *
+     * @param render     the Render system to delegate drawing to.
+     * @param startScene the starting Scene object (next scene to start with
+     * @param endScene   the ending Scene object (previous scene)
+     */
+    abstract public void process(Render render, Scene startScene, Scene endScene);
 
+    /**
+     * Return active status of current transition
+     *
+     * @return true if current transition is active (time <= duration)
+     */
     public boolean isActive() {
         return time <= duration;
     }
 
+    /**
+     * Return current internal elapsed transition time
+     *
+     * @return
+     */
     public long getTime() {
         return this.time;
     }

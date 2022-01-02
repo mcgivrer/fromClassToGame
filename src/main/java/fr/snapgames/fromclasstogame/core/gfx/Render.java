@@ -91,6 +91,7 @@ public class Render extends System {
      * @param scene the Scene to be rendered.
      */
     public void render(Scene scene) {
+        assert(scene!=null);
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
@@ -282,8 +283,8 @@ public class Render extends System {
         renderScreenshot = true;
     }
 
-    public void fillRectangle(int width, int height, Color color) {
+    public void fillRectangle(int x, int y, int width, int height, Color color) {
         getGraphics().setColor(color);
-        getGraphics().fillRect(0, 0, width, height);
+        getGraphics().fillRect(x, y, width, height);
     }
 }

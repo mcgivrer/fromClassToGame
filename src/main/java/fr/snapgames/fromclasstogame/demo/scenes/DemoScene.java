@@ -77,16 +77,18 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new GameObject implementation for
+        Render r = g.getRender();
         // - ScoreObject
-        g.getRender().addRenderHelper(new ScoreRenderHelper(g.getRender()));
+        r.addRenderHelper(new ScoreRenderHelper(g.getRender()));
         // - TestValue
-        g.getRender().addRenderHelper(new TextValueRenderHelper(g.getRender()));
+        r.addRenderHelper(new TextValueRenderHelper(g.getRender()));
         // - LifeObject
-        g.getRender().addRenderHelper(new LifeRenderHelper(g.getRender()));
+        r.addRenderHelper(new LifeRenderHelper(g.getRender()));
         // - InventoryObject
-        g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
+        r.addRenderHelper(new InventoryRenderHelper(g.getRender()));
         // - ParticleSystem
-        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+        r.addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+
         addTransition(new FadeToBlackCentricCircleTransition(g.getRender(), 2000, 0.6f));
     }
 

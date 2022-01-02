@@ -6,6 +6,9 @@ import fr.snapgames.fromclasstogame.core.scenes.Scene;
 
 import java.awt.*;
 
+/**
+ * a transition between 2 scenes with black concentric circles.
+ */
 public class FadeToBlackCentricCircleTransition extends AbstractSceneTransition implements Transition<Render, Scene> {
 
 
@@ -29,17 +32,13 @@ public class FadeToBlackCentricCircleTransition extends AbstractSceneTransition 
         } else {
             threshold = 1.0f;
         }
-        if (end != null) {
+        if (end != null && getTime() < duration * threshold) {
             render.render(end);
-            float colorTransparency = 1.0f - (threshold / (getTime() / ratio));
-            render.fillRectangle(render.getBuffer().getWidth(), render.getBuffer().getHeight(), new Color(0.0f, 0.0f, 0.0f, colorTransparency));
-        }
-        if (getTime() < duration * threshold) {
-            render.render(start);
             float colorTransparency = (threshold / (ratio - getTime()));
-            render.fillRectangle(render.getBuffer().getWidth(), render.getBuffer().getHeight(), new Color(0.0f, 0.0f, 0.0f, colorTransparency));
+            render.fillRectangle(0, 0,
+                    render.getBuffer().getWidth(),
+                    render.getBuffer().getHeight(),
+                    new Color(0.0f, 0.0f, 0.0f, colorTransparency));
         }
     }
-}
-
 }
