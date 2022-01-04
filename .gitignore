@@ -19,7 +19,6 @@ hs_err_pid*
 .classpath
 .project
 .idea
-fromclasstogame.iml
-fromclasstogame.ipr
-fromclasstog5ame.iws
-
+*.iml
+*.ipr
+*.iws
