@@ -53,7 +53,7 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
         switch (action) {
             case DEBUG_ACTIVE_FLAG:
                 switchDebugLevel(scene);
-
+                break;
             case DEBUG_NEXT_ELEMENT:
                 rotateDebugActiveElement(scene, 1);
                 break;
