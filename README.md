@@ -98,4 +98,4 @@ Have Fun !
 McG.
 
 __SnapGames__<br/>
-![SnapGames Logo](./src/main/resources/images/logo/sg-logo-image.png)
+![SnapGames Logo](./src/main/resources/images/logo/logo-snapgames-black.png)
