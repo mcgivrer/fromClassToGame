@@ -161,7 +161,10 @@ public class DemoScene extends AbstractScene {
         // Add a Life display
         int life = (int) player.getAttribute("lifes", 0);
 
-        LifeObject lifeTO = (LifeObject) new LifeObject("life", new Vector2d(280, 4)).setLive(life).setRelativeToCamera(true);
+        LifeObject lifeTO = (LifeObject) new LifeObject("life",
+                new Vector2d(game.getConfiguration().width-32, 4))
+                .setLive(life)
+                .setRelativeToCamera(true);
         add(lifeTO);
 
         // prepare the inventory item image
