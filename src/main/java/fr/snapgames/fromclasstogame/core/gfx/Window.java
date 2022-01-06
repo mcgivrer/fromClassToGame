@@ -150,6 +150,7 @@ public class Window extends JPanel {
         setSize(dim);
         setMaximumSize(dim);
         setMinimumSize(dim);
+        setBackground(Color.BLACK);
 
         frame.setIgnoreRepaint(true);
         frame.enableInputMethods(true);
