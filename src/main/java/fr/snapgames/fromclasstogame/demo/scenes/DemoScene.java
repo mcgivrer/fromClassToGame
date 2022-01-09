@@ -4,12 +4,10 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
-import fr.snapgames.fromclasstogame.core.entity.Camera;
-import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.LightObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.I18n;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -83,6 +81,8 @@ public class DemoScene extends AbstractScene {
         g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
         // - ParticleSystem
         g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+        // - LightObject
+        g.getRender().addRenderHelper(new LightObjectRenderHelper(g.getRender()));
     }
 
     @Override
@@ -127,6 +127,13 @@ public class DemoScene extends AbstractScene {
                 .add(new PlayerActionBehavior());
         add(player);
 
+        LightObject lo = new LightObject("light01", player.position, LightType.LIGHT_SPHERE)
+                .setForegroundColor(Color.YELLOW)
+                .setIntensity(0.86)
+                .setGlitterEffect(0.55);
+        lo.add(new CopyObjectPosition(player)).setSize(64.0, 64.0);
+        add(lo);
+
         // Define the camera following the player object.
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
         Camera camera = new Camera("cam01")
@@ -162,7 +169,7 @@ public class DemoScene extends AbstractScene {
         int life = (int) player.getAttribute("lifes", 0);
 
         LifeObject lifeTO = (LifeObject) new LifeObject("life",
-                new Vector2d(game.getConfiguration().width-32, 4))
+                new Vector2d(game.getConfiguration().width - 32, 4))
                 .setLive(life)
                 .setRelativeToCamera(true);
         add(lifeTO);
@@ -192,7 +199,7 @@ public class DemoScene extends AbstractScene {
         add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration
-        randomizeFilteredGameObject("enemy_",true);
+        randomizeFilteredGameObject("enemy_", true);
 
         // Welcome text at middle bottom center game screen
         Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
