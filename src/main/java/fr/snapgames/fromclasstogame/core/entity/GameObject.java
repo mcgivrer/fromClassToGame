@@ -62,6 +62,7 @@ public class GameObject implements Entity {
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
     public int debugOffsetX;
     public int debugOffsetY;
+    public boolean rendered;
     protected Map<String, Object> attributes = new HashMap<>();
 
     /**
