@@ -89,7 +89,7 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         super.create(g);
         // Declare World playground
-        World world = new World(800, 600);
+        World world = new World(400, 300);
         // create a basic wind all over the play area
         InfluenceArea2d iArea = new InfluenceArea2d(
                 new Vector2d(0.475, 0.0),
@@ -127,10 +127,15 @@ public class DemoScene extends AbstractScene {
                 .add(new PlayerActionBehavior());
         add(player);
 
-        LightObject lo = new LightObject("light01", player.position, LightType.LIGHT_SPHERE)
-                .setForegroundColor(Color.YELLOW)
-                .setIntensity(0.86)
-                .setGlitterEffect(0.55);
+        LightObject la = new LightObject("ambiant_light_01", player.position, LightType.LIGHT_AMBIANT)
+                .setForegroundColor(new Color(1.0f,0.0f,0.0f,0.2f))
+                .setIntensity(0.998);
+        add(la);
+
+        LightObject lo = new LightObject("sphere_light_01", player.position, LightType.LIGHT_SPHERE)
+                .setForegroundColor(new Color(0.0f,0.0f,0.0f,0.4f))
+                .setIntensity(1.0)
+                .setGlitterEffect(0.098);
         lo.add(new CopyObjectPosition(player)).setSize(64.0, 64.0);
         add(lo);
 
