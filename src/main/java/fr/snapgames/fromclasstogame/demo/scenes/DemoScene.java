@@ -128,12 +128,12 @@ public class DemoScene extends AbstractScene {
         add(player);
 
         LightObject la = new LightObject("ambiant_light_01", player.position, LightType.LIGHT_AMBIANT)
-                .setForegroundColor(new Color(1.0f,0.0f,0.0f,0.2f))
+                .setForegroundColor(new Color(1.0f, 0.0f, 0.0f, 0.2f))
                 .setIntensity(0.998);
         add(la);
 
         LightObject lo = new LightObject("sphere_light_01", player.position, LightType.LIGHT_SPHERE)
-                .setForegroundColor(new Color(0.0f,0.0f,0.0f,0.4f))
+                .setForegroundColor(new Color(0.0f, 0.0f, 0.0f, 0.4f))
                 .setIntensity(1.0)
                 .setGlitterEffect(0.098);
         lo.add(new CopyObjectPosition(player)).setSize(64.0, 64.0);
@@ -163,11 +163,11 @@ public class DemoScene extends AbstractScene {
         ScoreObject scoreTO = (ScoreObject) new ScoreObject(
                 "score",
                 new Vector2d(10, 4))
-                .setScore(score)
-                .setRelativeToCamera(true)
-                .setLayer(1)
-                .setColor(Color.WHITE)
-                .setPriority(10);
+                        .setScore(score)
+                        .setRelativeToCamera(true)
+                        .setLayer(1)
+                        .setColor(Color.WHITE)
+                        .setPriority(10);
         add(scoreTO);
 
         // Add a Life display
@@ -175,8 +175,8 @@ public class DemoScene extends AbstractScene {
 
         LifeObject lifeTO = (LifeObject) new LifeObject("life",
                 new Vector2d(game.getConfiguration().width - 32, 4))
-                .setLive(life)
-                .setRelativeToCamera(true);
+                        .setLive(life)
+                        .setRelativeToCamera(true);
         add(lifeTO);
 
         // prepare the inventory item image
@@ -193,11 +193,11 @@ public class DemoScene extends AbstractScene {
         // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
-                .setNbPlace(6)
-                .setSelectedIndex(1)
-                .setRelativeToCamera(true)
-                .setDebug(1)
-                .add(new InventorySelectorBehavior());
+                        .setNbPlace(6)
+                        .setSelectedIndex(1)
+                        .setRelativeToCamera(true)
+                        .setDebug(1)
+                        .add(new InventorySelectorBehavior());
         // add a first object (a key !)
         inventory.add(keyItem);
         inventory.add(potionItem);
@@ -226,8 +226,9 @@ public class DemoScene extends AbstractScene {
     /**
      * Generate a random set of nbEnemies on screen?
      *
-     * @param nbEnemies
-     * @throws UnknownResource
+     * @param nbEnemies nuùber of enemies to be generated
+     * @throws UnknownResource thrown in case the requested Enemy resources is not
+     *                         detected.
      */
     private void generateEnemies(int nbEnemies) throws UnknownResource {
         for (int i = 0; i < nbEnemies; i++) {
@@ -243,8 +244,8 @@ public class DemoScene extends AbstractScene {
             // add a ParticleSystem
             ParticleSystem ps = new ParticleSystem("PS_test_" + GameObject.getIndex(), e.position);
             ps.addParticleBehavior(
-                            new FireParticleBehavior(ps, 1200, true)
-                                    .setColor(Color.YELLOW))
+                    new FireParticleBehavior(ps, 1200, true)
+                            .setColor(Color.YELLOW))
                     .create(10)
                     .setFeeding(2)
                     .setEmitFrequency(1200)
@@ -301,7 +302,8 @@ public class DemoScene extends AbstractScene {
     }
 
     /**
-     * generate randomly {@link Material#dynFriction}, {@link Material#bounciness} and {@link GameObject#acceleration}
+     * generate randomly {@link Material#dynFriction}, {@link Material#bounciness}
+     * and {@link GameObject#acceleration}
      * into some max values for the {@link GameObject} <code>go</code>.
      *
      * @param go          the GameObject to be randomly updated
