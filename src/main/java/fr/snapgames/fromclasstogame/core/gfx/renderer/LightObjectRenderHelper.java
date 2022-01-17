@@ -1,14 +1,19 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RadialGradientPaint;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.LightObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
-
-import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  * A {@link RenderHelper} to draw {@link LightObject}.
@@ -41,8 +46,8 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
             case LIGHT_SPHERE:
                 drawSphericalLight(g, l);
                 break;
-            case LIGHT_CONE:
-                drawConicalLight(g, l);
+            case LIGHT_SPOT:
+                drawSpotLight(g, l);
                 break;
             case LIGHT_AMBIANT:
                 drawAmbientLight(g, l);
@@ -51,8 +56,14 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
         l.rendered = true;
     }
 
-    private void drawConicalLight(Graphics2D g, LightObject l) {
-        // TODO implement the CONE light type
+    private void drawSpotLight(Graphics2D g, LightObject l) {
+        
+        assert(l.target!=null);
+        double rotation = Math.acos(((l.position.x * l.target.x) + (l.position.y*l.target.y))/
+            (Math.sqrt((l.position.x*l.position.x)+(l.position.y*l.position.y))
+            * Math.sqrt((l.target.x*l.target.x)+(l.target.y*l.target.y))));
+        g.rotate(rotation);
+        //TODO draw filled triangle.
     }
 
     private void drawAmbientLight(Graphics2D g, LightObject l) {
