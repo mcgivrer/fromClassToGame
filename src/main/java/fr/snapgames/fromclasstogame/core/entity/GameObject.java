@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GameObject implements Entity {
+public class GameObject implements Entity<GameObject> {
 
 
     private static int index = 0;
     public int id = ++index;
     public String name;
 
-    public boolean active = true;
+    private boolean active = false;
 
     /**
      * Physic and mechanic attributes
@@ -105,6 +105,7 @@ public class GameObject implements Entity {
      */
     public GameObject(String objectName, Vector2d position) {
         this.name = objectName;
+        this.active = true;
         setPosition(position);
         life = -1;
         lifeStart = -1;
@@ -293,6 +294,17 @@ public class GameObject implements Entity {
 
     public List<GameObject> getChild() {
         return child;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public GameObject setActive(boolean active) {
+        this.active = active;
+        return this;
     }
 
     public enum GOType {
