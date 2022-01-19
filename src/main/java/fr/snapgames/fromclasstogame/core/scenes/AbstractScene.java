@@ -36,6 +36,9 @@ import java.util.stream.Collectors;
 public abstract class AbstractScene implements Scene {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
+
+    //TODO: replace objects and objectList by the corresponding Game System EntityPool.
+
     protected Map<String, GameObject> objects = new HashMap<>();
     protected List<GameObject> objectsList = new ArrayList<>();
     protected List<Behavior<Scene>> behaviors = new ArrayList<>();
