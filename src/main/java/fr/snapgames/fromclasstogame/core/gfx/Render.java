@@ -117,13 +117,13 @@ public class Render extends System {
 
 
     private void drawObjectList(Graphics2D g, List<GameObject> objects) {
-        objects.stream().filter(f -> f.active)
+        objects.stream().filter(f -> f.isActive())
                 .collect(Collectors.toList())
                 .forEach(go -> {
                     draw(g, go);
                     // process child
                     go.getChild().stream()
-                            .filter(c -> c.active)
+                            .filter(c -> c.isActive())
                             .collect(Collectors.toList())
                             .forEach(co -> draw(g, co));
                 });
