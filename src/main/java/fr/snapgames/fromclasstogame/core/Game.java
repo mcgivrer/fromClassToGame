@@ -2,6 +2,8 @@ package fr.snapgames.fromclasstogame.core;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+import fr.snapgames.fromclasstogame.core.entity.EntityPoolManager;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -15,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
+import java.util.concurrent.ForkJoinTask;
 
 /**
  * Project: From Class To Game
@@ -33,6 +36,7 @@ public class Game implements ActionHandler.ActionListener {
     private Window window;
     private Render renderer;
     private ActionHandler actionHandler;
+    private EntityPoolManager epm;
     private SceneManager sceneManager;
     private Configuration configuration;
     private CollisionSystem cs;
@@ -91,6 +95,8 @@ public class Game implements ActionHandler.ActionListener {
         SystemManager.add(ActionHandler.class);
         SystemManager.add(SceneManager.class);
         SystemManager.add(CollisionSystem.class);
+        SystemManager.add(EntityPoolManager.class);
+
 
         SystemManager.configure(configuration);
 
@@ -110,6 +116,9 @@ public class Game implements ActionHandler.ActionListener {
 
         sceneManager = (SceneManager) SystemManager.get(SceneManager.class);
         logger.info("** > Game initialized at {}", System.currentTimeMillis());
+
+        epm = (EntityPoolManager) SystemManager.get(EntityPoolManager.class);
+        epm.createPool(GameObject.class.getName());
     }
 
     /**
@@ -297,5 +306,9 @@ public class Game implements ActionHandler.ActionListener {
 
     public void setPause(boolean p) {
         this.pause = p;
+    }
+
+    public EntityPoolManager getEPM() {
+        return this.epm;
     }
 }

@@ -14,7 +14,15 @@ Feature: An EntityPool is a managed fixed size Entity array
     And I remove the EntityPool "test1"
     Then the EntityPoolManager has no more "test1"
 
-  Scenario: 03 - Add an object to an EntityPool
+  Scenario: 03 - Add an object to an. EntityPool
     Given An EntityPoolManager is created with EntityPools "test1"
     And I add a GameObject "TestGO" to the EntityPool "test1"
     Then the EntityPool "test1" contains the GameObject "TestGO"
+
+  Scenario: 04 - Game has a an EPM
+    Given the Game is started with config "no-scene"
+    Then The Game has an EntityPoolManager System
+
+  Scenario: 05 - Game has a default EntityPool for GameObject
+    Given the Game is started with config "no-scene"
+    Then The Game has an EntityPool for GameObject

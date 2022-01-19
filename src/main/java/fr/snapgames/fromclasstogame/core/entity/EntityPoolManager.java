@@ -42,4 +42,12 @@ public class EntityPoolManager extends System {
     public void removePool(String entityPoolName) {
         this.entityPools.remove(entityPoolName);
     }
+
+    public void createPool(String name) {
+        addPool(new EntityPool(name, 1000));
+    }
+
+    public EntityPool getPool(String name) {
+        return entityPools.get(name);
+    }
 }
