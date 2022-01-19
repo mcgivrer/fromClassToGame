@@ -6,8 +6,7 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import io.cucumber.java8.En;
 import org.junit.Assert;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class EntityPoolStepdefs extends CommonDefSteps implements En {
     EntityPoolManager epm;
@@ -61,6 +60,14 @@ public class EntityPoolStepdefs extends CommonDefSteps implements En {
         Then("the EntityPool {string} contains the GameObject {string}", (String epName, String goName) -> {
             GameObject go = epm.get(epName).get(goName);
             assertEquals("", goName, go.name);
+        });
+
+        Then("The Game has an EntityPoolManager System", () -> {
+            assertNotNull("The Game has no EntityPoolManager System", game.getEPM());
+        });
+        Then("The Game has an EntityPool for GameObject", () -> {
+            EntityPool ep = game.getEPM().getPool(GameObject.class.getName());
+            assertNotNull("The Game has no default EP for GameObject", ep);
         });
 
     }
