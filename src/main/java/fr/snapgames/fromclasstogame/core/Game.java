@@ -119,6 +119,7 @@ public class Game implements ActionHandler.ActionListener {
 
         epm = (EntityPoolManager) SystemManager.get(EntityPoolManager.class);
         epm.createPool(GameObject.class.getName());
+
     }
 
     /**
@@ -150,7 +151,9 @@ public class Game implements ActionHandler.ActionListener {
         long previous = start;
         long dt = 0;
         long frames = 0;
-        long timeFrame = 0;
+        long timeFrame = dt;
+        long totalTmeFrame = 0;
+        long gameTime = 0;
 
         long frameDuration = (long) (1000 / configuration.FPS);
 
@@ -160,13 +163,22 @@ public class Game implements ActionHandler.ActionListener {
             if (sceneManager.getCurrent() != null) {
                 input();
                 update(dt);
-                draw();
+                if (timeFrame < 1000 / configuration.FPS) {
+                    draw();
+                }
             }
             frames++;
-            timeFrame += dt;
-            if (timeFrame > 1000) {
+            totalTmeFrame += dt;
+
+            if (timeFrame > 1000 / configuration.FPS) {
                 timeFrame = 0;
                 realFPS = frames;
+            }
+
+            if (totalTmeFrame > 1000) {
+                gameTime += totalTmeFrame;
+                logger.info("one more second: {} ms => {} ms", totalTmeFrame, gameTime);
+                totalTmeFrame = 0;
                 frames = 0;
             }
             long elapsed = System.currentTimeMillis() - start;

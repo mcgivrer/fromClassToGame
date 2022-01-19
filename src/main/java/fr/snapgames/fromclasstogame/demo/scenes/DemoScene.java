@@ -32,6 +32,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Demo Scene to test features during framework development.
@@ -89,13 +90,13 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         super.create(g);
         // Declare World playground
-        World world = new World(400, 300);
+        World world = new World(800, 400);
         // create a basic wind all over the play area
         InfluenceArea2d iArea = new InfluenceArea2d(
                 new Vector2d(0.475, 0.0),
                 new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
                         BoundingBox.BoundingBoxType.RECTANGLE),
-                3);
+                1.3);
         world.addInfluenceArea(iArea);
         g.setWorld(world);
 
@@ -278,8 +279,13 @@ public class DemoScene extends AbstractScene {
     public void activate() {
         randomizeFilteredGameObject("enemy_", true);
         randomizeFilteredGameObject("player", false);
-        objects.get("player").addAttribute("score", 0);
-        objects.get("welcomeMsg").setDuration(5000).setActive(true);
+        try {
+            getEntityPool().get("player").addAttribute("score", 0);
+            GameObject wlcmsg = getEntityPool().get("welcomeMsg");
+            wlcmsg.setDuration(5000).setActive(true);
+        } catch (UnkownGameObject e) {
+            logger.warn("unbale to find a GameObject ", e);
+        }
 
     }
 
@@ -330,18 +336,23 @@ public class DemoScene extends AbstractScene {
     public void update(long dt) {
 
         super.update(dt);
-        GameObject player = objects.get("player");
-        int score = (int) player.getAttribute("score", 0);
-        ScoreObject scoreTO = (ScoreObject) objects.get("score");
-        score++;
-        scoreTO.setScore(score);
-        player.addAttribute("score", score);
+
+        GameObject player = null;
+        try {
+            player = getEntityPool().get("player");
+            int score = (int) player.getAttribute("score", 0);
+            ScoreObject scoreTO = (ScoreObject) getEntityPool().get("score");
+            score++;
+            scoreTO.setScore(score);
+            player.addAttribute("score", score);
+        } catch (UnkownGameObject e) {
+            logger.error("unable to retrieve GameObject from EntityPool", e);
+        }
     }
 
     @Override
     public void dispose() {
-        objects.clear();
-        objectsList.clear();
+        getEntityPool().clear();
     }
 
     @Override

@@ -3,9 +3,7 @@ package fr.snapgames.fromclasstogame.core.scenes;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
-import fr.snapgames.fromclasstogame.core.entity.Camera;
-import fr.snapgames.fromclasstogame.core.entity.EntityPool;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
@@ -36,8 +34,13 @@ import java.util.stream.Collectors;
 public abstract class AbstractScene implements Scene {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
-    protected Map<String, GameObject> objects = new HashMap<>();
-    protected List<GameObject> objectsList = new ArrayList<>();
+
+    //TODO: replace objects and objectList by the corresponding Game System EntityPool.
+
+    EntityPool ep = ((EntityPoolManager) SystemManager.get(EntityPoolManager.class)).get(GameObject.class.getName());
+
+    //protected Map<String, GameObject> objects = new HashMap<>();
+    //protected List<GameObject> objectsList = new ArrayList<>();
     protected List<Behavior<Scene>> behaviors = new ArrayList<>();
 
     protected Map<String, Camera> cameras = new HashMap<>();
@@ -87,9 +90,8 @@ public abstract class AbstractScene implements Scene {
             if (activeCamera == null) {
                 activeCamera = (Camera) go;
             }
-        } else if (!objects.containsKey(go.name)) {
-            objects.put(go.name, go);
-            objectsList.add(go);
+        } else if (!ep.contains(go)) {
+            ep.add(go);
             SystemManager.add(go);
         }
     }
@@ -107,15 +109,19 @@ public abstract class AbstractScene implements Scene {
             if (activeCamera.equals(go)) {
                 activeCamera = null;
             }
-        } else if (objects.containsKey(go.name)) {
-            objects.remove(go.name);
-            objectsList.remove(go);
+        } else if (ep.contains(go)) {
+            ep.remove(go);
             SystemManager.remove(go);
         }
     }
 
     public GameObject getGameObject(String name) {
-        return objects.get(name);
+        try {
+            return ep.get(name);
+        } catch (UnkownGameObject e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -125,13 +131,13 @@ public abstract class AbstractScene implements Scene {
      * @return
      */
     public List<GameObject> find(String filteredName) {
-        return objectsList.stream().filter(
-                o -> o.name.contains(filteredName)
+        return ep.getEntities().stream().filter(
+                o -> o != null && o.name.contains(filteredName)
         ).collect(Collectors.toList());
     }
 
     public List<GameObject> getObjectsList() {
-        return objectsList;
+        return ep.getEntities();
     }
 
     @Override
@@ -169,8 +175,8 @@ public abstract class AbstractScene implements Scene {
 
     public void input(ActionHandler ah) {
         try {
-            objects.forEach((k, o) -> {
-                if (!o.behaviors.isEmpty()) {
+            ep.getEntities().forEach(o -> {
+                if (o!=null && !o.behaviors.isEmpty()) {
                     o.behaviors.forEach(b -> {
                         b.onInput(o, ah);
                     });
@@ -183,7 +189,7 @@ public abstract class AbstractScene implements Scene {
 
     public void onAction(Integer a) {
         logger.debug("Action:" + a);
-        objects.forEach((k, o) -> {
+        ep.getEntities().forEach(o -> {
             if (!o.behaviors.isEmpty()) {
                 o.behaviors.forEach(b -> {
                     b.onAction(o, a);
@@ -196,10 +202,6 @@ public abstract class AbstractScene implements Scene {
         return sceneName;
     }
 
-    @Override
-    public void setName(String name) {
-        this.sceneName = name;
-    }
 
     public Game getGame() {
         return game;
@@ -212,6 +214,16 @@ public abstract class AbstractScene implements Scene {
 
     public List<Behavior<Scene>> getBehaviors() {
         return behaviors;
+    }
+
+    protected EntityPool getEntityPool() {
+        return this.ep;
+    }
+
+
+    @Override
+    public void setName(String name) {
+        this.sceneName = name;
     }
 }
 

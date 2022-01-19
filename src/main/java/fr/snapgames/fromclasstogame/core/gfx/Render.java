@@ -64,11 +64,12 @@ public class Render extends System {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
-
+        
         moveFocusToCamera(g, camera, -1);
         drawObjectList(g, objects);
         moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
+        renderWorld();
         drawPauseText(g);
 
         g.dispose();
@@ -76,6 +77,10 @@ public class Render extends System {
             saveScreenshot();
             renderScreenshot = false;
         }
+    }
+
+    private void renderWorld() {
+
     }
 
     private void drawPauseText(Graphics2D g) {
