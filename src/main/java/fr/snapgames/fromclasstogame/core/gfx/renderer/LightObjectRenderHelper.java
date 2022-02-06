@@ -52,16 +52,18 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
             case LIGHT_AMBIANT:
                 drawAmbientLight(g, l);
                 break;
+            default:
+                break;
         }
         l.rendered = true;
     }
 
     private void drawSpotLight(Graphics2D g, LightObject l) {
-        
-        assert(l.target!=null);
-        double rotation = Math.acos(((l.position.x * l.target.x) + (l.position.y*l.target.y))/
-            (Math.sqrt((l.position.x*l.position.x)+(l.position.y*l.position.y))
-            * Math.sqrt((l.target.x*l.target.x)+(l.target.y*l.target.y))));
+
+        assert (l.target != null);
+        double rotation = Math.acos(((l.position.x * l.target.x) + (l.position.y * l.target.y)) /
+                (Math.sqrt((l.position.x * l.position.x) + (l.position.y * l.position.y))
+                        * Math.sqrt((l.target.x * l.target.x) + (l.target.y * l.target.y))));
         g.rotate(rotation);
         //TODO draw filled triangle.
     }

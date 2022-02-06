@@ -63,6 +63,8 @@ public class LightStepdefs extends CommonDefSteps implements En {
                 case "YELLOW":
                     lo.setForegroundColor(Color.YELLOW);
                     break;
+                default:
+                    break;
             }
         });
         And("I set the light {string} glitterEffect to {double}", (String lightName, Double glitterEffect) -> {

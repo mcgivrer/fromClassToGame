@@ -22,7 +22,7 @@ public class EntityPoolStepdefs extends CommonDefSteps implements En {
         });
 
         Then("I get the EntityPool named {string} with {int} available items", (String epName, Integer epRequestedSize) -> {
-            Assert.assertEquals("The EntityPool so=ize does not match " + epRequestedSize + " items", epRequestedSize.intValue(), ep.getSize());
+            Assert.assertEquals(String.format("The EntityPool size does not match %s items", epRequestedSize), epRequestedSize.intValue(), ep.getSize());
         });
 
         Given("An EntityPoolManager is created", () -> {

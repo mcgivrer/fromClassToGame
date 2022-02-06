@@ -32,7 +32,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Demo Scene to test features during framework development.
