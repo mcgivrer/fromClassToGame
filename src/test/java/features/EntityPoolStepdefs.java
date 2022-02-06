@@ -22,7 +22,7 @@ public class EntityPoolStepdefs extends CommonDefSteps implements En {
         });
 
         Then("I get the EntityPool named {string} with {int} available items", (String epName, Integer epRequestedSize) -> {
-            Assert.assertEquals(String.format("The EntityPool size does not match %s items", epRequestedSize), epRequestedSize.intValue(), ep.getSize());
+            assertEquals(String.format("The EntityPool size does not match %s items", epRequestedSize), epRequestedSize.intValue(), ep.getSize());
         });
 
         Given("An EntityPoolManager is created", () -> {
@@ -69,7 +69,5 @@ public class EntityPoolStepdefs extends CommonDefSteps implements En {
             EntityPool ep = game.getEPM().getPool(GameObject.class.getName());
             assertNotNull("The Game has no default EP for GameObject", ep);
         });
-
     }
-
 }
