@@ -79,8 +79,11 @@ public class Render extends System {
         }
     }
 
+    /**
+     * Render the world details but only for debug purpose.
+     */
     private void renderWorld() {
-
+        // TODO: need to implement the debug rendering to World.
     }
 
     private void drawPauseText(Graphics2D g) {
