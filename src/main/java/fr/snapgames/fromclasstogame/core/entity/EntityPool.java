@@ -1,10 +1,8 @@
 package fr.snapgames.fromclasstogame.core.entity;
 
-import fr.snapgames.fromclasstogame.core.Game;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 

@@ -3,7 +3,6 @@ package fr.snapgames.fromclasstogame.core.gfx.renderer;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
