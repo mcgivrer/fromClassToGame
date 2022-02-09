@@ -12,7 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * <p><code>GameObject</code> is the object managed by all the game systems.</p>
+ * <p>It's mainly any object displayed in the game !</p>
+ * <p>It will support many rendering shape as {@link GOType}.</p>
+ * <p>It will be rendered through the {@link fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper}</p>.
+ *
+ * @author Frédéric Delorme.
+ * @see fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper
+ * @since 0.0.1
+ */
 public class GameObject implements Entity<GameObject> {
 
 
@@ -81,6 +90,12 @@ public class GameObject implements Entity<GameObject> {
     private int debug;
 
     /**
+     * true if this object collides with something.
+     */
+    private boolean collision;
+    private Color debugColor;
+
+    /**
      * Initialize a GameObject with a default generated name "noname_999"
      * where 999 is the current internal GameObject index value.
      */
@@ -106,6 +121,7 @@ public class GameObject implements Entity<GameObject> {
     public GameObject(String objectName, Vector2d position) {
         this.name = objectName;
         this.active = true;
+        setDebugColor(Color.YELLOW);
         setPosition(position);
         life = -1;
         lifeStart = -1;
@@ -305,6 +321,19 @@ public class GameObject implements Entity<GameObject> {
     public GameObject setActive(boolean active) {
         this.active = active;
         return this;
+    }
+
+    public GameObject setCollide(boolean collisionFlag) {
+        this.collision = collisionFlag;
+        return this;
+    }
+
+    public void setDebugColor(Color color) {
+        this.debugColor = color;
+    }
+
+    public Color getDebugColor() {
+        return this.debugColor;
     }
 
     public enum GOType {

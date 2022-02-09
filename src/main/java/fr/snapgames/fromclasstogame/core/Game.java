@@ -28,18 +28,58 @@ import java.awt.event.KeyEvent;
  */
 public class Game implements ActionHandler.ActionListener {
 
+    /**
+     * Internal logger.
+     */
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
+    /**
+     * The <code>exit</code>  flag.
+     */
     public static boolean exit = false;
+    /**
+     * testMode flag for unit test only.
+     */
     public boolean testMode = false;
+    /**
+     * The default Frame per seconds rate for rendering purpose.
+     */
     private long realFPS = 60;
+    /**
+     * The Window where all fun things happened.
+     */
     private Window window;
+    /**
+     * THe rendering system, drawing beautiful GameObject onto the Window.
+     */
     private Render renderer;
+    /**
+     * The action handler to
+     */
     private ActionHandler actionHandler;
+    /**
+     * The Pool manager
+     */
     private EntityPoolManager epm;
+    /**
+     * The Scene manager to switch gracely between game situations
+     */
     private SceneManager sceneManager;
+    /**
+     * The unforgetteble Configuration to dispatch needed default values to all the systems and game.
+     */
     private Configuration configuration;
+    /**
+     * The bong bong system to detect when some GameObject bongs an other one.
+     */
     private CollisionSystem cs;
+    /**
+     * Finally the Physic Engine that computes all the fancy effects the Game is able to.
+     */
     private PhysicEngine pe;
+
+    /**
+     * Hey, any player need a pause, this is the flag telling theh Game it's time for a coffee/tea/anything.
+     */
     private boolean pause = false;
 
     /**
@@ -73,6 +113,11 @@ public class Game implements ActionHandler.ActionListener {
         configuration.height = h;
     }
 
+    /**
+     * The unavoidable main java method entry point to start the magic.
+     *
+     * @param argc the command line list of arguments to override the <code>Configuration</code>.
+     */
     public static void main(String[] argc) {
         try {
             Game game = new Game("config");
@@ -88,7 +133,9 @@ public class Game implements ActionHandler.ActionListener {
     public void initialize(String[] argv) throws ArgumentUnknownException {
         SystemManager.initialize(this);
         configuration.parseArgs(argv);
-
+        /**
+         * Why not initializing a bunch of systems to start this funky piece of game ?
+         */
         SystemManager.add(Render.class);
         SystemManager.add(PhysicEngine.class);
         SystemManager.add(ActionHandler.class);
@@ -96,7 +143,9 @@ public class Game implements ActionHandler.ActionListener {
         SystemManager.add(CollisionSystem.class);
         SystemManager.add(EntityPoolManager.class);
 
-
+        /**
+         * And then configure ll those strange piece of code.
+         */
         SystemManager.configure(configuration);
 
         ResourceManager.initialize(this);
@@ -210,6 +259,9 @@ public class Game implements ActionHandler.ActionListener {
         if (pe != null) {
             pe.update(dt);
         }
+        if (cs != null) {
+            cs.update(dt);
+        }
         sceneManager.update(dt);
     }
 
@@ -321,5 +373,9 @@ public class Game implements ActionHandler.ActionListener {
 
     public EntityPoolManager getEPM() {
         return this.epm;
+    }
+
+    public CollisionSystem getCollisionSystem() {
+        return cs;
     }
 }

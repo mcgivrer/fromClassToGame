@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.OnEntityCollision;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.*;
@@ -15,6 +16,7 @@ import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
+import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
@@ -126,6 +128,7 @@ public class DemoScene extends AbstractScene {
                 .addAttribute("lifes", 5)
                 .add(new PlayerActionBehavior());
         add(player);
+        g.getCollisionSystem().addResponse("player", new OnEntityCollision());
 
         LightObject la = new LightObject("ambiant_light_01", player.position, LightType.LIGHT_AMBIANT)
                 .setForegroundColor(new Color(1.0f, 0.0f, 0.0f, 0.2f))
