@@ -28,8 +28,7 @@ import java.util.stream.Collectors;
  *     <li><kbd>B</kbd> down debug level for current selected object</li>
  *     <li><kbd>Z</kbd> reset the current scene by calling {@link Scene#create(Game)} ()}</li>
  * </ul>
- * Any new custom action can bee added to the {@link ActionHandler} with an action code from ACTION_CUSTOM (= 200).
- * <strong></strong>
+ * <p>Any new custom action can bee added to the {@link ActionHandler} with an action code from ACTION_CUSTOM (= 200).</p>
  */
 public abstract class AbstractScene implements Scene {
 
@@ -176,7 +175,7 @@ public abstract class AbstractScene implements Scene {
     public void input(ActionHandler ah) {
         try {
             ep.getEntities().forEach(o -> {
-                if (o!=null && !o.behaviors.isEmpty()) {
+                if (o != null && !o.behaviors.isEmpty()) {
                     o.behaviors.forEach(b -> {
                         b.onInput(o, ah);
                     });
