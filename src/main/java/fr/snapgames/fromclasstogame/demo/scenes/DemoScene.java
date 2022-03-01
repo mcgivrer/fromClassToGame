@@ -16,7 +16,6 @@ import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
-import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
@@ -139,7 +138,7 @@ public class DemoScene extends AbstractScene {
                 .setForegroundColor(new Color(0.0f, 0.0f, 0.0f, 0.4f))
                 .setIntensity(1.0)
                 .setGlitterEffect(0.098);
-        lo.add(new CopyObjectPosition(player)).setSize(64.0, 64.0);
+        lo.add(new CopyObjectPosition(player)).setSize(128.0, 128.0);
         add(lo);
 
         // Define the camera following the player object.

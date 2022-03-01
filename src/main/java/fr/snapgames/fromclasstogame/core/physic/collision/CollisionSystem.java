@@ -12,12 +12,18 @@ import java.util.Map;
 
 /**
  * The {@link CollisionSystem} will provide mechanism to detect collision between
- * {@link fr.snapgames.fromclasstogame.core.entity.GameObject} bounding boxes.
+ * {@link GameObject} bounding boxes.
  * <p>
  * `BoundingBox` can have multiple shapes,and basically would be Rectangle, Circle or Ellipse, and Points.
+ *
+ * @author Frédéric Delorme
+ * @since 1.0.2
  */
 public class CollisionSystem extends System {
 
+    /**
+     * A list of response ( {@link ProcessBehavior]) to be applied
+     */
     private Map<String, ProcessBehavior<GameObject>> responses = new HashMap<>();
 
     @Override
@@ -25,19 +31,41 @@ public class CollisionSystem extends System {
         return "CollisionSystem";
     }
 
+    /**
+     * Create the CollisionSystem
+     *
+     * @param g the parent game.
+     */
     public CollisionSystem(Game g) {
         super(g);
     }
 
+    /**
+     * add a Response for an entity having a name containing the filter,
+     *
+     * @param filter the filtering string to detect entity to apply the {@link ProcessBehavior} on.
+     * @param pb     the ProcessBehavior to be applied.>
+     */
     public void addResponse(String filter, ProcessBehavior pb) {
         responses.put(filter, pb);
     }
 
+    /**
+     * Initialize the CollisionSystem with {@link Configuration}.
+     *
+     * @param config the Configuration object
+     * @return 0 if OK.
+     */
     @Override
     public int initialize(Configuration config) {
         return 0;
     }
 
+    /**
+     * Process all GameObject to apply corresponding response ProcessBehaviors.
+     *
+     * @param dt the elapsed time since previous call.
+     */
     public void update(long dt) {
         objects.forEach(o -> {
             for (GameObject object : objects) {
@@ -50,8 +78,15 @@ public class CollisionSystem extends System {
         });
     }
 
-    public boolean collide(GameObject o1, GameObject o2) {
-        return o1.bbox.intersect(o2.bbox);
+    /**
+     * Detect is object1 and object2 are colliding.
+     *
+     * @param object1 the GameObject to be tested with object2
+     * @param object2 the GameObject to be tested on object1.
+     * @return true if colliding.
+     */
+    public boolean collide(GameObject object1, GameObject object2) {
+        return object1.bbox.intersect(object2.bbox);
     }
 
     /**
@@ -68,6 +103,9 @@ public class CollisionSystem extends System {
         }
     }
 
+    /**
+     * Release all the response {@link ProcessBehavior}.
+     */
     @Override
     public void dispose() {
         responses.clear();

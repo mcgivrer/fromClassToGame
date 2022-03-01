@@ -10,18 +10,18 @@ import java.awt.event.KeyEvent;
 
 public class InventorySelectorBehavior implements Behavior<GameObject> {
     @Override
-    public void onInput(GameObject go, ActionHandler ih) {
-        InventoryObject io = (InventoryObject) go;
-        testKey(ih, io, KeyEvent.VK_1, 1);
-        testKey(ih, io, KeyEvent.VK_2, 2);
-        testKey(ih, io, KeyEvent.VK_3, 3);
-        testKey(ih, io, KeyEvent.VK_4, 4);
-        testKey(ih, io, KeyEvent.VK_5, 5);
-        testKey(ih, io, KeyEvent.VK_6, 6);
-        testKey(ih, io, KeyEvent.VK_7, 7);
-        testKey(ih, io, KeyEvent.VK_8, 8);
-        testKey(ih, io, KeyEvent.VK_9, 9);
-        testKey(ih, io, KeyEvent.VK_0, 10);
+    public void onInput(GameObject entity, ActionHandler ah) {
+        InventoryObject io = (InventoryObject) entity;
+        testKey(ah, io, KeyEvent.VK_1, 1);
+        testKey(ah, io, KeyEvent.VK_2, 2);
+        testKey(ah, io, KeyEvent.VK_3, 3);
+        testKey(ah, io, KeyEvent.VK_4, 4);
+        testKey(ah, io, KeyEvent.VK_5, 5);
+        testKey(ah, io, KeyEvent.VK_6, 6);
+        testKey(ah, io, KeyEvent.VK_7, 7);
+        testKey(ah, io, KeyEvent.VK_8, 8);
+        testKey(ah, io, KeyEvent.VK_9, 9);
+        testKey(ah, io, KeyEvent.VK_0, 10);
     }
 
     private void testKey(ActionHandler ih, InventoryObject io, int vk1, int placeHolderIndex) {
