@@ -8,24 +8,24 @@ import fr.snapgames.fromclasstogame.core.scenes.Scene;
 
 public class TestSceneBehavior implements Behavior<Scene> {
     @Override
-    public void onInput(Scene go, ActionHandler ih) {
+    public void onInput(Scene entity, ActionHandler ah) {
         System.out.println("- input from behavior TestBehavior");
     }
 
     @Override
-    public void onUpdate(Scene go, long dt) {
+    public void onUpdate(Scene entity, long elapsed) {
         System.out.println("- update from behavior TestBehavior");
 
     }
 
     @Override
-    public void onRender(Scene go, Render r) {
+    public void onRender(Scene go, Render render) {
         System.out.println("- render form behavior TestBehavior");
 
     }
 
     @Override
-    public void onAction(Scene go, Integer action) {
+    public void onAction(Scene entity, Integer action) {
         // this behavior has nothing to do with action.
     }
 }

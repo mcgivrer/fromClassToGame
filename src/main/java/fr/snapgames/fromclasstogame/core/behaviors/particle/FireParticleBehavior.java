@@ -21,27 +21,27 @@ public class FireParticleBehavior extends BasicParticleBehavior{
     }
 
     @Override
-    public void onCreate(Particle p) {
-        super.onCreate(p);
-        p.life = 300;
-        p.alive = true;
-        p.color = colorStart;
-        p.setSize((int)(2.0 + (Math.random() * 6.0)));
-        p.setPosition(Utils.add(parent.position, Utils.randV2d(-8, 0, -2, 2)));
-        p.setVelocity(new Vector2d(0.0, 0.0));
-        p.acceleration = Utils.randV2d(-0.0008, 0.0008, -0.15, -0.35);
+    public void onCreate(Particle entity) {
+        super.onCreate(entity);
+        entity.life = 300;
+        entity.alive = true;
+        entity.color = colorStart;
+        entity.setSize((int)(2.0 + (Math.random() * 6.0)));
+        entity.setPosition(Utils.add(parent.position, Utils.randV2d(-8, 0, -2, 2)));
+        entity.setVelocity(new Vector2d(0.0, 0.0));
+        entity.acceleration = Utils.randV2d(-0.0008, 0.0008, -0.15, -0.35);
     }
 
     @Override
-    public void onUpdate(Particle p, long dt) {
-        super.onUpdate(p, dt);
-        p.life -= dt;
+    public void onUpdate(Particle entity, long elapsed) {
+        super.onUpdate(entity, elapsed);
+        entity.life -= elapsed;
         /*p.color = fade(p.color, dt);*/
-        if (p.width > 0) {
-            p.width *= 0.98;
+        if (entity.width > 0) {
+            entity.width *= 0.98;
         } else {
-            p.life = 0;
-            p.width = 1;
+            entity.life = 0;
+            entity.width = 1;
         }
     }
 

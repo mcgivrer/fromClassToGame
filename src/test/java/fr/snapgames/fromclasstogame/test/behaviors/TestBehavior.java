@@ -7,24 +7,24 @@ import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 
 public class TestBehavior implements Behavior<GameObject> {
     @Override
-    public void onInput(GameObject go, ActionHandler ih) {
+    public void onInput(GameObject entity, ActionHandler ah) {
         System.out.println("- input from behavior TestBehavior");
     }
 
     @Override
-    public void onUpdate(GameObject go, long dt) {
+    public void onUpdate(GameObject entity, long elapsed) {
         System.out.println("- update from behavior TestBehavior");
 
     }
 
     @Override
-    public void onRender(GameObject go, Render r) {
+    public void onRender(GameObject go, Render render) {
         System.out.println("- render form behavior TestBehavior");
 
     }
 
     @Override
-    public void onAction(GameObject go, Integer action) {
+    public void onAction(GameObject entity, Integer action) {
         // this behavior has nothing to do with action.
     }
 }

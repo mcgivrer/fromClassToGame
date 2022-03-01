@@ -133,7 +133,7 @@ public class Game implements ActionHandler.ActionListener {
     public void initialize(String[] argv) throws ArgumentUnknownException {
         SystemManager.initialize(this);
         configuration.parseArgs(argv);
-        /**
+        /*
          * Why not initializing a bunch of systems to start this funky piece of game ?
          */
         SystemManager.add(Render.class);
@@ -143,7 +143,7 @@ public class Game implements ActionHandler.ActionListener {
         SystemManager.add(CollisionSystem.class);
         SystemManager.add(EntityPoolManager.class);
 
-        /**
+        /*
          * And then configure ll those strange piece of code.
          */
         SystemManager.configure(configuration);

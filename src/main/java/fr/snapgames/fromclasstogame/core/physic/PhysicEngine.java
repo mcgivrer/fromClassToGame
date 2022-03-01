@@ -188,7 +188,9 @@ public class PhysicEngine extends System {
 
             // apply Object behaviors computations
             if (!go.behaviors.isEmpty()) {
-                go.behaviors.forEach(b -> b.onUpdate(go, dt));
+                go.behaviors.forEach(b -> {
+                    b.onUpdate(go, dt);
+                });
             }
             // Update the Object itself
             go.update(dt);
