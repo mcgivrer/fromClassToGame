@@ -12,11 +12,11 @@ so) a painful activity.
 
 Here, we are going to try and change the way of producing things: let's write a Story Book of the Project.
 
-Yes, you well read the proposition: write a book.
+Yes, you will read the proposition: write a book.
 
-Bout not only, add Test and code ;)
+But not only, add Test and code ;)
 
-> Let's write the documentation of our IT project like we would write a Book, chapter after chapter, getting personas(objects) and contexts(requirement) becoming more and more detailed and complex.
+> **INFO**<br/>Let's write the documentation of our IT project like we would write a Book, chapter after chapter, getting personas(objects) and contexts(requirement) becoming more and more detailed and complex.
 
 As we all know that starting with a project, we never exactly know where the project end, and why we finally end like
 this, imagine 5 years after, WHY this decision has been taken, and who drive this implementation to this point ?
@@ -27,7 +27,7 @@ the solution, but never delete a previous part of the story to keep the full sto
 Because, during development of any solution, the engaged design evolve taking account of new needs or requirements, and
 also with mandatory code refactoring.
 
-In the first chapter you will notice how the code was reorganize while we add new features and classes, to make it
+In the first chapter you will notice how the code was reorganized while we add new features and classes, to make it
 understandable and readable by common human developers.
 
 ## Maven project
@@ -62,7 +62,7 @@ with the gherkin language.
 ## But who is Gherkin ?
 
 Do you know cucumber ? the Gherkin is the little version of cucumber ! (
-see https://en.wikipedia.org/wiki/Pickled_cucumber#Gherkin)
+see "Pickled cucumber or Gherkin" on [wikipedia](https://en.wikipedia.org/wiki/Pickled_cucumber#Gherkin))
 
 ![The Gherkin, an english word for Pickle](https://upload.wikimedia.org/wikipedia/commons/b/bb/Pickle.jpg "The english Pickel: the Gherkin !")
 
@@ -91,11 +91,11 @@ Feature: The game has scene with different types of GameObject.
       | "player" | 160.0 | 100.0 | 16 | 16 | 1 |
 ```
 
-Here is a first extract of the GameObject's scene management requirement. We clearly explain what the Scene object
+Here is a first extract of the `GameObject`'s scene management requirement. We clearly explain what the Scene object
 intends to do with GameObject. It is very technical on this sample text because we build a game and its framework.
 
-Looking at the project `docs/08-scene-manager.md` you can see in this book's chapter described the corresponding
-implementation to serve the GameObject from Scene.
+Looking at [8. Scene manager](./08-scene-manager.md) you can see in this book's chapter described the corresponding
+implementation to serve the `GameObject`'s directly from a `Scene` object.
 
 ## Ready ? Go !
 
