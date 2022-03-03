@@ -1,4 +1,5 @@
 @startuml "Demonstration"
+!theme plain
 hide members
 hide methods
 package "fr.snapgames.fromclasstogame" {

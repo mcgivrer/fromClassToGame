@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="458px" preserveAspectRatio="none" style="width:288px;height:458px;background:#FFFFFF;" version="1.1" viewBox="0 0 288 458" width="288px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="146.1973" style="stroke:#000000;stroke-width:1.0;" width="166" x="116.5" y="186.2119"/><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="43" x2="43" y1="37.0146" y2="422.0078"/><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="163.5" x2="163.5" y1="37.0146" y2="422.0078"/><rect fill="#FFFFFF" height="31.0146" style="stroke:#000000;stroke-width:1.0;" width="47" x="20" y="5"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="33" x="27" y="26.0752">main</text><rect fill="#FFFFFF" height="31.0146" style="stroke:#000000;stroke-width:1.0;" width="47" x="20" y="421.0078"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="33" x="27" y="442.083">main</text><rect fill="#FFFFFF" height="31.0146" style="stroke:#000000;stroke-width:1.0;" width="54" x="136.5" y="5"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="40" x="143.5" y="26.0752">Game</text><rect fill="#FFFFFF" height="31.0146" style="stroke:#000000;stroke-width:1.0;" width="54" x="136.5" y="421.0078"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="40" x="143.5" y="442.083">Game</text><polygon fill="#000000" points="151.5,64.814,161.5,68.814,151.5,72.814,155.5,68.814" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.0;" x1="43.5" x2="157.5" y1="68.814" y2="68.814"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="27" x="50.5" y="64.0845">new</text><polygon fill="#000000" points="54.5,94.6133,44.5,98.6133,54.5,102.6133,50.5,98.6133" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="48.5" x2="162.5" y1="98.6133" y2="98.6133"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="96" x="60.5" y="93.8838">game instance</text><polygon fill="#000000" points="151.5,124.4126,161.5,128.4126,151.5,132.4126,155.5,128.4126" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.0;" x1="43.5" x2="157.5" y1="128.4126" y2="128.4126"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="21" x="50.5" y="123.6831">run</text><line style="stroke:#000000;stroke-width:1.0;" x1="163.5" x2="205.5" y1="158.2119" y2="158.2119"/><line style="stroke:#000000;stroke-width:1.0;" x1="205.5" x2="205.5" y1="158.2119" y2="171.2119"/><line style="stroke:#000000;stroke-width:1.0;" x1="164.5" x2="205.5" y1="171.2119" y2="171.2119"/><polygon fill="#000000" points="174.5,167.2119,164.5,171.2119,174.5,175.2119,170.5,171.2119" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="52" x="170.5" y="153.4824">initialize</text><path d="M116.5,186.2119 L192.5,186.2119 L192.5,193.2119 L182.5,203.2119 L116.5,203.2119 L116.5,186.2119 " fill="#FFFFFF" style="stroke:#000000;stroke-width:1.0;"/><rect fill="none" height="146.1973" style="stroke:#000000;stroke-width:1.0;" width="166" x="116.5" y="186.2119"/><text fill="#000000" font-family="Verdana" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="31" x="131.5" y="200.2817">loop</text><text fill="#000000" font-family="Verdana" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="70" x="207.5" y="199.271">[until exit]</text><line style="stroke:#000000;stroke-width:1.0;" x1="163.5" x2="205.5" y1="225.8105" y2="225.8105"/><line style="stroke:#000000;stroke-width:1.0;" x1="205.5" x2="205.5" y1="225.8105" y2="238.8105"/><line style="stroke:#000000;stroke-width:1.0;" x1="164.5" x2="205.5" y1="238.8105" y2="238.8105"/><polygon fill="#000000" points="174.5,234.8105,164.5,238.8105,174.5,242.8105,170.5,238.8105" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="33" x="170.5" y="221.0811">input</text><line style="stroke:#000000;stroke-width:1.0;" x1="163.5" x2="205.5" y1="268.6099" y2="268.6099"/><line style="stroke:#000000;stroke-width:1.0;" x1="205.5" x2="205.5" y1="268.6099" y2="281.6099"/><line style="stroke:#000000;stroke-width:1.0;" x1="164.5" x2="205.5" y1="281.6099" y2="281.6099"/><polygon fill="#000000" points="174.5,277.6099,164.5,281.6099,174.5,285.6099,170.5,281.6099" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="46" x="170.5" y="263.8804">update</text><line style="stroke:#000000;stroke-width:1.0;" x1="163.5" x2="205.5" y1="311.4092" y2="311.4092"/><line style="stroke:#000000;stroke-width:1.0;" x1="205.5" x2="205.5" y1="311.4092" y2="324.4092"/><line style="stroke:#000000;stroke-width:1.0;" x1="164.5" x2="205.5" y1="324.4092" y2="324.4092"/><polygon fill="#000000" points="174.5,320.4092,164.5,324.4092,174.5,328.4092,170.5,324.4092" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="42" x="170.5" y="306.6797">render</text><line style="stroke:#000000;stroke-width:1.0;" x1="163.5" x2="205.5" y1="361.2085" y2="361.2085"/><line style="stroke:#000000;stroke-width:1.0;" x1="205.5" x2="205.5" y1="361.2085" y2="374.2085"/><line style="stroke:#000000;stroke-width:1.0;" x1="164.5" x2="205.5" y1="374.2085" y2="374.2085"/><polygon fill="#000000" points="174.5,370.2085,164.5,374.2085,174.5,378.2085,170.5,374.2085" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="49" x="170.5" y="356.479">dispose</text><polygon fill="#000000" points="54.5,400.0078,44.5,404.0078,54.5,408.0078,50.5,404.0078" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="48.5" x2="162.5" y1="404.0078" y2="404.0078"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="53" x="60.5" y="399.2783">return 0</text><!--MD5=[ebe90846cadd9039eabfabe0251365c3]
+@startuml "Game loop"
+!theme plain
+main -> Game : new
+Game - -> main : game instance
+main -> Game : run
+Game -> Game : initialize
+loop until exit
+  Game -> Game : input
+  Game -> Game : update
+  Game -> Game : render
+end loop
+Game -> Game : dispose
+Game - -> main : return 0
+@enduml
+
+@startuml "Game loop"
+
+
+
+
+
+
+
+<style>
+  root {
+    BackgroundColor white
+    FontColor black
+    FontName Verdana
+    HyperLinkColor blue
+    LineColor black
+    LineThickness 1
+    Margin 5
+  }
+  caption {
+    LineThickness 0
+  }
+  footer {
+    LineThickness 0
+  }
+  header {
+    LineThickness 0
+  }
+  node {
+    MaximumWidth 300
+  }
+  title {
+    FontSize 22
+    LineThickness 0
+  }
+</style>
+
+skinparam ArrowLollipopColor black
+skinparam BackgroundColor white
+skinparam DefaultFontName Verdana
+skinparam DefaultMonospacedFontName Courier
+skinparam LifelineStrategy nosolid
+skinparam ParticipantPadding 10
+skinparam SequenceLifeLineBorderColor black
+skinparam Shadowing false
+skinparam UseBetaStyle true
+
+skinparam Activity {
+  BackgroundColor white
+  BarColor black
+  BorderColor black
+  FontColor black
+  FontName Verdana
+}
+skinparam Boundary {
+  FontColor black
+}
+skinparam Box {
+  Padding 5
+}
+skinparam CircledCharacter {
+  FontColor black
+  FontName Courier
+  Radius 9
+}
+skinparam Class {
+  BackgroundColor white
+  BorderColor black
+  FontColor black
+  FontName Verdana
+}
+skinparam ClassAttribute {
+  FontColor black
+  FontName Verdana
+}
+skinparam ClassStereotype {
+  FontColor black
+  FontName Verdana
+}
+skinparam Footer {
+  FontColor black
+  FontName Verdana
+}
+skinparam Header {
+  FontColor black
+  FontName Verdana
+}
+skinparam Hyperlink {
+  Color blue
+}
+skinparam IconPackage {
+  Color black
+  BackgroundColor white
+}
+skinparam IconPrivate {
+  Color black
+  BackgroundColor white
+}
+skinparam IconProtected {
+  Color black
+  BackgroundColor white
+}
+skinparam IconPublic {
+  Color black
+  BackgroundColor white
+}
+skinparam Note {
+  FontColor black
+  FontName Verdana
+}
+skinparam Object {
+  BorderColor black
+}
+skinparam Package {
+  BorderColor black
+  FontColor black
+  FontName Verdana
+}
+skinparam State {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeA {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeC {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeE {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeI {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam StereotypeN {
+  BackgroundColor white
+  BorderColor black
+}
+skinparam UseCaseStereoType {
+  FontColor black
+  FontName Verdana
+}
+main -> Game : new
+Game - -> main : game instance
+main -> Game : run
+Game -> Game : initialize
+loop until exit
+  Game -> Game : input
+  Game -> Game : update
+  Game -> Game : render
+end loop
+Game -> Game : dispose
+Game - -> main : return 0
+@enduml
+
+PlantUML version 1.2022.1(Tue Feb 01 19:19:58 CET 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: fr
+Country: FR
+--></g></svg>

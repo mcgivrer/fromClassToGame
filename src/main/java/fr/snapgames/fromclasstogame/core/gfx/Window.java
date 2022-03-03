@@ -20,8 +20,7 @@ import java.util.*;
  * <p>The {@link Window} Component is bringing the front display to our game.</p>
  * <p>It creates the link between the {@link Render} and the OS through the JVM graphics capabilities
  * to be able to show the game's screen.</p>
- * <p>
- * The main usage is:
+ * <p>The main usage is:</p>
  *
  * <pre>
  * public class Game{
@@ -36,9 +35,9 @@ import java.util.*;
  *   //...
  * }
  * </pre>
- * </p>
  * <p>
  * And later in the main loop, after rendering things to an internal buffer:
+ * </p>
  *
  * <pre>
  * public class Game{
@@ -50,7 +49,6 @@ import java.util.*;
  *   //...
  * }
  * </pre>
- * </p>
  *
  * @author Frédéric Delorme
  * @since 1.0.0
