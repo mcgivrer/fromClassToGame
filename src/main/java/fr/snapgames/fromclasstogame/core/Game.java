@@ -225,7 +225,7 @@ public class Game implements ActionHandler.ActionListener {
 
             if (totalTmeFrame > 1000) {
                 gameTime += totalTmeFrame;
-                logger.info("one more second: {} ms => {} ms", totalTmeFrame, gameTime);
+                logger.debug("one more second: {} ms => {} ms", totalTmeFrame, gameTime);
                 totalTmeFrame = 0;
                 frames = 0;
             }
