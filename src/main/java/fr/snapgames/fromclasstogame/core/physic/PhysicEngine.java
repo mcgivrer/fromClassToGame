@@ -165,8 +165,6 @@ public class PhysicEngine extends System {
 
             if (!go.relativeToCamera) {
 
-                // update the bounding box for this GameObject.
-                go.bbox.update(go);
 
                 // Acceleration is not already used in velocity & position computation
                 computeAccelerationForGameObject(go);
@@ -190,7 +188,9 @@ public class PhysicEngine extends System {
 
             // apply Object behaviors computations
             if (!go.behaviors.isEmpty()) {
-                go.behaviors.forEach(b -> b.onUpdate(go, dt));
+                go.behaviors.forEach(b -> {
+                    b.onUpdate(go, dt);
+                });
             }
             // Update the Object itself
             go.update(dt);
@@ -393,7 +393,7 @@ public class PhysicEngine extends System {
      *
      * @return
      */
-    public Map<String,Boolean> getDebugInfo() {
+    public Map<String, Boolean> getDebugInfo() {
         return debugFlags;
     }
 }

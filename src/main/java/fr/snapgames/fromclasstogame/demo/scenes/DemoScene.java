@@ -2,14 +2,13 @@ package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.OnEntityCollision;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
-import fr.snapgames.fromclasstogame.core.entity.Camera;
-import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.LightObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.I18n;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -83,19 +82,21 @@ public class DemoScene extends AbstractScene {
         g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
         // - ParticleSystem
         g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+        // - LightObject
+        g.getRender().addRenderHelper(new LightObjectRenderHelper(g.getRender()));
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
         super.create(g);
         // Declare World playground
-        World world = new World(800, 600);
+        World world = new World(800, 400);
         // create a basic wind all over the play area
         InfluenceArea2d iArea = new InfluenceArea2d(
                 new Vector2d(0.475, 0.0),
                 new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
                         BoundingBox.BoundingBoxType.RECTANGLE),
-                3);
+                1.3);
         world.addInfluenceArea(iArea);
         g.setWorld(world);
 
@@ -126,6 +127,19 @@ public class DemoScene extends AbstractScene {
                 .addAttribute("lifes", 5)
                 .add(new PlayerActionBehavior());
         add(player);
+        g.getCollisionSystem().addResponse("player", new OnEntityCollision());
+
+        LightObject la = new LightObject("ambiant_light_01", player.position, LightType.LIGHT_AMBIANT)
+                .setForegroundColor(new Color(1.0f, 0.0f, 0.0f, 0.2f))
+                .setIntensity(0.998);
+        add(la);
+
+        LightObject lo = new LightObject("sphere_light_01", player.position, LightType.LIGHT_SPHERE)
+                .setForegroundColor(new Color(0.0f, 0.0f, 0.0f, 0.4f))
+                .setIntensity(1.0)
+                .setGlitterEffect(0.098);
+        lo.add(new CopyObjectPosition(player)).setSize(128.0, 128.0);
+        add(lo);
 
         // Define the camera following the player object.
         Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
@@ -162,7 +176,7 @@ public class DemoScene extends AbstractScene {
         int life = (int) player.getAttribute("lifes", 0);
 
         LifeObject lifeTO = (LifeObject) new LifeObject("life",
-                new Vector2d(game.getConfiguration().width-32, 4))
+                new Vector2d(game.getConfiguration().width - 32, 4))
                 .setLive(life)
                 .setRelativeToCamera(true);
         add(lifeTO);
@@ -192,7 +206,7 @@ public class DemoScene extends AbstractScene {
         add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration
-        randomizeFilteredGameObject("enemy_",true);
+        randomizeFilteredGameObject("enemy_", true);
 
         // Welcome text at middle bottom center game screen
         Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
@@ -214,8 +228,9 @@ public class DemoScene extends AbstractScene {
     /**
      * Generate a random set of nbEnemies on screen?
      *
-     * @param nbEnemies
-     * @throws UnknownResource
+     * @param nbEnemies nuùber of enemies to be generated
+     * @throws UnknownResource thrown in case the requested Enemy resources is not
+     *                         detected.
      */
     private void generateEnemies(int nbEnemies) throws UnknownResource {
         for (int i = 0; i < nbEnemies; i++) {
@@ -265,8 +280,13 @@ public class DemoScene extends AbstractScene {
     public void activate() {
         randomizeFilteredGameObject("enemy_", true);
         randomizeFilteredGameObject("player", false);
-        objects.get("player").addAttribute("score", 0);
-        objects.get("welcomeMsg").setDuration(5000).active = true;
+        try {
+            getEntityPool().get("player").addAttribute("score", 0);
+            GameObject wlcmsg = getEntityPool().get("welcomeMsg");
+            wlcmsg.setDuration(5000).setActive(true);
+        } catch (UnkownGameObject e) {
+            logger.warn("unbale to find a GameObject ", e);
+        }
 
     }
 
@@ -289,7 +309,8 @@ public class DemoScene extends AbstractScene {
     }
 
     /**
-     * generate randomly {@link Material#dynFriction}, {@link Material#bounciness} and {@link GameObject#acceleration}
+     * generate randomly {@link Material#dynFriction}, {@link Material#bounciness}
+     * and {@link GameObject#acceleration}
      * into some max values for the {@link GameObject} <code>go</code>.
      *
      * @param go          the GameObject to be randomly updated
@@ -316,18 +337,23 @@ public class DemoScene extends AbstractScene {
     public void update(long dt) {
 
         super.update(dt);
-        GameObject player = objects.get("player");
-        int score = (int) player.getAttribute("score", 0);
-        ScoreObject scoreTO = (ScoreObject) objects.get("score");
-        score++;
-        scoreTO.setScore(score);
-        player.addAttribute("score", score);
+
+        GameObject player = null;
+        try {
+            player = getEntityPool().get("player");
+            int score = (int) player.getAttribute("score", 0);
+            ScoreObject scoreTO = (ScoreObject) getEntityPool().get("score");
+            score++;
+            scoreTO.setScore(score);
+            player.addAttribute("score", score);
+        } catch (UnkownGameObject e) {
+            logger.error("unable to retrieve GameObject from EntityPool", e);
+        }
     }
 
     @Override
     public void dispose() {
-        objects.clear();
-        objectsList.clear();
+        getEntityPool().clear();
     }
 
     @Override
@@ -372,7 +398,7 @@ public class DemoScene extends AbstractScene {
 
             case KeyEvent.VK_F:
                 // switch Particles system on or off
-                find("PS_").forEach(o -> o.active = !o.active);
+                find("PS_").forEach(o -> o.setActive(!o.isActive()));
                 break;
 
             case KeyEvent.VK_G:

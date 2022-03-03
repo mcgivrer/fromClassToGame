@@ -12,15 +12,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class GameObject implements Entity {
+/**
+ * <p><code>GameObject</code> is the object managed by all the game systems.</p>
+ * <p>It's mainly any object displayed in the game !</p>
+ * <p>It will support many rendering shape as {@link GOType}.</p>
+ * <p>It will be rendered through the {@link fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper}</p>.
+ *
+ * @author Frédéric Delorme.
+ * @see fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper
+ * @since 0.0.1
+ */
+public class GameObject implements Entity<GameObject> {
 
 
     private static int index = 0;
     public int id = ++index;
     public String name;
 
-    public boolean active = true;
+    private boolean active = false;
 
     /**
      * Physic and mechanic attributes
@@ -62,6 +71,7 @@ public class GameObject implements Entity {
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
     public int debugOffsetX;
     public int debugOffsetY;
+    public boolean rendered;
     protected Map<String, Object> attributes = new HashMap<>();
 
     /**
@@ -78,6 +88,12 @@ public class GameObject implements Entity {
      * Debug level to activate the debug display output for this object.
      */
     private int debug;
+
+    /**
+     * true if this object collides with something.
+     */
+    private boolean collision;
+    private Color debugColor;
 
     /**
      * Initialize a GameObject with a default generated name "noname_999"
@@ -104,6 +120,8 @@ public class GameObject implements Entity {
      */
     public GameObject(String objectName, Vector2d position) {
         this.name = objectName;
+        this.active = true;
+        setDebugColor(Color.YELLOW);
         setPosition(position);
         life = -1;
         lifeStart = -1;
@@ -292,6 +310,30 @@ public class GameObject implements Entity {
 
     public List<GameObject> getChild() {
         return child;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public GameObject setActive(boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    public GameObject setCollide(boolean collisionFlag) {
+        this.collision = collisionFlag;
+        return this;
+    }
+
+    public void setDebugColor(Color color) {
+        this.debugColor = color;
+    }
+
+    public Color getDebugColor() {
+        return this.debugColor;
     }
 
     public enum GOType {

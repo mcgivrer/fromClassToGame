@@ -2,6 +2,8 @@ package fr.snapgames.fromclasstogame.core;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+import fr.snapgames.fromclasstogame.core.entity.EntityPoolManager;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Render;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -26,17 +28,58 @@ import java.awt.event.KeyEvent;
  */
 public class Game implements ActionHandler.ActionListener {
 
+    /**
+     * Internal logger.
+     */
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
+    /**
+     * The <code>exit</code>  flag.
+     */
     public static boolean exit = false;
+    /**
+     * testMode flag for unit test only.
+     */
     public boolean testMode = false;
+    /**
+     * The default Frame per seconds rate for rendering purpose.
+     */
     private long realFPS = 60;
+    /**
+     * The Window where all fun things happened.
+     */
     private Window window;
+    /**
+     * THe rendering system, drawing beautiful GameObject onto the Window.
+     */
     private Render renderer;
+    /**
+     * The action handler to
+     */
     private ActionHandler actionHandler;
+    /**
+     * The Pool manager
+     */
+    private EntityPoolManager epm;
+    /**
+     * The Scene manager to switch gracely between game situations
+     */
     private SceneManager sceneManager;
+    /**
+     * The unforgetteble Configuration to dispatch needed default values to all the systems and game.
+     */
     private Configuration configuration;
+    /**
+     * The bong bong system to detect when some GameObject bongs an other one.
+     */
     private CollisionSystem cs;
+    /**
+     * Finally the Physic Engine that computes all the fancy effects the Game is able to.
+     */
     private PhysicEngine pe;
+
+    /**
+     * Hey, any player need a pause, this is the flag telling theh Game it's time for a coffee/tea/anything.
+     */
     private boolean pause = false;
 
     /**
@@ -70,6 +113,11 @@ public class Game implements ActionHandler.ActionListener {
         configuration.height = h;
     }
 
+    /**
+     * The unavoidable main java method entry point to start the magic.
+     *
+     * @param argc the command line list of arguments to override the <code>Configuration</code>.
+     */
     public static void main(String[] argc) {
         try {
             Game game = new Game("config");
@@ -85,13 +133,19 @@ public class Game implements ActionHandler.ActionListener {
     public void initialize(String[] argv) throws ArgumentUnknownException {
         SystemManager.initialize(this);
         configuration.parseArgs(argv);
-
+        /*
+         * Why not initializing a bunch of systems to start this funky piece of game ?
+         */
         SystemManager.add(Render.class);
         SystemManager.add(PhysicEngine.class);
         SystemManager.add(ActionHandler.class);
         SystemManager.add(SceneManager.class);
         SystemManager.add(CollisionSystem.class);
+        SystemManager.add(EntityPoolManager.class);
 
+        /*
+         * And then configure ll those strange piece of code.
+         */
         SystemManager.configure(configuration);
 
         ResourceManager.initialize(this);
@@ -110,6 +164,10 @@ public class Game implements ActionHandler.ActionListener {
 
         sceneManager = (SceneManager) SystemManager.get(SceneManager.class);
         logger.info("** > Game initialized at {}", System.currentTimeMillis());
+
+        epm = (EntityPoolManager) SystemManager.get(EntityPoolManager.class);
+        epm.createPool(GameObject.class.getName());
+
     }
 
     /**
@@ -141,7 +199,9 @@ public class Game implements ActionHandler.ActionListener {
         long previous = start;
         long dt = 0;
         long frames = 0;
-        long timeFrame = 0;
+        long timeFrame = dt;
+        long totalTmeFrame = 0;
+        long gameTime = 0;
 
         long frameDuration = (long) (1000 / configuration.FPS);
 
@@ -151,13 +211,22 @@ public class Game implements ActionHandler.ActionListener {
             if (sceneManager.getCurrent() != null) {
                 input();
                 update(dt);
-                draw();
+                if (timeFrame < 1000 / configuration.FPS) {
+                    draw();
+                }
             }
             frames++;
-            timeFrame += dt;
-            if (timeFrame > 1000) {
+            totalTmeFrame += dt;
+
+            if (timeFrame > 1000 / configuration.FPS) {
                 timeFrame = 0;
                 realFPS = frames;
+            }
+
+            if (totalTmeFrame > 1000) {
+                gameTime += totalTmeFrame;
+                logger.debug("one more second: {} ms => {} ms", totalTmeFrame, gameTime);
+                totalTmeFrame = 0;
                 frames = 0;
             }
             long elapsed = System.currentTimeMillis() - start;
@@ -189,6 +258,9 @@ public class Game implements ActionHandler.ActionListener {
 
         if (pe != null) {
             pe.update(dt);
+        }
+        if (cs != null) {
+            cs.update(dt);
         }
         sceneManager.update(dt);
     }
@@ -297,5 +369,13 @@ public class Game implements ActionHandler.ActionListener {
 
     public void setPause(boolean p) {
         this.pause = p;
+    }
+
+    public EntityPoolManager getEPM() {
+        return this.epm;
+    }
+
+    public CollisionSystem getCollisionSystem() {
+        return cs;
     }
 }

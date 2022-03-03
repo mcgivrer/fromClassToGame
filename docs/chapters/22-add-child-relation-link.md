@@ -69,7 +69,7 @@ public class PhysicEngine implements System {
                 });
             }
         } catch (ConcurrentModificationException e) {
-            logger.error("Unable to update the GameObjects");
+            logger.warn("Unable to update the GameObjects", e);
         }
     }
     //...
