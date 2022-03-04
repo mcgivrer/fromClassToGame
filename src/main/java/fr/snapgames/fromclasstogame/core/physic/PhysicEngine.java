@@ -249,7 +249,7 @@ public class PhysicEngine extends System {
     }
 
     /**
-     * Apply max and min thresold to the computed values to set value limits.
+     * Apply max and min threshold to the computed values to set value limits.
      *
      * @param go                     The Game obejct to apply threshold on
      * @param maxHorizontalThreshold the max horizontal threshold attribute name for
