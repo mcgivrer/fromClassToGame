@@ -18,7 +18,7 @@ import java.util.*;
 
 /**
  * <p>The {@link Window} Component is bringing the front display to our game.</p>
- * <p>It creates the link between the {@link Render} and the OS through the JVM graphics capabilities
+ * <p>It creates the link between the {@link Renderer} and the OS through the JVM graphics capabilities
  * to be able to show the game's screen.</p>
  * <p>
  * The main usage is:

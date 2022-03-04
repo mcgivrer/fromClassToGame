@@ -1,6 +1,6 @@
 package fr.snapgames.fromclasstogame.core.behaviors;
 
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 
 public interface Behavior<T> {
@@ -19,7 +19,7 @@ public interface Behavior<T> {
 
     }
 
-    default void onRender(T go, Render r) {
+    default void onRender(T go, Renderer r) {
         // Nothing specific to do by default.
 
     }

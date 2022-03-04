@@ -6,8 +6,7 @@ import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionAlreadyExistsException;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
@@ -207,7 +206,7 @@ public abstract class AbstractScene implements Scene {
     }
 
 
-    public void render(Render r) {
+    public void render(Renderer r) {
 
     }
 

@@ -13,7 +13,7 @@ import java.awt.geom.Rectangle2D;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.LightObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 
 /**
  * A {@link RenderHelper} to draw {@link LightObject}.
@@ -30,7 +30,7 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
      *
      * @param r the Render system using this RenderHelper.
      */
-    public LightObjectRenderHelper(Render r) {
+    public LightObjectRenderHelper(Renderer r) {
         super(r);
     }
 

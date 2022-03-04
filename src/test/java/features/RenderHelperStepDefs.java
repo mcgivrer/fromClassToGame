@@ -2,7 +2,7 @@ package features;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
@@ -38,7 +38,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
 
     @And("the RenderHelper for {string} is ready")
     public void theRenderHelperForIsReady(String objectName) {
-        Render render = (Render) SystemManager.get(Render.class);
+        Renderer render = (Renderer) SystemManager.get(Renderer.class);
         Map<String, RenderHelper<?>> renderHelpers = render.getRenderHelpers();
         RenderHelper<?> rh = renderHelpers.get(objectName);
         assertEquals("The '" + objectName + "' RenderHelper is not defined", objectName, rh.getType());
@@ -49,7 +49,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
         try {
             Class<?> rhc = Class.forName(className);
 
-            Render render = (Render) SystemManager.get(Render.class);
+            Renderer render = (Renderer) SystemManager.get(Renderer.class);
             RenderHelper<?> rh = (RenderHelper<?>) rhc.getConstructors()[0].newInstance(render);
             render.addRenderHelper(rh);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -60,7 +60,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
     @And("the TestObject named {string} is rendered.")
     public void theTestObjectNamedIsRendered(String objectName) {
 
-        Render render = (Render) SystemManager.get(Render.class);
+        Renderer render = (Renderer) SystemManager.get(Renderer.class);
         Scene sc = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
         render.render();
         TestObject to = (TestObject) sc.getGameObject("test");

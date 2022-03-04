@@ -2,7 +2,7 @@ package fr.snapgames.fromclasstogame.demo.render;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -31,7 +31,7 @@ public class InventoryRenderHelper extends AbstractRenderHelper implements Rende
      *
      * @param r
      */
-    public InventoryRenderHelper(Render r) {
+    public InventoryRenderHelper(Renderer r) {
         super(r);
         try {
             selector = ResourceManager.getImage("images/tiles01.png:inventory_selector");

@@ -5,7 +5,7 @@ import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownExc
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
@@ -105,7 +105,7 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("the Game has {int} GameObject at window center.")
     public void thenTheGameHasIntGameObjectAtWindowCenter(int i) {
         Scene scene = getCurrentScene();
-        Render render = (Render) SystemManager.get(Render.class);
+        Renderer render = (Renderer) SystemManager.get(Renderer.class);
         GameObject go = scene.getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
                 scene.getObjectsList().size());

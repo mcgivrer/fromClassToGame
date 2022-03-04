@@ -1,8 +1,7 @@
 package fr.snapgames.fromclasstogame.test.behaviors;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 
@@ -19,7 +18,7 @@ public class TestSceneBehavior implements Behavior<Scene> {
     }
 
     @Override
-    public void onRender(Scene go, Render r) {
+    public void onRender(Scene go, Renderer r) {
         System.out.println("- render form behavior TestBehavior");
 
     }

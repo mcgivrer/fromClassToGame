@@ -27,9 +27,9 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-public class Render extends System {
+public class Renderer extends System {
 
-    private static final Logger logger = LoggerFactory.getLogger(Render.class);
+    private static final Logger logger = LoggerFactory.getLogger(Renderer.class);
     private static int screenShotIndex = 0;
     private BufferedImage buffer;
     private Camera camera;
@@ -45,7 +45,7 @@ public class Render extends System {
     private Font debugFont;
     private Font pauseFont;
 
-    public Render(Game g) {
+    public Renderer(Game g) {
         super(g);
     }
 
@@ -198,12 +198,12 @@ public class Render extends System {
         return renderHelpers;
     }
 
-    public Render moveFocusToCamera(Camera c) {
+    public Renderer moveFocusToCamera(Camera c) {
         camera = c;
         return this;
     }
 
-    public Render setViewport(int w, int h) {
+    public Renderer setViewport(int w, int h) {
         this.buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         this.viewport = new Dimension(w, h);
         return this;
@@ -231,7 +231,7 @@ public class Render extends System {
 
     @Override
     public String getName() {
-        return Render.class.getName();
+        return Renderer.class.getName();
     }
 
     public Camera getCamera() {

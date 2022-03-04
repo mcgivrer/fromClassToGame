@@ -7,7 +7,7 @@ place is a very bad practice.
 The good one consists in creating multiple classes interacting, and having a dedicated goal:
 
 - `InputHandler` will manager user/player input,
-- `Render` will render object
+- `Renderer` will Renderer object
 - `Window` will support display and adaptation to the host machine,
 - `GameObject` will be the main entity for our game.
 
@@ -114,34 +114,36 @@ And from the `Game#initialize()` method :
 
 ## Draw things
 
-Like for managing input, we are going to create a class to delegate all drawing operation: the `Render` class.
+Like for managing input, we are going to create a class to delegate all drawing operation: the `Renderer` class.
 
 This class has the particularity to draw all visual object to a buffer and will let the window display this buffer.
 
 So first we will need a class with an image buffer.
 
 ```java
+class Renderer {
     private BufferedImage buffer;
 
-public Render(int width,int height){
+    public Renderer(int width, int height) {
 
-        this.buffer=new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
-        }
+        this.buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    }
 
-public void render(){
-        Graphics2D g=this.buffer.createGraphics();
-        g.clearRect(0,0,this.buffer.getWidth(),this.buffer.getHeight());
+    public void Renderer() {
+        Graphics2D g = this.buffer.createGraphics();
+        g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         /// more thing to do n the next chapters
         g.dispose();
-        }
+    }
 
-public BufferedImage getBuffer(){
+    public BufferedImage getBuffer() {
         return this.buffer;
-        }
+    }
+}
 ```
 
-So the class is in charge of creating and maintaining an internal draw buffer. The render() method will first clear this
-image buffer (with a black color), and will do more thing in the future chapters.
+So the class is in charge of creating and maintaining an internal draw buffer. The Renderer() method will first clear
+this image buffer (with a black color), and will do more thing in the future chapters.
 
 ## extending things
 
@@ -151,7 +153,7 @@ To rise this simple Window, we are going to add some fancy features like:
 - Switching the Window display from a windowed mode to a full screen mode.
 
 These 2 features are really easy to implement. The capture mode can be implemented using the ImageIO capabilities into
-the `Render` class, the mod switching will be managed into the `Window` class.
+the `Renderer` class, the mod switching will be managed into the `Window` class.
 
 ### Screen capture
 
@@ -159,7 +161,7 @@ First of all, get the default path where to save screenshots. Then build the `sc
 the BufferedImage to a PNG file.
 
 ```java
-class Render {
+class Renderer {
     ...
 
     public void saveScreenshot() {

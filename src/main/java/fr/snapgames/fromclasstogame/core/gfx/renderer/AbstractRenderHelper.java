@@ -3,12 +3,11 @@ package fr.snapgames.fromclasstogame.core.gfx.renderer;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
@@ -19,13 +18,13 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
  * @since 1.0.0
  */
 public class AbstractRenderHelper {
-    protected final Render render;
+    protected final Renderer render;
     protected Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
     protected Color debugFrontColor = Color.ORANGE;
     protected Color debugBoxColor = Color.YELLOW;
     protected Font debugFont;
 
-    public AbstractRenderHelper(Render r) {
+    public AbstractRenderHelper(Renderer r) {
         this.render = r;
         debugFont = r.getBuffer().getGraphics().getFont().deriveFont(9.0f);
     }

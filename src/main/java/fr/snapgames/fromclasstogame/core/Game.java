@@ -2,7 +2,7 @@ package fr.snapgames.fromclasstogame.core;
 
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
@@ -31,7 +31,7 @@ public class Game implements ActionHandler.ActionListener {
     public boolean testMode = false;
     private long realFPS = 60;
     private Window window;
-    private Render renderer;
+    private Renderer renderer;
     private ActionHandler actionHandler;
     private SceneManager sceneManager;
     private Configuration configuration;
@@ -86,7 +86,7 @@ public class Game implements ActionHandler.ActionListener {
         SystemManager.initialize(this);
         configuration.parseArgs(argv);
 
-        SystemManager.add(Render.class);
+        SystemManager.add(Renderer.class);
         SystemManager.add(PhysicEngine.class);
         SystemManager.add(ActionHandler.class);
         SystemManager.add(SceneManager.class);
@@ -96,7 +96,7 @@ public class Game implements ActionHandler.ActionListener {
 
         ResourceManager.initialize(this);
 
-        renderer = (Render) SystemManager.get(Render.class);
+        renderer = (Renderer) SystemManager.get(Renderer.class);
         renderer.setDebugLevel(configuration.debugLevel);
 
         window = new Window(configuration);
@@ -287,8 +287,8 @@ public class Game implements ActionHandler.ActionListener {
         return window;
     }
 
-    public Render getRender() {
-        return (Render) SystemManager.get(Render.class);
+    public Renderer getRender() {
+        return (Renderer) SystemManager.get(Renderer.class);
     }
 
     public boolean isPause() {
