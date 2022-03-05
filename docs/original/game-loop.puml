@@ -1,0 +1,14 @@
+@startuml "Game loop"
+!theme plain
+main -> Game : new
+Game --> main : game instance
+main -> Game : run
+Game -> Game : initialize
+loop until exit
+  Game -> Game : input
+  Game -> Game : update
+  Game -> Game : render
+end loop
+Game -> Game : dispose
+Game --> main : return 0
+@enduml

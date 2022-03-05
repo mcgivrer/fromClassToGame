@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -67,9 +69,17 @@ public class PhysicEngine extends System {
     private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
 
     /**
+     * Flag to activate/deactivate internal computation for debug purpose.
+     */
+    public static final String DEBUG_FLAG_INFLUENCERS = "flagInfluencers";
+    public static final String DEBUG_FLAG_GRAVITY = "flagGravity";
+
+    /**
      * The current World object managed by the PhysicEngine.
      */
     private World world = new World(0, 0);
+
+    private Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
 
     /**
      * Initialization of the {@link PhysicEngine} System with its parent
@@ -79,6 +89,9 @@ public class PhysicEngine extends System {
      */
     public PhysicEngine(Game g) {
         super(g);
+        // set default values for flag.
+        this.debugFlags.put(DEBUG_FLAG_INFLUENCERS, true);
+        this.debugFlags.put(DEBUG_FLAG_GRAVITY, true);
     }
 
     /**
@@ -97,7 +110,7 @@ public class PhysicEngine extends System {
      * during initialization phase.
      *
      * @param config the {@link Configuration} object containing properties.
-     * @return 1 if intilization is OK.
+     * @return 1 if initialization is OK.
      */
     @Override
     public int initialize(Configuration config) {
@@ -127,9 +140,12 @@ public class PhysicEngine extends System {
     public void update(long dt) {
         try {
             if (!game.isPause()) {
-                for (GameObject go : getObjects()) {
+                getObjects().forEach(go -> {
                     update(go, dt);
-                }
+                    for(GameObject co:go.getChild()){
+                        update(co, dt);
+                    };
+                });
             }
         } catch (ConcurrentModificationException e) {
             logger.error("Unable to update the GameObjects");
@@ -149,8 +165,6 @@ public class PhysicEngine extends System {
 
             if (!go.relativeToCamera) {
 
-                // update the bounding box for this GameObject.
-                go.bbox.update(go);
 
                 // Acceleration is not already used in velocity & position computation
                 computeAccelerationForGameObject(go);
@@ -158,8 +172,8 @@ public class PhysicEngine extends System {
                 // Compute velocity
                 computeVelocity(go, dtCorrected);
                 // Compute position
-                go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
-                go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
+                go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.599, world.maxVelocity);
+                go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.599, world.maxVelocity);
 
                 // test World space constrained
                 verifyGameConstraint(go);
@@ -174,7 +188,9 @@ public class PhysicEngine extends System {
 
             // apply Object behaviors computations
             if (!go.behaviors.isEmpty()) {
-                go.behaviors.forEach(b -> b.onUpdate(go, dt));
+                go.behaviors.forEach(b -> {
+                    b.onUpdate(go, dt);
+                });
             }
             // Update the Object itself
             go.update(dt);
@@ -210,17 +226,22 @@ public class PhysicEngine extends System {
      */
     private void computeAccelerationForGameObject(GameObject go) {
         Vector2d gravity = world != null ? world.gravity : Vector2d.ZERO;
-        // Apply World influence
-        Vector2d massAppliedToGravity = new Vector2d();
-        massAppliedToGravity.add(gravity).multiply(go.mass);
-        go.forces.add(massAppliedToGravity);
 
-        Vector2d acc = applyWorldInfluenceArea2dList(go);
-        for (Vector2d f : go.forces) {
-            acc.add(f);
+        if (debugFlags.containsKey(DEBUG_FLAG_GRAVITY) && debugFlags.get(DEBUG_FLAG_GRAVITY)) {
+            // Apply World influence
+            Vector2d massAppliedToGravity = new Vector2d();
+            massAppliedToGravity = massAppliedToGravity.add(gravity).multiply(go.mass);
+            go.forces.add(massAppliedToGravity);
         }
 
-        go.acceleration.add(acc);
+        Vector2d acc = new Vector2d();
+        for (Vector2d f : go.forces) {
+            acc = acc.add(f);
+        }
+        if (debugFlags.containsKey(DEBUG_FLAG_INFLUENCERS) && debugFlags.get(DEBUG_FLAG_INFLUENCERS)) {
+            acc.add(applyWorldInfluenceArea2dList(go));
+        }
+        go.acceleration = go.acceleration.add(acc);
 
         // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and
         // `maxVerticalAcceleration`
@@ -228,7 +249,7 @@ public class PhysicEngine extends System {
     }
 
     /**
-     * Apply max and min thresold to the computed values to set value limits.
+     * Apply max and min threshold to the computed values to set value limits.
      *
      * @param go                     The Game obejct to apply threshold on
      * @param maxHorizontalThreshold the max horizontal threshold attribute name for
@@ -345,5 +366,34 @@ public class PhysicEngine extends System {
     public PhysicEngine setWorld(World w) {
         this.world = w;
         return this;
+    }
+
+    /**
+     * retrieve debug flag status for this debugFlagKey service.
+     *
+     * @param debugFlagKey
+     * @return
+     */
+    public Boolean getDebugFlag(String debugFlagKey) {
+        return debugFlags.get(debugFlagKey);
+    }
+
+    /**
+     * set debug flag status for this debugFlagKey service.
+     *
+     * @param debugFlagKey
+     * @param value
+     */
+    public void setDebugFlag(String debugFlagKey, Boolean value) {
+        debugFlags.put(debugFlagKey, value);
+    }
+
+    /**
+     * retrieve values for the
+     *
+     * @return
+     */
+    public Map<String, Boolean> getDebugInfo() {
+        return debugFlags;
     }
 }

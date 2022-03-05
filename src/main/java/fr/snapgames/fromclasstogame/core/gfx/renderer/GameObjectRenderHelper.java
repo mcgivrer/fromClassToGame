@@ -1,7 +1,7 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +10,7 @@ import java.awt.*;
 public class GameObjectRenderHelper extends AbstractRenderHelper implements RenderHelper<GameObject> {
     private static final Logger logger = LoggerFactory.getLogger(GameObjectRenderHelper.class);
 
-    public GameObjectRenderHelper(Render r) {
+    public GameObjectRenderHelper(Renderer r) {
         super(r);
     }
 

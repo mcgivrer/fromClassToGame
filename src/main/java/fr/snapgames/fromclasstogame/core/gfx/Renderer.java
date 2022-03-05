@@ -25,33 +25,98 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
-public class Render extends System {
+/**
+ * The Render system ti draw every thing the GameObject needs to.
+ *
+ * @author Frédéric Delorme
+ * @since 0.0.1
+ */
+public class Renderer extends System {
 
-    private static final Logger logger = LoggerFactory.getLogger(Render.class);
+    private static final Logger logger = LoggerFactory.getLogger(Renderer.class);
+    /**
+     * Internal index of screenshots.
+     */
     private static int screenShotIndex = 0;
+    /**
+     * THe internal render buffer.
+     */
     private BufferedImage buffer;
-    private Camera camera;
-
-    private List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
-    private Map<String, RenderHelper<?>> renderHelpers = new HashMap<>();
+    /**
+     * The viewport dimension
+     */
     private Dimension viewport;
-    private Color debugColor = Color.ORANGE;
-    private int debug = 0;
-    private World world;
-    private boolean renderScreenshot = false;
 
+    /**
+     * the current active camera.
+     */
+    private Camera camera;
+    /**
+     * The list of available camera.
+     */
+    private List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
+    /**
+     * Internal ist of Render helpers
+     */
+    private Map<String, RenderHelper<?>> renderHelpers = new HashMap<>();
+
+    /**
+     * debug color to display debug information
+     */
+    private Color debugColor = Color.ORANGE;
+    /**
+     * Debug level.
+     */
+    private int debug = 0;
+    /**
+     * font used to display debug information.
+     */
     private Font debugFont;
+
+    /**
+     * The Font used to render pause message.
+     */
     private Font pauseFont;
 
-    public Render(Game g) {
+    /**
+     * the world object to be used by the Render
+     */
+    private World world;
+    /**
+     * Flag to gather a screenshot of the rendering buffer.
+     */
+    private boolean renderScreenshot = false;
+
+    /**
+     * Create a new Render system, linked to the parent {@link Game}.
+     *
+     * @param g the parent Game
+     */
+    public Renderer(Game g) {
         super(g);
     }
 
+    /**
+     * the initialization of the system from the {@link Configuration} information.
+     *
+     * @param config The Configuration object to initialize the {@link Renderer} on.
+     * @return
+     */
     public int initialize(Configuration config) {
         setViewport(config.width, config.height);
+        /**
+         * Add the core Render helpers for {@link GameObject}.
+         */
         addRenderHelper(new GameObjectRenderHelper(this));
+        /**
+         * Add the Render helper for the {@link TextObject}.
+         */
         addRenderHelper(new TextRenderHelper(this));
+        /**
+         * Add the Render helper to draw debug information about viewport.
+         */
         addRenderHelper(new DebugViewportGridRenderHelper(this));
         Graphics2D gri = (Graphics2D) buffer.getGraphics();
         debugFont = gri.getFont().deriveFont(0.8f);
@@ -59,7 +124,10 @@ public class Render extends System {
         return 0;
     }
 
-    public void render() {
+    /**
+     * Render all the objects declared.
+     */
+    public void draw() {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
@@ -68,6 +136,7 @@ public class Render extends System {
         drawObjectList(g, objects);
         moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
+        renderWorld();
         drawPauseText(g);
 
         g.dispose();
@@ -77,6 +146,19 @@ public class Render extends System {
         }
     }
 
+    /**
+     * Render the world details but only for debug purpose.
+     */
+    private void renderWorld() {
+        // TODO: need to implement the debug rendering to World.
+    }
+
+    /**
+     * Draw the pause text if pause is activated.
+     *
+     * @param g the Graphics API
+     * @see Graphics2D
+     */
     private void drawPauseText(Graphics2D g) {
         if (game.isPause()) {
 
@@ -88,6 +170,15 @@ public class Render extends System {
         }
     }
 
+    /**
+     * draw text with a border background.
+     *
+     * @param g         the Graphics API
+     * @param pauseText the text of the pause message
+     * @param color     the color to render text
+     * @param x         horizontal position
+     * @param y         vertical position.
+     */
     private void drawTextWithBackground(Graphics2D g, String pauseText, Color color, double x, double y) {
         g.setColor(color);
         g.setFont(g.getFont().deriveFont(16.0f));
@@ -95,33 +186,62 @@ public class Render extends System {
         int txtHeight = g.getFontMetrics().getHeight();
         g.fillRect(
                 0,
-                (int)(y - txtHeight),
+                (int) (y - txtHeight),
                 this.buffer.getWidth(),
                 txtHeight + 4);
         g.setColor(Color.WHITE);
         g.drawString("Game Paused", (int) (x - (txtWidth / 2)), (int) y);
     }
 
+    /**
+     * Set the default Graphics2D API configuration for rendering purpose.
+     *
+     * @param g
+     */
     private void setRenderingHintsList(Graphics2D g) {
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
 
+    /**
+     * Move the camera focus to the camera position.
+     *
+     * @param g         the Graphics API
+     * @param camera    the camera to move the viewport on
+     * @param direction value +1 = move to, -1 = move back.
+     */
     private void moveFocusToCamera(Graphics2D g, Camera camera, double direction) {
         if (camera != null) {
             g.translate(camera.position.x * direction, camera.position.y * direction);
         }
     }
 
+    /**
+     * Draw all the requested objects.
+     *
+     * @param g       the Graphics API to be used to render all objects.
+     * @param objects the list of GameObject to be rendered.
+     */
     private void drawObjectList(Graphics2D g, List<GameObject> objects) {
-        for (GameObject go : objects) {
-            if (go.active) {
-                draw(g, go);
-            }
-        }
+        objects.stream().filter(f -> f.isActive())
+                .collect(Collectors.toList())
+                .forEach(go -> {
+                    draw(g, go);
+                    // process child
+                    go.getChild().stream()
+                            .filter(c -> c.isActive())
+                            .collect(Collectors.toList())
+                            .forEach(co -> draw(g, co));
+                });
     }
 
+    /**
+     * Draw the GameObject go with the GraphicsAPI g.
+     *
+     * @param g  the Graphics API
+     * @param go The GameObject to be rendered.
+     */
     private void draw(Graphics2D g, GameObject go) {
         String goClazzName = go.getClass().getName();
         if (renderHelpers.containsKey(goClazzName)) {
@@ -134,6 +254,11 @@ public class Render extends System {
         }
     }
 
+    /**
+     * Request to add a GameObject to the rendering stack.
+     *
+     * @param go GameObject to be rendered.
+     */
     @Override
     public synchronized void add(GameObject go) {
         if (go.relativeToCamera) {
@@ -143,6 +268,12 @@ public class Render extends System {
         }
     }
 
+    /**
+     * SOrt Object to be rendered at camera viewport position
+     *
+     * @param listObjects the list of object to render.
+     * @param go          the GameObject to be added.
+     */
     private void addAndSortObjectToList(List<GameObject> listObjects, GameObject go) {
         if (!listObjects.contains(go)) {
             listObjects.add(go);
@@ -152,10 +283,18 @@ public class Render extends System {
         }
     }
 
+    /**
+     * Clear the object rendering stack.
+     */
     public void clear() {
         objects.clear();
     }
 
+    /**
+     * get the buffer image rendered to be displayed out of this renderer.
+     *
+     * @return the rendered image buffer.
+     */
     public BufferedImage getBuffer() {
         return this.buffer;
     }
@@ -183,23 +322,61 @@ public class Render extends System {
         }
     }
 
+    /**
+     * Add a RenderHelper to te Render to extend its rendering capabilities to other specific Objects.
+     *
+     * @param rh
+     */
     public void addRenderHelper(RenderHelper<?> rh) {
         renderHelpers.put(rh.getType(), rh);
     }
 
+    /**
+     * retrieve the list of RenderHelpers
+     *
+     * @return the {@link RenderHelper} list.
+     */
     public Map<String, RenderHelper<?>> getRenderHelpers() {
         return renderHelpers;
     }
 
-    public Render moveFocusToCamera(Camera c) {
+    /**
+     * Move viewport focus to the {@link Camera} c.
+     *
+     * @param c the Camera
+     * @return the updated Render system.
+     */
+    public Renderer moveFocusToCamera(Camera c) {
         camera = c;
         return this;
     }
 
-    public Render setViewport(int w, int h) {
+    /**
+     * Set viewport dimension
+     *
+     * @param w width of the viewport
+     * @param h height of the camera
+     * @return the update Render object.
+     */
+    public Renderer setViewport(int w, int h) {
         this.buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         this.viewport = new Dimension(w, h);
         return this;
+    }
+
+    @Override
+    public void dispose() {
+        objects.clear();
+        objectsRelativeToCamera.clear();
+    }
+
+    @Override
+    public boolean isReady() {
+        return !renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
+    }
+
+    public void requestScreenShot() {
+        renderScreenshot = true;
     }
 
     public Dimension getViewport() {
@@ -224,21 +401,11 @@ public class Render extends System {
 
     @Override
     public String getName() {
-        return Render.class.getName();
+        return Renderer.class.getName();
     }
 
-    @Override
-    public void dispose() {
-        objects.clear();
-        objectsRelativeToCamera.clear();
+    public Camera getCamera() {
+        return this.camera;
     }
 
-    @Override
-    public boolean isReady() {
-        return !renderHelpers.isEmpty() && objectsRelativeToCamera.isEmpty() && objects.isEmpty();
-    }
-
-    public void requestScreenShot() {
-        renderScreenshot = true;
-    }
 }

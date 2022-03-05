@@ -90,7 +90,7 @@ public class SceneDefSteps extends CommonDefSteps {
 
     @And("the Camera {string} position is centered on the {string} position.")
     public void theCameraPositionIsCenteredOnTargetPosition(String cameraName, String targetName) {
-        Dimension viewport = game.getRender().getViewport();
+        Dimension viewport = game.getRenderer().getViewport();
         Camera cam = getCurrentScene().getCamera(cameraName);
         GameObject target = getCurrentScene().getGameObject(targetName);
         double camX = cam.position.x + (viewport.width * 0.5) - (target.width);
@@ -124,7 +124,7 @@ public class SceneDefSteps extends CommonDefSteps {
         Scene s = getScene(sceneName);
         GameObject target = s.getGameObject(targetName);
         Camera cam = new Camera(cameraName).setTarget(target).setTweenFactor(tweenFactor);
-        cam.setViewport(game.getRender().getViewport());
+        cam.setViewport(game.getRenderer().getViewport());
         s.add(cam);
     }
 

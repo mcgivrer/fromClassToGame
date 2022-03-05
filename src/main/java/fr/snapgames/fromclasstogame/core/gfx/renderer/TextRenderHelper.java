@@ -1,13 +1,13 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 
 import java.awt.*;
 
 public class TextRenderHelper extends AbstractRenderHelper implements RenderHelper<TextObject> {
 
-    public TextRenderHelper(Render r) {
+    public TextRenderHelper(Renderer r) {
         super(r);
     }
 
