@@ -3,7 +3,7 @@ package fr.snapgames.fromclasstogame.core.behaviors.particle;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.particles.Particle;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
 
@@ -103,7 +103,7 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     }
 
     @Override
-    public void onRender(Particle go, Render render) {
+    public void onRender(Particle go, Renderer renderer) {
         // Nothing special to do
     }
 

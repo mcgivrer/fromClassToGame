@@ -24,7 +24,7 @@ Starting with a very simple class, we will create a brand new Game, by adding so
 - **[08](https://github.com/mcgivrer/fromClassToGame/tree/3f81e8d66d7cc597eefee80117a0194449168c66 "see github commit log")**. [Scene Manager](chapters/08-scene-manager.md)
 - **[09](https://github.com/mcgivrer/fromClassToGame/tree/f9cd5ff878d635c01e8f5d65a74b9ef30624aeda "see github commit log")**. [extract configuration](chapters/09-extract-configuration.md)
 - **[10](https://github.com/mcgivrer/fromClassToGame/tree/ "see github commit log")**. [refactoring packages](chapters/10-refactoring-packages.md)
-- **[11](https://github.com/mcgivrer/fromClassToGame/tree/ "see github commit log")**. [Score and Render Helpers](chapters/11-score-and-render-helper.md)
+- **[11](https://github.com/mcgivrer/fromClassToGame/tree/ "see github commit log")**. [Score and Render Helpers](chapters/11-score-and-renderer-helper.md)
 - **[12](https://github.com/mcgivrer/fromClassToGame/tree/ "see github commit log")**. [See through a Camera](chapters/12-see-through-camera.md)
 - **[13](https://github.com/mcgivrer/fromClassToGame/tree/ "see github commit log")**. [Basic of a Physic Engine](chapters/13-basic-physic-engine.md)
 - **[14](https://github.com/mcgivrer/fromClassToGame/tree/ "see github commit log")**. [Collision System](chapters/14-collision-system.md)

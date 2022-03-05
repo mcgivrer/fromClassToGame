@@ -1,12 +1,12 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 
 import java.awt.*;
 
 public class TileMapRenderHelper extends AbstractRenderHelper implements RenderHelper<TileMap> {
-    public TileMapRenderHelper(Render r) {
+    public TileMapRenderHelper(Renderer r) {
         super(r);
     }
 
@@ -16,8 +16,7 @@ public class TileMapRenderHelper extends AbstractRenderHelper implements RenderH
     }
 
     @Override
-    public void draw(Graphics2D g, TileMap go) {
-        TileMap tm = (TileMap) go;
+    public void draw(Graphics2D g, TileMap tm) {
     }
 
     @Override

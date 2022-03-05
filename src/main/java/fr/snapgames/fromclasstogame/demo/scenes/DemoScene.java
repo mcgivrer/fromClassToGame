@@ -33,6 +33,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Demo Scene to test features during framework development.
@@ -69,21 +70,21 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "key", 21, 18, 8, 12);
         ResourceManager.getSlicedImage("images/tiles01.png", "potion", 34, 18, 14, 15);
         // Background image resource
-        ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
+        ResourceManager.getSlicedImage("images/backgrounds/forest.jpg", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new GameObject implementation for
         // - ScoreObject
-        g.getRender().addRenderHelper(new ScoreRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new ScoreRenderHelper(g.getRenderer()));
         // - TestValue
-        g.getRender().addRenderHelper(new TextValueRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new TextValueRenderHelper(g.getRenderer()));
         // - LifeObject
-        g.getRender().addRenderHelper(new LifeRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new LifeRenderHelper(g.getRenderer()));
         // - InventoryObject
-        g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new InventoryRenderHelper(g.getRenderer()));
         // - ParticleSystem
-        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new ParticleSystemRenderHelper(g.getRenderer()));
         // - LightObject
-        g.getRender().addRenderHelper(new LightObjectRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new LightObjectRenderHelper(g.getRenderer()));
     }
 
     @Override
@@ -130,19 +131,19 @@ public class DemoScene extends AbstractScene {
         g.getCollisionSystem().addResponse("player", new OnEntityCollision());
 
         LightObject la = new LightObject("ambiant_light_01", player.position, LightType.LIGHT_AMBIANT)
-                .setForegroundColor(new Color(1.0f, 0.0f, 0.0f, 0.2f))
+                .setForegroundColor(new Color(0.2f, 0.1f, 0.1f, 0.1f))
                 .setIntensity(0.998);
         add(la);
 
-        LightObject lo = new LightObject("sphere_light_01", player.position, LightType.LIGHT_SPHERE)
-                .setForegroundColor(new Color(0.0f, 0.0f, 0.0f, 0.4f))
+        LightObject lo = new LightObject("sphere_light_01", new Vector2d(320, 200), LightType.LIGHT_SPHERE)
+                .setForegroundColor(new Color(0.5f, 0.2f, 0.1f, 0.2f))
                 .setIntensity(1.0)
-                .setGlitterEffect(0.098);
-        lo.add(new CopyObjectPosition(player)).setSize(128.0, 128.0);
+                .setGlitterEffect(0.05);
+        lo.add(new CopyObjectPosition(player, new Vector2d(+8, +8))).setSize(64.0, 64.0);
         add(lo);
 
         // Define the camera following the player object.
-        Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
+        Dimension vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
         Camera camera = new Camera("cam01")
                 .setTarget(player)
                 .setTweenFactor(0.02)
@@ -154,7 +155,7 @@ public class DemoScene extends AbstractScene {
 
         // add a background image
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
-                .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
+                .setImage(ResourceManager.getImage("images/backgrounds/forest.jpg:background"))
                 .setType(GameObject.GOType.IMAGE)
                 .setLayer(100)
                 .setPriority(100);
@@ -211,9 +212,9 @@ public class DemoScene extends AbstractScene {
         // Welcome text at middle bottom center game screen
         Font welcomeFont = ResourceManager.getFont("./fonts/FreePixel.ttf").deriveFont(11.0f);
         String msg = I18n.getMessage("demo.message.welcome");
-        int msgWidth = game.getRender().getGraphics().getFontMetrics().stringWidth(msg);
-        double tPosX = (game.getRender().getBuffer().getWidth() - msgWidth) / 2.0;
-        double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
+        int msgWidth = game.getRenderer().getGraphics().getFontMetrics().stringWidth(msg);
+        double tPosX = (game.getRenderer().getBuffer().getWidth() - msgWidth) / 2.0;
+        double tPosY = (game.getRenderer().getBuffer().getHeight() / 5.0) * 4.0;
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText(msg)
                 .setFont(welcomeFont);

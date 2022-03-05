@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
@@ -18,14 +18,14 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
  * @since 1.0.0
  */
 public class AbstractRenderHelper {
-    protected final Render render;
+    protected final Renderer renderer;
     protected Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
     protected Color debugFrontColor = Color.ORANGE;
     protected Color debugBoxColor = Color.YELLOW;
     protected Font debugFont;
 
-    public AbstractRenderHelper(Render r) {
-        this.render = r;
+    public AbstractRenderHelper(Renderer r) {
+        this.renderer = r;
         debugFont = r.getBuffer().getGraphics().getFont().deriveFont(9.0f);
     }
 
@@ -219,7 +219,7 @@ public class AbstractRenderHelper {
      * @param go the GameObject to be processed
      */
     public void drawDebugInfo(Graphics2D g, GameObject go) {
-        int winDbgLevel = render.getGame().getWindow().getDebug();
+        int winDbgLevel = renderer.getGame().getWindow().getDebug();
         if (winDbgLevel > 0 && winDbgLevel >= go.getDebug()) {
             Vector2d pos = go.position;
             int gw = (int) go.width;
@@ -230,7 +230,7 @@ public class AbstractRenderHelper {
             drawText(g, "#" + go.id, pos.x, pos.y);
 
             setColor(g, go.getDebugColor());
-            drawRect(g, pos, gw - 1, gh - 1, 1, 1, debugBoxColor);
+            drawRect(g, go.bbox.position, go.bbox.shape.width - 1, go.bbox.shape.height - 1, 1, 1, debugBoxColor);
 
             if (go.getDebug() >= 1) {
                 double offsetY = go.debugOffsetX;

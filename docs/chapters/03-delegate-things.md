@@ -7,7 +7,7 @@ place is a very bad practice.
 The good one consists in creating multiple classes interacting, and having a dedicated goal:
 
 - `InputHandler` will manager user/player input,
-- `Render` will render object
+- `Render` will renderer object
 - `Window` will support display and adaptation to the host machine,
 - `GameObject` will be the main entity for our game.
 
@@ -20,18 +20,18 @@ the `KeyListener` interface.
 ```java
 public class Game implements KeyListener {
 
-
+    //...
     public void keyTyped(KeyEvent e) {
     }
 
     public void keyPressed(KeyEvent e) {
-        ;
-        System.out.println("key pressed: " + e.getKeyCode()):
+        System.out.println("key pressed: " + e.getKeyCode());
     }
 
     public void keyReleased(KeyEvent e) {
-        System.out.println("key released: " + e.getKeyCode()):
+        System.out.println("key released: " + e.getKeyCode());
     }
+    //...
 }
 ```
 
@@ -39,19 +39,21 @@ With those very basic events we will be able to manage keys input. but we need t
 window :
 
 ```java
-    private void initialize(String[]argv){
+public class Game implements KeyListener {
+    //...
+    private void initialize(String[] argv) {
 
         parseArgs(argv);
         // define the JFrame window title
-        frame=new JFrame(this.title);
-
+        frame = new JFrame(this.title);
         // connect listener
         frame.addListener(this);
-
-        ...
+        //...
         // let show the window !
         frame.setVisible(true);
-        }
+    }
+    //...
+}
 ```
 
 if you run your Game class, you will get some consoles log output :
@@ -102,12 +104,16 @@ public class Window {
 And from the `Game#initialize()` method :
 
 ```java
-  public void initialize(String[]argv){
-        parseArgs(argv);
-        ...
-        window=new Window(this.title,(int)(this.width*this.scale),(int)(this.height*this.scale));
 
-        }
+public class Game implements KeyListener {
+    //...
+    public void initialize(String[] argv) {
+        parseArgs(argv);
+        //...
+        window = new Window(this.title, (int) (this.width * this.scale), (int) (this.height * this.scale));
+    }
+    //...
+}
 ```
 
 > **TIPS**<br/>To discover functional test for the `Window` object, see the scenario [Game_has_a_window.feature](../../src/test/resources/features/Game_has_a_Window.feature).
@@ -121,27 +127,44 @@ This class has the particularity to draw all visual object to a buffer and will 
 So first we will need a class with an image buffer.
 
 ```java
+
+public class Renderer {
     private BufferedImage buffer;
 
-public Render(int width,int height){
+    public Renderer(int width, int height) {
 
-        this.buffer=new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
-        }
+        this.buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    }
 
-public void render(){
-        Graphics2D g=this.buffer.createGraphics();
-        g.clearRect(0,0,this.buffer.getWidth(),this.buffer.getHeight());
+    public void draw() {
+        Graphics2D g = this.buffer.createGraphics();
+        g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         /// more thing to do n the next chapters
         g.dispose();
-        }
+    }
 
-public BufferedImage getBuffer(){
+    public BufferedImage getBuffer() {
         return this.buffer;
-        }
+    }
+}
 ```
 
-So the class is in charge of creating and maintaining an internal draw buffer. The render() method will first clear this
-image buffer (with a black color), and will do more thing in the future chapters.
+So the class is in charge of creating and maintaining an internal draw buffer. The renderer() method will first clear
+this image buffer (with a black color), and will do more thing in the future chapters.
+
+Si the Game class will call the Renderer#draw method:
+
+```java
+class Game implements KeyListener{
+    //...
+    private void draw() {
+        renderer.draw();
+        window.draw(realFPS, renderer.getBuffer());
+    }
+    //...
+}
+```
+
 
 ## extending things
 
@@ -159,9 +182,8 @@ First of all, get the default path where to save screenshots. Then build the `sc
 the BufferedImage to a PNG file.
 
 ```java
-class Render {
-    ...
-
+class Renderer {
+    //...
     public void saveScreenshot() {
         final String path = this.getClass().getResource("/").getPath();
         Path targetDir = Paths.get(path + "/screenshots");
@@ -180,7 +202,7 @@ class Render {
             logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }
     }
-    ...
+    //...
 }
 ```
 
@@ -192,9 +214,9 @@ But yo activate the full screen mode, we need to gather some graphic device info
 
 ```java
 class Window {
-    ...
+    //...
     boolean fullscreen;
-    ...
+    //...
 
     public void switchFullScreen() {
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -208,6 +230,7 @@ class Window {
             fullscreen = false;
         }
     }
+    //...
 }
 ```
 

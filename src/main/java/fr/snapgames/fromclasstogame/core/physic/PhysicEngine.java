@@ -110,7 +110,7 @@ public class PhysicEngine extends System {
      * during initialization phase.
      *
      * @param config the {@link Configuration} object containing properties.
-     * @return 1 if intilization is OK.
+     * @return 1 if initialization is OK.
      */
     @Override
     public int initialize(Configuration config) {
@@ -140,11 +140,11 @@ public class PhysicEngine extends System {
     public void update(long dt) {
         try {
             if (!game.isPause()) {
-                getObjects().stream().forEach(go -> {
+                getObjects().forEach(go -> {
                     update(go, dt);
-                    go.getChild().forEach(co -> {
+                    for(GameObject co:go.getChild()){
                         update(co, dt);
-                    });
+                    };
                 });
             }
         } catch (ConcurrentModificationException e) {
@@ -172,8 +172,8 @@ public class PhysicEngine extends System {
                 // Compute velocity
                 computeVelocity(go, dtCorrected);
                 // Compute position
-                go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.1, world.maxVelocity);
-                go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.1, world.maxVelocity);
+                go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.599, world.maxVelocity);
+                go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.599, world.maxVelocity);
 
                 // test World space constrained
                 verifyGameConstraint(go);
@@ -230,18 +230,18 @@ public class PhysicEngine extends System {
         if (debugFlags.containsKey(DEBUG_FLAG_GRAVITY) && debugFlags.get(DEBUG_FLAG_GRAVITY)) {
             // Apply World influence
             Vector2d massAppliedToGravity = new Vector2d();
-            massAppliedToGravity.add(gravity).multiply(go.mass);
+            massAppliedToGravity = massAppliedToGravity.add(gravity).multiply(go.mass);
             go.forces.add(massAppliedToGravity);
         }
 
         Vector2d acc = new Vector2d();
         for (Vector2d f : go.forces) {
-            acc.add(f);
+            acc = acc.add(f);
         }
         if (debugFlags.containsKey(DEBUG_FLAG_INFLUENCERS) && debugFlags.get(DEBUG_FLAG_INFLUENCERS)) {
             acc.add(applyWorldInfluenceArea2dList(go));
         }
-        go.acceleration.add(acc);
+        go.acceleration = go.acceleration.add(acc);
 
         // limit acceleration with GameObject threshold `maxHorizontalAcceleration` and
         // `maxVerticalAcceleration`

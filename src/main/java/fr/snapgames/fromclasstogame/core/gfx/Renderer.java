@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
  * @author Frédéric Delorme
  * @since 0.0.1
  */
-public class Render extends System {
+public class Renderer extends System {
 
-    private static final Logger logger = LoggerFactory.getLogger(Render.class);
+    private static final Logger logger = LoggerFactory.getLogger(Renderer.class);
     /**
      * Internal index of screenshots.
      */
@@ -94,14 +94,14 @@ public class Render extends System {
      *
      * @param g the parent Game
      */
-    public Render(Game g) {
+    public Renderer(Game g) {
         super(g);
     }
 
     /**
      * the initialization of the system from the {@link Configuration} information.
      *
-     * @param config The Configuration object to initialize the {@link Render} on.
+     * @param config The Configuration object to initialize the {@link Renderer} on.
      * @return
      */
     public int initialize(Configuration config) {
@@ -127,7 +127,7 @@ public class Render extends System {
     /**
      * Render all the objects declared.
      */
-    public void render() {
+    public void draw() {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
@@ -346,7 +346,7 @@ public class Render extends System {
      * @param c the Camera
      * @return the updated Render system.
      */
-    public Render moveFocusToCamera(Camera c) {
+    public Renderer moveFocusToCamera(Camera c) {
         camera = c;
         return this;
     }
@@ -358,7 +358,7 @@ public class Render extends System {
      * @param h height of the camera
      * @return the update Render object.
      */
-    public Render setViewport(int w, int h) {
+    public Renderer setViewport(int w, int h) {
         this.buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         this.viewport = new Dimension(w, h);
         return this;
@@ -401,7 +401,7 @@ public class Render extends System {
 
     @Override
     public String getName() {
-        return Render.class.getName();
+        return Renderer.class.getName();
     }
 
     public Camera getCamera() {

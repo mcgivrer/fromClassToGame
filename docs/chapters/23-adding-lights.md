@@ -9,7 +9,7 @@ A light can be :
 
 - an ambient one, all the scene is lighted by this one,
 - a Spherical one, displaying a simple rounded point of light with a specific size,
-- a Conic light like a spot, to render fake suspended light, or some light project.
+- a Conic light like a spot, to renderer fake suspended light, or some light project.
 
 ## The LightObject class
 
@@ -43,7 +43,7 @@ We need to implement 3 different rendering process according to the 3 types of l
 - Ambient Light with will be a composite rendering over the camera position with a requested intensity and the requested
   foreground color,
 - A spherical light will be rendered with a gradiant sphere with a requested intensity and foreground color
-- (TODO) The Conical light or Spot will render a gradiant cone with a requested foreground color, intensity and a
+- (TODO) The Conical light or Spot will renderer a gradiant cone with a requested foreground color, intensity and a
   tracking object or a direction.
 
 The `LightObjectRenderHelper.java` file:

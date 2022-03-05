@@ -13,7 +13,7 @@ import java.awt.geom.Rectangle2D;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.LightObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 
 /**
  * A {@link RenderHelper} to draw {@link LightObject}.
@@ -30,7 +30,7 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
      *
      * @param r the Render system using this RenderHelper.
      */
-    public LightObjectRenderHelper(Render r) {
+    public LightObjectRenderHelper(Renderer r) {
         super(r);
     }
 
@@ -69,8 +69,8 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
     }
 
     private void drawAmbientLight(Graphics2D g, LightObject l) {
-        Camera cam = render.getGame().getSceneManager().getCurrent().getActiveCamera();
-        Configuration conf = render.getGame().getConfiguration();
+        Camera cam = renderer.getGame().getSceneManager().getCurrent().getActiveCamera();
+        Configuration conf = renderer.getGame().getConfiguration();
 
         final Area ambientArea = new Area(new Rectangle2D.Double(cam.position.x, cam.position.y, conf.width, conf.height));
         g.setColor(l.foregroundColor);
@@ -82,18 +82,18 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
 
     private void drawSphericalLight(Graphics2D g, LightObject l) {
         l.foregroundColor = brighten(l.foregroundColor, l.intensity);
-        Color medColor = brighten(l.foregroundColor, l.intensity / 2.0f);
-        Color endColor = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+        Color medColor = brighten(l.foregroundColor, l.intensity / 1.6f);
+        Color endColor = new Color(0.0f, 0.0f, 0.0f, 0.01f);
 
         l.colors = new Color[]{l.foregroundColor,
                 medColor,
                 endColor};
-        l.dist = new float[]{0.0f, 0.1f, 1.0f};
+        l.dist = new float[]{0.01f, 0.2f, 0.5f};
         l.rgp = new RadialGradientPaint(new Point((int) (l.position.x + (10 * Math.random() * l.glitterEffect)),
-                (int) (l.position.y + (10 * Math.random() * l.glitterEffect))), (int) l.width, l.dist, l.colors);
+                (int) (l.position.y - (10 * Math.random() * l.glitterEffect))), (int) l.width, l.dist, l.colors);
         g.setPaint(l.rgp);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, l.intensity.floatValue()));
-        g.fill(new Ellipse2D.Double(l.position.x - l.width, l.position.y - l.width, l.width * 2, l.width * 2));
+        g.fill(new Ellipse2D.Double(l.position.x - l.width / 2, l.position.y - l.width / 2, l.width, l.width));
     }
 
 

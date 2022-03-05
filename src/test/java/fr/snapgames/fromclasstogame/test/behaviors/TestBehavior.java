@@ -2,7 +2,7 @@ package fr.snapgames.fromclasstogame.test.behaviors;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 
 public class TestBehavior implements Behavior<GameObject> {
@@ -18,7 +18,7 @@ public class TestBehavior implements Behavior<GameObject> {
     }
 
     @Override
-    public void onRender(GameObject go, Render render) {
+    public void onRender(GameObject go, Renderer renderer) {
         System.out.println("- render form behavior TestBehavior");
 
     }

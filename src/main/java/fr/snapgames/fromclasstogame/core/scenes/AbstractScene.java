@@ -5,7 +5,7 @@ import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
@@ -84,7 +84,7 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (!cameras.containsKey(go.name)) {
                 cameras.put(go.name, (Camera) go);
-                game.getRender().moveFocusToCamera((Camera) go);
+                game.getRenderer().moveFocusToCamera((Camera) go);
             }
             if (activeCamera == null) {
                 activeCamera = (Camera) go;
@@ -103,7 +103,7 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (cameras.containsKey(go.name)) {
                 cameras.remove(go.name);
-                game.getRender().moveFocusToCamera(null);
+                game.getRenderer().moveFocusToCamera(null);
             }
             if (activeCamera.equals(go)) {
                 activeCamera = null;
@@ -207,7 +207,7 @@ public abstract class AbstractScene implements Scene {
     }
 
 
-    public void render(Render r) {
+    public void draw(Renderer r) {
 
     }
 

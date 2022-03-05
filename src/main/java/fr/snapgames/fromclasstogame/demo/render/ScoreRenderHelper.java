@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.nio.charset.StandardCharsets;
 
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -13,9 +13,9 @@ import fr.snapgames.fromclasstogame.demo.entity.ScoreObject;
 public class ScoreRenderHelper extends AbstractRenderHelper implements RenderHelper<ScoreObject> {
 
     BufferedImage figuresImg;
-    BufferedImage figs[];
+    BufferedImage[] figs;
 
-    public ScoreRenderHelper(Render r) {
+    public ScoreRenderHelper(Renderer r) {
         super(r);
         prepareFigures();
     }
@@ -42,10 +42,10 @@ public class ScoreRenderHelper extends AbstractRenderHelper implements RenderHel
     /**
      * Draw score with digital characters
      *
-     * @param g
-     * @param score
-     * @param x
-     * @param y
+     * @param g     the Graphics2D API
+     * @param score score text value to draw
+     * @param x     horizontal position
+     * @param y     vertical position
      */
     private void drawScore(Graphics2D g, String score, int x, int y) {
         byte c[] = score.getBytes(StandardCharsets.US_ASCII);
@@ -58,10 +58,10 @@ public class ScoreRenderHelper extends AbstractRenderHelper implements RenderHel
     /**
      * Draw a simple figure
      *
-     * @param g
-     * @param value
-     * @param x
-     * @param y
+     * @param g     the Graphics2D API
+     * @param value number value to draw
+     * @param x     horizontal position
+     * @param y     vertical position
      */
     private void drawFig(Graphics2D g, int value, int x, int y) {
         assert (value > -1);

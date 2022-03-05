@@ -530,7 +530,7 @@
                                         <argument>docs/chapters/08-scene-manager.md</argument>
                                         <argument>docs/chapters/09-extract-configuration.md</argument>
                                         <argument>docs/chapters/10-refactoring-packages.md</argument>
-                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/11-score-and-renderer-helper.md</argument>
                                         <argument>docs/chapters/12-see-through-camera.md</argument>
                                         <argument>docs/chapters/13-basic-physic-engine.md</argument>
                                         <argument>docs/chapters/14-collision-system.md</argument>
@@ -586,7 +586,7 @@
                                         <argument>docs/chapters/08-scene-manager.md</argument>
                                         <argument>docs/chapters/09-extract-configuration.md</argument>
                                         <argument>docs/chapters/10-refactoring-packages.md</argument>
-                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/11-score-and-renderer-helper.md</argument>
                                         <argument>docs/chapters/12-see-through-camera.md</argument>
                                         <argument>docs/chapters/13-basic-physic-engine.md</argument>
                                         <argument>docs/chapters/14-collision-system.md</argument>

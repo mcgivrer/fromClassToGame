@@ -37,7 +37,7 @@ Added some valuable features like:
 - A `PhysicEngine` to compute more realistic moves,
 - Some `Behavior` capability to GameObject,
 - A Map of `attributes` to GameObject
-- A new `InventoryObject` to manage a player inventory with its own render helper and behavior,
+- A new `InventoryObject` to manage a player inventory with its own renderer helper and behavior,
 - Bring the `RenderingHelper` mechanism to easily extend the `Render` capability,
 - A evolution of the  `PhysicEngine` by adding `InfluenceArea2d` bringing some perturbation to the `World`,
 - Adding `Particle` and `ParticleSystem` to create special effects like rain and fire,

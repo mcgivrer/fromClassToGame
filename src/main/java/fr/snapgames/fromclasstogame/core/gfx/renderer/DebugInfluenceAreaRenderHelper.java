@@ -1,7 +1,7 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.physic.InfluenceArea2d;
 
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.awt.*;
 public class DebugInfluenceAreaRenderHelper extends AbstractRenderHelper implements RenderHelper<InfluenceArea2d> {
 
 
-    public DebugInfluenceAreaRenderHelper(Render r) {
+    public DebugInfluenceAreaRenderHelper(Renderer r) {
         super(r);
     }
 

@@ -23,7 +23,7 @@ public class GameObject implements Entity {
 }
 ```
 
-ok, so now to be able to update this child, and render them, `Render` system must render the child element, and
+ok, so now to be able to update this child, and renderer them, `Render` system must renderer the child element, and
 `PhysicEngine` system must update them.
 
 ### Render system
@@ -52,7 +52,7 @@ public class Render implements System {
 
 ### PhysicEngine system
 
-As we render child, we must before update them, let modify the `PhysicEngine#update()` method to process also child
+As we renderer child, we must before update them, let modify the `PhysicEngine#update()` method to process also child
 objects.
 
 ```java

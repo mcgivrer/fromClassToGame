@@ -1,8 +1,6 @@
 package fr.snapgames.fromclasstogame.core.behaviors;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
@@ -34,7 +32,7 @@ public class CopyObjectPosition implements Behavior<GameObject> {
      * @param offset the offset add to the target position to be followed.
      */
     public CopyObjectPosition(GameObject target, Vector2d offset) {
-        this.target = target;
+        this(target);
         this.offset = offset;
     }
 

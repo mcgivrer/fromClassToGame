@@ -172,7 +172,7 @@ TODO
 ### Principle
 
 As seen before, the `RenderHelper` is the way we implement our specific rendering process according to the type of
-`GameObject` we need to render. So to render some  `ParticleSystem` we must provide a dedicated implmentation of the
+`GameObject` we need to renderer. So to renderer some  `ParticleSystem` we must provide a dedicated implmentation of the
 RenderHelper interface to draw the requested particles.
 
 Let's implement a default Particle rendering process.

@@ -1,7 +1,9 @@
 package fr.snapgames.fromclasstogame.core.io;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,16 +17,36 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The ResourceManager service to cache Images and Fonts.
+ *
+ * @author Frédéric Delorme
+ * @since 0.0.1
+ */
 public class ResourceManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
-    private static Map<String, Object> resources = new HashMap<>();
+    /**
+     * Internal Resource cache.
+     */
+    private static final Map<String, Object> resources = new HashMap<>();
+    /**
+     * parent Game.
+     */
     private static Game game;
 
+    /**
+     * Create the ResourceManager.
+     */
     private ResourceManager() {
     }
 
+    /**
+     * Initialize the ResourceManager
+     *
+     * @param g
+     */
     public static void initialize(Game g) {
         game = g;
     }
@@ -47,7 +69,7 @@ public class ResourceManager {
             logger.error("Unable to read font {}, use default one", path, e);
         } finally {
             if (font == null) {
-                font = game.getRender().getGraphics().getFont();
+                font = game.getRenderer().getGraphics().getFont();
             }
         }
         return font;
@@ -122,8 +144,10 @@ public class ResourceManager {
         return resources.values();
     }
 
-    public static void clear() {
+    /**
+     * free all cached resources
+     */
+    public static void dispose() {
         resources.clear();
-
     }
 }
