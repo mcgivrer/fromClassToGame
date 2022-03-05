@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.demo.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
@@ -32,9 +33,7 @@ public class InventoryObject extends GameObject {
     }
 
     public void remove(GameObject gio) {
-        if (items.contains(gio)) {
-            items.remove(gio);
-        }
+        items.remove(gio);
     }
 
     public List<GameObject> getItems() {
@@ -66,7 +65,15 @@ public class InventoryObject extends GameObject {
     @Override
     public List<String> getDebugInfo() {
         List<String> dbgInfo = super.getDebugInfo();
-        dbgInfo.add(String.format("nbObj: %d", this.items.size()));
+        dbgInfo.add(String.format("size: %d", this.items.size()));
         return dbgInfo;
+    }
+
+
+    @Override
+    public void update(long dt) {
+        super.update(dt);
+        bbox.update(this, new Vector2d(-nbPlaces * 16, 16));
+        setDebugOffset(-nbPlaces * 16, 16);
     }
 }

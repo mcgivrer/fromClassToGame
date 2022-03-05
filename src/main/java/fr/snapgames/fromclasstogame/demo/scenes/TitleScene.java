@@ -55,7 +55,7 @@ public class TitleScene extends AbstractScene {
         }
 
         // Define the camera following the player object.
-        vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
+        vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
 
         // add a background image
         GameObject bckG = new GameObject("background", new Vector2d(0.0, 0.0))
@@ -78,7 +78,7 @@ public class TitleScene extends AbstractScene {
         add(logo);
 
         // add Title
-        Graphics r = game.getRender().getGraphics();
+        Graphics r = game.getRenderer().getGraphics();
         Font titleFont = screenFont.deriveFont(16.0f);
         Font textFont = screenFont.deriveFont(8.0f);
 
@@ -120,7 +120,7 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public void dispose() {
-        ResourceManager.clear();
+        ResourceManager.dispose();
     }
 
     @Override

@@ -4,7 +4,7 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.System;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
@@ -205,17 +205,11 @@ public class SceneManager extends System {
         }
     }
 
-    /**
-     * Delegate the rendering operation to the current scene and its possible declared Behaviors
-     *
-     * @param r the Render system to delegate rendering pipeline operations.
-     */
-    public void render(Render r) {
-        getCurrent().render(r);
+    public void draw(Renderer r) {
+        getCurrent().draw(r);
         for (Behavior<Scene> b : getCurrent().getBehaviors()) {
             b.onRender(getCurrent(), r);
         }
-
     }
 
     /**

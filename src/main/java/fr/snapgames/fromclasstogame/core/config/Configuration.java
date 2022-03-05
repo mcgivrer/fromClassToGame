@@ -66,7 +66,7 @@ public class Configuration {
     private static final String CFG_KEY_TITLE = "title";
 
     /**
-     * value of the default debug level (0 to 5 fixing the details granularity,
+     * value of the default debug level (0 to 5 fixing the detailed granularity,
      * default must be set to 0 for normal mode)
      */
     private static final String CFG_KEY_DEBUG = "debug";

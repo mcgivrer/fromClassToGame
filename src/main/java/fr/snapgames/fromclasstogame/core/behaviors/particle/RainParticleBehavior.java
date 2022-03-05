@@ -29,11 +29,11 @@ public class RainParticleBehavior extends BasicParticleBehavior {
     /**
      * Here will be generated the fresh drop from top of the sky, ready to reach the floor.
      *
-     * @param drop the drop to be initialized.
+     * @param entity the drop to be initialized.
      */
     @Override
-    public void onCreate(Particle drop) {
-        super.onCreate(drop);
+    public void onCreate(Particle entity) {
+        super.onCreate(entity);
 
         // randomly set horizontal rain drop position on World viewport, and in camera view.
 
@@ -43,12 +43,12 @@ public class RainParticleBehavior extends BasicParticleBehavior {
      * Animation of the drop from sky to floor, applying the world effects and keeping visible
      * animated things in the camera viewport.
      *
-     * @param drop the drop to be animated
-     * @param dt   the elapsed time since previous call.
+     * @param entity the drop to be animated
+     * @param elapsed   the elapsed time since previous call.
      */
     @Override
-    public void onUpdate(Particle drop, long dt) {
-        super.onUpdate(drop, dt);
+    public void onUpdate(Particle entity, long elapsed) {
+        super.onUpdate(entity, elapsed);
         // Define Rain rendering window
 
         // set Rain orientation according to Wind Vector2d in world

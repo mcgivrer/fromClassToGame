@@ -2,10 +2,10 @@ package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
-import fr.snapgames.fromclasstogame.core.entity.Camera;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
+import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
@@ -28,14 +28,18 @@ import java.util.stream.Collectors;
  *     <li><kbd>B</kbd> down debug level for current selected object</li>
  *     <li><kbd>Z</kbd> reset the current scene by calling {@link Scene#create(Game)} ()}</li>
  * </ul>
- * Any new custom action can bee added to the {@link ActionHandler} with an action code from ACTION_CUSTOM (= 200).
- * <strong></strong>
+ * <p>Any new custom action can bee added to the {@link ActionHandler} with an action code from ACTION_CUSTOM (= 200).</p>
  */
 public abstract class AbstractScene implements Scene {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
-    protected Map<String, GameObject> objects = new HashMap<>();
-    protected List<GameObject> objectsList = new ArrayList<>();
+
+    //TODO: replace objects and objectList by the corresponding Game System EntityPool.
+
+    EntityPool ep = ((EntityPoolManager) SystemManager.get(EntityPoolManager.class)).get(GameObject.class.getName());
+
+    //protected Map<String, GameObject> objects = new HashMap<>();
+    //protected List<GameObject> objectsList = new ArrayList<>();
     protected List<Behavior<Scene>> behaviors = new ArrayList<>();
 
     protected Map<String, Camera> cameras = new HashMap<>();
@@ -55,12 +59,11 @@ public abstract class AbstractScene implements Scene {
     @Override
     public void initialize(Game g) {
         this.game = g;
-
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
-        game.getRender().clearObjects();
+        game.getRenderer().clearObjects();
         // will be updated into the implemented scene
     }
 
@@ -82,14 +85,13 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (!cameras.containsKey(go.name)) {
                 cameras.put(go.name, (Camera) go);
-                game.getRender().moveFocusToCamera((Camera) go);
+                game.getRenderer().moveFocusToCamera((Camera) go);
             }
             if (activeCamera == null) {
                 activeCamera = (Camera) go;
             }
-        } else if (!objects.containsKey(go.name)) {
-            objects.put(go.name, go);
-            objectsList.add(go);
+        } else if (!ep.contains(go)) {
+            ep.add(go);
             SystemManager.add(go);
         }
     }
@@ -102,20 +104,24 @@ public abstract class AbstractScene implements Scene {
         if (go.getClass().getName().equals(Camera.class.getName())) {
             if (cameras.containsKey(go.name)) {
                 cameras.remove(go.name);
-                game.getRender().moveFocusToCamera(null);
+                game.getRenderer().moveFocusToCamera(null);
             }
             if (activeCamera.equals(go)) {
                 activeCamera = null;
             }
-        } else if (objects.containsKey(go.name)) {
-            objects.remove(go.name);
-            objectsList.remove(go);
+        } else if (ep.contains(go)) {
+            ep.remove(go);
             SystemManager.remove(go);
         }
     }
 
     public GameObject getGameObject(String name) {
-        return objects.get(name);
+        try {
+            return ep.get(name);
+        } catch (UnkownGameObject e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -125,13 +131,13 @@ public abstract class AbstractScene implements Scene {
      * @return
      */
     public List<GameObject> find(String filteredName) {
-        return objectsList.stream().filter(
-                o -> o.name.contains(filteredName)
+        return ep.getEntities().stream().filter(
+                o -> o != null && o.name.contains(filteredName)
         ).collect(Collectors.toList());
     }
 
     public List<GameObject> getObjectsList() {
-        return objectsList;
+        return ep.getEntities();
     }
 
     @Override
@@ -169,8 +175,8 @@ public abstract class AbstractScene implements Scene {
 
     public void input(ActionHandler ah) {
         try {
-            objects.forEach((k, o) -> {
-                if (!o.behaviors.isEmpty()) {
+            ep.getEntities().forEach(o -> {
+                if (o != null && !o.behaviors.isEmpty()) {
                     o.behaviors.forEach(b -> {
                         b.onInput(o, ah);
                     });
@@ -183,7 +189,7 @@ public abstract class AbstractScene implements Scene {
 
     public void onAction(Integer a) {
         logger.debug("Action:" + a);
-        objects.forEach((k, o) -> {
+        ep.getEntities().forEach(o -> {
             if (!o.behaviors.isEmpty()) {
                 o.behaviors.forEach(b -> {
                     b.onAction(o, a);
@@ -196,23 +202,28 @@ public abstract class AbstractScene implements Scene {
         return sceneName;
     }
 
-    @Override
-    public void setName(String name) {
-        this.sceneName = name;
-    }
 
     public Game getGame() {
         return game;
     }
 
 
-    public void render(Render r) {
+    public void draw(Renderer r) {
 
     }
 
-
     public List<Behavior<Scene>> getBehaviors() {
         return behaviors;
+    }
+
+    protected EntityPool getEntityPool() {
+        return this.ep;
+    }
+
+
+    @Override
+    public void setName(String name) {
+        this.sceneName = name;
     }
 }
 

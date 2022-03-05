@@ -66,18 +66,18 @@ public class PlayScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new ScoreObject
-        g.getRender().addRenderHelper(new TileMapRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new TileMapRenderHelper(g.getRenderer()));
         // Add a specific Render for the new GameObject implementation for
         // - ScoreObject
-        g.getRender().addRenderHelper(new ScoreRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new ScoreRenderHelper(g.getRenderer()));
         // - TestValue
-        g.getRender().addRenderHelper(new TextValueRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new TextValueRenderHelper(g.getRenderer()));
         // - LifeObject
-        g.getRender().addRenderHelper(new LifeRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new LifeRenderHelper(g.getRenderer()));
         // - InventoryObject
-        g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new InventoryRenderHelper(g.getRenderer()));
         // - ParticleSystem
-        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+        g.getRenderer().addRenderHelper(new ParticleSystemRenderHelper(g.getRenderer()));
 
         // Initialize the Tilemap loader
         tmLoader = new LevelLoader(game);
@@ -106,7 +106,7 @@ public class PlayScene extends AbstractScene {
 
 
         // add a TileMap object
-        TileMap tm = tmLoader.load(this, "./levels/lvl0101.properties");
+        TileMap tm = tmLoader.load(this, "/levels/lvl0101.properties");
         add(tm);
 
         try {
@@ -114,7 +114,7 @@ public class PlayScene extends AbstractScene {
             GameObject player = tm.getObject("player");
 
             // Define the camera following the player object.
-            Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
+            Dimension vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
             Camera camera = new Camera("cam01")
                     .setTarget(player)
                     .setTweenFactor(0.02)
@@ -166,8 +166,8 @@ public class PlayScene extends AbstractScene {
         }
 
         // Welcome text at middle bottom center game screen
-        double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
-        double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
+        double tPosX = game.getRenderer().getBuffer().getWidth() / 3.0;
+        double tPosY = (game.getRenderer().getBuffer().getHeight() / 5.0) * 4.0;
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
         welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
