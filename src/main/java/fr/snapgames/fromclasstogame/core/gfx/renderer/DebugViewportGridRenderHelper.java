@@ -4,15 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.physic.World;
 
 public class DebugViewportGridRenderHelper extends AbstractRenderHelper implements RenderHelper<DebugViewportGrid> {
 
-    private Color gridColor = new Color(0.1f,0.4f,0.8f,0.4f);
+    private final Color gridColor = new Color(0.1f,0.4f,0.8f,0.4f);
 
 
-    public DebugViewportGridRenderHelper(Render r) {
+    public DebugViewportGridRenderHelper(Renderer r) {
         super(r);
     }
 

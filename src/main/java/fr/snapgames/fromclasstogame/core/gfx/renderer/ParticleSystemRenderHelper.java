@@ -1,13 +1,13 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 
 import java.awt.*;
 
 public class ParticleSystemRenderHelper extends AbstractRenderHelper implements RenderHelper<ParticleSystem> {
 
-    public ParticleSystemRenderHelper(Render r) {
+    public ParticleSystemRenderHelper(Renderer r) {
         super(r);
     }
 

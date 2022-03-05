@@ -96,6 +96,6 @@ public class PhysicEngine extends AbstractSystem {
 
 ## Adding some debug visual information
 
-Another RenderHelper must be added to the stack to render the `InfluenceAre` to get visual debugging information, to help developers understand possible issue. This is the `DebugInfluenceAreaRenderHelper`.
+Another RenderHelper must be added to the stack to renderer the `InfluenceAre` to get visual debugging information, to help developers understand possible issue. This is the `DebugInfluenceAreaRenderHelper`.
 
 **TODO** _Modify InfluenceArea2d to inherit from `GameObject` and modify World to use its new attributes_

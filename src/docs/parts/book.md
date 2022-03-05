@@ -19,7 +19,7 @@ tags: gamedev, framework
 @import "../chapters/08-scene-manager.md"
 @import "../chapters/09-extract-configuration.md"
 @import "../chapters/10-refactoring-packages.md"
-@import "../chapters/11-score-and-render-helper.md"
+@import "../chapters/11-score-and-renderer-helper.md"
 @import "../chapters/12-see-through-camera.md"
 @import "../chapters/13-basic-physic-engine.md"
 @import "../chapters/14-collision-system.md"

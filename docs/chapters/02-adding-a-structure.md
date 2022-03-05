@@ -2,7 +2,9 @@
 
 ## Core Game methods
 
-So now we had a basic class for our game, we need to ass some game structure.
+So now we had a basic class for our game, we need to add more structure and more feature.
+
+Code is better to understand:
 
 ```java
 public class Game {
@@ -12,41 +14,56 @@ public class Game {
         loop();
         dispose();
     }
-    private void initialize(String[] argv) {}
 
-    private void loop() {}
+    // Initialize resources
+    private void initialize(String[] argv) {
+    }
 
-    private static main(String[] argv){
+    // the main Game Loop
+    private void loop() {
+    }
+
+    // free al resources
+    private void dispose() {
+
+    }
+
+    // the java entry point
+    private static main(String[] argv) {
         Game g = new Game();
         g.run(argv);
     }
 }
 ```
 
-Our game will start with a main entry point: the run(argv) method.
+Our game will start with a main entry point: the `run(argv)` method.
 
 This main method will delegate all the sub processing to other methods:
 
 - `initialize(argv)` will get cli parameters to set new values for title, width and height of the game window. more to
   come in the next chapters.
 - `loop()` is the core processing for our game, this where all will happen.
+- `dispose()` will be executed to free resources on an exit request, let out from the main `loop()`.
 
-And finally the unforgettable `main(argv)` to create and call our `Game` object.
+And the method `main(String argv)` to create and run our `Game` object.
 
-## The LOOP
+We can also present this processing with a Sequence diagram:
 
-The `loop` method is where player input will be processed and where the game and all its internal objects and entities
-will be updated accordingly, and finally all those objects will be displayed, if necessary.
+![The Game Loop sequence](../images/illustrations/game-loop-sequence-diagram.svg)
+
+_The Game loop sequence diagram._
+
+## The Loop
+
+The `loop` method is where the player(user) input will be processed and where the game and all its internal objects and
+entities will be updated accordingly, and finally all those objects will be displayed, if necessary.
 
 ```java
 public class Game {
-
     // the flag requesting the game to exit.
     private boolean exit = false;
 
-    private initialize(String[] argv) {
-    }
-
+    //...
     private void loop() {
         long start = System.currentTimeMillis();
         long previous = start;
@@ -61,14 +78,19 @@ public class Game {
         }
     }
 
+    // manage user inputs
     private void input() {
     }
 
+    // update Game objects and mechanism
     private void update(long dt) {
     }
 
+    // draw the Game objects to the window
     private void draw() {
     }
+
+//...
 }
 ```
 
@@ -76,7 +98,7 @@ So we will need the corresponding methods in our class:
 
 - `input()` will process user input (the player),
 - `update(dt)` will compute position and behavior os objects in the game,
-- and `draw()` will display all the need object on the game window.
+- `draw()` will display all the objects on the game's window.
 
 You've also certainly noticed the boolean `exit`, used to exit the main loop on user or game request. By default, the
 boolean is `false`, and to request exiting, just set it `true`.
@@ -89,13 +111,12 @@ So let's add a JFrame to create a window and capture keyboard events:
 
 ```java
 public class Game {
-
     // the flag requesting the game to exit.
     private boolean exit = false;
     // the game window
     private JFrame frame;
 
-
+    //...    
     private void initialize(String[] argv) {
 
         parseArgs(argv);
@@ -114,6 +135,7 @@ public class Game {
         // let show the window !
         frame.setVisible(true);
     }
+    //...    
 
 }
 ```
@@ -154,7 +176,8 @@ frame.
 
 ![figure large](../images/figure-crt.jpg "The CRT swiping loop")
 
-_The CRT Tube is nothing more than a big bubble light. (3) the cathode emits ions (1) and (2) are anodes, deflecting ion ray to screen, lighting a fluorescent dot._
+_The CRT Tube is nothing more than a big bubble light. (3) the cathode emits ions (1) and (2) are anodes, deflecting ion
+ray to screen, lighting a fluorescent dot._
 
 This is the available time for the CPU to prepare next image !
 

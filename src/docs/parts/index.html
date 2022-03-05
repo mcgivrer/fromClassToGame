@@ -176,7 +176,7 @@
       <div class="include">../chapters/08-scene-manager.md</div>
       <div class="include">../chapters/09-extract-configuration.md</div>
       <div class="include">../chapters/10-refactoring-packages.md</div>
-      <div class="include">../chapters/11-score-and-render-helpers.md</div>
+      <div class="include">../chapters/11-score-and-renderer-helpers.md</div>
       <div class="include">../chapters/12-see-through-camera.md</div>
       <div class="include">../chapters/13-basic-physic-engine.md</div>
       <div class="include">../chapters/14-collision-system.md</div>
@@ -197,7 +197,7 @@
           var filename = inc.html();
           // Unable to intercept load() contents.  post-process markdown rendering with callback
           inc.load(filename, function () {
-            inc.html(mdit.render(this.innerHTML));
+            inc.html(mdit.renderer(this.innerHTML));
           });
         });
       });
