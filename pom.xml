@@ -208,7 +208,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
                 <configuration>
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
@@ -222,7 +222,7 @@
                     <nohelp>true</nohelp>
                     <overview>${project.basedir}/README.md</overview>
                     <bottom>
-                        <![CDATA[<em>Copyright © \\${project.inceptionYear} - SnapGames.</em>]]>
+                        <![CDATA[<em>Copyright © \${project.inceptionYear} - SnapGames.</em>]]>
                     </bottom>
                     <!--links>
                         <link>${project.issueManagement.url}</link>
@@ -432,7 +432,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
                 <configuration>
                     <stylesheetfile>${basedir}/docs/styles/javadoc.css</stylesheetfile>
                     <show>public</show>
