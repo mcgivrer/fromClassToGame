@@ -5,7 +5,7 @@ import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownExc
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
@@ -105,12 +105,12 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("the Game has {int} GameObject at window center.")
     public void thenTheGameHasIntGameObjectAtWindowCenter(int i) {
         Scene scene = getCurrentScene();
-        Render render = (Render) SystemManager.get(Render.class);
+        Renderer renderer = (Renderer) SystemManager.get(Renderer.class);
         GameObject go = scene.getObjectsList().get(0);
         assertEquals("The Game object list has not the right number of object", i,
                 scene.getObjectsList().size());
-        assertEquals("the GameObject is not horizontally centered", render.getBuffer().getWidth() / 2.0, go.position.x, 0.0);
-        assertEquals("the GameObject is not vertically centered", render.getBuffer().getHeight() / 2.0, go.position.y, 0.0);
+        assertEquals("the GameObject is not horizontally centered", renderer.getBuffer().getWidth() / 2.0, go.position.x, 0.0);
+        assertEquals("the GameObject is not vertically centered", renderer.getBuffer().getHeight() / 2.0, go.position.y, 0.0);
     }
 
     @Then("the Game has {int} GameObject\\(s).")
@@ -189,7 +189,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @And("the resources are cleared")
     public void theResourcesAreCleared() {
-        ResourceManager.clear();
+        ResourceManager.dispose();
     }
 
     @And("I add a TextObject named {string} at \\({double},{double})")
@@ -241,5 +241,10 @@ public class GameDefSteps extends CommonDefSteps {
         Scene scene = getCurrentScene();
         GameObject e = scene.getGameObject(entityName);
         assertEquals("Material has not been set with the right material", materialTypeName, e.material.name);
+    }
+
+    @Then("the Game has a Window.")
+    public void theGameHasAWindow() {
+        assertNotNull("The game has no window !", game.getWindow());
     }
 }

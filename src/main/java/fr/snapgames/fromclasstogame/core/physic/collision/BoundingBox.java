@@ -7,8 +7,8 @@ public class BoundingBox {
 
 
     public BoundingBoxType type = BoundingBoxType.RECTANGLE;
-    public Vector2d position = new Vector2d();
-    public Box shape = new Box();
+    public Vector2d position;
+    public Box shape;
     public double diam1;
     public double diam2;
     public Vector2d[] points;
@@ -50,9 +50,18 @@ public class BoundingBox {
             default:
                 break;
         }
-
     }
+    public void update(GameObject go,Vector2d offset) {
+        position = go.position.add(offset);
 
+        switch (type) {
+            case RECTANGLE:
+                shape.update(go,offset);
+                break;
+            default:
+                break;
+        }
+    }
     public boolean intersect(BoundingBox b) {
         boolean result = false;
         switch (type) {

@@ -1,7 +1,7 @@
 package fr.snapgames.fromclasstogame.demo.render;
 
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.AbstractRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
@@ -12,11 +12,11 @@ import java.awt.image.BufferedImage;
 
 public class LifeRenderHelper extends AbstractRenderHelper implements RenderHelper<LifeObject> {
 
-    BufferedImage figs[];
+    BufferedImage[] figs;
     BufferedImage heart;
     BufferedImage cross;
 
-    public LifeRenderHelper(Render r) {
+    public LifeRenderHelper(Renderer r) {
         super(r);
         prepareFigures();
     }
@@ -43,16 +43,16 @@ public class LifeRenderHelper extends AbstractRenderHelper implements RenderHelp
 
     @Override
     public void drawDebugInfo(Graphics2D g, LifeObject go) {
-        super.drawDebugInfo(g,go);
+        super.drawDebugInfo(g, go);
     }
 
     /**
      * Draw score with digital characters
      *
-     * @param g
-     * @param value
-     * @param x
-     * @param y
+     * @param g     the Graphics2D API
+     * @param value life value to draw
+     * @param x     horizontal position
+     * @param y     vertical position
      */
     private void drawLife(Graphics2D g, int value, int x, int y) {
         g.drawImage(heart, x, y, null);
@@ -63,10 +63,10 @@ public class LifeRenderHelper extends AbstractRenderHelper implements RenderHelp
     /**
      * Draw a simple figure
      *
-     * @param g
-     * @param value
-     * @param x
-     * @param y
+     * @param g     the Graphics2D API
+     * @param value number to draw
+     * @param x     horizontal position
+     * @param y     vertical position
      */
     private void drawFig(Graphics2D g, int value, int x, int y) {
         assert (value > -1);

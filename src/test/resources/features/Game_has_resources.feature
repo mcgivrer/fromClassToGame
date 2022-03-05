@@ -2,6 +2,7 @@ Feature: A Game has resources
 
   The Game can read resources like mage, font, etc...
 
+  @ResourceManager @RM_Font
   Scenario: 01 - Reading some Font resource
     Given the Game is instantiated
     And the Game is running
@@ -9,6 +10,7 @@ Feature: A Game has resources
     And The font "fonts/FreePixel.ttf" is added
     Then the ResourceManager has 1 resources
 
+  @ResourceManager @RM_Image
   Scenario: 02 - Reading some Image resource
     Given the Game is instantiated
     And the Game is running
@@ -16,6 +18,7 @@ Feature: A Game has resources
     And The image "images/tiles01.png" is added
     Then the ResourceManager has 1 resources
 
+  @ResourceManager @RM_Image
   Scenario: 03 - Reading some unknown resource
     Given the Game is instantiated
     And the Game is running
@@ -23,6 +26,7 @@ Feature: A Game has resources
     And The image "nothing_to_be_found_as_resource" is added
     Then the ResourceManager has 0 resources
 
+  @ResourceManager @RM_Image
   Scenario: 04 - Read and Slice an image resource
     Given the Game is instantiated
     And the Game is running

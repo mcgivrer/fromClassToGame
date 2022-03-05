@@ -2,6 +2,7 @@ Feature: The configuration is loaded from a properties file
 
   All the default configuration values are loaded from a java properties file
 
+  @Configuration
   Scenario: 01 - Load a set of default values
     Given the Configuration object is initialized with "config-test"
     Then the properties are loaded

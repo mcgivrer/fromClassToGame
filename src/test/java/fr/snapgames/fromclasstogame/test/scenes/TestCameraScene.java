@@ -17,16 +17,16 @@ public class TestCameraScene extends AbstractScene {
     @Override
     public void create(Game g) throws UnknownResource {
         GameObject target = new GameObject("target",new Vector2d(
-                g.getRender().getBuffer().getWidth() / 2,
-                g.getRender().getBuffer().getHeight() / 2));
+                g.getRenderer().getBuffer().getWidth() / 2.0,
+                g.getRenderer().getBuffer().getHeight() / 2.0));
         add(target);
         Camera cam01 = new Camera("cam01")
-                .setViewport(g.getRender().getViewport())
+                .setViewport(g.getRenderer().getViewport())
                 .setTarget(target)
                 .setTweenFactor(1);
         add(cam01);
         Camera cam02 = new Camera("cam02")
-                .setViewport(g.getRender().getViewport())
+                .setViewport(g.getRenderer().getViewport())
                 .setTarget(target)
                 .setTweenFactor(0.1);
         add(cam02);

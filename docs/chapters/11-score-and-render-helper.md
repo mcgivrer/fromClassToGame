@@ -1,7 +1,7 @@
 # Score and RenderHelper
 
 In the previous chapters, the demo scene was displaying some `GameObject`'s and a `TextObject` as a score display. In
-this chapter, we are going to create a new `ScoreObject` to support all the score mechanism. But if we want to render
+this chapter, we are going to create a new `ScoreObject` to support all the score mechanism. But if we want to renderer
 this object, we would have to modify the `Render` class to support this new rendering.
 
 And if we think further than just this score new display entity, each time we will have to add a new enttiy in the game,
@@ -23,24 +23,28 @@ public interface Entity {
 
 You can see that this entity is just an empty interface.
 
-Now, let's see how `GameObject` and `TextObject` instances are identified and displayed from the `Render` class.
+Now, let's see how `GameObject` and `TextObject` instances are identified and displayed from the `Renderer` class.
 
 ```java
-private void draw(Graphics2D g,GameObject go){
+class Renderer {
+    //...
+    private void draw(Graphics2D g, GameObject go) {
         g.setColor(go.color);
-        String goClazzName=go.getClass().getName();
-        if(GameObject.class.getName().equals(goClazzName)){
-        if(go.image!=null){
-        g.drawImage(go.image,(int)(go.x),(int)(go.y),null);
-        }else{
-        g.drawRect((int)(go.x),(int)(go.y),(int)(go.width),(int)(go.height));
+        String goClazzName = go.getClass().getName();
+        if (GameObject.class.getName().equals(goClazzName)) {
+            if (go.image != null) {
+                g.drawImage(go.image, (int) (go.x), (int) (go.y), null);
+            } else {
+                g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
+            }
+        } else if (TextObject.class.getName().equals(goClazzName)) {
+            TextObject to = (TextObject) go;
+            g.setFont(to.font);
+            g.drawString(to.text, (int) (to.x), (int) (to.y));
         }
-        }else if(TextObject.class.getName().equals(goClazzName)){
-        TextObject to=(TextObject)go;
-        g.setFont(to.font);
-        g.drawString(to.text,(int)(to.x),(int)(to.y));
-        }
-        }
+    }
+    //...
+}
 ```
 
 We badly test the class of the object and process as required for each type.
@@ -50,28 +54,38 @@ The Helper will provide the necessary operation to draw each of those object.
 - for a `GameObject`:
 
 ```java
-if(go.image!=null){
-        g.drawImage(go.image,(int)(go.x),(int)(go.y),null);
-        }else{
-        g.drawRect((int)(go.x),(int)(go.y),(int)(go.width),(int)(go.height));
+class Renderer {
+    //...
+    private void draw(Graphics2D g, GameObject go) {
+        //...
+        if (go.image != null) {
+            g.drawImage(go.image, (int) (go.x), (int) (go.y), null);
+        } else {
+            g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
         }
+        //...
+    }
+    //...
+}
 ```
 
 - for a `TextObject`:
 
-`̀``java g.setFont(to.font); g.drawString(to.text, (int) (to.x), (int) (to.y));
+```java 
+g.setFont(to.font); 
+g.drawString(to.text, (int) (to.x), (int) (to.y));
+```
 
-````
-
-
-If we want to keep the same mechanism, but adaptable: we would need a specific Helper interface, named RenderHelper to let explain which can be drawn with which operation:
+If we want to keep the same mechanism, but adaptable: we would need a specific Helper interface, named RenderHelper to
+let explain which can be drawn with which operation:
 
 ```java
 public interface RenderHelper {
     String getType();
+
     void draw(Graphics2D g, Object go);
 }
-````
+```
 
 - the `getType()` will return the name of the class to be drawn,
 - the `draw()` method will proceed the object drawing operation.
@@ -104,10 +118,10 @@ public class GameObjectRenderHelper implements RenderHelper {
 New we have a code sample for a RenderHelper, let's modify the Render to be able to use those helpers.
 
 ```java
-public class Render {
-    ...
+public class Renderer {
+    //...
     private Map<String, RenderHelper> renderHelpers = new HashMap<>();
-    ...
+    //...
 
     private void draw(Graphics2D g, GameObject go) {
         String goClazzName = go.getClass().getName();
@@ -119,7 +133,7 @@ public class Render {
             g.drawRect((int) (go.x), (int) (go.y), (int) (go.width), (int) (go.height));
         }
     }
-    ...
+    //...
 
     public void addRenderHelper(RenderHelper rh) {
         renderHelpers.put(rh.getType(), rh);
@@ -135,11 +149,15 @@ the `RenderHelper#getType()` from implementation.
 And finally, need to declare default RenderHelper into the Render constructor:
 
 ```java
-public Render(int width,int height){
-        setViewport(width,height);
+class Renderer {
+    //...
+    public Renderer(int width, int height) {
+        setViewport(width, height);
         addRenderHelper(new GameObjectRenderHelper());
         addRenderHelper(new TextRenderHelper());
-        }
+    }
+    //...
+}
 ```
 
 ### Adding a ScoreObject
@@ -219,14 +237,17 @@ The  `DemoScene` must also be adapted to declare the new `ScoreRenderHelper`; we
 the `Scene#initialize()` phase :
 
 ```java
+class DemoScene {
+    //...
     @Override
-public void initialize(Game g){
+    public void initialize(Game g) {
         super.initialize(g);
-
         // Add a specific Render for the new ScoreObject
-        g.getRender().addRenderHelper(new ScoreRenderHelper());
-        ...
-        }
+        g.getRenderer().addRenderHelper(new ScoreRenderHelper());
+        //...
+    }
+    //...
+}
 ```
 
 And now let's run this new masterpiece of code !

@@ -53,6 +53,18 @@ public class Box {
     }
 
     /**
+     * Update the box according to the {@link GameObject}.
+     *
+     * @param go the GameObject pos and size to be cloned to.
+     */
+    public void update(GameObject go, Vector2d offset) {
+        x = go.position.x + offset.x;
+        y = go.position.y + offset.y;
+        width = go.width;
+        height = go.height;
+    }
+
+    /**
      * Define if a Box is colliding with an other <code>b</code> {@link Box}.
      *
      * @param b the boc to be tested with

@@ -24,8 +24,10 @@ public class Vector2d {
     }
 
     /**
-     * @param x
-     * @param y
+     * Initialize a new Vector 2D with x and y.
+     *
+     * @param x horizontal axis vector value
+     * @param y vertical axis vector value
      */
     public Vector2d(double x, double y) {
         super();
@@ -37,12 +39,12 @@ public class Vector2d {
      * Compute distance between this vector and the vector <code>v</code>.
      *
      * @param v the vector to compute distance with.
-     * @return
+     * @return distance between the v and this vector
      */
     public double distance(Vector2d v) {
         double v0 = x - v.x;
         double v1 = y - v.y;
-        return (double) Math.sqrt(v0 * v0 + v1 * v1);
+        return Math.sqrt(v0 * v0 + v1 * v1);
     }
 
     /**
@@ -54,7 +56,7 @@ public class Vector2d {
         double length = Math.sqrt(x * x + y * y);
 
         if (length != 0.0) {
-            double s = 1.0f / (double) length;
+            double s = 1.0f / length;
             x = x * s;
             y = y * s;
         }
@@ -69,9 +71,12 @@ public class Vector2d {
      * @return this.
      */
     public Vector2d add(Vector2d v) {
+        return new Vector2d(x + v.x, y + v.y);
+        /*
         x += v.x;
         y += v.y;
         return this;
+        */
     }
 
     /**
@@ -123,8 +128,8 @@ public class Vector2d {
      * Dot product for current instance {@link Vector2d} and the <code>v1</code>
      * vector.
      *
-     * @param v1
-     * @return
+     * @param v1 second contributor to dot product.
+     * @return resulting dot product between this and v1 vectors.
      */
     public double dot(Vector2d v1) {
         return this.x * v1.x + this.y * v1.y;
