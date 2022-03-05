@@ -37,7 +37,7 @@ public class TextObect extends GameObject {
 
 ### Render adaptation
 
-The `Render.draw(Graphics,GameObject)` must be modified to let it render the `TextObject`. In a first run, we will use a
+The `Render.draw(Graphics,GameObject)` must be modified to let it renderer the `TextObject`. In a first run, we will use a
 simple if to capture the nature of the object to be rendered:
 
 ```java

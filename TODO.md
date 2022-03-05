@@ -173,67 +173,67 @@ C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclas
 C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\core\scenes\SceneManager.java:133: warning: no @param for name
     public void add(String name, Scene s) {
                 ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\InventoryRenderHelper.java:32: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\InventoryRenderHelper.java:32: warning: no description for @param
      * @param r
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\InventoryRenderHelper.java:53: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\InventoryRenderHelper.java:53: warning: no description for @param
      * @param g
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\InventoryRenderHelper.java:54: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\InventoryRenderHelper.java:54: warning: no description for @param
      * @param o
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\InventoryRenderHelper.java:89: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\InventoryRenderHelper.java:89: warning: no description for @param
      * @param g
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\InventoryRenderHelper.java:90: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\InventoryRenderHelper.java:90: warning: no description for @param
      * @param go
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\LifeRenderHelper.java:52: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\LifeRenderHelper.java:52: warning: no description for @param
      * @param g
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\LifeRenderHelper.java:53: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\LifeRenderHelper.java:53: warning: no description for @param
      * @param value
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\LifeRenderHelper.java:54: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\LifeRenderHelper.java:54: warning: no description for @param
      * @param x
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\LifeRenderHelper.java:55: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\LifeRenderHelper.java:55: warning: no description for @param
      * @param y
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\LifeRenderHelper.java:66: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\LifeRenderHelper.java:66: warning: no description for @param
      * @param g
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\LifeRenderHelper.java:67: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\LifeRenderHelper.java:67: warning: no description for @param
      * @param value
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\LifeRenderHelper.java:68: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\LifeRenderHelper.java:68: warning: no description for @param
      * @param x
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\LifeRenderHelper.java:69: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\LifeRenderHelper.java:69: warning: no description for @param
      * @param y
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\ScoreRenderHelper.java:45: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\ScoreRenderHelper.java:45: warning: no description for @param
      * @param g
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\ScoreRenderHelper.java:46: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\ScoreRenderHelper.java:46: warning: no description for @param
      * @param score
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\ScoreRenderHelper.java:47: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\ScoreRenderHelper.java:47: warning: no description for @param
      * @param x
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\ScoreRenderHelper.java:48: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\ScoreRenderHelper.java:48: warning: no description for @param
      * @param y
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\ScoreRenderHelper.java:61: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\ScoreRenderHelper.java:61: warning: no description for @param
      * @param g
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\ScoreRenderHelper.java:62: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\ScoreRenderHelper.java:62: warning: no description for @param
      * @param value
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\ScoreRenderHelper.java:63: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\ScoreRenderHelper.java:63: warning: no description for @param
      * @param x
        ^
-C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\render\ScoreRenderHelper.java:64: warning: no description for @param
+C:\Users\frede\Projects\java\fromClassToGame\src\main\java\fr\snapgames\fromclasstogame\demo\renderer\ScoreRenderHelper.java:64: warning: no description for @param
      * @param y
        ^
 Command line was: cmd.exe /X /C "C:\Users\frede\tools\java\jdk\11.0.11.9-hotspot\bin\javadoc.exe @options @packages @argfile"

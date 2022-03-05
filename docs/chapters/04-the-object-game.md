@@ -54,7 +54,7 @@ create the `id` value. The `name` is default initialized with a `noname_xx` valu
 
 And finally as we also need to display those object, and this is mainly the main goal, you need to get `color` for
 rendering little things. The `priority` attribute will be used to sort all the object before rendering, managing a depth
-level between object at rendering time. The `image` will be used to render an... image with a `BufferedImage` :)
+level between object at rendering time. The `image` will be used to renderer an... image with a `BufferedImage` :)
 If this `image` attributes is null, a rectangle of size `width x height` will be rendered (see the chapter 03
 at `Render` class).
 
@@ -80,7 +80,7 @@ public class GameObject {
 }
 ```
 
-Ok now that we know what to render, we need to add some moves.
+Ok now that we know what to renderer, we need to add some moves.
 
 ```java
 public void update(long dt){
@@ -172,10 +172,10 @@ public class Render {
 }
 ```
 
-The `add()` will add a GameObject to the "rendering list", and the `draw()` method will render a corresponding image (if
+The `add()` will add a GameObject to the "rendering list", and the `draw()` method will renderer a corresponding image (if
 not null) or draw a rectangle.
 
-So now, calling the `render()` method will parse in the priority sort order all the `GameObject` in the objects list,
+So now, calling the `renderer()` method will parse in the priority sort order all the `GameObject` in the objects list,
 and draw each of those items.
 
 > **TIPS**<br/> The GameObject rendering is test by the [Render_draw_GameObject.feature](../../src/test/resources/features/Render_draw_GameObject.feature) Feature file.

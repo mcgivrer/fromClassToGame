@@ -179,6 +179,7 @@ public class GameObject implements Entity<GameObject> {
                 debugInfo.add("pos:" + position.toString());
                 debugInfo.add("vel:" + velocity.toString());
                 debugInfo.add("acc:" + acceleration.toString());
+                debugInfo.add("life:" + life);
                 if (debug > 3) {
                     debugInfo.add("mass:" + mass);
                     if (material != null) {

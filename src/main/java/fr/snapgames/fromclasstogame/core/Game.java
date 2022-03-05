@@ -4,7 +4,7 @@ import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.entity.EntityPoolManager;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
@@ -51,7 +51,7 @@ public class Game implements ActionHandler.ActionListener {
     /**
      * THe rendering system, drawing beautiful GameObject onto the Window.
      */
-    private Render renderer;
+    private Renderer renderer;
     /**
      * The action handler to
      */
@@ -65,11 +65,11 @@ public class Game implements ActionHandler.ActionListener {
      */
     private SceneManager sceneManager;
     /**
-     * The unforgetteble Configuration to dispatch needed default values to all the systems and game.
+     * The unforgettable Configuration to dispatch needed default values to all the systems and game.
      */
     private Configuration configuration;
     /**
-     * The bong bong system to detect when some GameObject bongs an other one.
+     * The bong bong system to detect when some GameObject bongs another one.
      */
     private CollisionSystem cs;
     /**
@@ -136,7 +136,7 @@ public class Game implements ActionHandler.ActionListener {
         /*
          * Why not initializing a bunch of systems to start this funky piece of game ?
          */
-        SystemManager.add(Render.class);
+        SystemManager.add(Renderer.class);
         SystemManager.add(PhysicEngine.class);
         SystemManager.add(ActionHandler.class);
         SystemManager.add(SceneManager.class);
@@ -150,7 +150,7 @@ public class Game implements ActionHandler.ActionListener {
 
         ResourceManager.initialize(this);
 
-        renderer = (Render) SystemManager.get(Render.class);
+        renderer = (Renderer) SystemManager.get(Renderer.class);
         renderer.setDebugLevel(configuration.debugLevel);
 
         window = new Window(configuration);
@@ -186,6 +186,9 @@ public class Game implements ActionHandler.ActionListener {
         logger.info("** > End Game run execution at [@ {}]", System.currentTimeMillis());
     }
 
+    /**
+     * Create the and active the default scene
+     */
     private void createScene() {
         sceneManager.activate();
         actionHandler.add(sceneManager.getCurrent());
@@ -269,8 +272,8 @@ public class Game implements ActionHandler.ActionListener {
      * Draw the things from the game.
      */
     private void draw() {
-        renderer.render();
-        sceneManager.render(renderer);
+        renderer.draw();
+        sceneManager.draw(renderer);
         window.draw(realFPS, renderer.getBuffer());
     }
 
@@ -282,6 +285,7 @@ public class Game implements ActionHandler.ActionListener {
             window.close();
         }
         SystemManager.dispose();
+        ResourceManager.dispose();
         logger.info("** > Game disposed all dependencies [@ {}]", System.currentTimeMillis());
 
     }
@@ -359,8 +363,8 @@ public class Game implements ActionHandler.ActionListener {
         return window;
     }
 
-    public Render getRender() {
-        return (Render) SystemManager.get(Render.class);
+    public Renderer getRenderer() {
+        return (Renderer) SystemManager.get(Renderer.class);
     }
 
     public boolean isPause() {

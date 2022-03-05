@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame.core.entity;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * <p>
@@ -40,6 +41,7 @@ public class LightObject extends GameObject {
     public LightObject(String name, Vector2d pos, LightType type) {
         super(name, pos);
         setType(type);
+        setDebug(3);
     }
 
     public LightObject setType(LightType type) {
@@ -70,5 +72,18 @@ public class LightObject extends GameObject {
     public LightObject setTarget(Vector2d target) {
         this.target = target;
         return this;
+    }
+
+    @Override
+    public void update(long dt) {
+        super.update(dt);
+        bbox.update(this, new Vector2d(-width * 0.5, -height * 0.5));
+    }
+
+    @Override
+    public List<String> getDebugInfo() {
+        List<String> list = super.getDebugInfo();
+        list.add(String.format("light:%s", this.lightType));
+        return list;
     }
 }

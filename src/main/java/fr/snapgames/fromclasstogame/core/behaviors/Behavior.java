@@ -1,6 +1,6 @@
 package fr.snapgames.fromclasstogame.core.behaviors;
 
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 
 /**
@@ -52,9 +52,9 @@ public interface Behavior<T> {
      * Processing with render operation for the T entity.
      *
      * @param go     the entity T to be linked to this behavior
-     * @param render the render service to delegate drawing operation to.
+     * @param renderer the render service to delegate drawing operation to.
      */
-    default void onRender(T go, Render render) {
+    default void onRender(T go, Renderer renderer) {
         // Nothing specific to do by default.
     }
 

@@ -1,7 +1,7 @@
 # Score and RenderHelper
 
 In the previous chapters, the demo scene was displaying some `GameObject`'s and a `TextObject` as a score display. In
-this chapter, we are going to create a new `ScoreObject` to support all the score mechanism. But if we want to render
+this chapter, we are going to create a new `ScoreObject` to support all the score mechanism. But if we want to renderer
 this object, we would have to modify the `Render` class to support this new rendering.
 
 And if we think further than just this score new display entity, each time we will have to add a new enttiy in the game,
@@ -243,7 +243,7 @@ class DemoScene {
     public void initialize(Game g) {
         super.initialize(g);
         // Add a specific Render for the new ScoreObject
-        g.getRender().addRenderHelper(new ScoreRenderHelper());
+        g.getRenderer().addRenderHelper(new ScoreRenderHelper());
         //...
     }
     //...

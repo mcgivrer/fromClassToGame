@@ -29,11 +29,11 @@ public class LightStepdefs extends CommonDefSteps implements En {
             assertTrue("The LightObject " + lightName + " has not been rendered", lo.rendered);
         });
         And("I add the LightObjectRenderHelper", () -> {
-            game.getRender().addRenderHelper(new LightObjectRenderHelper(game.getRender()));
+            game.getRenderer().addRenderHelper(new LightObjectRenderHelper(game.getRenderer()));
         });
         Then("the game renders the scene", () -> {
             Scene current = game.getSceneManager().getCurrent();
-            game.getRender().render();
+            game.getRenderer().draw();
         });
         And("I set the light {string} intensity to {double}", (String lightName, Double intensity) -> {
             Scene current = game.getSceneManager().getCurrent();

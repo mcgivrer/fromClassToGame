@@ -3,7 +3,7 @@
 THe fact that we need more and more control on rendering in the helpers, demonstrates how we must update the `Render`
 class and all the drawing tools.
 
-Our Helpers will inherit from the `AstractRenderHelper`, and all common render processing will be defined in the
+Our Helpers will inherit from the `AstractRenderHelper`, and all common renderer processing will be defined in the
 abstract class.
 
 We will specifically design the debug info display in this component to let all inheriting components take benefit of

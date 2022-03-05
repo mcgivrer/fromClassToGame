@@ -7,7 +7,7 @@ import java.util.List;
 public class DebugViewportGrid extends GameObject {
     public int gridX;
     public int gridY;
-    private World w;
+    private final World w;
 
 
     public DebugViewportGrid(String objectName, World w) {
@@ -15,6 +15,7 @@ public class DebugViewportGrid extends GameObject {
         this.w = w;
         this.gridX = 16;
         this.gridY = 16;
+        this.setDebug(1);
     }
 
     public DebugViewportGrid(String objectName, World w, int gridX, int gridY) {
