@@ -1,10 +1,7 @@
 package fr.snapgames.fromclasstogame.core.behaviors;
 
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.io.actions.ActionAlreadyExistsException;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
-import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
@@ -14,8 +11,6 @@ import java.awt.event.KeyEvent;
 
 public class DebugSwitcherBehavior implements Behavior<Scene> {
 
-    private static final Logger logger = LoggerFactory.getLogger(DebugSwitcherBehavior.class);
-
     // new action defined for all scenes.
     public static final int DEBUG_ACTIVE_FLAG = ActionHandler.ACTIONS_INTERNAL + 0;
     public static final int DEBUG_NEXT_ELEMENT = ActionHandler.ACTIONS_INTERNAL + 1;
@@ -24,7 +19,7 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
     public static final int DEBUG_LEVEL_MINUS = ActionHandler.ACTIONS_INTERNAL + 4;
     public static final int DEBUG_FLAG_PE_INFLUENCERS = ActionHandler.ACTIONS_INTERNAL + 5;
     public static final int DEBUG_FLAG_PE_GRAVITY = ActionHandler.ACTIONS_INTERNAL + 6;
-
+    private static final Logger logger = LoggerFactory.getLogger(DebugSwitcherBehavior.class);
     private static int cpt = 0;
     int objIdx = 0;
     int debugLevel = 2;
@@ -34,17 +29,13 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
      */
     public DebugSwitcherBehavior() {
         ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
-        try {
-            ah.registerAction(this.DEBUG_ACTIVE_FLAG, KeyEvent.VK_D);
-            ah.registerAction(this.DEBUG_NEXT_ELEMENT, KeyEvent.VK_TAB);
-            ah.registerAction(this.DEBUG_PREV_ELEMENT, KeyEvent.VK_BACK_SPACE);
-            ah.registerAction(this.DEBUG_LEVEL_PLUS, KeyEvent.VK_N);
-            ah.registerAction(this.DEBUG_LEVEL_MINUS, KeyEvent.VK_B);
-            ah.registerAction(this.DEBUG_FLAG_PE_INFLUENCERS, KeyEvent.VK_I);
-            ah.registerAction(this.DEBUG_FLAG_PE_GRAVITY, KeyEvent.VK_G);
-        } catch (ActionAlreadyExistsException e) {
-            logger.error("Unable to add new action to ActionHandler", e);
-        }
+        ah.registerAction(this.DEBUG_ACTIVE_FLAG, KeyEvent.VK_D);
+        ah.registerAction(this.DEBUG_NEXT_ELEMENT, KeyEvent.VK_TAB);
+        ah.registerAction(this.DEBUG_PREV_ELEMENT, KeyEvent.VK_BACK_SPACE);
+        ah.registerAction(this.DEBUG_LEVEL_PLUS, KeyEvent.VK_N);
+        ah.registerAction(this.DEBUG_LEVEL_MINUS, KeyEvent.VK_B);
+        ah.registerAction(this.DEBUG_FLAG_PE_INFLUENCERS, KeyEvent.VK_I);
+        ah.registerAction(this.DEBUG_FLAG_PE_GRAVITY, KeyEvent.VK_G);
     }
 
 

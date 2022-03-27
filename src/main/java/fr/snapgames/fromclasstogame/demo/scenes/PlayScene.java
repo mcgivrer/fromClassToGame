@@ -9,10 +9,11 @@ import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.UnkownGameObjectException;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.TileMapRenderHelper;
-import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.LevelLoader;
+import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.InfluenceArea2d;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
@@ -66,18 +67,19 @@ public class PlayScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new ScoreObject
-        g.getRender().addRenderHelper(new TileMapRenderHelper(g.getRender()));
+        Renderer renderer = g.getRenderer();
+        renderer.addRenderHelper(new TileMapRenderHelper(renderer));
         // Add a specific Render for the new GameObject implementation for
         // - ScoreObject
-        g.getRender().addRenderHelper(new ScoreRenderHelper(g.getRender()));
+        renderer.addRenderHelper(new ScoreRenderHelper(renderer));
         // - TestValue
-        g.getRender().addRenderHelper(new TextValueRenderHelper(g.getRender()));
+        renderer.addRenderHelper(new TextValueRenderHelper(renderer));
         // - LifeObject
-        g.getRender().addRenderHelper(new LifeRenderHelper(g.getRender()));
+        renderer.addRenderHelper(new LifeRenderHelper(renderer));
         // - InventoryObject
-        g.getRender().addRenderHelper(new InventoryRenderHelper(g.getRender()));
+        renderer.addRenderHelper(new InventoryRenderHelper(renderer));
         // - ParticleSystem
-        g.getRender().addRenderHelper(new ParticleSystemRenderHelper(g.getRender()));
+        renderer.addRenderHelper(new ParticleSystemRenderHelper(renderer));
 
         // Initialize the Tilemap loader
         tmLoader = new LevelLoader(game);
@@ -114,7 +116,7 @@ public class PlayScene extends AbstractScene {
             GameObject player = tm.getObject("player");
 
             // Define the camera following the player object.
-            Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
+            Dimension vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
             Camera camera = new Camera("cam01")
                     .setTarget(player)
                     .setTweenFactor(0.02)
@@ -166,8 +168,8 @@ public class PlayScene extends AbstractScene {
         }
 
         // Welcome text at middle bottom center game screen
-        double tPosX = game.getRender().getBuffer().getWidth() / 3.0;
-        double tPosY = (game.getRender().getBuffer().getHeight() / 5.0) * 4.0;
+        double tPosX = game.getRenderer().getBuffer().getWidth() / 3.0;
+        double tPosY = (game.getRenderer().getBuffer().getHeight() / 5.0) * 4.0;
         TextObject welcome = new TextObject("welcomeMsg", new Vector2d(tPosX, tPosY))
                 .setText("Welcome on Board");
         welcome.setDuration(5000).setLayer(0).setPriority(1).setRelativeToCamera(true);
