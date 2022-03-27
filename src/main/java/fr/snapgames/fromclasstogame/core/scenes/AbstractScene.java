@@ -63,7 +63,7 @@ public abstract class AbstractScene implements Scene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-        game.getRender().clearObjects();
+        game.getRenderer().clearObjects();
         // will be updated into the implemented scene
     }
 

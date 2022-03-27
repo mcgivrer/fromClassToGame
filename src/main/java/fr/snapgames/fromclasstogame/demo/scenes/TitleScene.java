@@ -53,9 +53,9 @@ public class TitleScene extends AbstractScene {
             // Add the Debug switcher capability to this scene
             addBehavior(new DebugSwitcherBehavior());
         }
-
         // Define the camera following the player object.
-        vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
+        BufferedImage buffer = g.getRenderer().getBuffer();
+        vp = new Dimension(buffer.getWidth(), buffer.getHeight());
 
         // add a background image
         GameObject bckG = new GameObject("background", new Vector2d(0.0, 0.0))
@@ -78,7 +78,7 @@ public class TitleScene extends AbstractScene {
         add(logo);
 
         // add Title
-        Graphics r = game.getRender().getGraphics();
+        Graphics r = game.getRenderer().getGraphics();
         Font titleFont = screenFont.deriveFont(16.0f);
         Font textFont = screenFont.deriveFont(8.0f);
 
