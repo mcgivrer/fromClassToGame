@@ -1,14 +1,22 @@
 package fr.snapgames.fromclasstogame.core.physic;
 
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.AbstractEntity;
+import fr.snapgames.fromclasstogame.core.entity.Entity;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox.BoundingBoxType;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * An Influencer is an area in the world applying some influence to the intersecting GameObject.
+ *
+ * @author Frédéric Delorme
+ * @since 0.0.3
  */
-public class Influencer extends GameObject {
+public class Influencer extends AbstractEntity<Influencer>{
+    public BoundingBox area;
     /**
      * Default energy factor for the force.
      */
@@ -17,10 +25,12 @@ public class Influencer extends GameObject {
      * Influence Force for this influence Area
      */
     public Vector2d force = new Vector2d();
+
     /**
      * Bounding Box type for this Influencer.
      */
-    private BoundingBox.BoundingBoxType type = BoundingBox.BoundingBoxType.RECTANGLE;
+    private BoundingBoxType type = BoundingBoxType.RECTANGLE;
+
 
     /**
      * Create a new Influencer name, applying force to the area with a level of energy.
@@ -31,11 +41,11 @@ public class Influencer extends GameObject {
      * @param energy the energy factor to be applied to the intersecting object.
      */
     public Influencer(String name, Vector2d force, BoundingBox area, double energy) {
-        super(name);
+        this.name = name;
         this.force = force;
-        this.bbox = area;
+        this.area = area;
         this.energy = energy;
-        this.position = Utils.add(this.bbox.position, new Vector2d(this.bbox.diam1 / 2.0, this.bbox.diam2 / 2.0));
+        this.position = Utils.add(area.position, new Vector2d(area.shape.width / 2.0, area.shape.height / 2.0));
     }
 
 
@@ -46,12 +56,16 @@ public class Influencer extends GameObject {
      * @return value of the resulting influence on the object.
      */
     public double getInfluenceAtPosition(Vector2d otherPosition) {
-        double dx = this.position.x - otherPosition.x;
-        double dy = this.position.y - otherPosition.y;
-        double distance = Math.sqrt(dx * dx + dy * dy);
-        double factor = 100 / ((this.bbox.shape.width / 2) - distance);
+        if (this.energy > 0) {
+            double dx = this.position.x - otherPosition.x;
+            double dy = this.position.y - otherPosition.y;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+            double factor = 100.0 / distance;
 
-        return factor * energy;//
+            return factor;
+        } else {
+            return 1.0;
+        }
     }
 
     /**
@@ -60,14 +74,35 @@ public class Influencer extends GameObject {
      * @return
      */
     public List<String> getDebugInfo() {
-        List<String> debugInfo = super.getDebugInfo();
-        debugInfo.add(String.format("force:%s", force));
-        debugInfo.add(String.format("energy:%f", energy));
+        int debug = this.debugLevel;
+        this.debugOffsetX = -40;
+        this.debugOffsetY = 10;
+        List<String> debugInfo = new ArrayList<>();
+        if (debug > 0) {
+            debugInfo.add("n:" + name);
+            debugInfo.add("dbgLvl:" + debug);
+            if (debug > 2) {
+                debugInfo.add("pos:" + position.toString());
+                debugInfo.add("type:" + type);
+            }
+            debugInfo.add(String.format("force:%s", force));
+            debugInfo.add(String.format("energy:%f", energy));
+        }
         return debugInfo;
     }
 
-    public Influencer setInfluenceAreaType(BoundingBox.BoundingBoxType type) {
+    public Influencer setInfluenceAreaType(BoundingBoxType type) {
         this.type = type;
+        return this;
+    }
+
+    public Influencer setDebugFillColor(Color dfc) {
+        this.debugFillColor = dfc;
+        return this;
+    }
+
+    public Influencer setDebugLineColor(Color dlc) {
+        this.debugLineColor = dlc;
         return this;
     }
 }

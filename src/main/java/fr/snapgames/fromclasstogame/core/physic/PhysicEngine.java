@@ -209,7 +209,7 @@ public class PhysicEngine extends System {
 
         // if the GameObject is touching anything, apply some friction !
         boolean touching = (boolean) go.getAttribute("touching", false);
-        if (touching && Math.abs(go.acceleration.x) < 0.5 && Math.abs(go.acceleration.y) < 0.5) {
+        if (touching && Math.abs(go.acceleration.x) < 0.1 && Math.abs(go.acceleration.y) < 0.1) {
             double dynFriction = go.material != null ? go.material.dynFriction : 1;
             go.velocity = go.velocity.multiply(dynFriction);
         }
@@ -239,7 +239,7 @@ public class PhysicEngine extends System {
             acc = acc.add(f);
         }
         if (debugFlags.containsKey(DEBUG_FLAG_INFLUENCERS) && debugFlags.get(DEBUG_FLAG_INFLUENCERS)) {
-            acc.add(applyWorldInfluenceArea2dList(go));
+            acc = acc.add(applyWorldInfluenceList(go));
         }
         go.acceleration = go.acceleration.add(acc);
 
@@ -275,15 +275,14 @@ public class PhysicEngine extends System {
      *
      * @param go the {@link GameObject} to apply constraint and computation to.
      */
-    private Vector2d applyWorldInfluenceArea2dList(GameObject go) {
+    private Vector2d applyWorldInfluenceList(GameObject go) {
         Vector2d acc = new Vector2d();
         if (!world.influencers.isEmpty() && !go.relativeToCamera) {
-            for (Influencer area : world.influencers) {
-                if (area.bbox.intersect(go.bbox)) {
-                    double influence = area.getInfluenceAtPosition(go.position);
-                    Vector2d accIA = new Vector2d();
-                    accIA.add(area.force).multiply(influence).multiply(area.energy);
-                    acc.add(accIA);
+            for (Influencer i : world.influencers) {
+                if (i.area.intersect(go.bbox)) {
+                    double influence = i.getInfluenceAtPosition(go.position);
+                    Vector2d accIA = i.force.multiply(influence).multiply(i.energy);
+                    acc = acc.add(accIA);
                 }
             }
         }
@@ -325,7 +324,7 @@ public class PhysicEngine extends System {
             go.position.x = 0;
             go.velocity.x = -go.velocity.x * bounciness;
         }
-        if (go.position.x + go.width >= world.width) {
+        if (go.position.x + go.width > world.width) {
             go.position.x = world.width - go.width;
             go.velocity.x = -go.velocity.x * bounciness;
         }
@@ -333,7 +332,7 @@ public class PhysicEngine extends System {
             go.position.y = 0;
             go.velocity.y = -go.velocity.y * bounciness;
         }
-        if (go.position.y + go.height >= world.height) {
+        if (go.position.y + go.height > world.height) {
             go.position.y = world.height - go.height;
             go.velocity.y = -go.velocity.y * bounciness;
         }

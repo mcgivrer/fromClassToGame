@@ -1,5 +1,6 @@
 package fr.snapgames.fromclasstogame.core.physic.collision;
 
+import fr.snapgames.fromclasstogame.core.entity.AbstractEntity;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
@@ -45,7 +46,7 @@ public class Box {
      *
      * @param go the GameObject pos and size to be cloned to.
      */
-    public void update(GameObject go) {
+    public void update(AbstractEntity go) {
         x = go.position.x;
         y = go.position.y;
         width = go.width;

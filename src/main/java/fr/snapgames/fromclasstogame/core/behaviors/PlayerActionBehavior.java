@@ -52,6 +52,12 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
         if (ah.get(KeyEvent.VK_RIGHT)) {
             entity.forces.add(new Vector2d(accel, 0.0));
         }
+        if(ah.get(KeyEvent.VK_UP)){
+            entity.forces.add(new Vector2d(0.0,-accel));
+        }
+        if(ah.get(KeyEvent.VK_DOWN)){
+            entity.forces.add(new Vector2d(0.0,accel));
+        }
     }
 
     @Override

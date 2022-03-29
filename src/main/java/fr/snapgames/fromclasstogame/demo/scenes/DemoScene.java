@@ -97,22 +97,32 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         super.create(g);
         // Declare World playground
-        World world = new World(800, 400);
-        // create a basic wind all over the play area
-        Influencer iWind = new Influencer("wind",
-                new Vector2d(0.475, 0.0),
-                new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
-                        BoundingBox.BoundingBoxType.RECTANGLE),
-                1.3);
-        world.addInfluenceArea(iWind);
-        g.setWorld(world);
+        int worldWidth = g.getConfiguration().worldWidth;
+        int worldHeight = g.getConfiguration().worldHeight;
 
-        // add Viewport Grid debug view
-        DebugViewportGrid dvg = (DebugViewportGrid) new DebugViewportGrid("vpgrid", world, 32, 32)
-                .setDebug(1)
-                .setLayer(1)
-                .setPriority(2);
-        add(dvg);
+        World world = new World(worldWidth, worldHeight)
+                .setGravity(g.getConfiguration().gravity)
+                .addInfluenceArea(new Influencer("wind",
+                        new Vector2d(0.8, 0.0),
+                        new BoundingBox(
+                                new Vector2d(0.0, worldHeight * 0.5),
+                                worldWidth * 0.5, worldHeight * 0.5,
+                                BoundingBox.BoundingBoxType.RECTANGLE),
+                        5)
+                        .setDebugFillColor(new Color(0.0f, 0.5f, 0.9f, 0.25f))
+                        .setDebugLineColor(Color.CYAN)
+                )
+                .addInfluenceArea(new Influencer("magneticForce",
+                        new Vector2d(0.0, -2),
+                        new BoundingBox(
+                                new Vector2d(worldWidth*0.65, worldHeight *0.35),
+                                worldWidth*0.25, worldHeight * 0.25,
+                                BoundingBox.BoundingBoxType.CIRCLE),
+                        15)
+                        .setDebugFillColor(new Color(0.5f, 0.9f, 0.2f, 0.25f))
+                        .setDebugLineColor(Color.GREEN)
+                );
+        g.setWorld(world);
 
         // add main character (player)
         Material m = DefaultMaterial.newMaterial("playerMaterial", 0.25, 0.3, 0.80, 0.98);
@@ -231,7 +241,6 @@ public class DemoScene extends AbstractScene {
                 .setDebug(3);
         add(welcome);
 
-        addAll(world.influencers);
     }
 
     /**

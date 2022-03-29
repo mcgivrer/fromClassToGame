@@ -56,25 +56,20 @@ import java.util.*;
 public class Window extends JPanel {
 
     private static final Logger logger = LoggerFactory.getLogger(Window.class);
-
+    /// list of attached event listener to his window.
+    List<EventListener> listenersBck = new ArrayList<>();
     private Configuration config;
     private GraphicsDevice currentDevice;
     private Dimension dim;
     private float ratio;
     private Font debugFont;
     private int debug = 0;
-
     private boolean fullscreen;
     private int defaultScreen = -1;
     private int currentScreen = 0;
-
     private JFrame frame;
-
     // Debug information on the debug status line
     private Map<String, String> debugElementInfo = new HashMap<>();
-
-    /// list of attached event listener to his window.
-    List<EventListener> listenersBck = new ArrayList<>();
 
     /**
      * Only available for test purpose.
@@ -99,6 +94,7 @@ public class Window extends JPanel {
         super(new GridLayout());
         this.config = config;
         createFrame();
+        this.debug = config.debugLevel;
         defaultScreen = config.defaultScreen;
     }
 
@@ -183,7 +179,6 @@ public class Window extends JPanel {
                 return;
             }
             g = (Graphics2D) frame.getBufferStrategy().getDrawGraphics();
-
         }
         if (g != null && frame.isDisplayable()) {
             int yPos = !isFullScreen() ? 32 : 0;

@@ -95,7 +95,7 @@ public abstract class AbstractScene implements Scene {
      * @param objects a collection of GameObject to be managed.
      */
     public void addAll(Collection<? extends GameObject> objects) {
-        for (GameObject go : getObjectsList()) {
+        for (GameObject go : objects) {
             add(go);
         }
     }
@@ -141,7 +141,7 @@ public abstract class AbstractScene implements Scene {
     }
 
     public List<GameObject> getObjectsList() {
-        return ep.getEntities();
+        return (List<GameObject>) ep.getEntities();
     }
 
     @Override

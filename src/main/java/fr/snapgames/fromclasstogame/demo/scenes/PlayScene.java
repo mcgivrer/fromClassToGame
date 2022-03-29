@@ -3,7 +3,6 @@ package fr.snapgames.fromclasstogame.demo.scenes;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
-import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
@@ -99,12 +98,6 @@ public class PlayScene extends AbstractScene {
         world.addInfluenceArea(iArea);
         g.setWorld(world);
 
-        // add Viewport Grid debug view
-        DebugViewportGrid dvg = new DebugViewportGrid("vpgrid", world, 32, 32);
-        dvg.setDebug(1);
-        dvg.setLayer(11);
-        dvg.setPriority(2);
-        add(dvg);
 
 
         // add a TileMap object

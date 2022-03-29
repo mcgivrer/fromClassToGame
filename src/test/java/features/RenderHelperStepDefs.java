@@ -62,7 +62,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
 
         Renderer renderer = (Renderer) SystemManager.get(Renderer.class);
         Scene sc = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
-        renderer.draw();
+        renderer.draw(1);
         TestObject to = (TestObject) sc.getGameObject("test");
         assertTrue("The TestObject " + objectName + " has not been rendered", to.getFlag());
     }
