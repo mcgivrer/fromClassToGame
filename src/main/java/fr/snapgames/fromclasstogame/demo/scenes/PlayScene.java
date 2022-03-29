@@ -14,7 +14,7 @@ import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper
 import fr.snapgames.fromclasstogame.core.gfx.renderer.TileMapRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.LevelLoader;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
-import fr.snapgames.fromclasstogame.core.physic.InfluenceArea2d;
+import fr.snapgames.fromclasstogame.core.physic.Influencer;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
@@ -91,7 +91,7 @@ public class PlayScene extends AbstractScene {
         // Declare World playground
         World world = new World(800, 600);
         // create a basic wind all over the play area
-        InfluenceArea2d iArea = new InfluenceArea2d(
+        Influencer iArea = new Influencer("wind",
                 new Vector2d(0.475, 0),
                 new BoundingBox(Vector2d.ZERO, 800, 600,
                         BoundingBox.BoundingBoxType.RECTANGLE),

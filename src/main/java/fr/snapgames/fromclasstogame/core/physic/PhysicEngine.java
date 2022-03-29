@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p>
  * Material is attached to a GameObject, and World provide constraints
- * ({@link InfluenceArea2d} applied to all objects
+ * ({@link Influencer} applied to all objects
  * managed by the PhysicEngine.
  * </p>
  * <p>
@@ -131,7 +131,7 @@ public class PhysicEngine extends System {
     /**
      * THe heart of the system, updating all objects bu applying
      * {@link GameObject#forces} and
-     * {@link World#influenceAreas} constrains to the list of managed objects. This
+     * {@link World#influencers} constrains to the list of managed objects. This
      * process is active until the
      * {@link Game#isPause()} state is up.
      *
@@ -277,9 +277,9 @@ public class PhysicEngine extends System {
      */
     private Vector2d applyWorldInfluenceArea2dList(GameObject go) {
         Vector2d acc = new Vector2d();
-        if (!world.influenceAreas.isEmpty() && !go.relativeToCamera) {
-            for (InfluenceArea2d area : world.influenceAreas) {
-                if (area.influenceArea.intersect(go.bbox)) {
+        if (!world.influencers.isEmpty() && !go.relativeToCamera) {
+            for (Influencer area : world.influencers) {
+                if (area.bbox.intersect(go.bbox)) {
                     double influence = area.getInfluenceAtPosition(go.position);
                     Vector2d accIA = new Vector2d();
                     accIA.add(area.force).multiply(influence).multiply(area.energy);
