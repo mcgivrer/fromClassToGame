@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The World Object is a GameObject that will never be rendered but used by others to.
  */
-public class World extends GameObject {
+public class World extends GameObject{
 
     /**
      * Max velocity for ény object in this world.
@@ -22,7 +22,7 @@ public class World extends GameObject {
     /**
      * Possible influence areas in this world (wind, magnetic, water flow, other ?)
      */
-    public List<InfluenceArea2d> influenceAreas = new ArrayList<>();
+    public List<Influencer> influencers = new ArrayList<>();
 
 
     /**
@@ -54,8 +54,8 @@ public class World extends GameObject {
      * @param area the InfluenceArea to add to the World.
      * @return this updated World
      */
-    public World addInfluenceArea(InfluenceArea2d area) {
-        influenceAreas.add(area);
+    public World addInfluenceArea(Influencer area) {
+        influencers.add(area);
         return this;
     }
 }

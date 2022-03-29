@@ -40,22 +40,22 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
 
 
     @Override
-    public void onAction(Scene entity, Integer action) {
+    public void onAction(Scene scene, Integer action) {
         switch (action) {
             case DEBUG_ACTIVE_FLAG:
-                switchDebugLevel(entity);
+                switchDebugLevel(scene);
                 break;
             case DEBUG_NEXT_ELEMENT:
-                rotateDebugActiveElement(entity, 1);
+                rotateDebugActiveElement(scene, 1);
                 break;
             case DEBUG_PREV_ELEMENT:
-                rotateDebugActiveElement(entity, -1);
+                rotateDebugActiveElement(scene, -1);
                 break;
             case DEBUG_LEVEL_PLUS:
-                switchCurrentElementLevelDebug(entity, +1);
+                switchCurrentElementLevelDebug(scene, +1);
                 break;
             case DEBUG_LEVEL_MINUS:
-                switchCurrentElementLevelDebug(entity, -1);
+                switchCurrentElementLevelDebug(scene, -1);
                 break;
             case DEBUG_FLAG_PE_INFLUENCERS:
                 switchInfluencers();
@@ -66,10 +66,10 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
             default:
                 break;
         }
-        entity.getGame().getWindow().addDebugStatusElement("actDbgElt", "[" + objIdx + "]" + entity.getObjectsList().get(objIdx).name);
+        scene.getGame().getWindow().addDebugStatusElement("actDbgElt", "[" + objIdx + "]" + scene.getObjectsList().get(objIdx).name);
         // add debug info about PhysicEngine.
         PhysicEngine pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
-        pe.getDebugInfo().forEach((k, v) -> entity.getGame().getWindow().addDebugStatusElement(k, v.toString()));
+        pe.getDebugInfo().forEach((k, v) -> scene.getGame().getWindow().addDebugStatusElement(k, v.toString()));
     }
 
     private void switchInfluencers() {

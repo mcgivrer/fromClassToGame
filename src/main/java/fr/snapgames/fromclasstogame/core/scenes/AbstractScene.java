@@ -2,7 +2,6 @@ package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
-import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Renderer;
@@ -35,21 +34,15 @@ public abstract class AbstractScene implements Scene {
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
 
     //TODO: replace objects and objectList by the corresponding Game System EntityPool.
-
-    EntityPool ep = ((EntityPoolManager) SystemManager.get(EntityPoolManager.class)).get(GameObject.class.getName());
-
     //protected Map<String, GameObject> objects = new HashMap<>();
     //protected List<GameObject> objectsList = new ArrayList<>();
     protected List<Behavior<Scene>> behaviors = new ArrayList<>();
-
     protected Map<String, Camera> cameras = new HashMap<>();
-
     protected Camera activeCamera;
-
     protected String sceneName;
-
     protected Game game;
     protected int debug = 0;
+    EntityPool ep = ((EntityPoolManager) SystemManager.get(EntityPoolManager.class)).get(GameObject.class.getName());
 
     public AbstractScene(Game g, String name) {
         game = g;
@@ -93,6 +86,17 @@ public abstract class AbstractScene implements Scene {
         } else if (!ep.contains(go)) {
             ep.add(go);
             SystemManager.add(go);
+        }
+    }
+
+    /**
+     * Add All object from the collection to the object to be rendered
+     *
+     * @param objects a collection of GameObject to be managed.
+     */
+    public void addAll(Collection<? extends GameObject> objects) {
+        for (GameObject go : getObjectsList()) {
+            add(go);
         }
     }
 
@@ -202,11 +206,14 @@ public abstract class AbstractScene implements Scene {
         return sceneName;
     }
 
+    @Override
+    public void setName(String name) {
+        this.sceneName = name;
+    }
 
     public Game getGame() {
         return game;
     }
-
 
     public void draw(Renderer r) {
 
@@ -218,12 +225,6 @@ public abstract class AbstractScene implements Scene {
 
     protected EntityPool getEntityPool() {
         return this.ep;
-    }
-
-
-    @Override
-    public void setName(String name) {
-        this.sceneName = name;
     }
 }
 

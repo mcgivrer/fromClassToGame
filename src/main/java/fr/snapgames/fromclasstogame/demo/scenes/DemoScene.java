@@ -34,7 +34,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Demo Scene to test features during framework development.
@@ -100,19 +99,19 @@ public class DemoScene extends AbstractScene {
         // Declare World playground
         World world = new World(800, 400);
         // create a basic wind all over the play area
-        InfluenceArea2d iArea = new InfluenceArea2d(
+        Influencer iWind = new Influencer("wind",
                 new Vector2d(0.475, 0.0),
                 new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
                         BoundingBox.BoundingBoxType.RECTANGLE),
                 1.3);
-        world.addInfluenceArea(iArea);
+        world.addInfluenceArea(iWind);
         g.setWorld(world);
 
         // add Viewport Grid debug view
-        DebugViewportGrid dvg = new DebugViewportGrid("vpgrid", world, 32, 32);
-        dvg.setDebug(1);
-        dvg.setLayer(11);
-        dvg.setPriority(2);
+        DebugViewportGrid dvg = (DebugViewportGrid) new DebugViewportGrid("vpgrid", world, 32, 32)
+                .setDebug(1)
+                .setLayer(1)
+                .setPriority(2);
         add(dvg);
 
         // add main character (player)
@@ -232,7 +231,7 @@ public class DemoScene extends AbstractScene {
                 .setDebug(3);
         add(welcome);
 
-        randomizeFilteredGameObject("enemy_");
+        addAll(world.influencers);
     }
 
     /**
