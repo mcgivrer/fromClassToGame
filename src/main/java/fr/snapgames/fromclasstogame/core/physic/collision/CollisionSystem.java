@@ -26,6 +26,8 @@ public class CollisionSystem extends System {
      */
     private Map<String, ProcessBehavior<GameObject>> responses = new HashMap<>();
 
+    private QuadTree quadtree = new QuadTree();
+
     @Override
     public String getName() {
         return "CollisionSystem";
@@ -67,6 +69,13 @@ public class CollisionSystem extends System {
      * @param dt the elapsed time since previous call.
      */
     public void update(long dt) {
+        /* 
+         *   TODO: Need to be optimized with a Treemap or quadtree to partition  game world area 
+         *         into smallest area and reduce collision comparisons number, and enhance performance.
+         *         Each cell from the quadtree would only contained a limited number of objects 
+         *         and can have only 4 childs.
+         */
+
         objects.forEach(o -> {
             for (GameObject object : objects) {
                 o.setCollide(false);
@@ -109,5 +118,11 @@ public class CollisionSystem extends System {
     @Override
     public void dispose() {
         responses.clear();
+    }
+
+    @Override
+    public synchronized void add(GameObject go){
+        super.add(go);
+        this.quadtree.addNode(go);
     }
 }
