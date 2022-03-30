@@ -42,13 +42,19 @@ Added some valuable features like:
 - A evolution of the  `PhysicEngine` by adding `InfluenceArea2d` bringing some perturbation to the `World`,
 - Adding `Particle` and `ParticleSystem` to create special effects like rain and fire,
 - Replace the good old `InputHandler` by an `ActionHandler` (WIP) to support input command mapping,
-- Add a `DebugViewportGrid` object and its rendering helper.
+- Implement virtual `Influencer`'s object to activate PhysicEngine specific behaviors,
+- Add a `World Display debug mode` in the rendering process.
+- Add a new AbstractEntity object to deliver commons attributes to `GameObject` and `Influencer` (for physic engine
+  computation and debug world rendering)
 
-## More to come
+## Work In Progress
 
 - A `CollisionSystem` is a work in progress
 - Some `TileMap` object to display beautiful game level graphic set and all its dependencies (`Tile`, `TileSet`
   and `TileLayer`) are also work in progress !
+
+## More to come
+
 - A Mouse and Gamepad events integration to rules'em all !
 
 ## Build, Run and See
@@ -88,14 +94,17 @@ This sample demo will show :
 3. the `LifeObject` showing the remaining number of life,
 4. the `InventoryObject`, showing a qick inventory to select an available item.
 
-The latest demo integrate the Fire `ParticleSystem` and the `InfluenceArea2d` world perturbation
+The latest demo integrate the Fire `ParticleSystem` and the `Influencer` world perturbation
 
-![screenshot - the latest evolution of the game framework with ParticleSystem and World InfluenceArea2d](docs/images/capture-022.png "ParticleSystem simulating fire, and under World perturbation")
+![screenshot - the latest evolution of the game framework with ParticleSystem](docs/images/capture-006.png
+"ParticleSystem simulating fire")
 
+![screenshot - An Influencer as wind (blue area) moves GameObjects](docs/images/capture-008.png
+"GameObject under World Influencer' perturbations like wind (blue area)")
 
 Have Fun !
 
 McG.
 
 __SnapGames__<br/>
-![SnapGames Logo](./src/main/resources/images/logo/logo-snapgames-black.png)
+![SnapGames Logo](./docs/images/logo/logo-snapgames-black.png)

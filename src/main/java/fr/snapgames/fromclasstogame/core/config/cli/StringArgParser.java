@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public class StringArgParser extends AbstractArgParser<String> {
 
-    public StringArgParser(String name, String description, String shortKey, String longKey, String configKey,
+    public StringArgParser(String name, String shortKey, String longKey , String description, String configKey,
             String defaultValue) {
         super(name, description, shortKey, longKey, configKey);
         setDefaultValue(defaultValue);

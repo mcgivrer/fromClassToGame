@@ -22,19 +22,11 @@ import java.util.Map;
  * @see fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper
  * @since 0.0.1
  */
-public class GameObject implements Entity<GameObject> {
-
-
-    private static int index = 0;
-    public int id = ++index;
-    public String name;
-
-    private boolean active = false;
+public class GameObject extends AbstractEntity<GameObject> {
 
     /**
      * Physic and mechanic attributes
      */
-    public Vector2d position = new Vector2d();
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
 
@@ -44,11 +36,7 @@ public class GameObject implements Entity<GameObject> {
     public double mass = 1;
     public Vector2d gravity = new Vector2d();
 
-    public double width;
-    public double height;
-    public BoundingBox bbox = new BoundingBox();
     public GOType type = GOType.RECTANGLE;
-
     /**
      * Rendering attributes
      */
@@ -57,50 +45,39 @@ public class GameObject implements Entity<GameObject> {
     public int layer;
     public int priority;
     public boolean relativeToCamera;
-
     /**
      * life duration of this object (default is -1 = infinite).
      */
     public long life = -1;
     public long lifeStart = -1;
     public boolean alive = true;
-
     /**
      * List of behaviors to be applied on this GameObject
      */
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
-    public int debugOffsetX;
-    public int debugOffsetY;
     public boolean rendered;
     protected Map<String, Object> attributes = new HashMap<>();
-
+    /**
+     * Child objects.
+     */
+    protected List<GameObject> child = new ArrayList<>();
+    private boolean active = true;
     /**
      * debugging data
      */
     private List<String> debugData = new ArrayList<>();
 
     /**
-     * Child objects.
-     */
-    protected List<GameObject> child = new ArrayList<>();
-
-    /**
-     * Debug level to activate the debug display output for this object.
-     */
-    private int debug;
-
-    /**
      * true if this object collides with something.
      */
     private boolean collision;
-    private Color debugColor;
 
     /**
      * Initialize a GameObject with a default generated name "noname_999"
      * where 999 is the current internal GameObject index value.
      */
     public GameObject() {
-        this.name = "noname_" + id;
+        super();
     }
 
     /**
@@ -109,7 +86,7 @@ public class GameObject implements Entity<GameObject> {
      * @param objectName name of this new object
      */
     public GameObject(String objectName) {
-        this.name = objectName;
+        super(objectName);
     }
 
     /**
@@ -119,10 +96,9 @@ public class GameObject implements Entity<GameObject> {
      * @param position   position at initialization of this object.
      */
     public GameObject(String objectName, Vector2d position) {
-        this.name = objectName;
+        super(objectName, position);
         this.active = true;
         setDebugColor(Color.YELLOW);
-        setPosition(position);
         life = -1;
         lifeStart = -1;
     }
@@ -135,15 +111,6 @@ public class GameObject implements Entity<GameObject> {
         this.priority = 0;
         this.layer = 1;
         this.relativeToCamera = false;
-    }
-
-    /**
-     * Retrieve the internal index of the GameObject counter.
-     *
-     * @return the internal GameObject indexer value
-     */
-    public static int getIndex() {
-        return index;
     }
 
     /**
@@ -172,15 +139,15 @@ public class GameObject implements Entity<GameObject> {
         this.debugOffsetX = -40;
         this.debugOffsetY = 10;
         List<String> debugInfo = new ArrayList<>();
-        if (debug > 0) {
+        if (debugLevel > 0) {
             debugInfo.add("n:" + name);
-            debugInfo.add("dbgLvl:" + debug);
-            if (debug > 2) {
+            debugInfo.add("dbgLvl:" + debugLevel);
+            if (debugLevel > 2) {
                 debugInfo.add("pos:" + position.toString());
                 debugInfo.add("vel:" + velocity.toString());
                 debugInfo.add("acc:" + acceleration.toString());
                 debugInfo.add("life:" + life);
-                if (debug > 3) {
+                if (debugLevel > 3) {
                     debugInfo.add("mass:" + mass);
                     if (material != null) {
                         debugInfo.add("mat:" + material.name);
@@ -205,11 +172,6 @@ public class GameObject implements Entity<GameObject> {
         return this;
     }
 
-    public GameObject setSize(double w, double h) {
-        this.width = w;
-        this.height = h;
-        return this;
-    }
 
     public GameObject setImage(BufferedImage image) {
         this.image = image;
@@ -217,16 +179,6 @@ public class GameObject implements Entity<GameObject> {
         return this;
     }
 
-    public GameObject setPosition(double x, double y) {
-        this.position.x = x;
-        this.position.y = y;
-        return this;
-    }
-
-    public GameObject setPosition(Vector2d position) {
-        this.position = position;
-        return this;
-    }
 
     public GameObject setVelocity(Vector2d velocity) {
         this.velocity = velocity;
@@ -263,14 +215,6 @@ public class GameObject implements Entity<GameObject> {
         return this;
     }
 
-    public int getDebug() {
-        return this.debug;
-    }
-
-    public GameObject setDebug(int d) {
-        this.debug = d;
-        return this;
-    }
 
     public GameObject add(Behavior<GameObject> b) {
         if (!behaviors.contains(b)) {
@@ -303,25 +247,9 @@ public class GameObject implements Entity<GameObject> {
         return this;
     }
 
-    public GameObject setDebugOffset(int dox, int doy) {
-        this.debugOffsetX = dox;
-        this.debugOffsetY = doy;
-        return this;
-    }
 
     public List<GameObject> getChild() {
         return child;
-    }
-
-    @Override
-    public boolean isActive() {
-        return active;
-    }
-
-    @Override
-    public GameObject setActive(boolean active) {
-        this.active = active;
-        return this;
     }
 
     public GameObject setCollide(boolean collisionFlag) {
@@ -329,13 +257,6 @@ public class GameObject implements Entity<GameObject> {
         return this;
     }
 
-    public void setDebugColor(Color color) {
-        this.debugColor = color;
-    }
-
-    public Color getDebugColor() {
-        return this.debugColor;
-    }
 
     public enum GOType {
         POINT, RECTANGLE, CIRCLE, IMAGE, OTHER

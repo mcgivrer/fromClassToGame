@@ -189,7 +189,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @And("the resources are cleared")
     public void theResourcesAreCleared() {
-        ResourceManager.dispose();
+        ResourceManager.disposeAll();
     }
 
     @And("I add a TextObject named {string} at \\({double},{double})")

@@ -142,13 +142,12 @@ public class Game implements ActionHandler.ActionListener {
         SystemManager.add(SceneManager.class);
         SystemManager.add(CollisionSystem.class);
         SystemManager.add(EntityPoolManager.class);
+        SystemManager.add(ResourceManager.class);
 
         /*
          * And then configure ll those strange piece of code.
          */
         SystemManager.configure(configuration);
-
-        ResourceManager.initialize(this);
 
         renderer = (Renderer) SystemManager.get(Renderer.class);
         renderer.setDebugLevel(configuration.debugLevel);
@@ -272,8 +271,9 @@ public class Game implements ActionHandler.ActionListener {
      * Draw the things from the game.
      */
     private void draw() {
-        renderer.draw();
+        renderer.draw(window.getDebug());
         sceneManager.draw(renderer);
+
         window.draw(realFPS, renderer.getBuffer());
     }
 
@@ -285,7 +285,6 @@ public class Game implements ActionHandler.ActionListener {
             window.close();
         }
         SystemManager.dispose();
-        ResourceManager.dispose();
         logger.info("** > Game disposed all dependencies [@ {}]", System.currentTimeMillis());
 
     }

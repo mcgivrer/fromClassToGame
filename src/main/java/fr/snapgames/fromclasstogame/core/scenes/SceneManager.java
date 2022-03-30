@@ -7,6 +7,7 @@ import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.system.System;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,6 +64,11 @@ public class SceneManager extends System {
         }
     }
 
+    /**
+     * Add a scene as class name to the available ones.
+     *
+     * @param scnClass the full name of the class.
+     */
     public void addScene(String scnClass) {
         String[] scn = scnClass.split(":");
         if (scn.length == 2) {
@@ -77,6 +83,9 @@ public class SceneManager extends System {
         }
     }
 
+    /**
+     * Activate the default scene (create the instance if it does not exist).
+     */
     public void activate() {
         String defaultScene = game.getConfiguration().defaultScene;
         logger.debug("Activate the default scene '" + defaultScene + "'");
@@ -112,6 +121,12 @@ public class SceneManager extends System {
 
     }
 
+    /**
+     * Create an instance of the Scene named name.
+     *
+     * @param name the name of the scene to be instantiated
+     * @return the instance of the Scene.
+     */
     private Scene instantiateScene(String name) {
         Scene s = null;
         try {
@@ -152,6 +167,11 @@ public class SceneManager extends System {
         scenesClasses.clear();
     }
 
+    /**
+     * Return the current active Scene. It is activated if not already done.
+     *
+     * @return the current scene instance.
+     */
     public synchronized Scene getCurrent() {
         if (current == null) {
             activate();
@@ -159,13 +179,25 @@ public class SceneManager extends System {
         return this.current;
     }
 
+    /**
+     * request for the Scene s to be activated.
+     *
+     * @param s
+     */
     private void setCurrent(Scene s) {
         if (s != null) {
             this.current = s;
+
+            //SystemManager.clearObjects();
             s.activate();
         }
     }
 
+    /**
+     * delegate input operation to the current scene and to its declared behaviors.
+     *
+     * @param ah the ActionHandler to support input.
+     */
     public void input(ActionHandler ah) {
         getCurrent().input(ah);
         for (Behavior<Scene> b : getCurrent().getBehaviors()) {
@@ -180,6 +212,11 @@ public class SceneManager extends System {
         }
     }
 
+    /**
+     * Delegate update operation to the current scene and its possible declared Behaviors
+     *
+     * @param dt the elapsed time since previous call.
+     */
     public void update(long dt) {
         getCurrent().update(dt);
         for (Behavior<Scene> b : getCurrent().getBehaviors()) {
@@ -187,6 +224,11 @@ public class SceneManager extends System {
         }
     }
 
+    /**
+     * Delegate the Action processing operation to the current scene and its possible declared Behaviors.
+     *
+     * @param action the actoin cade to be processed.
+     */
     public void onAction(Integer action) {
         getCurrent().onAction(action);
         for (Behavior<Scene> b : getCurrent().getBehaviors()) {
@@ -194,14 +236,30 @@ public class SceneManager extends System {
         }
     }
 
-    public Collection<?> getScenes() {
+    /**
+     * retrieve list of Scenes.
+     *
+     * @return the current list of scenes classes.
+     */
+    public Collection<Class<?>> getScenes() {
         return scenesClasses.values();
     }
 
-    public Collection<?> getScenesInstances() {
+    /**
+     * Retrieve the list of Scene instances
+     *
+     * @return a collectoin of Scene instances
+     */
+    public Collection<Scene> getScenesInstances() {
         return scenesInstances.values();
     }
 
+    /**
+     * retrieve the existing scene instance corresponding to the name <code>sceneName</code>.
+     *
+     * @param sceneName the name of the scene to get.
+     * @return
+     */
     public Scene getScene(String sceneName) {
         return scenesInstances.get(sceneName);
     }

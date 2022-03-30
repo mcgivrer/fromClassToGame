@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -27,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p>
  * Material is attached to a GameObject, and World provide constraints
- * ({@link InfluenceArea2d} applied to all objects
+ * ({@link Influencer} applied to all objects
  * managed by the PhysicEngine.
  * </p>
  * <p>
@@ -66,20 +67,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0.0
  */
 public class PhysicEngine extends System {
-    private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
-
     /**
      * Flag to activate/deactivate internal computation for debug purpose.
      */
     public static final String DEBUG_FLAG_INFLUENCERS = "flagInfluencers";
     public static final String DEBUG_FLAG_GRAVITY = "flagGravity";
-
+    private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
+    private final Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
     /**
      * The current World object managed by the PhysicEngine.
      */
     private World world = new World(0, 0);
-
-    private Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
 
     /**
      * Initialization of the {@link PhysicEngine} System with its parent
@@ -97,7 +95,7 @@ public class PhysicEngine extends System {
     /**
      * return the System name.
      *
-     * @return
+     * @return the internal name for the PhysicEngine.
      */
     @Override
     public String getName() {
@@ -131,7 +129,7 @@ public class PhysicEngine extends System {
     /**
      * THe heart of the system, updating all objects bu applying
      * {@link GameObject#forces} and
-     * {@link World#influenceAreas} constrains to the list of managed objects. This
+     * {@link World#influencers} constrains to the list of managed objects. This
      * process is active until the
      * {@link Game#isPause()} state is up.
      *
@@ -142,9 +140,9 @@ public class PhysicEngine extends System {
             if (!game.isPause()) {
                 getObjects().forEach(go -> {
                     update(go, dt);
-                    for(GameObject co:go.getChild()){
+                    for (GameObject co : go.getChild()) {
                         update(co, dt);
-                    };
+                    }
                 });
             }
         } catch (ConcurrentModificationException e) {
@@ -162,35 +160,25 @@ public class PhysicEngine extends System {
         double dtCorrected = dt * 0.01;
         if (go != null) {
             go.acceleration = new Vector2d();
-
             if (!go.relativeToCamera) {
-
-
                 // Acceleration is not already used in velocity & position computation
                 computeAccelerationForGameObject(go);
-
                 // Compute velocity
                 computeVelocity(go, dtCorrected);
                 // Compute position
                 go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.599, world.maxVelocity);
                 go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.599, world.maxVelocity);
-
                 // test World space constrained
                 verifyGameConstraint(go);
-
-
                 // update Bounding box for this GameObject.
-                if (go.bbox != null) {
+                if (Optional.ofNullable(go.bbox).isPresent()) {
                     go.bbox.update(go);
                 }
                 go.forces.clear();
             }
-
             // apply Object behaviors computations
             if (!go.behaviors.isEmpty()) {
-                go.behaviors.forEach(b -> {
-                    b.onUpdate(go, dt);
-                });
+                go.behaviors.forEach(b -> b.onUpdate(go, dt));
             }
             // Update the Object itself
             go.update(dt);
@@ -209,7 +197,7 @@ public class PhysicEngine extends System {
 
         // if the GameObject is touching anything, apply some friction !
         boolean touching = (boolean) go.getAttribute("touching", false);
-        if (touching && Math.abs(go.acceleration.x) < 0.5 && Math.abs(go.acceleration.y) < 0.5) {
+        if (touching && Math.abs(go.acceleration.x) < 0.1 && Math.abs(go.acceleration.y) < 0.1) {
             double dynFriction = go.material != null ? go.material.dynFriction : 1;
             go.velocity = go.velocity.multiply(dynFriction);
         }
@@ -239,7 +227,7 @@ public class PhysicEngine extends System {
             acc = acc.add(f);
         }
         if (debugFlags.containsKey(DEBUG_FLAG_INFLUENCERS) && debugFlags.get(DEBUG_FLAG_INFLUENCERS)) {
-            acc.add(applyWorldInfluenceArea2dList(go));
+            acc = acc.add(applyWorldInfluenceList(go));
         }
         go.acceleration = go.acceleration.add(acc);
 
@@ -275,15 +263,14 @@ public class PhysicEngine extends System {
      *
      * @param go the {@link GameObject} to apply constraint and computation to.
      */
-    private Vector2d applyWorldInfluenceArea2dList(GameObject go) {
+    private Vector2d applyWorldInfluenceList(GameObject go) {
         Vector2d acc = new Vector2d();
-        if (!world.influenceAreas.isEmpty() && !go.relativeToCamera) {
-            for (InfluenceArea2d area : world.influenceAreas) {
-                if (area.influenceArea.intersect(go.bbox)) {
-                    double influence = area.getInfluenceAtPosition(go.position);
-                    Vector2d accIA = new Vector2d();
-                    accIA.add(area.force).multiply(influence).multiply(area.energy);
-                    acc.add(accIA);
+        if (!world.influencers.isEmpty() && !go.relativeToCamera) {
+            for (Influencer i : world.influencers) {
+                if (i.area.intersect(go.bbox)) {
+                    double influence = i.getInfluenceAtPosition(go.position);
+                    Vector2d accIA = i.force.multiply(influence).multiply(i.energy);
+                    acc = acc.add(accIA);
                 }
             }
         }
@@ -307,7 +294,7 @@ public class PhysicEngine extends System {
      * @param x   the value to be constrained between min and max.
      * @param min minimum for the x value.
      * @param max maximum for the x value.
-     * @return
+     * @return the ceil value between min and max range.
      */
     private double ceilMinMaxValue(double x, double min, double max) {
         return ceilValue(Math.copySign((Math.abs(x) > max ? max : x), x), min);
@@ -325,7 +312,7 @@ public class PhysicEngine extends System {
             go.position.x = 0;
             go.velocity.x = -go.velocity.x * bounciness;
         }
-        if (go.position.x + go.width >= world.width) {
+        if (go.position.x + go.width > world.width) {
             go.position.x = world.width - go.width;
             go.velocity.x = -go.velocity.x * bounciness;
         }
@@ -333,7 +320,7 @@ public class PhysicEngine extends System {
             go.position.y = 0;
             go.velocity.y = -go.velocity.y * bounciness;
         }
-        if (go.position.y + go.height >= world.height) {
+        if (go.position.y + go.height > world.height) {
             go.position.y = world.height - go.height;
             go.velocity.y = -go.velocity.y * bounciness;
         }
@@ -371,8 +358,8 @@ public class PhysicEngine extends System {
     /**
      * retrieve debug flag status for this debugFlagKey service.
      *
-     * @param debugFlagKey
-     * @return
+     * @param debugFlagKey the debug flag parameter to be retrieved.
+     * @return the value for this debug flag.
      */
     public Boolean getDebugFlag(String debugFlagKey) {
         return debugFlags.get(debugFlagKey);
@@ -381,17 +368,17 @@ public class PhysicEngine extends System {
     /**
      * set debug flag status for this debugFlagKey service.
      *
-     * @param debugFlagKey
-     * @param value
+     * @param debugFlagKey the debug flag parameter to be set.
+     * @param value        the value for this debug flag
      */
     public void setDebugFlag(String debugFlagKey, Boolean value) {
         debugFlags.put(debugFlagKey, value);
     }
 
     /**
-     * retrieve values for the
+     * retrieve values for the debug display
      *
-     * @return
+     * @return the map of debug flags info to be displayed.
      */
     public Map<String, Boolean> getDebugInfo() {
         return debugFlags;

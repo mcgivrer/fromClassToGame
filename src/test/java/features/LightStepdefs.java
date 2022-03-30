@@ -33,7 +33,7 @@ public class LightStepdefs extends CommonDefSteps implements En {
         });
         Then("the game renders the scene", () -> {
             Scene current = game.getSceneManager().getCurrent();
-            game.getRenderer().draw();
+            game.getRenderer().draw(1);
         });
         And("I set the light {string} intensity to {double}", (String lightName, Double intensity) -> {
             Scene current = game.getSceneManager().getCurrent();

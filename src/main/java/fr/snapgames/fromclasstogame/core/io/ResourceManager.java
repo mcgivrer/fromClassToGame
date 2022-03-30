@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.core.io;
 
 import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.audio.SoundClip;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.system.System;
@@ -10,12 +11,12 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.*;
 
 /**
  * The ResourceManager service to cache Images and Fonts.
@@ -23,7 +24,7 @@ import java.util.Optional;
  * @author Frédéric Delorme
  * @since 0.0.1
  */
-public class ResourceManager {
+public class ResourceManager extends System {
 
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
@@ -39,16 +40,8 @@ public class ResourceManager {
     /**
      * Create the ResourceManager.
      */
-    private ResourceManager() {
-    }
-
-    /**
-     * Initialize the ResourceManager
-     *
-     * @param g
-     */
-    public static void initialize(Game g) {
-        game = g;
+    public ResourceManager(Game g) {
+        super(g);
     }
 
     private static Font readFont(String path) {
@@ -144,10 +137,74 @@ public class ResourceManager {
         return resources.values();
     }
 
+    public static void disposeAll() {
+        resources.clear();
+    }
+
+    public static SoundClip getSoundClip(String filename) {
+
+        InputStream stream = ResourceManager.class.getResourceAsStream(filename);
+        SoundClip sc = new SoundClip(filename, stream);
+        if (sc != null) {
+            resources.put(filename, sc);
+        }
+        logger.debug("'{}' added as an audio resource", filename);
+        return sc;
+    }
+
+    public static java.util.List<String> getFile(String attributesFilename) {
+        if (resources.containsKey(attributesFilename)) {
+            return (List<String>) resources.get(attributesFilename);
+        } else {
+            List<String> i = readTextFile(attributesFilename);
+            if (i != null) {
+                resources.put(attributesFilename, i);
+            }
+            return (List<String>) resources.get(attributesFilename);
+        }
+    }
+
+    private static List<String> readTextFile(String filename) {
+        List<String> values = new ArrayList<>();
+
+        try {
+            InputStream is = ResourceManager.class.getResourceAsStream(filename);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while ((line = br.readLine()) != null) {
+                values.add(line);
+            }
+        } catch (IOException ioe) {
+            logger.error("Unable to read file " + filename, ioe);
+
+        }
+
+
+        return values;
+    }
+
+    /**
+     * Clear all resources from resource manager.
+     */
+    public static void clear() {
+        resources.clear();
+    }
+
     /**
      * free all cached resources
      */
-    public static void dispose() {
+    public void dispose() {
         resources.clear();
+    }
+
+    @Override
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public int initialize(Configuration config) {
+        clear();
+        return 0;
     }
 }

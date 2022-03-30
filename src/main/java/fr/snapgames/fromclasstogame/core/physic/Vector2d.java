@@ -72,11 +72,6 @@ public class Vector2d {
      */
     public Vector2d add(Vector2d v) {
         return new Vector2d(x + v.x, y + v.y);
-        /*
-        x += v.x;
-        y += v.y;
-        return this;
-        */
     }
 
     /**
@@ -99,9 +94,7 @@ public class Vector2d {
      * @return this.
      */
     public Vector2d multiply(double factor) {
-        x *= factor;
-        y *= factor;
-        return this;
+        return new Vector2d(x * factor, y * factor);
     }
 
     /*

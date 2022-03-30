@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.OnEntityCollision;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
@@ -33,7 +34,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Vector;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Demo Scene to test features during framework development.
@@ -57,12 +59,14 @@ public class DemoScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
+        if (g.getConfiguration().debugLevel > 0) {
+            // Add the Debug switcher capability to this scene
+            addBehavior(new DebugSwitcherBehavior());
+        }
         // Load resources
         ResourceManager.getFont("fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
-        ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
-        ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
         // inventory selector states
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selector", 5 * 16, 3 * 16, 17, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
@@ -71,6 +75,10 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "potion", 34, 18, 14, 15);
         // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/forest.jpg", "background", 0, 0, 1008, 642);
+
+        // movng object resources
+        ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
 
         // Add a specific Render for the new GameObject implementation for
         // - ScoreObject
@@ -91,22 +99,32 @@ public class DemoScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         super.create(g);
         // Declare World playground
-        World world = new World(800, 400);
-        // create a basic wind all over the play area
-        InfluenceArea2d iArea = new InfluenceArea2d(
-                new Vector2d(0.475, 0.0),
-                new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
-                        BoundingBox.BoundingBoxType.RECTANGLE),
-                1.3);
-        world.addInfluenceArea(iArea);
-        g.setWorld(world);
+        int worldWidth = g.getConfiguration().worldWidth;
+        int worldHeight = g.getConfiguration().worldHeight;
 
-        // add Viewport Grid debug view
-        DebugViewportGrid dvg = new DebugViewportGrid("vpgrid", world, 32, 32);
-        dvg.setDebug(1);
-        dvg.setLayer(11);
-        dvg.setPriority(2);
-        add(dvg);
+        World world = new World(worldWidth, worldHeight)
+                .setGravity(g.getConfiguration().gravity)
+                .addInfluenceArea(new Influencer("wind",
+                        new Vector2d(0.8, 0.0),
+                        new BoundingBox(
+                                new Vector2d(0.0, worldHeight * 0.5),
+                                worldWidth * 0.5, worldHeight * 0.5,
+                                BoundingBox.BoundingBoxType.RECTANGLE),
+                        5)
+                        .setDebugFillColor(new Color(0.0f, 0.5f, 0.9f, 0.25f))
+                        .setDebugLineColor(Color.CYAN)
+                )
+                .addInfluenceArea(new Influencer("magneticForce",
+                        new Vector2d(0.0, -2),
+                        new BoundingBox(
+                                new Vector2d(worldWidth * 0.65, worldHeight * 0.35),
+                                worldWidth * 0.25, worldHeight * 0.25,
+                                BoundingBox.BoundingBoxType.CIRCLE),
+                        15)
+                        .setDebugFillColor(new Color(0.5f, 0.9f, 0.2f, 0.25f))
+                        .setDebugLineColor(Color.GREEN)
+                );
+        g.setWorld(world);
 
         // add main character (player)
         Material m = DefaultMaterial.newMaterial("playerMaterial", 0.25, 0.3, 0.80, 0.98);
@@ -224,6 +242,7 @@ public class DemoScene extends AbstractScene {
                 .setRelativeToCamera(true)
                 .setDebug(3);
         add(welcome);
+
     }
 
     /**
@@ -268,11 +287,7 @@ public class DemoScene extends AbstractScene {
         List<GameObject> obj = find("enemy_");
         for (int i = 0; i < nbEnemiesToRemove; i++) {
             GameObject o = obj.get(i);
-            if (!o.getChild().isEmpty()) {
-                o.getChild().stream().forEach(oc -> {
-                    remove(oc);
-                });
-            }
+            if (!o.getChild().isEmpty()) o.getChild().forEach(this::remove);
             remove(o);
         }
     }
@@ -336,10 +351,9 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void update(long dt) {
-
         super.update(dt);
 
-        GameObject player = null;
+        GameObject player;
         try {
             player = getEntityPool().get("player");
             int score = (int) player.getAttribute("score", 0);
@@ -398,15 +412,16 @@ public class DemoScene extends AbstractScene {
                 break;
 
             case KeyEvent.VK_F:
-                // switch Particles system on or off
+                // switch Particles' system on or off
                 find("PS_").forEach(o -> o.setActive(!o.isActive()));
                 break;
 
             case KeyEvent.VK_G:
-                if (ah.getShift()) {
+                if (Optional.ofNullable(ah).isPresent() && ah.getShift()) {
                     // inverse Gravity on this world !
-                    World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
-                    if (world != null) {
+                    Optional<PhysicEngine> ope = Optional.of((PhysicEngine) Objects.requireNonNull(SystemManager.get(PhysicEngine.class)));
+                    World world = ope.get().getWorld();
+                    if (Optional.ofNullable(world).isPresent()) {
                         world.gravity.multiply(-1);
                     }
                 }
