@@ -62,7 +62,8 @@
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-    </properties>
+        <project.scm.id>github</project.scm.id>
+      </properties>
 
     <!-- Project Dependencies -->
 
