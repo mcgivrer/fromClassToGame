@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>core</groupId>
     <artifactId>fromclasstogame</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <name>FromClassToGame</name>
     <description>Journey from a simple class to a Game, with the Java language</description>
     <inceptionYear>2021</inceptionYear>
@@ -38,7 +38,7 @@
         <url>https://github.com/mcgivrer/fromClassToGame</url>
         <connection>scm:git:git@github.com:mcgivrer/fromClassToGame.git</connection>
         <developerConnection>scm:git:https://github.com/mcgivrer/fromClassToGame.git</developerConnection>
-        <tag>v${project.version}</tag>
+        <tag>v1.0.2-SNAPSHOT</tag>
     </scm>
     <issueManagement>
         <system>GitHub</system>
@@ -277,8 +277,7 @@
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>${mainClass}</mainClass>
                         </transformer>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                             <resource>src/main/resources/</resource>
                         </transformer>
                     </transformers>
