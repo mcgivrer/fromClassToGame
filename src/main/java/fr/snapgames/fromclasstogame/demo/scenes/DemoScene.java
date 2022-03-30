@@ -34,6 +34,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Demo Scene to test features during framework development.
@@ -115,8 +117,8 @@ public class DemoScene extends AbstractScene {
                 .addInfluenceArea(new Influencer("magneticForce",
                         new Vector2d(0.0, -2),
                         new BoundingBox(
-                                new Vector2d(worldWidth*0.65, worldHeight *0.35),
-                                worldWidth*0.25, worldHeight * 0.25,
+                                new Vector2d(worldWidth * 0.65, worldHeight * 0.35),
+                                worldWidth * 0.25, worldHeight * 0.25,
                                 BoundingBox.BoundingBoxType.CIRCLE),
                         15)
                         .setDebugFillColor(new Color(0.5f, 0.9f, 0.2f, 0.25f))
@@ -285,11 +287,7 @@ public class DemoScene extends AbstractScene {
         List<GameObject> obj = find("enemy_");
         for (int i = 0; i < nbEnemiesToRemove; i++) {
             GameObject o = obj.get(i);
-            if (!o.getChild().isEmpty()) {
-                o.getChild().stream().forEach(oc -> {
-                    remove(oc);
-                });
-            }
+            if (!o.getChild().isEmpty()) o.getChild().forEach(this::remove);
             remove(o);
         }
     }
@@ -355,7 +353,7 @@ public class DemoScene extends AbstractScene {
     public void update(long dt) {
         super.update(dt);
 
-        GameObject player = null;
+        GameObject player;
         try {
             player = getEntityPool().get("player");
             int score = (int) player.getAttribute("score", 0);
@@ -414,15 +412,16 @@ public class DemoScene extends AbstractScene {
                 break;
 
             case KeyEvent.VK_F:
-                // switch Particles system on or off
+                // switch Particles' system on or off
                 find("PS_").forEach(o -> o.setActive(!o.isActive()));
                 break;
 
             case KeyEvent.VK_G:
-                if (ah.getShift()) {
+                if (Optional.ofNullable(ah).isPresent() && ah.getShift()) {
                     // inverse Gravity on this world !
-                    World world = ((PhysicEngine) SystemManager.get(PhysicEngine.class)).getWorld();
-                    if (world != null) {
+                    Optional<PhysicEngine> ope = Optional.of((PhysicEngine) Objects.requireNonNull(SystemManager.get(PhysicEngine.class)));
+                    World world = ope.get().getWorld();
+                    if (Optional.ofNullable(world).isPresent()) {
                         world.gravity.multiply(-1);
                     }
                 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -66,20 +67,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0.0
  */
 public class PhysicEngine extends System {
-    private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
-
     /**
      * Flag to activate/deactivate internal computation for debug purpose.
      */
     public static final String DEBUG_FLAG_INFLUENCERS = "flagInfluencers";
     public static final String DEBUG_FLAG_GRAVITY = "flagGravity";
-
+    private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
+    private final Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
     /**
      * The current World object managed by the PhysicEngine.
      */
     private World world = new World(0, 0);
-
-    private Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
 
     /**
      * Initialization of the {@link PhysicEngine} System with its parent
@@ -97,7 +95,7 @@ public class PhysicEngine extends System {
     /**
      * return the System name.
      *
-     * @return
+     * @return the internal name for the PhysicEngine.
      */
     @Override
     public String getName() {
@@ -142,9 +140,9 @@ public class PhysicEngine extends System {
             if (!game.isPause()) {
                 getObjects().forEach(go -> {
                     update(go, dt);
-                    for(GameObject co:go.getChild()){
+                    for (GameObject co : go.getChild()) {
                         update(co, dt);
-                    };
+                    }
                 });
             }
         } catch (ConcurrentModificationException e) {
@@ -162,35 +160,25 @@ public class PhysicEngine extends System {
         double dtCorrected = dt * 0.01;
         if (go != null) {
             go.acceleration = new Vector2d();
-
             if (!go.relativeToCamera) {
-
-
                 // Acceleration is not already used in velocity & position computation
                 computeAccelerationForGameObject(go);
-
                 // Compute velocity
                 computeVelocity(go, dtCorrected);
                 // Compute position
                 go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.599, world.maxVelocity);
                 go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.599, world.maxVelocity);
-
                 // test World space constrained
                 verifyGameConstraint(go);
-
-
                 // update Bounding box for this GameObject.
-                if (go.bbox != null) {
+                if (Optional.ofNullable(go.bbox).isPresent()) {
                     go.bbox.update(go);
                 }
                 go.forces.clear();
             }
-
             // apply Object behaviors computations
             if (!go.behaviors.isEmpty()) {
-                go.behaviors.forEach(b -> {
-                    b.onUpdate(go, dt);
-                });
+                go.behaviors.forEach(b -> b.onUpdate(go, dt));
             }
             // Update the Object itself
             go.update(dt);
@@ -306,7 +294,7 @@ public class PhysicEngine extends System {
      * @param x   the value to be constrained between min and max.
      * @param min minimum for the x value.
      * @param max maximum for the x value.
-     * @return
+     * @return the ceil value between min and max range.
      */
     private double ceilMinMaxValue(double x, double min, double max) {
         return ceilValue(Math.copySign((Math.abs(x) > max ? max : x), x), min);
@@ -370,8 +358,8 @@ public class PhysicEngine extends System {
     /**
      * retrieve debug flag status for this debugFlagKey service.
      *
-     * @param debugFlagKey
-     * @return
+     * @param debugFlagKey the debug flag parameter to be retrieved.
+     * @return the value for this debug flag.
      */
     public Boolean getDebugFlag(String debugFlagKey) {
         return debugFlags.get(debugFlagKey);
@@ -380,17 +368,17 @@ public class PhysicEngine extends System {
     /**
      * set debug flag status for this debugFlagKey service.
      *
-     * @param debugFlagKey
-     * @param value
+     * @param debugFlagKey the debug flag parameter to be set.
+     * @param value        the value for this debug flag
      */
     public void setDebugFlag(String debugFlagKey, Boolean value) {
         debugFlags.put(debugFlagKey, value);
     }
 
     /**
-     * retrieve values for the
+     * retrieve values for the debug display
      *
-     * @return
+     * @return the map of debug flags info to be displayed.
      */
     public Map<String, Boolean> getDebugInfo() {
         return debugFlags;

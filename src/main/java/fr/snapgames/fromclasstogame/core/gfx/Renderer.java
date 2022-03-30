@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.core.gfx;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.AbstractEntity;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
@@ -23,10 +24,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -59,29 +58,20 @@ public class Renderer extends System {
     /**
      * The list of available camera.
      */
-    private List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
+    private final List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
     /**
      * Internal ist of Render helpers
      */
-    private Map<String, RenderHelper<?>> renderHelpers = new HashMap<>();
+    private final Map<String, RenderHelper<?>> renderHelpers = new HashMap<>();
 
     /**
      * debug color to display debug information
      */
-    private Color debugColor = Color.ORANGE;
+    private final Color debugColor = Color.ORANGE;
     /**
      * Debug level.
      */
     private int debug = 0;
-    /**
-     * font used to display debug information.
-     */
-    private Font debugFont;
-
-    /**
-     * The Font used to render pause message.
-     */
-    private Font pauseFont;
 
     /**
      * the world object to be used by the Render
@@ -105,22 +95,28 @@ public class Renderer extends System {
      * the initialization of the system from the {@link Configuration} information.
      *
      * @param config The Configuration object to initialize the {@link Renderer} on.
-     * @return
+     * @return initialization status (O is ok, negative values are error)
      */
     public int initialize(Configuration config) {
         setViewport(config.width, config.height);
-        /**
+        /*
          * Add the core Render helpers for {@link GameObject}.
          */
         addRenderHelper(new GameObjectRenderHelper(this));
-        /**
+        /*
          * Add the Render helper for the {@link TextObject}.
          */
         addRenderHelper(new TextRenderHelper(this));
 
         Graphics2D gri = (Graphics2D) buffer.getGraphics();
-        debugFont = gri.getFont().deriveFont(0.8f);
-        pauseFont = gri.getFont().deriveFont(1.8f);
+        /*
+         * font used to display debug information.
+         */
+        Font debugFont = gri.getFont().deriveFont(0.8f);
+        /*
+         * The Font used to render pause message.
+         */
+        Font pauseFont = gri.getFont().deriveFont(1.8f);
         return 0;
     }
 
@@ -213,8 +209,8 @@ public class Renderer extends System {
                     "Game Paused",
                     Color.WHITE,
                     new Color(0.1f, 0.1f, 0.4f, 0.8f),
-                    (this.buffer.getWidth()) / 2,
-                    ((this.buffer.getHeight() / 3) * 2));
+                    (this.buffer.getWidth()) / 2.0,
+                    ((this.buffer.getHeight() / 3.0) * 2.0));
         }
     }
 
@@ -245,7 +241,7 @@ public class Renderer extends System {
     /**
      * Set the default Graphics2D API configuration for rendering purpose.
      *
-     * @param g
+     * @param g the Graphics2D API for drawing things on rendering buffer
      */
     private void setRenderingHintsList(Graphics2D g) {
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -273,13 +269,13 @@ public class Renderer extends System {
      * @param objects the list of GameObject to be rendered.
      */
     private void drawObjectList(Graphics2D g, List<GameObject> objects) {
-        objects.stream().filter(f -> f.isActive())
+        objects.stream().filter(AbstractEntity::isActive)
                 .collect(Collectors.toList())
                 .forEach(go -> {
                     draw(g, go);
                     // process child
                     go.getChild().stream()
-                            .filter(c -> c.isActive())
+                            .filter(AbstractEntity::isActive)
                             .collect(Collectors.toList())
                             .forEach(co -> draw(g, co));
                 });
@@ -326,9 +322,7 @@ public class Renderer extends System {
     private void addAndSortObjectToList(List<GameObject> listObjects, GameObject go) {
         if (!listObjects.contains(go)) {
             listObjects.add(go);
-            listObjects.sort((a, b) -> {
-                return a.layer < b.layer ? 1 : a.priority < b.priority ? 1 : -1;
-            });
+            listObjects.sort((a, b) -> b.layer <= a.layer ? a.priority < b.priority ? 1 : -1 : 1);
         }
     }
 
@@ -352,29 +346,31 @@ public class Renderer extends System {
      * Save a screenshot of the current buffer.
      */
     private void saveScreenshot() {
-        final String path = this.getClass().getResource("/").getPath().substring(1);
+        final String path;//.substring(1);
+        path = Objects.requireNonNull(this.getClass().getResource("/")).getPath();
+        if (Optional.ofNullable(path).isPresent()) {
+            Path targetDir = Paths.get(path + "/screenshots");
+            int i = screenShotIndex++;
+            String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
 
-        Path targetDir = Paths.get(path + "/screenshots");
-        int i = screenShotIndex++;
-        String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
+            try {
+                if (!Files.exists(targetDir)) {
+                    Files.createDirectory(targetDir);
+                }
+                File out = new File(filename);
+                ImageIO.write(getBuffer(), "PNG", out);
 
-        try {
-            if (!Files.exists(targetDir)) {
-                Files.createDirectory(targetDir);
+                logger.info("Write screenshot to {}", filename);
+            } catch (IOException e) {
+                logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
             }
-            File out = new File(filename);
-            ImageIO.write(getBuffer(), "PNG", out);
-
-            logger.info("Write screenshot to {}", filename);
-        } catch (IOException e) {
-            logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }
     }
 
     /**
      * Add a RenderHelper to te Render to extend its rendering capabilities to other specific Objects.
      *
-     * @param rh
+     * @param rh The {@link RenderHelper} implementation for a dedicated Object type to be added to {@link Renderer} system.
      */
     public void addRenderHelper(RenderHelper<?> rh) {
         renderHelpers.put(rh.getType(), rh);
