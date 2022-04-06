@@ -313,10 +313,7 @@ public class Renderer extends System {
             if (!Files.exists(targetDir)) {
                 Files.createDirectory(targetDir);
             }
-            File out = new File(filename);
-            ImageIO.write(getBuffer(), "PNG", out);
-
-            logger.info("Write screenshot to {}", filename);
+            ImageUtilities.save(filename, getBuffer());
         } catch (IOException e) {
             logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }

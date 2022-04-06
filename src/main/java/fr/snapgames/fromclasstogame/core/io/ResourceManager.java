@@ -51,7 +51,7 @@ public class ResourceManager {
         game = g;
     }
 
-    private static Font readFont(String path) {
+    public static Font readFont(String path) {
         Font font = null;
         Optional<InputStream> ois;
         try {

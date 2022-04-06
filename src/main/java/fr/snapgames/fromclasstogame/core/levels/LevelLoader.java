@@ -29,16 +29,6 @@ public class LevelLoader {
 
     private Level loadFile(String fileName) {
 
-        String levelFileJson = null;
-        try {
-            levelFileJson = Files.readString(Paths.get("/levels/" + fileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        LevelFile gson = new Gson().fromJson(levelFileJson, LevelFile.class);
-
-        Level level = parseLevel(gson);
-
         return null;
     }
 
