@@ -91,7 +91,7 @@ public class PlayScene extends AbstractScene {
         // Declare World playground
         World world = new World(800, 600);
         // create a basic wind all over the play area
-        InfluenceArea2d iArea = new InfluenceArea2d(
+        Influencer iArea = new Influencer("wind",
                 new Vector2d(0.475, 0),
                 new BoundingBox(Vector2d.ZERO, 800, 600,
                         BoundingBox.BoundingBoxType.RECTANGLE),
@@ -116,7 +116,7 @@ public class PlayScene extends AbstractScene {
             GameObject player = tm.getObject("player");
 
             // Define the camera following the player object.
-            Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
+            Dimension vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
             Camera camera = new Camera("cam01")
                     .setTarget(player)
                     .setTweenFactor(0.02)

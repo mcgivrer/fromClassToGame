@@ -100,7 +100,7 @@ public class DemoScene extends AbstractScene {
         // Declare World playground
         World world = new World(800, 400);
         // create a basic wind all over the play area
-        InfluenceArea2d iArea = new InfluenceArea2d(
+        Influencer iArea = new Influencer("wind",
                 new Vector2d(0.475, 0.0),
                 new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
                         BoundingBox.BoundingBoxType.RECTANGLE),

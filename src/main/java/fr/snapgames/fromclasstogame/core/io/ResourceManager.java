@@ -44,7 +44,7 @@ public class ResourceManager extends System {
         super(g);
     }
 
-    private static Font readFont(String path) {
+    public static Font readFont(String path) {
         Font font = null;
         Optional<InputStream> ois;
         try {
