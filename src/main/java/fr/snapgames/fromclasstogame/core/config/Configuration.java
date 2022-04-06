@@ -3,18 +3,14 @@ package fr.snapgames.fromclasstogame.core.config;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import fr.snapgames.fromclasstogame.core.config.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.snapgames.fromclasstogame.core.config.cli.CliManager;
-import fr.snapgames.fromclasstogame.core.config.cli.DoubleArgParser;
-import fr.snapgames.fromclasstogame.core.config.cli.IntegerArgParser;
-import fr.snapgames.fromclasstogame.core.config.cli.StringArgParser;
-import fr.snapgames.fromclasstogame.core.config.cli.Vector2dArgParser;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
-public class Configuration {
+public class Configuration extends AbstractConfiguration {
     /**
      * path to the default configuration file
      */
@@ -64,6 +60,20 @@ public class Configuration {
      * default title of the window.
      */
     private static final String CFG_KEY_TITLE = "title";
+    /**
+     * Audio mute parameter.
+     */
+    private static final String CFG_KEY_AUDIO_MUTE = "mute";
+
+    /**
+     * Audio Sound Volume
+     */
+    private static final String CFG_KEY_AUDIO_SOUND_VOLUME = "sound";
+
+    /**
+     * Audio Sound Volume
+     */
+    private static final String CFG_KEY_AUDIO_MUSIC_VOLUME = "music";
 
     /**
      * value of the default debug level (0 to 5 fixing the detailed granularity,
@@ -73,8 +83,6 @@ public class Configuration {
 
     private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-    public ResourceBundle defaultValues;
-    public CliManager cm;
     public String levelPath;
     public String title = "fromClassToGame";
 
@@ -88,22 +96,23 @@ public class Configuration {
     public String defaultScene = "";
     public int defaultScreen = 0;
 
+    /**
+     * Audio Parameters
+     */
+    public boolean mute;
+    public float soundVolume;
+    public float musicVolume;
+    /**
+     * Debug level
+     */
     public int debugLevel;
-    private String configPath;
 
     public Configuration(String configurationPath) {
-        try {
-            cm = new CliManager();
-            this.configPath = configurationPath;
-            initializeArgParser(configurationPath);
-            logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath,
-                    System.currentTimeMillis());
-        } catch (Exception e) {
-            logger.error("Unable to read configuration", e);
-        }
+        super(configurationPath);
     }
 
-    private void initializeArgParser(String configurationPath) {
+    @Override
+    public void initializeArgParser(String configurationPath) {
 
         cm.add(new IntegerArgParser(CFG_KEY_DEBUG, "dbg", CFG_KEY_DEBUG,
                 "set the value for the debug mode (0 to 5)", "game.setup.debugLevel", 0));
@@ -129,31 +138,17 @@ public class Configuration {
         cm.add(new StringArgParser(CFG_KEY_CONFIG, "c", CFG_KEY_CONFIG,
                 "set the path and file to be loaded for configuration", "game.setup.config.filename",
                 configurationPath));
+        cm.add(new BooleanArgParser(CFG_KEY_AUDIO_MUTE, "mute", CFG_KEY_AUDIO_MUTE,
+                "Define the audio mute flag", "game.audio.mote.flag", false));
+        cm.add(new FloatArgParser(CFG_KEY_AUDIO_SOUND_VOLUME, "snd", CFG_KEY_AUDIO_SOUND_VOLUME,
+                "Define the audio volume level (0.0 to 1.0)", "game.audio.volume.sound", 1.0f));
+        cm.add(new FloatArgParser(CFG_KEY_AUDIO_MUSIC_VOLUME, "mus", CFG_KEY_AUDIO_SOUND_VOLUME,
+                "Define the music volume level (0.0 to 1.0)", "game.audio.volume.music", 0.8f));
     }
 
-    /**
-     * Parse configuration file key by key and set the corresponding values in the
-     * configuration attributes.
-     */
-    public void readValuesFromFile() {
 
-        ResourceBundle.clearCache(this.getClass().getClassLoader());
-        ResourceBundle config = ResourceBundle.getBundle(this.configPath, Locale.ROOT,
-                this.getClass().getClassLoader());
-        this.defaultValues = config;
-        if (config != null) {
-            cm.parseConfigFile(config);
-            getValuesFromCM();
-        } else {
-            logger.error("unable to set configuration from {}", this.configPath);
-        }
-    }
-
-    /**
-     * After parsing the CLI, retrieve the extracted values and set the
-     * Configuration attributes.
-     */
-    private void getValuesFromCM() {
+    @Override
+    public void getValuesFromCM() {
         this.debugLevel = (Integer) cm.getValue(CFG_KEY_DEBUG);
         this.title = (String) cm.getValue(CFG_KEY_TITLE);
         this.width = (Integer) cm.getValue(CFG_KEY_WIDTH);
@@ -165,18 +160,8 @@ public class Configuration {
         this.scenes = (String) cm.getValue(CFG_KEY_SCENES);
         this.gravity = (Vector2d) cm.getValue(CFG_KEY_GRAVITY);
         this.configPath = (String) cm.getValue(CFG_KEY_CONFIG);
-    }
-
-    public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
-        // parse argument a first time to detect a different config file is provided
-        cm.parseArguments(argv);
-        getValuesFromCM();
-        // read default values from config files
-        readValuesFromFile();
-        // reparse args to override the mandatory attributes
-        cm.parseArguments(argv);
-        // retrieve the final values and set the useful config.
-        getValuesFromCM();
-        return this;
+        this.mute = (Boolean) cm.getValue(CFG_KEY_AUDIO_MUTE);
+        this.soundVolume = (Float) cm.getValue(CFG_KEY_AUDIO_SOUND_VOLUME);
+        this.musicVolume = (Float) cm.getValue(CFG_KEY_AUDIO_MUSIC_VOLUME);
     }
 }

@@ -2,6 +2,10 @@ package fr.snapgames.fromclasstogame.core.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
+
+import fr.snapgames.fromclasstogame.core.entity.Camera;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
@@ -63,14 +67,15 @@ public abstract class AbstractScene implements Scene {
 
     @Override
     public void create(Game g) throws UnknownResource {
-        // Add the Debug switcher capability to this scene
-        addBehavior(new DebugSwitcherBehavior());
+        game.getRenderer().clearObjects();
         // will be updated into the implemented scene
     }
 
     @Override
     public void activate() {
+
         logger.debug("Scene {} activated", this.sceneName);
+
     }
 
     @Override
@@ -92,6 +97,17 @@ public abstract class AbstractScene implements Scene {
         } else if (!ep.contains(go)) {
             ep.add(go);
             SystemManager.add(go);
+        }
+    }
+
+    /**
+     * Add All object from the collection to the object to be rendered
+     *
+     * @param objects a collection of GameObject to be managed.
+     */
+    public void addAll(Collection<? extends GameObject> objects) {
+        for (GameObject go : getObjectsList()) {
+            add(go);
         }
     }
 
@@ -200,7 +216,6 @@ public abstract class AbstractScene implements Scene {
     public String getName() {
         return sceneName;
     }
-
 
     public Game getGame() {
         return game;

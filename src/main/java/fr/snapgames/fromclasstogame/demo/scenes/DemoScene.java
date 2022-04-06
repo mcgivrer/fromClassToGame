@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.demo.scenes;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.behaviors.CopyObjectPosition;
+import fr.snapgames.fromclasstogame.core.behaviors.DebugSwitcherBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.OnEntityCollision;
 import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
@@ -57,12 +58,14 @@ public class DemoScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
+        if (g.getConfiguration().debugLevel > 0) {
+            // Add the Debug switcher capability to this scene
+            addBehavior(new DebugSwitcherBehavior());
+        }
         // Load resources
         ResourceManager.getFont("fonts/FreePixel.ttf");
         ResourceManager.getSlicedImage("images/tiles01.png", "heart", 0, 16, 16, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "*", 0, 0, 16, 16);
-        ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
-        ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
         // inventory selector states
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selector", 5 * 16, 3 * 16, 17, 16);
         ResourceManager.getSlicedImage("images/tiles01.png", "inventory_selected", 6 * 16, 3 * 16, 17, 16);
@@ -71,6 +74,10 @@ public class DemoScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/tiles01.png", "potion", 34, 18, 14, 15);
         // Background image resource
         ResourceManager.getSlicedImage("images/backgrounds/forest.jpg", "background", 0, 0, 1008, 642);
+
+        // movng object resources
+        ResourceManager.getSlicedImage("images/tiles01.png", "player", 8 * 16, 48, 16, 16);
+        ResourceManager.getSlicedImage("images/tiles01.png", "orangeBall", 9 * 16, 48, 16, 16);
 
         // Add a specific Render for the new GameObject implementation for
         // - ScoreObject
@@ -93,7 +100,7 @@ public class DemoScene extends AbstractScene {
         // Declare World playground
         World world = new World(800, 400);
         // create a basic wind all over the play area
-        InfluenceArea2d iArea = new InfluenceArea2d(
+        Influencer iArea = new Influencer("wind",
                 new Vector2d(0.475, 0.0),
                 new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
                         BoundingBox.BoundingBoxType.RECTANGLE),
@@ -224,6 +231,8 @@ public class DemoScene extends AbstractScene {
                 .setRelativeToCamera(true)
                 .setDebug(3);
         add(welcome);
+
+        addAll(world.influencers);
     }
 
     /**
@@ -336,7 +345,6 @@ public class DemoScene extends AbstractScene {
 
     @Override
     public void update(long dt) {
-
         super.update(dt);
 
         GameObject player = null;
