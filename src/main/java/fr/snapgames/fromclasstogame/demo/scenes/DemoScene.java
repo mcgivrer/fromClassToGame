@@ -232,7 +232,7 @@ public class DemoScene extends AbstractScene {
                 .setDebug(3);
         add(welcome);
 
-        randomizeFilteredGameObject("enemy_", true);
+        addAll(world.influencers);
     }
 
     /**

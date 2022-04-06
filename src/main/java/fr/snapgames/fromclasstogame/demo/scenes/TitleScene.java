@@ -55,7 +55,8 @@ public class TitleScene extends AbstractScene {
         }
 
         // Define the camera following the player object.
-        vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
+        BufferedImage buffer = g.getRenderer().getBuffer();
+        vp = new Dimension(buffer.getWidth(), buffer.getHeight());
 
         // add a background image
         GameObject bckG = new GameObject("background", new Vector2d(0.0, 0.0))
@@ -120,7 +121,7 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public void dispose() {
-        ResourceManager.dispose();
+        ResourceManager.clear();
     }
 
     @Override

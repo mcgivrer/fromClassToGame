@@ -4,11 +4,10 @@ import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.renderer.DebugViewportGridRenderHelper;
-import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
-import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
-import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.*;
+import fr.snapgames.fromclasstogame.core.physic.Influencer;
 import fr.snapgames.fromclasstogame.core.physic.World;
+import fr.snapgames.fromclasstogame.core.physic.collision.Box;
 import fr.snapgames.fromclasstogame.core.system.System;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -118,6 +118,12 @@ public class Renderer extends System {
          * Add the Render helper to draw debug information about viewport.
          */
         addRenderHelper(new DebugViewportGridRenderHelper(this));
+
+        /**
+         * Add the Render helper for the Influencer (only for debug mode)).
+         */
+        addRenderHelper(new InfluencerRenderHelper(this));
+
         Graphics2D gri = (Graphics2D) buffer.getGraphics();
         debugFont = gri.getFont().deriveFont(0.8f);
         pauseFont = gri.getFont().deriveFont(1.8f);
@@ -136,7 +142,6 @@ public class Renderer extends System {
         drawObjectList(g, objects);
         moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
-        renderWorld();
         drawPauseText(g);
 
         g.dispose();
@@ -146,11 +151,13 @@ public class Renderer extends System {
         }
     }
 
-    /**
-     * Render the world details but only for debug purpose.
-     */
-    private void renderWorld() {
-        // TODO: need to implement the debug rendering to World.
+    public void drawRectangle(Graphics2D g, Color borderColor, Color fillColor, Box shape) {
+        if (Optional.ofNullable(fillColor).isPresent()) {
+            g.setColor(fillColor);
+            g.fillRect((int) shape.x, (int) shape.y, (int) shape.width, (int) shape.height);
+        }
+        g.setColor(borderColor);
+        g.drawRect((int) shape.x, (int) shape.y, (int) shape.width, (int) shape.height);
     }
 
     /**
