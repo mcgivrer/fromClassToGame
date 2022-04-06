@@ -62,7 +62,8 @@
         <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-    </properties>
+        <project.scm.id>github</project.scm.id>
+      </properties>
 
     <!-- Project Dependencies -->
 
@@ -301,7 +302,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
+                    <releaseProfiles>github</releaseProfiles>
                     <tagNameFormat>v${project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
