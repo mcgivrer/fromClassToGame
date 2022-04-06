@@ -3,14 +3,10 @@ package fr.snapgames.fromclasstogame.core.config;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import fr.snapgames.fromclasstogame.core.config.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.snapgames.fromclasstogame.core.config.cli.CliManager;
-import fr.snapgames.fromclasstogame.core.config.cli.DoubleArgParser;
-import fr.snapgames.fromclasstogame.core.config.cli.IntegerArgParser;
-import fr.snapgames.fromclasstogame.core.config.cli.StringArgParser;
-import fr.snapgames.fromclasstogame.core.config.cli.Vector2dArgParser;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
@@ -64,6 +60,20 @@ public class Configuration extends AbstractConfiguration {
      * default title of the window.
      */
     private static final String CFG_KEY_TITLE = "title";
+    /**
+     * Audio mute parameter.
+     */
+    private static final String CFG_KEY_AUDIO_MUTE = "mute";
+
+    /**
+     * Audio Sound Volume
+     */
+    private static final String CFG_KEY_AUDIO_SOUND_VOLUME = "sound";
+
+    /**
+     * Audio Sound Volume
+     */
+    private static final String CFG_KEY_AUDIO_MUSIC_VOLUME = "music";
 
     /**
      * value of the default debug level (0 to 5 fixing the detailed granularity,
@@ -86,6 +96,15 @@ public class Configuration extends AbstractConfiguration {
     public String defaultScene = "";
     public int defaultScreen = 0;
 
+    /**
+     * Audio Parameters
+     */
+    public boolean mute;
+    public float soundVolume;
+    public float musicVolume;
+    /**
+     * Debug level
+     */
     public int debugLevel;
 
     public Configuration(String configurationPath) {
@@ -119,6 +138,12 @@ public class Configuration extends AbstractConfiguration {
         cm.add(new StringArgParser(CFG_KEY_CONFIG, "c", CFG_KEY_CONFIG,
                 "set the path and file to be loaded for configuration", "game.setup.config.filename",
                 configurationPath));
+        cm.add(new BooleanArgParser(CFG_KEY_AUDIO_MUTE, "mute", CFG_KEY_AUDIO_MUTE,
+                "Define the audio mute flag", "game.audio.mote.flag", false));
+        cm.add(new FloatArgParser(CFG_KEY_AUDIO_SOUND_VOLUME, "snd", CFG_KEY_AUDIO_SOUND_VOLUME,
+                "Define the audio volume level (0.0 to 1.0)", "game.audio.volume.sound", 1.0f));
+        cm.add(new FloatArgParser(CFG_KEY_AUDIO_MUSIC_VOLUME, "mus", CFG_KEY_AUDIO_SOUND_VOLUME,
+                "Define the music volume level (0.0 to 1.0)", "game.audio.volume.music", 0.8f));
     }
 
 
@@ -135,5 +160,8 @@ public class Configuration extends AbstractConfiguration {
         this.scenes = (String) cm.getValue(CFG_KEY_SCENES);
         this.gravity = (Vector2d) cm.getValue(CFG_KEY_GRAVITY);
         this.configPath = (String) cm.getValue(CFG_KEY_CONFIG);
+        this.mute = (Boolean) cm.getValue(CFG_KEY_AUDIO_MUTE);
+        this.soundVolume = (Float) cm.getValue(CFG_KEY_AUDIO_SOUND_VOLUME);
+        this.musicVolume = (Float) cm.getValue(CFG_KEY_AUDIO_MUSIC_VOLUME);
     }
 }
