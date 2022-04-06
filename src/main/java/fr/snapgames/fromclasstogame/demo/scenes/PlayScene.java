@@ -9,11 +9,12 @@ import fr.snapgames.fromclasstogame.core.entity.TextObject;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.UnkownGameObjectException;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.TileMapRenderHelper;
-import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.LevelLoader;
-import fr.snapgames.fromclasstogame.core.physic.InfluenceArea2d;
+import fr.snapgames.fromclasstogame.core.io.ResourceManager;
+import fr.snapgames.fromclasstogame.core.physic.Influencer;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
@@ -66,18 +67,19 @@ public class PlayScene extends AbstractScene {
         ResourceManager.getSlicedImage("images/backgrounds/volcano.png", "background", 0, 0, 1008, 642);
 
         // Add a specific Render for the new ScoreObject
-        g.getRenderer().addRenderHelper(new TileMapRenderHelper(g.getRenderer()));
+        Renderer renderer = g.getRenderer();
+        renderer.addRenderHelper(new TileMapRenderHelper(renderer));
         // Add a specific Render for the new GameObject implementation for
         // - ScoreObject
-        g.getRenderer().addRenderHelper(new ScoreRenderHelper(g.getRenderer()));
+        renderer.addRenderHelper(new ScoreRenderHelper(renderer));
         // - TestValue
-        g.getRenderer().addRenderHelper(new TextValueRenderHelper(g.getRenderer()));
+        renderer.addRenderHelper(new TextValueRenderHelper(renderer));
         // - LifeObject
-        g.getRenderer().addRenderHelper(new LifeRenderHelper(g.getRenderer()));
+        renderer.addRenderHelper(new LifeRenderHelper(renderer));
         // - InventoryObject
-        g.getRenderer().addRenderHelper(new InventoryRenderHelper(g.getRenderer()));
+        renderer.addRenderHelper(new InventoryRenderHelper(renderer));
         // - ParticleSystem
-        g.getRenderer().addRenderHelper(new ParticleSystemRenderHelper(g.getRenderer()));
+        renderer.addRenderHelper(new ParticleSystemRenderHelper(renderer));
 
         // Initialize the Tilemap loader
         tmLoader = new LevelLoader(game);
@@ -106,7 +108,7 @@ public class PlayScene extends AbstractScene {
 
 
         // add a TileMap object
-        TileMap tm = tmLoader.load(this, "/levels/lvl0101.properties");
+        TileMap tm = tmLoader.load(this, "./levels/lvl0101.properties");
         add(tm);
 
         try {
@@ -114,7 +116,7 @@ public class PlayScene extends AbstractScene {
             GameObject player = tm.getObject("player");
 
             // Define the camera following the player object.
-            Dimension vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
+            Dimension vp = new Dimension(g.getRender().getBuffer().getWidth(), g.getRender().getBuffer().getHeight());
             Camera camera = new Camera("cam01")
                     .setTarget(player)
                     .setTweenFactor(0.02)
