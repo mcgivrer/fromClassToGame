@@ -81,6 +81,7 @@ mvn exec:java
 You will get the current display:
 
 ![screenshot - DemoScene with objects](docs/images/figure-demo-scene-structure.png "a screenshot of the current demo scene")
+<br/>_figure 1 - Latest entities presenting new features_
 
 This sample demo will show :
 
@@ -91,7 +92,17 @@ This sample demo will show :
 
 The latest demo integrate the Fire `ParticleSystem` and the `InfluenceArea2d` world perturbation
 
-![screenshot - the latest evolution of the game framework with ParticleSystem and World Influencer](docs/images/capture-022.png "ParticleSystem simulating fire, and under World perturbation")
+![screenshot - the latest evolution of the game framework with ParticleSystem and World Influencer](docs/images/capture-007-particles-as-child-800x416.png "ParticleSystem simulating fire, and under World perturbation")
+<br/>_figure 2 - ParticleSystem simulating fire, and under World perturbation_
+
+1. A `GameObject` having a `ParticleSystem` simulating fire as child.
+
+## Latest version
+
+The latest release propose the following debug visual 
+
+![screenshot - Latest version showing debug dynamic information](docs/images/capture-008.png "Latest version showing debug dynamic information")
+<br/>_figure 3 - Latest version showing debug dynamic information_
 
 
 Have Fun !
