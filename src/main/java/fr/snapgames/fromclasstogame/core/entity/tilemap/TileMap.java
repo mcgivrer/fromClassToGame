@@ -40,8 +40,8 @@ public class TileMap extends GameObject {
         return layers;
     }
 
-    public void setTileSets(List<TileSet> parseTileSet) {
-        tileSets = parseTileSet;
+    public void setTileSets(List<TileSet> tileSets) {
+        this.tileSets = tileSets;
     }
 
     public void setLayers(List<TileLayer> parseLayers) {

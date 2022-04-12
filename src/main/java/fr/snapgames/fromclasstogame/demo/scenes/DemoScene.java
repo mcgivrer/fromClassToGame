@@ -8,10 +8,12 @@ import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.LightObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.I18n;
+import fr.snapgames.fromclasstogame.core.io.LevelLoader;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.*;
@@ -58,6 +60,9 @@ public class DemoScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
+        // add the Level Loader system.
+        SystemManager.add(LevelLoader.class);
+
         if (g.getConfiguration().debugLevel > 0) {
             // Add the Debug switcher capability to this scene
             addBehavior(new DebugSwitcherBehavior());
@@ -92,11 +97,18 @@ public class DemoScene extends AbstractScene {
         g.getRenderer().addRenderHelper(new ParticleSystemRenderHelper(g.getRenderer()));
         // - LightObject
         g.getRenderer().addRenderHelper(new LightObjectRenderHelper(g.getRenderer()));
+
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
         super.create(g);
+
+        LevelLoader lm = (LevelLoader) SystemManager.get(LevelLoader.class);
+
+        TileMap map = lm.loadFrom("/levels/lvl0101.properties");
+        add(map);
+
         // Declare World playground
         World world = new World(800, 400);
         // create a basic wind all over the play area

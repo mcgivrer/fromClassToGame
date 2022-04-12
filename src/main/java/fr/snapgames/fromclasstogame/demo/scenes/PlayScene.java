@@ -108,7 +108,7 @@ public class PlayScene extends AbstractScene {
 
 
         // add a TileMap object
-        TileMap tm = tmLoader.load(this, "./levels/lvl0101.properties");
+        TileMap tm = tmLoader.loadFrom("./levels/lvl0101.properties");
         add(tm);
 
         try {

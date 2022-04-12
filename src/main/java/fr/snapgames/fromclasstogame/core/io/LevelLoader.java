@@ -16,7 +16,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LevelLoader extends System {
     private static final Logger logger = LoggerFactory.getLogger(LevelLoader.class);
@@ -35,18 +39,24 @@ public class LevelLoader extends System {
      * @param fileName name of the level file (*.lvl)
      * @return a brand new TileMap fully initialized.
      */
-    public TileMap load(Scene scene, String fileName) {
+    public TileMap loadFrom(String fileName) {
         TileMap tm = new TileMap();
         FileAttributes fa = FileAttributes.read(fileName);
-        tm.name = fa.get("title");
-        tm.setTileSets(parseTileSet(tm, fa));
-        tm.setLayers(parseLayers(tm, fa));
+        tm.name = fa.get("name");
+        tm.addAttribute("title", fa.get("title"));
+        tm.addAttribute("world", fa.get("world"));
+        tm.addAttribute("level", fa.get("level"));
+        tm.addAttribute("description", fa.get("description"));
+        List<TileSet> ts = parseTileSet(fa);
+        tm.setTileSets(ts);
+        List<TileLayer> tl = parseLayers(fa);
+        tm.setLayers(tl);
         return tm;
     }
 
-    private static List<TileSet> parseTileSet(TileMap tm, FileAttributes fa) {
+    private List<TileSet> parseTileSet(FileAttributes fa) {
         List<TileSet> tileSets = new ArrayList<>();
-        List<String> tsList = fa.find("level.tileset");
+        List<String> tsList = fa.find("tileset");
         tsList.forEach(s -> {
             String tsImage = fa.getSubAttribute(s, "file");
             String[] tsTileSize = fa.getSubAttribute(s, "size").split("x");
@@ -57,34 +67,77 @@ public class LevelLoader extends System {
             String imageFileName = fa.getSubAttribute(s, "file");
             try {
                 BufferedImage img = ResourceManager.getImage(imageFileName);
-                TileSet ts = new TileSet(name);
-                extractTiles(ts, img, tsList, tw, th);
-                tm.addTileSet(ts);
+
+                TileSet ts = extractTiles(name, img, listMap, tw, th);
+                tileSets.add(ts);
             } catch (UnknownResource e) {
-                e.printStackTrace();
+                logger.error("Unable to read image file from {}", imageFileName, e);
             }
         });
         return tileSets;
     }
 
-    private static void extractTiles(
-            TileSet ts,
-            BufferedImage img,
-            List<String> tsList,
-            int tw, int th) {
-        tsList.forEach(s -> {
-            String[] values = s.split("=");
-            String[] pos = values[1].split(",");
-            int x = Integer.parseInt(pos[0]);
-            int y = Integer.parseInt(pos[1]);
+    private TileSet extractTiles(String name, BufferedImage img,
+                                 String tsList,
+                                 int tw, int th) {
+        Pattern pnv = Pattern.compile("^(?<key>[a-zA-Z0-9]*)\\((?<value>[a-zA-Z0-9\\.]*)\\)$");
 
-            Tile t = new Tile(values[0], tw, th, null);
-            t.setImage(img.getSubimage(x * tw, y * th, tw, th));
+        TileSet ts = new TileSet(name);
+        Arrays.asList(
+                tsList.substring(1, tsList.length() - 1).split(",")
+        ).forEach(s -> {
+            String[] values = s.split("/");
+            String[] geo = values[1].split("[.]");
+            int x = Integer.parseInt(geo[0]);
+            int y = Integer.parseInt(geo[1]);
+            int w = Integer.parseInt(geo[2]);
+            int h = Integer.parseInt(geo[3]);
+
+            Tile t = new Tile(values[0], tw * w, th * h);
+            if (values.length > 2) {
+                if (values[2].contains(".")) {
+                    String[] attrs = values[2].split("\\.");
+                    for (String attr : attrs) {
+                        Matcher m = pnv.matcher(attr);
+                        if (m.matches()) {
+                            String key = m.group("key");
+                            Object value = m.group("value");
+                            value = extractTypedValue(key, value);
+                            t.addAttribute(key, value);
+                        } else {
+                            t.addAttribute(attr, true);
+                        }
+                    }
+                } else {
+                    t.addAttribute(values[2], true);
+                }
+            }
+            t.setImage(img.getSubimage(x * tw, y * th, tw * w, th * h));
             ts.add(values[0], t);
         });
+        return ts;
     }
 
-    private static List<TileLayer> parseLayers(TileMap tm, FileAttributes fa) {
+    private Object extractTypedValue(String key, Object value) {
+        try {
+            value = Integer.parseInt((String) value);
+        } catch (NumberFormatException nfe1) {
+            try {
+                value = Integer.parseInt((String) value);
+            } catch (NumberFormatException nfe2) {
+                try {
+                    if ("TRUEFALSEtruefalse".contains((String) value)) {
+                        value = Boolean.parseBoolean((String) value);
+                    }
+                } catch (NumberFormatException nfe3) {
+                    logger.error("Unable to read attribute value fo {}:{}", key, value);
+                }
+            }
+        }
+        return value;
+    }
+
+    private List<TileLayer> parseLayers(FileAttributes fa) {
         List<TileLayer> layers = new ArrayList<>();
         List<String> strLayers = fa.find("layer");
 
@@ -92,33 +145,45 @@ public class LevelLoader extends System {
 
             String name = fa.getSubAttribute(s, "name");
             int priority = Integer.parseInt(fa.getSubAttribute(s, "priority"));
+            String type = fa.getSubAttribute(s, "type");
+            switch (type) {
+                case "background":
+                    String backGround = fa.getSubAttribute(s, "file");
+                    if (Optional.ofNullable(backGround).isPresent()) {
+                        try {
+                            BufferedImage bckImg = ResourceManager.getImage(backGround);
+                            TileLayer tl = new TileLayer(name, 0, 0, priority);
+                            tl.setOffset(0, 0);
+                            tl.setImage(bckImg);
+                            layers.add(tl);
+                        } catch (UnknownResource e) {
+                            logger.error("Unable to read the background image '{}'", backGround, e);
+                        }
+                    } else {
+                        logger.error("Unable to read background: file is not defined");
+                    }
+                    break;
+                case "map":
+                    String layerMap = fa.getSubAttribute(s, "rows");
+                    if (Optional.ofNullable(layerMap).isPresent()) {
+                        String[] size = fa.getSubAttribute(s, "size").split("x");
+                        int width = Integer.parseInt(size[0]);
+                        int height = Integer.parseInt(size[1]);
+                        TileLayer tl = new TileLayer(name, width, height, priority);
+                        tl.setOffset(0, 0);
+                        String tileSet = fa.getSubAttribute(s, "tileset");
+                        tl.setTileSet(tileSet);
+                        tl.setMap(layerMap);
+                        layers.add(tl);
+                    } else {
+                        logger.error("Unable to set map layer: rows are not defined");
 
-            String backGround = fa.getSubAttribute(s, "image");
-            if (backGround != null) {
-                BufferedImage bckImg = null;
-                try {
-                    bckImg = ImageIO.read(FileAttributes.class.getResourceAsStream(backGround));
-                    TileLayer tl = new TileLayer(name, 0, 0, priority);
-                    tl.setOffset(0, 0);
-                    tl.setImage(bckImg);
-                    layers.add(tl);
-                } catch (IOException e) {
-                    logger.error("Unable to read the i<mage " + backGround);
-                }
+                    }
+                    break;
+                default:
+                    break;
             }
 
-            String layerMap = fa.getSubAttribute(s, "map");
-            if (layerMap != null) {
-                String[] size = fa.getSubAttribute(s, "size").split("x");
-                int width = Integer.parseInt(size[0]);
-                int height = Integer.parseInt(size[1]);
-                TileLayer tl = new TileLayer(name, width, height, priority);
-                tl.setOffset(0, 0);
-                String tileSet = fa.getSubAttribute(s, "tileset");
-                tl.setTileSet(tileSet);
-                tl.setMap(layerMap);
-                layers.add(tl);
-            }
 
         }
         return layers;

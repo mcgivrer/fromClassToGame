@@ -19,4 +19,7 @@ public class TileSet {
     }
 
 
+    public Map<String, Tile> getTiles() {
+        return tiles;
+    }
 }
