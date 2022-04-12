@@ -54,6 +54,8 @@ public class GameObject implements Entity<GameObject> {
      */
     public Color color;
     public BufferedImage image;
+    // define animation (if not null)
+    Animation animations;
     public int layer;
     public int priority;
     public boolean relativeToCamera;
@@ -341,4 +343,7 @@ public class GameObject implements Entity<GameObject> {
         POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
     }
 
+    public Animation getAnimations() {
+        return this.animations;
+    }
 }
