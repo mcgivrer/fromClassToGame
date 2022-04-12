@@ -63,10 +63,10 @@ public class EntityPoolStepdefs extends CommonDefSteps implements En {
         });
 
         Then("The Game has an EntityPoolManager System", () -> {
-            assertNotNull("The Game has no EntityPoolManager System", game.getEPM());
+            assertNotNull("The Game has no EntityPoolManager System",getGame().getEPM());
         });
         Then("The Game has an EntityPool for GameObject", () -> {
-            EntityPool ep = game.getEPM().getPool(GameObject.class.getName());
+            EntityPool ep = getGame().getEPM().getPool(GameObject.class.getName());
             assertNotNull("The Game has no default EP for GameObject", ep);
         });
     }

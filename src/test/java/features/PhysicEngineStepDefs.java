@@ -44,7 +44,7 @@ public class PhysicEngineStepDefs extends CommonDefSteps implements En {
         });
 
         And("the PhysicEngine is initialized", () -> {
-            pe = game.getPhysicEngine();
+            pe = getGame().getPhysicEngine();
             assertNotNull("The PhysicEngine has not been initialized", pe);
         });
 

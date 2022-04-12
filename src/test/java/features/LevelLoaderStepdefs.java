@@ -1,11 +1,12 @@
+package features;
+
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileSet;
 import fr.snapgames.fromclasstogame.core.io.LevelLoader;
 
 import io.cucumber.java8.En;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * The Step definition for the LevelLoader and Level.
@@ -41,6 +42,28 @@ public class LevelLoaderStepdefs implements En {
         And("the Tile with code {string} has a {string} attribute equals to {int}", (String tileCode, String attrName, Integer attrValue) -> {
             TileSet ts = level.getTileSets().get(0);
             assertEquals(attrValue, ts.getTiles().get(tileCode).getAttribute(attrName));
+        });
+        And("the TileMap has an id set to {string}", (String idValue) -> {
+            assertEquals(idValue, level.getAttribute("id", null));
+        });
+        And("the TileMap has an world set to {int}", (Integer worldAttrValue) -> {
+            assertEquals(worldAttrValue, level.getAttribute("world", null));
+        });
+        And("the TileMap has an level set to {int}", (Integer levelAttrValue) -> {
+            assertEquals(levelAttrValue, level.getAttribute("level", null));
+        });
+        And("the TileMap has a name set to {string}", (String nameValue) -> {
+            assertEquals(nameValue, level.name);
+        });
+
+        And("the TileMap has a title set to {string}", (String titleAttrValue) -> {
+            assertEquals(titleAttrValue, level.getAttribute("title", null));
+        });
+        And("the TileMap has a description set to {string}", (String descriptionAttrValue) -> {
+            assertEquals(descriptionAttrValue, level.getAttribute("description", null));
+        });
+        And("a GameObject {string} has been created", (String gameObjectName) -> {
+            assertNotNull(level.getGameObject(gameObjectName));
         });
 
     }

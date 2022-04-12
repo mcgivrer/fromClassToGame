@@ -315,6 +315,16 @@ public class GameObject implements Entity<GameObject> {
         return child;
     }
 
+    public GameObject addChild(GameObject childGo) {
+        child.add(childGo);
+        return this;
+    }
+
+    public GameObject add(List<GameObject> childListGo) {
+        child.addAll(childListGo);
+        return this;
+    }
+
     @Override
     public boolean isActive() {
         return active;

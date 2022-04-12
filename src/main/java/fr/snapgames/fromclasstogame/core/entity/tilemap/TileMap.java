@@ -69,4 +69,8 @@ public class TileMap extends GameObject {
             throw new UnkownGameObjectException(name);
         }
     }
+
+    public GameObject getGameObject(String gameObjectName) {
+        return mapObjects.get(gameObjectName);
+    }
 }

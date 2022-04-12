@@ -14,8 +14,8 @@ public class SystemManagerStepDefs extends CommonDefSteps implements En {
 
     public SystemManagerStepDefs() {
         When("I create a SystemManager", () -> {
-            game = new Game("test-sm");
-            sm = SystemManager.initialize(game);
+            setGame(new Game("test-sm"));
+            sm = SystemManager.initialize(getGame());
         });
         Then("the SystemManager instance is not null", () -> {
             assertNotNull("The System manager instance has not been initialized", SystemManager.getInstance());
@@ -30,7 +30,7 @@ public class SystemManagerStepDefs extends CommonDefSteps implements En {
             assertNotNull("The system does not exists", s);
         });
         When("I create a SystemManager with a {string}", (String className) -> {
-            sm = SystemManager.initialize(game);
+            sm = SystemManager.initialize(getGame());
             Class<? extends System> classClass = (Class<? extends System>) Class.forName(className);
             SystemManager.add(classClass);
         });
@@ -50,7 +50,7 @@ public class SystemManagerStepDefs extends CommonDefSteps implements En {
             assertTrue("", SystemManager.getSystems().isEmpty());
         });
         And("I initialize SystemManager", () -> {
-            SystemManager.initialize(game);
+            SystemManager.initialize(getGame());
         });
         Then("all the Systems are ready", () -> {
             for (System system : SystemManager.getSystems()) {

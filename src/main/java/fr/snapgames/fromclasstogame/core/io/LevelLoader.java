@@ -2,6 +2,7 @@ package fr.snapgames.fromclasstogame.core.io;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.Tile;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileLayer;
 import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
@@ -43,17 +44,48 @@ public class LevelLoader extends System {
         TileMap tm = new TileMap();
         FileAttributes fa = FileAttributes.read(fileName);
         tm.name = fa.get("name");
+        tm.addAttribute("id", fa.get("id"));
         tm.addAttribute("title", fa.get("title"));
-        tm.addAttribute("world", fa.get("world"));
-        tm.addAttribute("level", fa.get("level"));
+        tm.addAttribute("world", Integer.parseInt(fa.get("world")));
+        tm.addAttribute("level", Integer.parseInt(fa.get("level")));
         tm.addAttribute("description", fa.get("description"));
         List<TileSet> ts = parseTileSet(fa);
         tm.setTileSets(ts);
         List<TileLayer> tl = parseLayers(fa);
         tm.setLayers(tl);
+        List<GameObject> ol = parseGameObjects(fa);
+        tm.add(ol);
         return tm;
     }
 
+    /**
+     * Parse the {@link FileAttributes} file and retrieve all {@link GameObject} definition to feed a List of GameObject.
+     *
+     * @param fa the FileAttributes file to parse
+     * @return a list of loaded GameObjects
+     * @see GameObject
+     */
+    private List<GameObject> parseGameObjects(FileAttributes fa) {
+        List<GameObject> objs = new ArrayList<>();
+
+        List<String> objList = fa.find("objects");
+        objList.forEach(o -> {
+            String goName = fa.getSubAttribute(o, "name");
+
+
+            GameObject go = new GameObject(goName);
+            objs.add(go);
+        });
+        return objs;
+    }
+
+    /**
+     * Parse the {@link FileAttributes} fa to retrieve all {@link TileSet} definition.
+     *
+     * @param fa the FileAttributes file to parse
+     * @return a list of loaded {]link TileSet}
+     * @see TileSet
+     */
     private List<TileSet> parseTileSet(FileAttributes fa) {
         List<TileSet> tileSets = new ArrayList<>();
         List<String> tsList = fa.find("tileset");
@@ -137,6 +169,13 @@ public class LevelLoader extends System {
         return value;
     }
 
+    /**
+     * Parse the {@link FileAttributes} fa to retrieve all {@link TileLayer} definition.
+     *
+     * @param fa the FileAttributes file to parse
+     * @return a list of loaded {]link TileLayer}
+     * @see TileLayer
+     */
     private List<TileLayer> parseLayers(FileAttributes fa) {
         List<TileLayer> layers = new ArrayList<>();
         List<String> strLayers = fa.find("layer");

@@ -15,33 +15,33 @@ import static org.junit.Assert.assertTrue;
 public class LightStepdefs extends CommonDefSteps implements En {
     public LightStepdefs() {
         And("I add an ambient LightObject named {string}", (String ambientLightName) -> {
-            Scene current = game.getSceneManager().getCurrent();
+            Scene current = getGame().getSceneManager().getCurrent();
             current.add(new LightObject(ambientLightName, new Vector2d(0.0, 0.0), LightType.LIGHT_AMBIANT));
         });
 
         And("I add an spherical LightObject named {string}", (String sphericalLightName) -> {
-            Scene current = game.getSceneManager().getCurrent();
+            Scene current = getGame().getSceneManager().getCurrent();
             current.add(new LightObject(sphericalLightName, new Vector2d(0.0, 0.0), LightType.LIGHT_SPHERE));
         });
         Then("The LightObject {string} is rendered", (String lightName) -> {
-            Scene current = game.getSceneManager().getCurrent();
+            Scene current = getGame().getSceneManager().getCurrent();
             LightObject lo = (LightObject) current.getGameObject(lightName);
             assertTrue("The LightObject " + lightName + " has not been rendered", lo.rendered);
         });
         And("I add the LightObjectRenderHelper", () -> {
-            game.getRenderer().addRenderHelper(new LightObjectRenderHelper(game.getRenderer()));
+            getGame().getRenderer().addRenderHelper(new LightObjectRenderHelper(getGame().getRenderer()));
         });
         Then("the game renders the scene", () -> {
-            Scene current = game.getSceneManager().getCurrent();
-            game.getRenderer().draw();
+            Scene current = getGame().getSceneManager().getCurrent();
+            getGame().getRenderer().draw();
         });
         And("I set the light {string} intensity to {double}", (String lightName, Double intensity) -> {
-            Scene current = game.getSceneManager().getCurrent();
+            Scene current = getGame().getSceneManager().getCurrent();
             LightObject lo = (LightObject) current.getGameObject(lightName);
             lo.setIntensity(intensity);
         });
         And("I set the light {string} color to {string}", (String lightName, String colorName) -> {
-            Scene current = game.getSceneManager().getCurrent();
+            Scene current = getGame().getSceneManager().getCurrent();
             LightObject lo = (LightObject) current.getGameObject(lightName);
             switch (colorName.toUpperCase()) {
                 case "WHITE":
@@ -67,7 +67,7 @@ public class LightStepdefs extends CommonDefSteps implements En {
             }
         });
         And("I set the light {string} glitterEffect to {double}", (String lightName, Double glitterEffect) -> {
-            Scene current = game.getSceneManager().getCurrent();
+            Scene current = getGame().getSceneManager().getCurrent();
             LightObject lo = (LightObject) current.getGameObject(lightName);
             lo.setGlitterEffect(glitterEffect);
         });

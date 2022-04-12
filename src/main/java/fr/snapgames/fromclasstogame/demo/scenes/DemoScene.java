@@ -130,7 +130,11 @@ public class DemoScene extends AbstractScene {
         add(map);
 
         // add main character (player)
-        Material m = DefaultMaterial.newMaterial("playerMaterial", 0.25, 0.3, 0.80, 0.98);
+        Material m = DefaultMaterial.newMaterial("playerMaterial",
+                0.25,
+                0.3,
+                0.80,
+                0.98);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
                 .setType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)

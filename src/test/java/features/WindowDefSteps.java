@@ -66,7 +66,7 @@ public class WindowDefSteps extends CommonDefSteps implements En {
         });
 
         Then("the Window is get from the Game", () -> {
-            win = game.getWindow();
+            win = getGame().getWindow();
         });
 
         And("the Window width is set to {int}", (Integer width) -> {
