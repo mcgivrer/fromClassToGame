@@ -106,8 +106,6 @@ public class DemoScene extends AbstractScene {
 
         LevelLoader lm = (LevelLoader) SystemManager.get(LevelLoader.class);
 
-        TileMap map = lm.loadFrom("/levels/lvl0101.properties");
-        add(map);
 
         // Declare World playground
         World world = new World(800, 400);
@@ -126,6 +124,10 @@ public class DemoScene extends AbstractScene {
         dvg.setLayer(11);
         dvg.setPriority(2);
         add(dvg);
+
+        // load a level as TileMap
+        TileMap map = lm.loadFrom("/levels/lvl0101.properties");
+        add(map);
 
         // add main character (player)
         Material m = DefaultMaterial.newMaterial("playerMaterial", 0.25, 0.3, 0.80, 0.98);

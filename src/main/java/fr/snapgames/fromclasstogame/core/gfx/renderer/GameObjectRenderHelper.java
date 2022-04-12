@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class GameObjectRenderHelper extends AbstractRenderHelper implements RenderHelper<GameObject> {
     private static final Logger logger = LoggerFactory.getLogger(GameObjectRenderHelper.class);
@@ -16,7 +17,7 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
 
     @Override
     public void draw(Graphics2D g, GameObject go) {
-        if(go!=null) {
+        if (go != null) {
             switch (go.type) {
                 case POINT:
                     g.setColor(go.color);
@@ -31,8 +32,10 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
                     g.drawArc((int) (go.position.x), (int) (go.position.y), (int) (go.width), (int) (go.height), 0, 360);
                     break;
                 case IMAGE:
-                    if (go.image != null) {
-                        drawImage(g, go.image, go.position, go.width, go.height);
+                    // retrieve the active image through Animation class or as internal fixed image.
+                    BufferedImage img = go.getAnimations() != null ? go.getAnimations().getCurrentFrame() : go.image;
+                    if (img != null) {
+                        drawImage(g, img, go.position, go.width, go.height);
                     } else {
                         logger.error("GameObject named {} : image attribute is not defined", go.name);
                     }
