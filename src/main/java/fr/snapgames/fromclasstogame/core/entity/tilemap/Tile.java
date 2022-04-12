@@ -11,7 +11,7 @@ public class Tile {
     private BufferedImage image;
 
     public Tile(String imgId, int w, int h) {
-        this(imgId, w, h, null);
+        this(imgId, w, h, new HashMap<>());
     }
 
     public Tile(String imgId, int w, int h, Map<String, Object> attrs) {
@@ -35,5 +35,9 @@ public class Tile {
 
     public void setImage(BufferedImage subimage) {
         image = subimage;
+    }
+
+    public boolean isAttributeExist(String tileAttributeName) {
+        return attributes.containsKey(tileAttributeName);
     }
 }
