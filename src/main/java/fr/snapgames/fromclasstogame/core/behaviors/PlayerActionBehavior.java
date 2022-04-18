@@ -3,8 +3,7 @@ package fr.snapgames.fromclasstogame.core.behaviors;
 import java.awt.event.KeyEvent;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 
@@ -46,30 +45,20 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
     }
 
     @Override
-    public void onInput(GameObject go, ActionHandler ih) {
-        if (ih.get(KeyEvent.VK_LEFT)) {
-            go.forces.add(new Vector2d(-accel, 0.0));
+    public void onInput(GameObject entity, ActionHandler ah) {
+        if (ah.get(KeyEvent.VK_LEFT)) {
+            entity.forces.add(new Vector2d(-accel, 0.0));
         }
-        if (ih.get(KeyEvent.VK_RIGHT)) {
-            go.forces.add(new Vector2d(accel, 0.0));
+        if (ah.get(KeyEvent.VK_RIGHT)) {
+            entity.forces.add(new Vector2d(accel, 0.0));
         }
     }
 
     @Override
-    public void onUpdate(GameObject go, long dt) {
-
-    }
-
-    @Override
-    public void onRender(GameObject go, Render r) {
-
-    }
-
-    @Override
-    public void onAction(GameObject go, Integer action) {
-        accelStep = (Double) go.getAttribute("accelStep", 0);
-        jumpAccel = (Double) go.getAttribute("jumpAccel", 0);
-        jumping = (boolean) go.getAttribute("jumping", 0);
+    public void onAction(GameObject entity, Integer action) {
+        accelStep = (Double) entity.getAttribute("accelStep", 0);
+        jumpAccel = (Double) entity.getAttribute("jumpAccel", 0);
+        jumping = (boolean) entity.getAttribute("jumping", 0);
 
         if (ah.getCtrl()) {
             accel = accelStep * 10;
@@ -81,25 +70,25 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
 
         switch (action) {
             case ActionHandler.UP:
-                jumping = (boolean) go.getAttribute("jumping", false);
+                jumping = (boolean) entity.getAttribute("jumping", false);
                 if (!jumping) {
-                    go.forces.add(new Vector2d(0.0, jumpAccel * accel));
-                    go.addAttribute("jumping", true);
+                    entity.forces.add(new Vector2d(0.0, jumpAccel * accel));
+                    entity.addAttribute("jumping", true);
                 }
                 break;
             case ActionHandler.FIRE1:
-                go.forces.clear();
-                go.acceleration.x = 0;
-                go.acceleration.y = 0;
-                go.velocity.x = 0;
-                go.velocity.y = 0;
+                entity.forces.clear();
+                entity.acceleration.x = 0;
+                entity.acceleration.y = 0;
+                entity.velocity.x = 0;
+                entity.velocity.y = 0;
                 break;
 
             case ActionHandler.LEFT:
-                go.acceleration.x = -accel;
+                entity.acceleration.x = -accel;
                 break;
             case ActionHandler.RIGHT:
-                go.acceleration.x = accel;
+                entity.acceleration.x = accel;
                 break;
 
             default:

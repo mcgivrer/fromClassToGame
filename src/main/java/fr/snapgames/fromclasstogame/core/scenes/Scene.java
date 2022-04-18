@@ -5,8 +5,8 @@ import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 
 import java.util.List;
 
@@ -26,6 +26,8 @@ public interface Scene extends ActionHandler.ActionListener {
 
     void add(GameObject go);
 
+    void addBehavior(Behavior<Scene> b);
+
     GameObject getGameObject(String name);
 
     List<GameObject> find(String filteredName);
@@ -42,7 +44,7 @@ public interface Scene extends ActionHandler.ActionListener {
 
     void onAction(Integer action);
 
-    void render(Render render);
+    void draw(Renderer renderer);
 
     void dispose();
 

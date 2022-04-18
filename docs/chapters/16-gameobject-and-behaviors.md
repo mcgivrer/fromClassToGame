@@ -11,7 +11,7 @@ public interface Behavior {
 
     void update(GameObject go, long dt);
 
-    void render(GameObject go, Render r);
+    void renderer(GameObject go, Render r);
 }
 ```
 
@@ -29,7 +29,7 @@ public class GameObject {
 }
 ```
 
-Then at Game engine level, we will need to process the corresponding implementation's input, update and render call.
+Then at Game engine level, we will need to process the corresponding implementation's input, update and renderer call.
 
 ## The Player Action Behavior
 

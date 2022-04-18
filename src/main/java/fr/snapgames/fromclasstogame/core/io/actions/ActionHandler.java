@@ -1,4 +1,4 @@
-package fr.snapgames.fromclasstogame.core.io;
+package fr.snapgames.fromclasstogame.core.io.actions;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
@@ -52,6 +52,10 @@ public class ActionHandler extends System implements KeyListener {
     public final static int START = 13;
     public final static int HOME = 14;
     public final static int POWER = 15;
+
+    public final static int ACTIONS_INTERNAL = 100;
+
+    public final static int ACTIONS_CUSTOM = 200;
 
 
     private static final Logger logger = LoggerFactory.getLogger(ActionHandler.class);
@@ -107,6 +111,15 @@ public class ActionHandler extends System implements KeyListener {
         return 0;
     }
 
+    public ActionHandler registerAction(int actionCode, int keyCode) {
+        if (!this.keyMapping.containsValue(actionCode)) {
+            this.keyMapping.put(keyCode, actionCode);
+        } else {
+            logger.warn(String.format("The action code %d is already declared", actionCode));
+        }
+        return this;
+    }
+
     public void addAction(int ke, int customActionCode) {
         this.keyMapping.put(ke, customActionCode);
     }
@@ -128,7 +141,7 @@ public class ActionHandler extends System implements KeyListener {
 
     public ActionHandler setWindow(Window window) {
         this.window = window;
-        window.getFrame().addKeyListener(this);
+        window.addListener(this);
         return this;
     }
 

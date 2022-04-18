@@ -1,13 +1,15 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
+import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.NoSuchElementException;
 
 /**
  * Internal Helpers to draw to the internal image buffer of the Render system.
@@ -16,13 +18,25 @@ import java.util.NoSuchElementException;
  * @since 1.0.0
  */
 public class AbstractRenderHelper {
+    protected final Renderer renderer;
     protected Color debugBackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.7f);
     protected Color debugFrontColor = Color.ORANGE;
     protected Color debugBoxColor = Color.YELLOW;
+    protected Font debugFont;
 
+    public AbstractRenderHelper(Renderer r) {
+        this.renderer = r;
+        debugFont = r.getBuffer().getGraphics().getFont().deriveFont(9.0f);
+    }
 
-    public AbstractRenderHelper(Render r){
-
+    /**
+     * Set the current active font.
+     *
+     * @param g    the Graphics 2D interface
+     * @param font the font to be activated.
+     */
+    public void setFont(Graphics2D g, Font font) {
+        g.setFont(font);
     }
 
     /**
@@ -57,7 +71,6 @@ public class AbstractRenderHelper {
         g.drawString(text, (int) x, (int) y);
     }
 
-
     /**
      * Drawing a text with the active font
      *
@@ -66,7 +79,8 @@ public class AbstractRenderHelper {
      * @param pos  the position where to draw
      */
     public void drawText(Graphics2D g, String text, Vector2d pos) {
-        drawText(g, text, pos.x, pos.y);
+        int yOffset = g.getFontMetrics().getHeight() - g.getFontMetrics().getDescent();
+        drawText(g, text, pos.x, pos.y + yOffset);
     }
 
     /**
@@ -78,14 +92,14 @@ public class AbstractRenderHelper {
      */
     public void drawTextBorder(Graphics2D g, double maxBorderWidth, TextObject to) {
         // draw black border
+        int yOffset = g.getFontMetrics().getHeight() - g.getFontMetrics().getDescent();
         g.setColor(Color.BLACK);
         for (double x = to.position.x - maxBorderWidth; x < to.position.x + maxBorderWidth; x++) {
             for (double y = to.position.y - maxBorderWidth; y < to.position.y + maxBorderWidth; y++) {
-                g.drawString(to.text, (int) (x), (int) (y));
+                g.drawString(to.text, (int) (x), (int) (y) + yOffset);
             }
         }
     }
-
 
     /**
      * Drawing a text with the active font
@@ -101,8 +115,10 @@ public class AbstractRenderHelper {
     }
 
     /**
-     * Drawing a filled rectangle at the <code>pos</code> position having a <code>width</code> and a <code>height</code>
-     * And a possible offset at <code>offX</code>,<code>offY</code>, using the <code>c</code> {@link Color}.
+     * Drawing a filled rectangle at the <code>pos</code> position having a
+     * <code>width</code> and a <code>height</code>
+     * And a possible offset at <code>offX</code>,<code>offY</code>, using the
+     * <code>c</code> {@link Color}.
      *
      * @param g      the Graphics 2D interface
      * @param pos    the position Vector2d where to draw
@@ -118,8 +134,10 @@ public class AbstractRenderHelper {
     }
 
     /**
-     * Drawing a rectangle at the <code>pos</code> position having a <code>width</code> and a <code>height</code>
-     * And a possible offset at <code>offX</code>,<code>offY</code>, using the <code>c</code> {@link Color}.
+     * Drawing a rectangle at the <code>pos</code> position having a
+     * <code>width</code> and a <code>height</code>
+     * And a possible offset at <code>offX</code>,<code>offY</code>, using the
+     * <code>c</code> {@link Color}.
      *
      * @param g       the Graphics 2D interface
      * @param pos     the position Vector2d where to draw
@@ -129,16 +147,16 @@ public class AbstractRenderHelper {
      * @param marginY the vertical margin
      * @param c       the {@link Color} to use
      */
-    public void drawRect(Graphics2D g, Vector2d pos, double width, double height, double marginX, double marginY, Color c) {
+    public void drawRect(Graphics2D g, Vector2d pos, double width, double height, double marginX, double marginY,
+            Color c) {
         g.setColor(c);
-        g.drawRect((int) (
-                        pos.x - marginX), (int) (pos.y - marginY),
+        g.drawRect((int) (pos.x - marginX), (int) (pos.y - marginY),
                 (int) (width + (2 * marginX)), (int) (height + (2 * marginY)));
     }
 
-
     /**
-     * Draw an image <code>img</code> (see {@link BufferedImage}) at <code>x,y</code>.
+     * Draw an image <code>img</code> (see {@link BufferedImage}) at
+     * <code>x,y</code>.
      *
      * @param g   the Graphics 2D interface
      * @param img the image to be drawn
@@ -150,23 +168,24 @@ public class AbstractRenderHelper {
     }
 
     /**
-     * Draw an image <code>img</code> (see {@link BufferedImage}) at <code>pos</code> {@link Vector2d}.
+     * Draw an image <code>img</code> (see {@link BufferedImage}) at
+     * <code>pos</code> {@link Vector2d}.
      *
      * @param g   the Graphics 2D interface
      * @param img the image to be drawn
-     * @param pos the  position where to draw
+     * @param pos the position where to draw
      */
     public void drawImage(Graphics2D g, BufferedImage img, Vector2d pos) {
         drawImage(g, img, pos.x, pos.y);
     }
 
-
     /**
-     * Draw an image <code>img</code> (see {@link BufferedImage}) at <code>pos</code> {@link Vector2d}.
+     * Draw an image <code>img</code> (see {@link BufferedImage}) at
+     * <code>pos</code> {@link Vector2d}.
      *
      * @param g      the Graphics 2D interface
      * @param img    the image to be drawn
-     * @param pos    the  position where to draw
+     * @param pos    the position where to draw
      * @param width  the width of the image to be drawn to
      * @param height the height of the image to be drawn to
      */
@@ -175,10 +194,11 @@ public class AbstractRenderHelper {
     }
 
     /**
-     * Draw a 2D point at position {@link Vector2d} with a defined size using the right {@link Color}.
+     * Draw a 2D point at position {@link Vector2d} with a defined size using the
+     * right {@link Color}.
      *
      * @param g        the Graphics 2D interface
-     * @param position the  position where to draw
+     * @param position the position where to draw
      * @param size     the size of the point to draw
      * @param color    the color to use to draw the point.
      */
@@ -191,28 +211,81 @@ public class AbstractRenderHelper {
                 (int) size);
     }
 
-    protected void drawDebugInfo(Graphics2D g, GameObject go) {
-        if (go.getDebug() > 1) {
-            setColor(g, debugBoxColor);
-            drawText(g, "#" + go.id, go.position.x, go.position.y);
-            drawRect(g, go.position, go.width, go.height, 1, 1, debugBoxColor);
-            if (go.getDebug() > 2) {
-                setFontSize(g, 9);
+    /**
+     * If {@link GameObject#getDebug()} >= {@link Window#getDebug()}, and
+     * {@link Window#getDebug()}>0, display the debug information.
+     *
+     * @param g  the Graphics API to use to draw information
+     * @param go the GameObject to be processed
+     */
+    public void drawDebugInfo(Graphics2D g, GameObject go) {
+        int winDbgLevel = renderer.getGame().getWindow().getDebug();
+        if (winDbgLevel > 0 && winDbgLevel >= go.getDebug()) {
+            Vector2d pos = go.position;
+            int gw = (int) go.width;
+            int gh = (int) go.height;
+
+            setColor(g, this.debugFrontColor);
+            setFontSize(g, 8.0f);
+            drawText(g, "#" + go.id, pos.x, pos.y);
+
+            setColor(g, go.getDebugColor());
+            drawRect(g, go.bbox.position, go.bbox.shape.width - 1, go.bbox.shape.height - 1, 1, 1, debugBoxColor);
+
+            if (go.getDebug() >= 1) {
                 double offsetY = go.debugOffsetX;
-                double offsetX = go.width + go.debugOffsetY;
+                double offsetX = gw + go.debugOffsetY;
 
-                String largestString = go.getDebugInfo().stream().max((o1, o2) -> o1.length() > o2.length() ? 1 : -1).get();
-                int maxWidth = g.getFontMetrics().stringWidth(largestString);
+                setFontSize(g, 9);
+                String largestString = go.getDebugInfo().stream().max((o1, o2) -> o1.length() > o2.length() ? 1 : -1)
+                        .get();
+                int maxWidth = g.getFontMetrics().stringWidth(largestString) < 80 ? 80
+                        : g.getFontMetrics().stringWidth(largestString);
 
-                int height = ((go.getDebugInfo().size() + 2) * 9);
-                fillRect(g, go.position, maxWidth+8, height, offsetX-4, offsetY - 12, debugBackgroundColor);
+                int fontHeight = g.getFontMetrics().getHeight();
+                int height = ((go.getDebugInfo().size()) * fontHeight);
+                if (go.life != -1) {
+                    drawGauge(g,
+                            pos.x + offsetX - 3,
+                            pos.y + offsetY - 12,
+                            0, go.lifeStart,
+                            go.life,
+                            maxWidth + 7,
+                            3);
+                }
+                fillRect(g, go.position, maxWidth + 8, height, offsetX - 4, offsetY - fontHeight + 2,
+                        debugBackgroundColor);
                 setColor(g, debugFrontColor);
+                setFont(g, debugFont);
                 int i = 0;
                 for (String line : go.getDebugInfo()) {
                     drawText(g, line, go.position, offsetX, offsetY + i);
-                    i += 10;
+                    i += fontHeight;
                 }
             }
         }
     }
+
+    /**
+     * draw debug gauge on screen at (x,y)
+     * spread on (width x height) rectangle,
+     * from min => max value
+     * using the Graphics2D g interface.
+     *
+     * @param g      the Graphics interface to be used.
+     * @param x      the horizontal position of the gauge
+     * @param y      the vertical position of the gauge
+     * @param min    the minimum value of the gauge
+     * @param max    the maximum value of the gauge
+     * @param value  the current value of the gauge
+     * @param width  width of the rectangle containing the gauge
+     * @param height height of the rectangle containing the gauge
+     */
+    private void drawGauge(Graphics2D g, double x, double y, double min, double max, double value, double width,
+            double height) {
+        double lifeValue = width * ((min + value) / max);
+        drawRect(g, new Vector2d(x - 1, y - 1), width, height, 0, 0, debugBackgroundColor);
+        fillRect(g, new Vector2d(x, y), lifeValue, height - 1, 0, 0, Color.ORANGE);
+    }
+
 }

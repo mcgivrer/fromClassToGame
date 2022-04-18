@@ -4,7 +4,7 @@ The existing Behavior we've just created is dedicated to the GameObject. But, re
 have some common needs between both, like managing, but at Scene level, some player or user input, like debug
 configuration or else, and the Behavior interface would be very interesting to be used here.
 
-Thanks to this interface we would be able to implement input, update or render specific requirement.
+Thanks to this interface we would be able to implement input, update or renderer specific requirement.
 
 So let's adapt the Behavior interface to this new need.
 
@@ -47,6 +47,8 @@ public class MySceneBehavior implements Behavior<Scene> {
     }
 }
 ```
+
+> **TIPS**<wbr/> The Scene behavior are tested with the [Scene_can_have_behaviors.feature](../../src/test/resources/features/Scene_can_have_behaviors.feature) feature file.
 
 ## The Debug switcher
 

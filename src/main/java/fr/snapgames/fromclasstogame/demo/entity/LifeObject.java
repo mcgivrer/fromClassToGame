@@ -9,6 +9,8 @@ public class LifeObject extends GameObject {
     @Deprecated
     public LifeObject(String name, double x, double y) {
         super(name, new Vector2d(x, y));
+        this.width = 24;
+        this.height = 18;
 
     }
 
@@ -18,7 +20,8 @@ public class LifeObject extends GameObject {
 
     public LifeObject setLive(int value) {
         this.value = value;
+        this.width = 24;
+        this.height = 18;
         return this;
     }
-
 }

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>core</groupId>
     <artifactId>fromclasstogame</artifactId>
@@ -59,9 +60,9 @@
     </distributionManagement>
 
     <properties>
-        <mainClass>fr.snapgames.fromclasstogame.core.Game</mainClass>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <project.mainClass>fr.snapgames.fromclasstogame.core.Game</project.mainClass>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <!-- Project Dependencies -->
@@ -71,16 +72,22 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.36</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.36</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.9</version>
         </dependency>
 
-        <!-- LUA Scripting activation -->
 
+        <!-- LUA Scripting activation -->
         <!-- https://mvnrepository.com/artifact/org.luaj/luaj-jse -->
         <dependency>
             <groupId>org.luaj</groupId>
@@ -108,7 +115,6 @@
             <version>0.3.7.4</version>
         </dependency>
 
-
         <!-- tests things -->
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
@@ -120,19 +126,25 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>7.0.0</version>
+            <version>7.2.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java8</artifactId>
-            <version>7.0.0</version>
+            <version>7.2.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.0.0</version>
+            <version>7.2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -145,9 +157,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <!-- Resource parsing -->
@@ -201,7 +215,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
                 <configuration>
                     <encoding>utf-8</encoding>
                     <stylesheet>maven</stylesheet>
@@ -215,7 +229,7 @@
                     <nohelp>true</nohelp>
                     <overview>${project.basedir}/README.md</overview>
                     <bottom>
-                        <![CDATA[<em>Copyright © \\${project.inceptionYear} - SnapGames.</em>]]>
+                        <![CDATA[<em>Copyright © \${project.inceptionYear} - SnapGames.</em>]]>
                     </bottom>
                     <!--links>
                         <link>${project.issueManagement.url}</link>
@@ -245,13 +259,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.2</version>
                 <configuration>
                     <archive>
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>${mainClass}</mainClass>
+                            <mainClass>${project.mainClass}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -267,8 +281,9 @@
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>shaded</shadedClassifierName>
                     <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>${mainClass}</mainClass>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>${project.mainClass}</mainClass>
                         </transformer>
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
@@ -294,7 +309,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
+                    <releaseProfiles>github</releaseProfiles>
                     <tagNameFormat>v${project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
@@ -313,7 +328,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>${mainClass}</mainClass>
+                    <mainClass>${project.mainClass}</mainClass>
                     <arguments>
                         <!-- to be soon interpreted by a CLI impl.
                         <argument>d=0</argument>
@@ -359,7 +374,6 @@
                                 <!-- supports wildcard or name pattern -->
                                 <param>**/*.json</param>
                             </jsonFiles>
-                            <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
                             <skip>true</skip>
                             <mergeFeaturesById>true</mergeFeaturesById>
                             <buildNumber>4</buildNumber>
@@ -377,7 +391,17 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.ttf</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
                 <filtering>false</filtering>
+                <includes>
+                    <include>**/*.ttf</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/changes</directory>
@@ -396,7 +420,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>3.0.0-M6</version>
             </plugin>
             <!-- Code coverage -->
             <plugin>
@@ -416,7 +440,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
                 <configuration>
                     <stylesheetfile>${basedir}/docs/styles/javadoc.css</stylesheetfile>
                     <show>public</show>
@@ -500,7 +524,7 @@
                                 <phase>site</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory />
+                                    <workingDirectory/>
                                     <arguments>
                                         <argument>docs/epub-metadata.yml</argument>
                                         <argument>docs/index.md</argument>
@@ -514,7 +538,7 @@
                                         <argument>docs/chapters/08-scene-manager.md</argument>
                                         <argument>docs/chapters/09-extract-configuration.md</argument>
                                         <argument>docs/chapters/10-refactoring-packages.md</argument>
-                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/11-score-and-renderer-helper.md</argument>
                                         <argument>docs/chapters/12-see-through-camera.md</argument>
                                         <argument>docs/chapters/13-basic-physic-engine.md</argument>
                                         <argument>docs/chapters/14-collision-system.md</argument>
@@ -556,7 +580,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <executable>pandoc</executable>
-                                    <workingDirectory />
+                                    <workingDirectory/>
                                     <arguments>
                                         <argument>docs/epub-metadata.yml</argument>
                                         <argument>docs/index.md</argument>
@@ -570,7 +594,7 @@
                                         <argument>docs/chapters/08-scene-manager.md</argument>
                                         <argument>docs/chapters/09-extract-configuration.md</argument>
                                         <argument>docs/chapters/10-refactoring-packages.md</argument>
-                                        <argument>docs/chapters/11-score-and-render-helper.md</argument>
+                                        <argument>docs/chapters/11-score-and-renderer-helper.md</argument>
                                         <argument>docs/chapters/12-see-through-camera.md</argument>
                                         <argument>docs/chapters/13-basic-physic-engine.md</argument>
                                         <argument>docs/chapters/14-collision-system.md</argument>
@@ -625,7 +649,7 @@
                                     <outfile>${project.build.directory}/${project.name}.exe</outfile>
                                     <downloadUrl>http://java.com/download</downloadUrl>
                                     <classPath>
-                                        <mainClass>${mainClass}</mainClass>
+                                        <mainClass>${project.mainClass}</mainClass>
                                         <preCp>anything</preCp>
                                     </classPath>
                                     <icon>src/main/resources/res/app-icon.ico</icon>

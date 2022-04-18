@@ -1,17 +1,18 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
-import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.physic.World;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
-import java.awt.*;
+import fr.snapgames.fromclasstogame.core.entity.DebugViewportGrid;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
+import fr.snapgames.fromclasstogame.core.physic.World;
 
 public class DebugViewportGridRenderHelper extends AbstractRenderHelper implements RenderHelper<DebugViewportGrid> {
 
-    private Color gridColor = Color.BLUE;
+    private final Color gridColor = new Color(0.1f,0.4f,0.8f,0.4f);
 
 
-    public DebugViewportGridRenderHelper(Render r) {
+    public DebugViewportGridRenderHelper(Renderer r) {
         super(r);
     }
 
@@ -36,5 +37,10 @@ public class DebugViewportGridRenderHelper extends AbstractRenderHelper implemen
             g.setColor(debugBoxColor);
             g.drawRect(0, 0, (int) w.width, (int) w.height);
         }
+    }
+
+    @Override
+    public void drawDebugInfo(Graphics2D g, DebugViewportGrid go) {
+        super.drawDebugInfo(g,go);
     }
 }

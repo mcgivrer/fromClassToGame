@@ -1,16 +1,14 @@
 package fr.snapgames.fromclasstogame.core.gfx.renderer;
 
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 
 import java.awt.*;
 
 public class ParticleSystemRenderHelper extends AbstractRenderHelper implements RenderHelper<ParticleSystem> {
-    private Color color;
 
-    public ParticleSystemRenderHelper(Render r, Color c) {
+    public ParticleSystemRenderHelper(Renderer r) {
         super(r);
-        this.color = c;
     }
 
     @Override
@@ -21,11 +19,12 @@ public class ParticleSystemRenderHelper extends AbstractRenderHelper implements 
     @Override
     public void draw(Graphics2D g, ParticleSystem go) {
         if (g != null) {
-            go.particles.forEach(p -> {
-                drawPoint(g, p.position, p.size, p.color);
-            });
-            drawDebugInfo(g, go);
+            go.getChild().forEach(p -> drawPoint(g, p.position, (p.width + p.height) / 2, p.color));
         }
+    }
 
+    @Override
+    public void drawDebugInfo(Graphics2D g, ParticleSystem go) {
+        super.drawDebugInfo(g, go);
     }
 }

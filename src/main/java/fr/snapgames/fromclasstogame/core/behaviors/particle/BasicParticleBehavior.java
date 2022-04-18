@@ -3,38 +3,53 @@ package fr.snapgames.fromclasstogame.core.behaviors.particle;
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.entity.particles.Particle;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
-import fr.snapgames.fromclasstogame.core.gfx.Render;
-import fr.snapgames.fromclasstogame.core.io.ActionHandler;
+import fr.snapgames.fromclasstogame.core.gfx.Renderer;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Utils;
 
 import java.awt.*;
 
+/**
+ * Particle animation processing from create to update.
+ *
+ * @author Frédéric Delorme
+ * @since 1.0.2
+ */
 public class BasicParticleBehavior implements Behavior<Particle> {
 
+    /**
+     * Parent particle System
+     */
     protected ParticleSystem parent;
-    protected long defaultLifeTime;
-    protected Color defaultColor = Color.WHITE;
+    /**
+     * Default life duration initialisation
+     */
+    protected long defaultLifeDuration;
+    /**
+     * Default color for particle ar initialization
+     */
+    private Color defaultColor = Color.WHITE;
 
     public BasicParticleBehavior(ParticleSystem ps, int defaultLifeTimeMS, boolean restart) {
         super();
         this.parent = ps;
-        this.defaultLifeTime = defaultLifeTimeMS;
+        this.defaultLifeDuration = defaultLifeTimeMS;
         ps.setRestart(restart);
     }
 
     @Override
-    public void onCreate(Particle p) {
-        Behavior.super.onCreate(p);
-        p.alive = true;
-        p.life = defaultLifeTime;
-        p.color = defaultColor;
+    public void onCreate(Particle entity) {
+        Behavior.super.onCreate(entity);
+        entity.alive = true;
+        entity.life = defaultLifeDuration;
+        entity.color = defaultColor;
     }
 
     /**
      * Define the default Color for the new particle
      *
-     * @param c the Color to be assigned to the particle
-     * @return this BasicParticleBehavior
+     * @param c color to be set.
+     * @return the Modified BasicParticleBehavior object
      */
     public BasicParticleBehavior setColor(Color c) {
         this.defaultColor = c;
@@ -44,56 +59,56 @@ public class BasicParticleBehavior implements Behavior<Particle> {
     /**
      * Set the default lifetime t for the new particle.
      *
-     * @param t the life duration time for this particle.
-     * @return this BasicParticleBehavior
+     * @param t is the default life duration for this particle
+     * @return the modified `BasicParticleBehavior` object
      */
-    public BasicParticleBehavior setLifeTime(int t) {
-        this.defaultLifeTime = t;
+    public BasicParticleBehavior setLifeDuration(int t) {
+        this.defaultLifeDuration = t;
         return this;
     }
 
     /**
      * The only purpose is to provide a default implementation for any Behavior that will take in account user input.
      *
-     * @param go the particle to be impacted by user input.
-     * @param ih the ActionHandler providing input feedback.
+     * @param entity the particle to be impacted by user input.
+     * @param ah     the ActionHandler providing input feedback.
      */
     @Override
-    public void onInput(Particle go, ActionHandler ih) {
+    public void onInput(Particle entity, ActionHandler ah) {
 
     }
 
     /**
      * Compute the life and physic animation  for the particle.
      *
-     * @param go the particle to be updated
-     * @param dt the elapsed time since previous call.
+     * @param entity  the particle to be updated
+     * @param elapsed the elapsed time since previous call.
      */
     @Override
-    public void onUpdate(Particle go, long dt) {
-        if (go.alive) {
+    public void onUpdate(Particle entity, long elapsed) {
+        if (entity.alive) {
 
-            if (go.life - dt >= 0) {
-                go.life = go.life - dt;
+            if (entity.life - elapsed >= 0) {
+                entity.life -= elapsed;
             } else {
-                go.life = 0;
-                go.alive = false;
+                entity.life = -1;
+                entity.alive = false;
             }
         }
-        double time = Utils.range(dt * 0.125, 0, 16);
-        go.acceleration.multiply(time * 0.5);
-        go.velocity.add(go.acceleration);
-        go.position.add(go.velocity);
+        double time = Utils.range(elapsed * 0.125, 0, 16);
+        entity.acceleration.multiply(time * 0.5);
+        entity.velocity.add(entity.acceleration);
+        entity.position.add(entity.velocity);
 
     }
 
     @Override
-    public void onRender(Particle go, Render r) {
-
+    public void onRender(Particle go, Renderer renderer) {
+        // Nothing special to do
     }
 
     @Override
-    public void onAction(Particle go, Integer action) {
+    public void onAction(Particle entity, Integer action) {
 
     }
 }
