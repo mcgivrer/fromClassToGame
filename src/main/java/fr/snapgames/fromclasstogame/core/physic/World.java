@@ -55,7 +55,7 @@ public class World extends GameObject {
      * @param area the InfluenceArea to add to the World.
      * @return this updated World
      */
-    public World addInfluenceArea(Influencer area) {
+    public World add(Influencer area) {
         influencers.add(area);
         return this;
     }

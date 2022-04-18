@@ -24,7 +24,8 @@ public class TestScene extends AbstractScene {
         super.create(g);
         World w = new World(800, 600);
         w.setGravity(new Vector2d(0.0, 0.0));
-        SystemManager.setWorld(w);
+        g.getPhysicEngine().setWorld(w);
+        g.getRenderer().setWorld(w);
     }
 
     @Override

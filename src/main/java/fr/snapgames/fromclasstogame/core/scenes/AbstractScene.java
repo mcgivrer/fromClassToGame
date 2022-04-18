@@ -75,7 +75,6 @@ public abstract class AbstractScene implements Scene {
     public void activate() {
 
         logger.debug("Scene {} activated", this.sceneName);
-
     }
 
     @Override
@@ -106,7 +105,7 @@ public abstract class AbstractScene implements Scene {
      * @param objects a collection of GameObject to be managed.
      */
     public void addAll(Collection<? extends GameObject> objects) {
-        for (GameObject go : getObjectsList()) {
+        for (GameObject go : objects) {
             add(go);
         }
     }
@@ -239,6 +238,8 @@ public abstract class AbstractScene implements Scene {
     public void setName(String name) {
         this.sceneName = name;
     }
+
+
 }
 
 

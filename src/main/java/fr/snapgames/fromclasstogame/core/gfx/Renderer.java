@@ -81,10 +81,6 @@ public class Renderer extends System {
     private Font pauseFont;
 
     /**
-     * the world object to be used by the Render
-     */
-    private World world;
-    /**
      * Flag to gather a screenshot of the rendering buffer.
      */
     private boolean renderScreenshot = false;
@@ -393,10 +389,6 @@ public class Renderer extends System {
 
     public Color getDebugColor() {
         return this.debugColor;
-    }
-
-    public void setWorld(World w) {
-        this.world = w;
     }
 
     public void setDebugLevel(int dl) {

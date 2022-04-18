@@ -74,11 +74,6 @@ public class PhysicEngine extends System {
     public static final String DEBUG_FLAG_INFLUENCERS = "flagInfluencers";
     public static final String DEBUG_FLAG_GRAVITY = "flagGravity";
 
-    /**
-     * The current World object managed by the PhysicEngine.
-     */
-    private World world = new World(0, 0);
-
     private Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
 
     /**
@@ -161,7 +156,7 @@ public class PhysicEngine extends System {
      */
     private void update(GameObject go, long dt) {
         double dtCorrected = dt * 0.01;
-        if (go != null) {
+        if (go != null && !(go instanceof Influencer)) {
             go.acceleration = new Vector2d();
             switch (go.physicType) {
                 case STATIC:
@@ -182,7 +177,6 @@ public class PhysicEngine extends System {
 
     private void updateDynamic(GameObject go, long dt, double dtCorrected) {
         if (!go.relativeToCamera) {
-
 
             // Acceleration is not already used in velocity & position computation
             computeAccelerationForGameObject(go);
@@ -292,8 +286,7 @@ public class PhysicEngine extends System {
      */
     private Vector2d applyWorldInfluenceArea2dList(GameObject go) {
         Vector2d acc = new Vector2d();
-        if (!(go instanceof Influencer)
-                && !world.influencers.isEmpty() && !go.relativeToCamera) {
+        if (!world.influencers.isEmpty() && !go.relativeToCamera) {
             for (Influencer area : world.influencers) {
                 if (area.box.intersect(go.box)) {
                     double influence = area.getInfluenceAtPosition(go.position);

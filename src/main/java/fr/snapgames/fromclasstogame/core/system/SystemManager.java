@@ -6,7 +6,6 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 
-import javax.naming.Context;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Map;
@@ -122,7 +121,7 @@ public class SystemManager {
      *
      * @param config the Configuration provided but the game to all systems for initialization purpose.
      */
-    public static void configure(Configuration config) {
+    public static void initialize(Configuration config) {
         Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
         if (oSystemInstances.isPresent()) {
             systemInstances.entrySet().forEach(e -> {
@@ -191,21 +190,6 @@ public class SystemManager {
      */
     public static int getNbObjects() {
         return get(SceneManager.class).objects.size();
-    }
-
-
-    /**
-     * Define a World to the all the Systems declared in the SystemManager.
-     *
-     * @param world the world to define to all concerned systems.
-     */
-    public static void setWorld(World world) {
-        Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
-        if (oSystemInstances.isPresent()) {
-            systemInstances.entrySet().forEach(e -> {
-                e.getValue().setWorld(world);
-            });
-        }
     }
 
     public static void addToContext(String key, Object value) {
