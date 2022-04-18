@@ -56,14 +56,14 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
 
     @Override
     public void onAction(GameObject entity, Integer action) {
-        accelStep = (Double) entity.getAttribute("accelStep", 0);
-        jumpAccel = (Double) entity.getAttribute("jumpAccel", 0);
-        jumping = (boolean) entity.getAttribute("jumping", 0);
+        accelStep = (Double) entity.getAttribute("accelStep", 2.0);
+        jumpAccel = (Double) entity.getAttribute("jumpAccel", 0.0);
+        jumping = (boolean) entity.getAttribute("jumping", 0.0);
 
         if (ah.getCtrl()) {
-            accel = accelStep * 10;
+            accel = accelStep * 10.0;
         } else if (ah.getShift()) {
-            accel = accelStep * 5;
+            accel = accelStep * 5.0;
         } else {
             accel = accelStep;
         }
@@ -78,10 +78,8 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
                 break;
             case ActionHandler.FIRE1:
                 entity.forces.clear();
-                entity.acceleration.x = 0;
-                entity.acceleration.y = 0;
-                entity.velocity.x = 0;
-                entity.velocity.y = 0;
+                entity.acceleration.reset();
+                entity.velocity.reset();
                 break;
 
             case ActionHandler.LEFT:

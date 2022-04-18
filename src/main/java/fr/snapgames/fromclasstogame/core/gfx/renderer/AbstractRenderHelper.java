@@ -230,7 +230,7 @@ public class AbstractRenderHelper {
             drawText(g, "#" + go.id, pos.x, pos.y);
 
             setColor(g, go.getDebugColor());
-            drawRect(g, go.bbox.position, go.bbox.shape.width - 1, go.bbox.shape.height - 1, 1, 1, debugBoxColor);
+            drawRect(g, go.box.position, go.box.shape.width - 1, go.box.shape.height - 1, 1, 1, debugBoxColor);
 
             if (go.getDebug() >= 1) {
                 double offsetY = go.debugOffsetX;

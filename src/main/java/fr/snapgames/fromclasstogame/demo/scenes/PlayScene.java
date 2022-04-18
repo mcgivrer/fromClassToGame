@@ -89,14 +89,13 @@ public class PlayScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         super.create(g);
         // Declare World playground
-        World world = new World(800, 600);
+        World world = new World(800, 400);
         // create a basic wind all over the play area
-        Influencer iArea = new Influencer("wind",
-                new Vector2d(0.475, 0),
-                new BoundingBox(Vector2d.ZERO, 800, 600,
-                        BoundingBox.BoundingBoxType.RECTANGLE),
-                3);
-        world.addInfluenceArea(iArea);
+        Influencer iWindArea = new Influencer("wind")
+                .setPosition(new Vector2d(2.0, 0.0))
+                .setBoundingBox(new BoundingBox(new Vector2d(0.0, 0.0), world.width / 2, world.height,
+                        BoundingBox.BoundingBoxType.RECTANGLE)).setEnergy(1.3);
+        world.addInfluenceArea(iWindArea);
         g.setWorld(world);
 
         // add Viewport Grid debug view

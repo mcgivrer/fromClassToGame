@@ -77,7 +77,7 @@ public class LightObject extends GameObject {
     @Override
     public void update(long dt) {
         super.update(dt);
-        bbox.update(this, new Vector2d(-width * 0.5, -height * 0.5));
+        box.update(this, new Vector2d(-width * 0.5, -height * 0.5));
     }
 
     @Override

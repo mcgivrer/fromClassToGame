@@ -1,7 +1,6 @@
 package fr.snapgames.fromclasstogame.core.physic.collision;
 
 import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.behaviors.OnEntityCollision;
 import fr.snapgames.fromclasstogame.core.behaviors.ProcessBehavior;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
@@ -86,7 +85,7 @@ public class CollisionSystem extends System {
      * @return true if colliding.
      */
     public boolean collide(GameObject object1, GameObject object2) {
-        return object1.bbox.intersect(object2.bbox);
+        return object1.box.intersect(object2.box);
     }
 
     /**

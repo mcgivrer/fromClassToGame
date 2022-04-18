@@ -6,7 +6,15 @@ import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import java.util.List;
 
 /**
- * An Influencer is an area in the world applying some influence to the intersecting GameObject.
+ * An {@link Influencer} is an area in the {@link World} applying some influence
+ * to the intersecting {@link GameObject}.
+ * <p>
+ * This {@link Influencer} can apply a {@link Influencer#force} to the contained {@link GameObject} of apply
+ * the effect of a {@link Influencer#material}.
+ *
+ * @author Frédéric Delorme
+ * @see PhysicEngine
+ * @since 0.0.3
  */
 public class Influencer extends GameObject {
     /**
@@ -25,17 +33,11 @@ public class Influencer extends GameObject {
     /**
      * Create a new Influencer name, applying force to the area with a level of energy.
      *
-     * @param name   Name for this Influencer
-     * @param force  a Vector2D force to be applied to any intersecting GameObject
-     * @param area   area of influence where to apply effect
-     * @param energy the energy factor to be applied to the intersecting object.
+     * @param name Name for this Influencer
      */
-    public Influencer(String name, Vector2d force, BoundingBox area, double energy) {
+    public Influencer(String name) {
         super(name);
-        this.force = force;
-        this.bbox = area;
-        this.energy = energy;
-        this.position = Utils.add(this.bbox.position, new Vector2d(this.bbox.diam1 / 2.0, this.bbox.diam2 / 2.0));
+        physicType = PEType.STATIC;
     }
 
 
@@ -49,15 +51,15 @@ public class Influencer extends GameObject {
         double dx = this.position.x - otherPosition.x;
         double dy = this.position.y - otherPosition.y;
         double distance = Math.sqrt(dx * dx + dy * dy);
-        double factor = 100 / ((this.bbox.shape.width / 2) - distance);
+        double factor = 100 / ((this.box.shape.width / 2) - distance);
 
-        return factor * energy;//
+        return factor * energy;
     }
 
     /**
      * Return debug information for debug display mode.
      *
-     * @return
+     * @return List of String containing debug information to be displayed in debug mode.
      */
     public List<String> getDebugInfo() {
         List<String> debugInfo = super.getDebugInfo();
@@ -66,8 +68,50 @@ public class Influencer extends GameObject {
         return debugInfo;
     }
 
-    public Influencer setInfluenceAreaType(BoundingBox.BoundingBoxType type) {
+    public Influencer setInfluencerAreaType(BoundingBox.BoundingBoxType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Define the Material applied to all object in this area.
+     *
+     * @param m The {@link Material} to be applied.
+     * @return this {@link Influencer} updated.
+     */
+    public Influencer setMaterial(Material m) {
+        return (Influencer) super.setMaterial(m);
+    }
+
+    /**
+     * Apply the force f to all objets in the Influencer area.
+     *
+     * @param f the force to be applied.
+     * @return the {@link Influencer} updated.
+     */
+    public Influencer setForce(Vector2d f) {
+        this.force = f;
+        return this;
+    }
+
+    /**
+     * Define the energy applied to the force applied to the objects in the influencer area.
+     *
+     * @param e a double factor value to be applied.
+     * @return The updated Influencer.
+     */
+    public Influencer setEnergy(double e) {
+        this.energy = e;
+        return this;
+    }
+
+    @Override
+    public Influencer setBoundingBox(BoundingBox boundingBox) {
+        return (Influencer) super.setBoundingBox(boundingBox);
+    }
+
+    @Override
+    public Influencer setPosition(Vector2d position) {
+        return (Influencer) super.setPosition(position);
     }
 }

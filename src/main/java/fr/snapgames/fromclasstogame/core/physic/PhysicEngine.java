@@ -142,9 +142,10 @@ public class PhysicEngine extends System {
             if (!game.isPause()) {
                 getObjects().forEach(go -> {
                     update(go, dt);
-                    for(GameObject co:go.getChild()){
+                    for (GameObject co : go.getChild()) {
                         update(co, dt);
-                    };
+                    }
+                    ;
                 });
             }
         } catch (ConcurrentModificationException e) {
@@ -162,38 +163,52 @@ public class PhysicEngine extends System {
         double dtCorrected = dt * 0.01;
         if (go != null) {
             go.acceleration = new Vector2d();
-
-            if (!go.relativeToCamera) {
-
-
-                // Acceleration is not already used in velocity & position computation
-                computeAccelerationForGameObject(go);
-
-                // Compute velocity
-                computeVelocity(go, dtCorrected);
-                // Compute position
-                go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.599, world.maxVelocity);
-                go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.599, world.maxVelocity);
-
-                // test World space constrained
-                verifyGameConstraint(go);
-
-
-                // update Bounding box for this GameObject.
-                if (go.bbox != null) {
-                    go.bbox.update(go);
-                }
-                go.forces.clear();
-            }
-
-            // apply Object behaviors computations
-            if (!go.behaviors.isEmpty()) {
-                go.behaviors.forEach(b -> {
-                    b.onUpdate(go, dt);
-                });
+            switch (go.physicType) {
+                case STATIC:
+                    updateStatic(go, dt, dtCorrected);
+                    break;
+                case DYNAMIC:
+                    updateDynamic(go, dt, dtCorrected);
+                    break;
             }
             // Update the Object itself
             go.update(dt);
+        }
+    }
+
+    private void updateStatic(GameObject go, long dt, double dtCorrected) {
+        // Nothing to fo now.
+    }
+
+    private void updateDynamic(GameObject go, long dt, double dtCorrected) {
+        if (!go.relativeToCamera) {
+
+
+            // Acceleration is not already used in velocity & position computation
+            computeAccelerationForGameObject(go);
+
+            // Compute velocity
+            computeVelocity(go, dtCorrected);
+            // Compute position
+            go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.599, world.maxVelocity);
+            go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.599, world.maxVelocity);
+
+            // test World space constrained
+            verifyGameConstraint(go);
+
+
+            // update Bounding box for this GameObject.
+            if (go.box != null) {
+                go.box.update(go);
+            }
+            go.forces.clear();
+        }
+
+        // apply Object behaviors computations
+        if (!go.behaviors.isEmpty()) {
+            go.behaviors.forEach(b -> {
+                b.onUpdate(go, dt);
+            });
         }
     }
 
@@ -279,7 +294,7 @@ public class PhysicEngine extends System {
         Vector2d acc = new Vector2d();
         if (!world.influencers.isEmpty() && !go.relativeToCamera) {
             for (Influencer area : world.influencers) {
-                if (area.bbox.intersect(go.bbox)) {
+                if (area.box.intersect(go.box)) {
                     double influence = area.getInfluenceAtPosition(go.position);
                     Vector2d accIA = new Vector2d();
                     accIA.add(area.force).multiply(influence).multiply(area.energy);

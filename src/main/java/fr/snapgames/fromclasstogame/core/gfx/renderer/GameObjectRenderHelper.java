@@ -18,7 +18,7 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
     @Override
     public void draw(Graphics2D g, GameObject go) {
         if (go != null) {
-            switch (go.type) {
+            switch (go.objectType) {
                 case POINT:
                     g.setColor(go.color);
                     g.drawLine((int) (go.position.x), (int) (go.position.y), (int) (go.position.x), (int) (go.position.y));

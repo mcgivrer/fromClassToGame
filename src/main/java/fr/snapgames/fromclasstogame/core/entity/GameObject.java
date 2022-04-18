@@ -1,7 +1,9 @@
 package fr.snapgames.fromclasstogame.core.entity;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
+import fr.snapgames.fromclasstogame.core.physic.Influencer;
 import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.PEType;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
@@ -32,26 +34,29 @@ public class GameObject implements Entity<GameObject> {
     private boolean active = false;
 
     /**
+     * Geometric attributes
+     */
+    public double width;
+    public double height;
+    public BoundingBox box = new BoundingBox();
+
+    /**
      * Physic and mechanic attributes
      */
     public Vector2d position = new Vector2d();
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
-
     public List<Vector2d> forces = new ArrayList<>();
-
     public Material material;
     public double mass = 1;
     public Vector2d gravity = new Vector2d();
+    public PEType physicType = PEType.DYNAMIC;
 
-    public double width;
-    public double height;
-    public BoundingBox bbox = new BoundingBox();
-    public GOType type = GOType.RECTANGLE;
 
     /**
      * Rendering attributes
      */
+    public GOType objectType = GOType.RECTANGLE;
     public Color color;
     public BufferedImage image;
     // define animation (if not null)
@@ -154,7 +159,7 @@ public class GameObject implements Entity<GameObject> {
      * @param dt elapsed time since previous call.
      */
     public void update(long dt) {
-        bbox.update(this);
+        box.update(this);
         if (life > -1) {
             if (life - dt >= 0) {
                 life -= dt;
@@ -197,8 +202,8 @@ public class GameObject implements Entity<GameObject> {
         return debugInfo;
     }
 
-    public GameObject setType(GOType type) {
-        this.type = type;
+    public GameObject setObjectType(GOType objectType) {
+        this.objectType = objectType;
         return this;
     }
 
@@ -337,6 +342,11 @@ public class GameObject implements Entity<GameObject> {
 
     public Color getDebugColor() {
         return this.debugColor;
+    }
+
+    public GameObject setBoundingBox(BoundingBox boundingBox) {
+        this.box = boundingBox;
+        return this;
     }
 
     public enum GOType {

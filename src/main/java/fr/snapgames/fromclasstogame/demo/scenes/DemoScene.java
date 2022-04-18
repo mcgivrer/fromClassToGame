@@ -36,7 +36,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Demo Scene to test features during framework development.
@@ -110,12 +109,31 @@ public class DemoScene extends AbstractScene {
         // Declare World playground
         World world = new World(800, 400);
         // create a basic wind all over the play area
-        Influencer iArea = new Influencer("wind",
-                new Vector2d(0.475, 0.0),
-                new BoundingBox(new Vector2d(0.0, 0.0), world.width, world.height,
-                        BoundingBox.BoundingBoxType.RECTANGLE),
-                1.3);
-        world.addInfluenceArea(iArea);
+        Influencer iWindArea = new Influencer("wind")
+                .setPosition(new Vector2d(2.0, 0.0))
+                .setBoundingBox(
+                        new BoundingBox(
+                                new Vector2d(0.0, 0.0),
+                                world.width / 2, world.height,
+                                BoundingBox.BoundingBoxType.RECTANGLE))
+                .setEnergy(1.3);
+
+        world.addInfluenceArea(iWindArea);
+        add(iWindArea);
+
+        // create a basic magnetic all area up of the game area.
+        Influencer iMagneticArea = new Influencer("Mag")
+                .setPosition(new Vector2d(0.0, -0.981))
+                .setBoundingBox(
+                        new BoundingBox(
+                                new Vector2d(0.0, 0.0),
+                                world.width, world.height / 2.0,
+                                BoundingBox.BoundingBoxType.RECTANGLE))
+                .setEnergy(1.0);
+        iMagneticArea.setColor(new Color(0.9f, 0.2f, 0.2f, 0.6f));
+        world.addInfluenceArea(iMagneticArea);
+        add(iMagneticArea); // request Renderer to draw this Influencer in debug mode only.
+
         g.setWorld(world);
 
         // add Viewport Grid debug view
@@ -132,7 +150,7 @@ public class DemoScene extends AbstractScene {
         // add main character (player)
         Material m = DefaultMaterial.newMaterial("playerMaterial", 0.25, 0.3, 0.80, 0.98);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
-                .setType(GameObject.GOType.IMAGE)
+                .setObjectType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
                 .setLayer(1)
                 .setPriority(2)
@@ -177,7 +195,7 @@ public class DemoScene extends AbstractScene {
         // add a background image
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/forest.jpg:background"))
-                .setType(GameObject.GOType.IMAGE)
+                .setObjectType(GameObject.GOType.IMAGE)
                 .setLayer(100)
                 .setPriority(100);
         add(bckG);
@@ -217,7 +235,7 @@ public class DemoScene extends AbstractScene {
         // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
-                .setNbPlace(6)
+                .setNbPlace(3)
                 .setSelectedIndex(1)
                 .setRelativeToCamera(true)
                 .setDebug(1)
@@ -260,7 +278,7 @@ public class DemoScene extends AbstractScene {
         for (int i = 0; i < nbEnemies; i++) {
             // create an enemy
             GameObject e = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
-                    .setType(GameObject.GOType.IMAGE)
+                    .setObjectType(GameObject.GOType.IMAGE)
                     .setPosition(Utils.rand(0, game.getPhysicEngine().getWorld().width),
                             Utils.rand(0, game.getPhysicEngine().getWorld().height))
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))

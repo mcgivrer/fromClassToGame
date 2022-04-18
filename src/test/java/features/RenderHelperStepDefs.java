@@ -2,6 +2,7 @@ package features;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
@@ -39,7 +40,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
     @And("the RenderHelper for {string} is ready")
     public void theRenderHelperForIsReady(String objectName) {
         Renderer renderer = (Renderer) SystemManager.get(Renderer.class);
-        Map<String, RenderHelper<?>> renderHelpers = renderer.getRenderHelpers();
+        Map<String, RenderHelper<? extends GameObject>> renderHelpers = renderer.getRenderHelpers();
         RenderHelper<?> rh = renderHelpers.get(objectName);
         assertEquals("The '" + objectName + "' RenderHelper is not defined", objectName, rh.getType());
     }
@@ -50,7 +51,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
             Class<?> rhc = Class.forName(className);
 
             Renderer renderer = (Renderer) SystemManager.get(Renderer.class);
-            RenderHelper<?> rh = (RenderHelper<?>) rhc.getConstructors()[0].newInstance(renderer);
+            RenderHelper<? extends GameObject> rh = (RenderHelper<? extends GameObject>) rhc.getConstructors()[0].newInstance(renderer);
             renderer.addRenderHelper(rh);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             fail("Unable to add the RenderHelper named " + className + ": " + e.getMessage());

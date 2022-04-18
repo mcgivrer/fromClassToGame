@@ -60,7 +60,7 @@ public class Renderer extends System {
     /**
      * Internal ist of Render helpers
      */
-    private Map<String, RenderHelper<?>> renderHelpers = new HashMap<>();
+    private Map<String, RenderHelper<? extends GameObject>> renderHelpers = new HashMap<>();
 
     /**
      * debug color to display debug information
@@ -331,7 +331,7 @@ public class Renderer extends System {
      *
      * @param rh
      */
-    public void addRenderHelper(RenderHelper<?> rh) {
+    public void addRenderHelper(RenderHelper<? extends GameObject> rh) {
         renderHelpers.put(rh.getType(), rh);
     }
 
@@ -340,7 +340,7 @@ public class Renderer extends System {
      *
      * @return the {@link RenderHelper} list.
      */
-    public Map<String, RenderHelper<?>> getRenderHelpers() {
+    public Map<String, RenderHelper<? extends GameObject>> getRenderHelpers() {
         return renderHelpers;
     }
 
@@ -412,4 +412,7 @@ public class Renderer extends System {
         return this.camera;
     }
 
+    public int getDebugLevel() {
+        return debug;
+    }
 }
