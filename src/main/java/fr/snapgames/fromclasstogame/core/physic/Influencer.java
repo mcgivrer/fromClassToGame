@@ -25,10 +25,6 @@ public class Influencer extends GameObject {
      * Influence Force for this influence Area
      */
     public Vector2d force = new Vector2d();
-    /**
-     * Bounding Box type for this Influencer.
-     */
-    private BoundingBox.BoundingBoxType type = BoundingBox.BoundingBoxType.RECTANGLE;
 
     /**
      * Create a new Influencer name, applying force to the area with a level of energy.
@@ -69,7 +65,7 @@ public class Influencer extends GameObject {
     }
 
     public Influencer setInfluencerAreaType(BoundingBox.BoundingBoxType type) {
-        this.type = type;
+        this.box.type = type;
         return this;
     }
 
@@ -103,11 +99,6 @@ public class Influencer extends GameObject {
     public Influencer setEnergy(double e) {
         this.energy = e;
         return this;
-    }
-
-    @Override
-    public Influencer setBoundingBox(BoundingBox boundingBox) {
-        return (Influencer) super.setBoundingBox(boundingBox);
     }
 
     @Override

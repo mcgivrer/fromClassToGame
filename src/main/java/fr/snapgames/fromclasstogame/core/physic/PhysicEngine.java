@@ -171,9 +171,9 @@ public class PhysicEngine extends System {
                     updateDynamic(go, dt, dtCorrected);
                     break;
             }
-            // Update the Object itself
-            go.update(dt);
         }
+        // Update the Object itself
+        go.update(dt);
     }
 
     private void updateStatic(GameObject go, long dt, double dtCorrected) {
@@ -292,7 +292,8 @@ public class PhysicEngine extends System {
      */
     private Vector2d applyWorldInfluenceArea2dList(GameObject go) {
         Vector2d acc = new Vector2d();
-        if (!world.influencers.isEmpty() && !go.relativeToCamera) {
+        if (!(go instanceof Influencer)
+                && !world.influencers.isEmpty() && !go.relativeToCamera) {
             for (Influencer area : world.influencers) {
                 if (area.box.intersect(go.box)) {
                     double influence = area.getInfluenceAtPosition(go.position);
@@ -367,20 +368,6 @@ public class PhysicEngine extends System {
      */
     public World getWorld() {
         return world;
-    }
-
-    /**
-     * define the {@link World} to be applied to the {@link PhysicEngine} GameObject
-     * processing.
-     *
-     * @param w the {@link World} object to be used in {@link GameObject}
-     *          computations
-     * @return the {@link PhysicEngine} itself updated with the new {@link World}
-     * defined.
-     */
-    public PhysicEngine setWorld(World w) {
-        this.world = w;
-        return this;
     }
 
     /**

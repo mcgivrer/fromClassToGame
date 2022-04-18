@@ -3,6 +3,7 @@ package fr.snapgames.fromclasstogame.core.system;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public abstract class System {
     protected Game game;
 
     protected List<GameObject> objects = new CopyOnWriteArrayList<>();
+
+    private World world;
 
     public System(Game g) {
         this.game = g;
@@ -63,5 +66,13 @@ public abstract class System {
 
     public Game getGame() {
         return this.game;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public Object getFromContext(String key){
+        return SystemManager.getFromContext(key);
     }
 }

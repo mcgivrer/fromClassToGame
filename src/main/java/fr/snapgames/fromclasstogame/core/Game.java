@@ -333,13 +333,6 @@ public class Game implements ActionHandler.ActionListener {
 
     }
 
-    public Game setWorld(World world) {
-        this.pe.setWorld(world);
-        this.renderer.setWorld(world);
-        return this;
-    }
-
-
     @Override
     public void onAction(Integer action) {
         getSceneManager().onAction(action);

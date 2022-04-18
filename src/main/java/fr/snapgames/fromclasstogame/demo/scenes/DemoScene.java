@@ -107,34 +107,32 @@ public class DemoScene extends AbstractScene {
 
 
         // Declare World playground
-        World world = new World(800, 400);
+        World world = new World(800.0, 400.0)
+                .setGravity(new Vector2d(0.0, -0.981));
+
         // create a basic wind all over the play area
-        Influencer iWindArea = new Influencer("wind")
-                .setPosition(new Vector2d(2.0, 0.0))
-                .setBoundingBox(
-                        new BoundingBox(
-                                new Vector2d(0.0, 0.0),
-                                world.width / 2, world.height,
-                                BoundingBox.BoundingBoxType.RECTANGLE))
-                .setEnergy(1.3);
+        Influencer iWindArea = (Influencer) new Influencer("wind")
+                .setEnergy(1.0)
+                .setForce(new Vector2d(2.0, 0.0))
+                .setPosition(0.0, 0.0)
+                .setSize(world.width / 2, world.height)
+                .setColor(new Color(0.2f, 0.2f, 0.9f, 0.6f));
+        ;
 
         world.addInfluenceArea(iWindArea);
         add(iWindArea);
 
         // create a basic magnetic all area up of the game area.
-        Influencer iMagneticArea = new Influencer("Mag")
-                .setPosition(new Vector2d(0.0, -0.981))
-                .setBoundingBox(
-                        new BoundingBox(
-                                new Vector2d(0.0, 0.0),
-                                world.width, world.height / 2.0,
-                                BoundingBox.BoundingBoxType.RECTANGLE))
-                .setEnergy(1.0);
-        iMagneticArea.setColor(new Color(0.9f, 0.2f, 0.2f, 0.6f));
+        Influencer iMagneticArea = (Influencer) new Influencer("Mag")
+                .setEnergy(1.0)
+                .setForce(new Vector2d(0.0, 3.0))
+                .setPosition(0.0, 0.0)
+                .setSize(world.width, world.height / 2.0)
+                .setColor(new Color(0.9f, 0.2f, 0.2f, 0.6f));
         world.addInfluenceArea(iMagneticArea);
         add(iMagneticArea); // request Renderer to draw this Influencer in debug mode only.
 
-        g.setWorld(world);
+        SystemManager.setWorld(world);
 
         // add Viewport Grid debug view
         DebugViewportGrid dvg = new DebugViewportGrid("vpgrid", world, 32, 32);

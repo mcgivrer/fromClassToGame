@@ -25,8 +25,8 @@ public class InfluencerRenderHelper extends AbstractRenderHelper implements Rend
 
     @Override
     public void drawDebugInfo(Graphics2D g, Influencer go) {
-        if(renderer.getDebugLevel()>2) {
-            renderer.drawRectangle(g, go.color, go.color, go.box.shape);
+        if (renderer.getDebugLevel() > 2) {
+            renderer.drawRectangle(g, Color.LIGHT_GRAY, go.color, go.box.shape);
         }
     }
 

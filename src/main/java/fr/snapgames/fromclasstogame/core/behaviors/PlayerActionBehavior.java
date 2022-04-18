@@ -56,7 +56,7 @@ public class PlayerActionBehavior implements Behavior<GameObject> {
 
     @Override
     public void onAction(GameObject entity, Integer action) {
-        accelStep = (Double) entity.getAttribute("accelStep", 2.0);
+        accelStep = (Double) entity.getAttribute("accelStep", 0.0);
         jumpAccel = (Double) entity.getAttribute("jumpAccel", 0.0);
         jumping = (boolean) entity.getAttribute("jumping", 0.0);
 

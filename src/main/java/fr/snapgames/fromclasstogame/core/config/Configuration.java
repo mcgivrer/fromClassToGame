@@ -151,15 +151,20 @@ public class Configuration extends AbstractConfiguration {
     public void getValuesFromCM() {
         this.debugLevel = (Integer) cm.getValue(CFG_KEY_DEBUG);
         this.title = (String) cm.getValue(CFG_KEY_TITLE);
+
         this.width = (Integer) cm.getValue(CFG_KEY_WIDTH);
         this.height = (Integer) cm.getValue(CFG_KEY_HEIGHT);
         this.scale = (Double) cm.getValue(CFG_KEY_SCALE);
+
         this.defaultScreen = (Integer) cm.getValue(CFG_KEY_DISPLAY);
         this.FPS = (Integer) cm.getValue(CFG_KEY_FPS);
+
         this.defaultScene = (String) cm.getValue(CFG_KEY_SCENE);
         this.scenes = (String) cm.getValue(CFG_KEY_SCENES);
+
         this.gravity = (Vector2d) cm.getValue(CFG_KEY_GRAVITY);
         this.configPath = (String) cm.getValue(CFG_KEY_CONFIG);
+
         this.mute = (Boolean) cm.getValue(CFG_KEY_AUDIO_MUTE);
         this.soundVolume = (Float) cm.getValue(CFG_KEY_AUDIO_SOUND_VOLUME);
         this.musicVolume = (Float) cm.getValue(CFG_KEY_AUDIO_MUSIC_VOLUME);

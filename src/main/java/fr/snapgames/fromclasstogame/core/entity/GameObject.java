@@ -117,6 +117,7 @@ public class GameObject implements Entity<GameObject> {
      */
     public GameObject(String objectName) {
         this.name = objectName;
+        this.physicType = PEType.DYNAMIC;
     }
 
     /**
@@ -215,6 +216,7 @@ public class GameObject implements Entity<GameObject> {
     public GameObject setSize(double w, double h) {
         this.width = w;
         this.height = h;
+        box.update(this);
         return this;
     }
 

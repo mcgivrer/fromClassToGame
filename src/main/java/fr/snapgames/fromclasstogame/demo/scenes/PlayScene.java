@@ -19,6 +19,7 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
 import fr.snapgames.fromclasstogame.demo.entity.LifeObject;
@@ -91,12 +92,11 @@ public class PlayScene extends AbstractScene {
         // Declare World playground
         World world = new World(800, 400);
         // create a basic wind all over the play area
-        Influencer iWindArea = new Influencer("wind")
-                .setPosition(new Vector2d(2.0, 0.0))
-                .setBoundingBox(new BoundingBox(new Vector2d(0.0, 0.0), world.width / 2, world.height,
-                        BoundingBox.BoundingBoxType.RECTANGLE)).setEnergy(1.3);
+        Influencer iWindArea = (Influencer) new Influencer("wind")
+                .setEnergy(1.0).setPosition(new Vector2d(2.0, 0.0))
+                .setSize(world.width / 2, world.height);
         world.addInfluenceArea(iWindArea);
-        g.setWorld(world);
+        add(iWindArea);
 
         // add Viewport Grid debug view
         DebugViewportGrid dvg = new DebugViewportGrid("vpgrid", world, 32, 32);
