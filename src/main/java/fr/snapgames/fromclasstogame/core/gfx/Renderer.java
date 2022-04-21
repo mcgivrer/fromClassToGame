@@ -133,7 +133,7 @@ public class Renderer extends System {
     /**
      * Render all the objects declared.
      */
-    public void draw() {
+    public int draw() {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
@@ -149,6 +149,7 @@ public class Renderer extends System {
             saveScreenshot();
             renderScreenshot = false;
         }
+        return objects.size() + objectsRelativeToCamera.size();
     }
 
     public void drawRectangle(Graphics2D g, Color borderColor, Color fillColor, Box shape) {

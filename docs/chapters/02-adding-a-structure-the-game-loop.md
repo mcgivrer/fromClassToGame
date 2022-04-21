@@ -1,4 +1,4 @@
-# Adding a Structure
+# Adding a structure, the Game Loop
 
 ## Core Game methods
 
@@ -140,15 +140,15 @@ public class Game {
 }
 ```
 
-### input
+### U0101 - input
 
 We will need to capture the keyboard events to be able at least to interact with the player.
 
-### update
+### U0102 - update
 
 just update the object to be displayed:
 
-### draw
+### U0103 - draw
 
 and finally draw things.
 

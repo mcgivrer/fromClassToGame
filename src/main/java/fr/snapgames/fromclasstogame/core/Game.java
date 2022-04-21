@@ -44,6 +44,11 @@ public class Game implements ActionHandler.ActionListener {
      * The default Frame per seconds rate for rendering purpose.
      */
     private long realFPS = 60;
+
+    /**
+     * Internal game time
+     */
+    private long internalTime = 0;
     /**
      * The Window where all fun things happened.
      */
@@ -210,6 +215,7 @@ public class Game implements ActionHandler.ActionListener {
         while (!exit && !testMode) {
             start = System.currentTimeMillis();
             dt = start - previous;
+            internalTime += dt;
             if (sceneManager.getCurrent() != null) {
                 input();
                 update(dt);
@@ -249,8 +255,9 @@ public class Game implements ActionHandler.ActionListener {
     /**
      * Manage the input
      */
-    private void input() {
+    public boolean input() {
         sceneManager.input(actionHandler);
+        return true;
     }
 
     /**
@@ -270,10 +277,11 @@ public class Game implements ActionHandler.ActionListener {
     /**
      * Draw the things from the game.
      */
-    private void draw() {
-        renderer.draw();
+    public int draw() {
+        int nbObj = renderer.draw();
         sceneManager.draw(renderer);
         window.draw(realFPS, renderer.getBuffer());
+        return nbObj;
     }
 
     /**
@@ -379,5 +387,9 @@ public class Game implements ActionHandler.ActionListener {
 
     public CollisionSystem getCollisionSystem() {
         return cs;
+    }
+
+    public long getInternalTime() {
+        return internalTime;
     }
 }

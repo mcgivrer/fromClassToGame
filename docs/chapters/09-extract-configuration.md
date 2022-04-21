@@ -1,10 +1,12 @@
-# Extracting the Configuration
+# U0900 Extracting the Configuration
 
-As we have already seen in the previous chapter, we split and refactor the Game class from beginning. Here is the step where
-we split the configuration management from the main Game class.
+As we have already seen in the previous chapter, we split and refactor the Game class from beginning. Here is the step
+where we split the configuration management from the main Game class.
 
 The operation is quietly simple, we just have to create a dedicated class, and move all thing about configuration from
 the Game class to the new Configuration one.
+
+## A Configuration object
 
 First let's create the class with its attributes:
 
@@ -23,32 +25,47 @@ public class Configuration {
 
     public String scenes = "";
     public String defaultScene = "";
+}
 ```
 
 We also need a goo constructor to initialize things
 
+## U0901 reading properties
+
+THe configration values are from a properties file.
+
 ```java
+public class Configuration {
+    //...
     public Configuration(){
 
         defaultConfig=ResourceBundle.getBundle("config");
         readValuesFromFile();
         }
+    //...
+}
 ```
 
 And need to populate, as before, the attributes with the default values.
 
 ```java
-    public void readValuesFromFile(){
+public class Configuration {
+    //...
+    public void readValuesFromFile() {
 
-        this.width=Integer.parseInt(defaultConfig.getString("game.setup.width"));
-        this.height=Integer.parseInt(defaultConfig.getString("game.setup.height"));
-        this.scale=Double.parseDouble(defaultConfig.getString("game.setup.scale"));
-        this.FPS=Double.parseDouble(defaultConfig.getString("game.setup.fps"));
-        this.title=defaultConfig.getString("game.setup.title");
-        this.scenes=defaultConfig.getString("game.setup.scenes");
-        this.defaultScene=defaultConfig.getString("game.setup.scene.default");
-        }
+        this.width = Integer.parseInt(defaultConfig.getString("game.setup.width"));
+        this.height = Integer.parseInt(defaultConfig.getString("game.setup.height"));
+        this.scale = Double.parseDouble(defaultConfig.getString("game.setup.scale"));
+        this.FPS = Double.parseDouble(defaultConfig.getString("game.setup.fps"));
+        this.title = defaultConfig.getString("game.setup.title");
+        this.scenes = defaultConfig.getString("game.setup.scenes");
+        this.defaultScene = defaultConfig.getString("game.setup.scene.default");
+    }
+    //...
+}
 ```
+
+## U902 Parsing arguments
 
 And Finally, we will parse the java command line arguments to extract possible user values:
 
@@ -87,6 +104,12 @@ class Configuration {
 }
 ```
 
+### U0903 Wrong argument
+
+In case of wrong argument, an `UnknownArgumentException` is thrown.
+
+### Updating objects using configuration
+
 And the last but not least, Add a `configuration` attributes to the `Game` class, and the famous `getConfiguration()`,
 to let other class access those values:
 
@@ -94,9 +117,9 @@ to let other class access those values:
 public class Game implements KeyListener {
 
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
-    ...
+    //...
     private Configuration configuration;
-    ...
+    //...
 
     public Configuration getConfiguration() {
         return this.configuration;
@@ -108,12 +131,12 @@ And typically from the SceneManager, change the right line :
 
 ```java
 public class SceneManager {
-    ...
+    //...
 
     public void activate() {
         activate(game.getConfiguration().defaultScene);
     }
-    ...
+    //...
 }
 ```
 
@@ -139,14 +162,14 @@ public class Configuration {
 
     // load default values from configuration file
     Configuration(String configurationPath) {
-        default = ResourceBundle.getBundle(configurationPath);
+        default =ResourceBundle.getBundle(configurationPath);
         values = new HashMap<>();
         readDefaultValues();
     }
 
     // parse the Java CLI arguments
     public void parseArgs(String[] argv) {
-        ...
+        //...
     }
 
     // extract default values from Configuration file
@@ -177,13 +200,12 @@ public class Configuration {
 
 ## Evolution
 
-The Configuration class will integrate progressively more and
-more parameters to be set and loaded from the properties file.
+The Configuration class will integrate progressively more and more parameters to be set and loaded from the properties
+file.
 
-The best way to add new attributes to the configuration will be to add
-some helpers on definition and on parsing vaue, but also on help side.
-Requesting from the CLI, you would get a well formated and documented
-help bout possible parameters and their values.
+The best way to add new attributes to the configuration will be to add some helpers on definition and on parsing vaue,
+but also on help side. Requesting from the CLI, you would get a well formated and documented help bout possible
+parameters and their values.
 
 You would get some `ArgParser` interface and a `CLIManager` to support those parser.
 
@@ -192,18 +214,25 @@ You would get some `ArgParser` interface and a `CLIManager` to support those par
 ```java
 public interface IArgParser<T> {
     public boolean validate(String strValue);
+
     public T getValue();
+
     public String getShortKey();
+
     public String getLongKey();
+
     public String getName();
+
     public String getDescription();
+
     public String getErrorMessage(Object[] args);
+
     public T getDefaultValue();
 }
 ```
 
-In this interface, the main intersting thing are name and description,
-useful to generate the help on the cli. Name will be the `name` of the parameter, and `description` will help understanding its usage.
+In this interface, the main intersting thing are name and description, useful to generate the help on the cli. Name will
+be the `name` of the parameter, and `description` will help understanding its usage.
 
 An abstract class will provide a default implmentation for all parsers.
 
@@ -249,7 +278,7 @@ public abstract class ArgParser<T> implements IArgParser<T> {
 
     @Override
     public String getDescription() {
-        return String.format("[%s/%s] : %s ( default:%s )",shortKey,longKey,description,defaultValue);
+        return String.format("[%s/%s] : %s ( default:%s )", shortKey, longKey, description, defaultValue);
     }
 
     @Override
@@ -267,7 +296,7 @@ public abstract class ArgParser<T> implements IArgParser<T> {
         return name;
     }
 
-    public T getValue(){
+    public T getValue() {
         return value;
     }
 }
@@ -277,52 +306,58 @@ And the CLIManager will be used to parse command line interface parameters, but 
 
 ```java
 public class CliManager {
-  @SuppressWarnings("unused")
-  private Game game;
-  private Map<String, IArgParser<?>> argParsers = new HashMap<>();
-  private Map<String, Object> values = new HashMap<>();
-  public CliManager(Game g) {
-    this.game = g;
-  }
-  public void add(IArgParser<?> ap) {
-    argParsers.put(ap.getName(), ap);
-    log.debug("add cli parser for " + ap.getDescription());
-  }
-  public void parse(String[] args) {
-    for (String arg : args) {
-      if (arg.equals("h") || arg.equals("help")) {
-        System.out.println("\n\nCommand Usage:\n--------------");
+    @SuppressWarnings("unused")
+    private Game game;
+    private Map<String, IArgParser<?>> argParsers = new HashMap<>();
+    private Map<String, Object> values = new HashMap<>();
+
+    public CliManager(Game g) {
+        this.game = g;
+    }
+
+    public void add(IArgParser<?> ap) {
+        argParsers.put(ap.getName(), ap);
+        log.debug("add cli parser for " + ap.getDescription());
+    }
+
+    public void parse(String[] args) {
+        for (String arg : args) {
+            if (arg.equals("h") || arg.equals("help")) {
+                System.out.println("\n\nCommand Usage:\n--------------");
+                for (IArgParser<?> ap : argParsers.values()) {
+                    System.out.println("- " + ap.getDescription());
+                }
+                System.exit(0);
+            } else {
+                parseArguments(arg);
+            }
+        }
+    }
+
+    private void parseArguments(String arg) {
+        String[] itemValue = arg.split("=");
         for (IArgParser<?> ap : argParsers.values()) {
-          System.out.println("- " + ap.getDescription());
+            if (ap.getShortKey().equals(itemValue[0]) || ap.getLongKey().equals(itemValue[0])) {
+                if (ap.validate(itemValue[1])) {
+                    values.put(ap.getName(), ap.getValue());
+                } else {
+                    log.error(ap.getErrorMessage(null));
+                }
+            }
         }
-        System.exit(0);
-      } else {
-        parseArguments(arg);
-      }
     }
-  }
-  private void parseArguments(String arg) {
-    String[] itemValue = arg.split("=");
-    for (IArgParser<?> ap : argParsers.values()) {
-      if (ap.getShortKey().equals(itemValue[0]) || ap.getLongKey().equals(itemValue[0])) {
-        if (ap.validate(itemValue[1])) {
-          values.put(ap.getName(), ap.getValue());
+
+    public Object getValue(String key) throws ArgumentUnknownException {
+        if (values.containsKey(key)) {
+            return values.get(key);
         } else {
-          log.error(ap.getErrorMessage(null));
+            return argParsers.get(key).getDefaultValue();
         }
-      }
     }
-  }
-  public Object getValue(String key) throws ArgumentUnknownException {
-    if (values.containsKey(key)) {
-      return values.get(key);
-    } else {
-      return argParsers.get(key).getDefaultValue();
+
+    public boolean isExists(String key) {
+        return values.containsKey(key);
     }
-  }
-  public boolean isExists(String key) {
-    return values.containsKey(key);
-  }
 }
 ```
 
@@ -331,22 +366,24 @@ public class CliManager {
 An Integer parameter will have to parse int values.
 
 ```java
-public class IntArgParser extends ArgParser<Integer>{
+public class IntArgParser extends ArgParser<Integer> {
 
     public IntArgParser() {
         super();
     }
+
     public IntArgParser(
-        String name, 
-        String shortKey, 
-        String longKey, 
-        int defaultValue, 
-        int min, 
-        int max,
-        String description, 
-        String errorMessage) {
-            super(name, shortKey, longKey, defaultValue, min, max, description, errorMessage);
+            String name,
+            String shortKey,
+            String longKey,
+            int defaultValue,
+            int min,
+            int max,
+            String description,
+            String errorMessage) {
+        super(name, shortKey, longKey, defaultValue, min, max, description, errorMessage);
     }
+
     @Override
     public boolean validate(String strValue) {
         value = defaultValue;
@@ -366,9 +403,11 @@ public class IntArgParser extends ArgParser<Integer>{
         }
         return true;
     }
+
     @Override
-    public Integer parse(String strValue) {6
-        int value  = Integer.parseInt(strValue);
+    public Integer parse(String strValue) {
+        6
+        int value = Integer.parseInt(strValue);
         return value;
     }
 }
@@ -382,7 +421,7 @@ The same way to implement Boolean, Double and Float will be used.
 
 And specific one will be
 
-- `IntArrayArgParser` will parse a list of int values parameter.9
+- `IntArrayArgParser` will parse a list of int values parameter.
 
 And a final pass would provide a way to load/save those parameters to a configuration file.
 

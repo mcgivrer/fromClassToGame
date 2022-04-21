@@ -69,11 +69,11 @@ public class WindowDefSteps extends CommonDefSteps implements En {
             win = getGame().getWindow();
         });
 
-        And("the Window width is set to {int}", (Integer width) -> {
-            assertEquals("The Window has nos been set with the right width.", width, java.util.Optional.of(win.getFrame().getWidth()).get());
+        And("the Window width is set to {double}", (Double width) -> {
+            assertEquals("The Window has nos been set with the right width.", width, java.util.Optional.of(win.getVisibleFrame().getWidth()).get(), 1.0);
         });
         And("the Window height is set to {int}", (Integer height) -> {
-            assertEquals("The Window has nos been set with the right height.", height, java.util.Optional.of(win.getFrame().getHeight()).get());
+            assertEquals("The Window has nos been set with the right height.", height, java.util.Optional.of(win.getVisibleFrame().getHeight()).get(), 1.0);
         });
         Then("the Window draw the Render content", () -> {
         });

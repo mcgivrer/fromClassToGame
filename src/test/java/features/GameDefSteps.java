@@ -54,10 +54,10 @@ public class GameDefSteps extends CommonDefSteps {
         }
     }
 
-    @And("a window of {int} x {int} is created")
-    public void andAWindowOfIntXIntIsCreated(int w, int h) {
-        assertEquals("The Window width is not set to " + w, w, getGame().getWindow().getFrame().getWidth());
-        assertEquals("The Window height is not set to " + h, h, getGame().getWindow().getFrame().getHeight());
+    @And("a window of {double} x {double} is created")
+    public void andAWindowOfIntXIntIsCreated(Double w, Double h) {
+        assertEquals("The Window width is not set to " + w, w, getGame().getWindow().getVisibleFrame().getWidth(), 1.0);
+        assertEquals("The Window height is not set to " + h, h, getGame().getWindow().getVisibleFrame().getHeight(), 1.0);
     }
 
     @And("the window title is {string}")
@@ -243,5 +243,23 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("the Game has a Window.")
     public void theGameHasAWindow() {
         assertNotNull("The game has no window !", getGame().getWindow());
+    }
+
+    @Then("the game can process input")
+    public void theGameCanProcessInput() {
+        boolean status = getGame().input();
+        assertTrue("Input processing has failed", status);
+    }
+
+    @And("the Game time is greater than {int}")
+    public void theGameTimeIsGreaterThan(int arg0) {
+        long gameTime = getGame().getInternalTime();
+        assertTrue("The internal time does not evolved, update has not happened", gameTime > 0);
+    }
+
+    @And("the Game has rendered its {int} graphics elements.")
+    public void theGameHasRenderedItsGraphicsElements(int nbObjects) {
+        int nbDrawnObjects = getGame().draw();
+        assertEquals("Objects have not been drawn by graphic render pipeline", nbObjects, nbDrawnObjects);
     }
 }

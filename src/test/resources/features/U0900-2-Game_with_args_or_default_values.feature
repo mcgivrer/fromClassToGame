@@ -1,16 +1,16 @@
-Feature: The game is running with arguments
+Feature: U0900/2 - The game is running with arguments
 
   The Game class is started normally by initializing with arguments or default values.
 
   @Game
-  Scenario: 01 - The game is started with default values
+  Scenario: U0901 - The game is started with default values
     Given the Game is instantiated
     Then the Game is running
     And a window of 320 x 200 is created
     And the window title is "test"
 
   @Game @CliArguments
-  Scenario Outline: 02 - The game is started without arguments but no scale
+  Scenario Outline: U0902 - The game is started with arguments but no scale
     Given the Game is instantiated with config "no-scene"
     When I prepare the arguments
     And I add argument "width=<width>"
@@ -29,7 +29,7 @@ Feature: The game is running with arguments
 
 
   @Game @CliArguments
-  Scenario: 03 - The game is started with a wrong argument
+  Scenario: U0903 - The game is started with a wrong argument
     Given the Game is instantiated
     When I prepare the arguments
     And I add argument "arg=unknown"

@@ -413,4 +413,8 @@ public class Window extends JPanel {
     public void setConfiguration(Configuration configuration) {
         this.config = configuration;
     }
+
+    public Dimension getVisibleFrame() {
+        return frame.getContentPane().getPreferredSize();
+    }
 }

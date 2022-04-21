@@ -15,7 +15,7 @@ Starting with a very simple class, we will create a brand new Game, by adding so
 ## chapters
 
 - **[01](https://github.com/mcgivrer/fromClassToGame/tree/8e203b98a5db51c9b9586a6eaed6e5a0ee8ee0e2 "see github commit log")**.  [A class ?](chapters/01-a-class.md)
-- **[02](https://github.com/mcgivrer/fromClassToGame/tree/7c621c4aaa11f327e8f7b83eedfbcff306bc606a "see github commit log")**. [Adding a structure](chapters/02-adding-a-structure.md)
+- **[02](https://github.com/mcgivrer/fromClassToGame/tree/7c621c4aaa11f327e8f7b83eedfbcff306bc606a "see github commit log")**. [Adding a structure](chapters/02-adding-a-structure-the-game-loop.md)
 - **[03](https://github.com/mcgivrer/fromClassToGame/tree/6a337b8955f1a53730d2b2167b865c42ca955203 "see github commit log")**. [Delegate things](chapters/03-delegate-things.md)
 - **[04](https://github.com/mcgivrer/fromClassToGame/tree/cece0b3c0dd1598289ef51e7eac309919c99e032 "see github commit log")**. [the Object Game](chapters/04-the-object-game.md)
 - **[05](https://github.com/mcgivrer/fromClassToGame/tree/0ddb5d58073149f5454c3f682e94e38a5a4972a7 "see github commit log")**. [Input Handler](chapters/05-input-handler.md)
