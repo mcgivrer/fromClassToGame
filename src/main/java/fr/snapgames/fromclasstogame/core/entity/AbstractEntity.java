@@ -4,16 +4,24 @@ import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AbstractEntity<T> implements Entity<T> {
 
     private static int index = 0;
     public int id = index++;
 
+    public Color color;
 
     public String name = "entity_" + id;
     public Vector2d position = new Vector2d();
-    public boolean active = true;
+    /**
+     * Child objects.
+     */
+    protected java.util.List<GameObject> child = new ArrayList<>();
+
+    protected boolean active = true;
 
     public double width;
     public double height;
@@ -113,4 +121,20 @@ public class AbstractEntity<T> implements Entity<T> {
     public String getName() {
         return name;
     }
+
+
+    public List<GameObject> getChild() {
+        return child;
+    }
+
+    public T addChild(GameObject childGo) {
+        child.add(childGo);
+        return (T) this;
+    }
+
+    public T setColor(Color c) {
+        this.color = c;
+        return (T) this;
+    }
+
 }

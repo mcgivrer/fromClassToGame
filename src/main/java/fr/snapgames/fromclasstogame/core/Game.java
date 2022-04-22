@@ -44,6 +44,11 @@ public class Game implements ActionHandler.ActionListener {
      * The default Frame per seconds rate for rendering purpose.
      */
     private long realFPS = 60;
+
+    /**
+     * Internal game time
+     */
+    private long internalTime = 0;
     /**
      * The Window where all fun things happened.
      */
@@ -131,7 +136,7 @@ public class Game implements ActionHandler.ActionListener {
      * Initialization of the display window and everything the game will need.
      */
     public void initialize(String[] argv) throws ArgumentUnknownException {
-        SystemManager.initialize(this);
+        SystemManager.configure(this);
         configuration.parseArgs(argv);
         /*
          * Why not initializing a bunch of systems to start this funky piece of game ?
@@ -147,7 +152,7 @@ public class Game implements ActionHandler.ActionListener {
         /*
          * And then configure ll those strange piece of code.
          */
-        SystemManager.initialize(configuration);
+        SystemManager.configure(configuration);
 
         renderer = (Renderer) SystemManager.get(Renderer.class);
         renderer.setDebugLevel(configuration.debugLevel);
@@ -249,15 +254,17 @@ public class Game implements ActionHandler.ActionListener {
     /**
      * Manage the input
      */
-    private void input() {
+    public boolean input() {
         sceneManager.input(actionHandler);
+        return true;
     }
 
     /**
      * Update all the game mechanism
      */
     public void update(long dt) {
-
+        // Compute internal game time.
+        internalTime += dt;
         if (pe != null) {
             pe.update(dt);
         }
@@ -270,11 +277,11 @@ public class Game implements ActionHandler.ActionListener {
     /**
      * Draw the things from the game.
      */
-    private void draw() {
-        renderer.draw(window.getDebug());
+    public int draw() {
+        int nbObj = renderer.draw();
         sceneManager.draw(renderer);
-
         window.draw(realFPS, renderer.getBuffer());
+        return nbObj;
     }
 
     /**
@@ -334,6 +341,13 @@ public class Game implements ActionHandler.ActionListener {
 
     }
 
+    public Game setWorld(World world) {
+        this.pe.setWorld(world);
+        this.renderer.setWorld(world);
+        return this;
+    }
+
+
     @Override
     public void onAction(Integer action) {
         getSceneManager().onAction(action);
@@ -375,8 +389,7 @@ public class Game implements ActionHandler.ActionListener {
         return cs;
     }
 
-    public void setWorld(World world) {
-        getPhysicEngine().setWorld(world);
-        getRenderer().setWorld(world);
+    public long getInternalTime() {
+        return internalTime;
     }
 }

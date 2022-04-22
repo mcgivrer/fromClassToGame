@@ -34,9 +34,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Given("the Game is instantiated")
     public void givenTheGameIsInstantiated() {
-        game = null;
-        game = new Game("test-scene");
-        game.testMode = true;
+        setGame(new Game("test-scene")).testMode = true;
     }
 
     @When("I prepare the arguments")
@@ -56,21 +54,21 @@ public class GameDefSteps extends CommonDefSteps {
         }
     }
 
-    @And("a window of {int} x {int} is created")
-    public void andAWindowOfIntXIntIsCreated(int w, int h) {
-        assertEquals("The Window width is not set to " + w, w, game.getWindow().getFrame().getWidth());
-        assertEquals("The Window height is not set to " + h, h, game.getWindow().getFrame().getHeight());
+    @And("a window of {double} x {double} is created")
+    public void andAWindowOfIntXIntIsCreated(Double w, Double h) {
+        assertEquals("The Window width is not set to " + w, w, getGame().getWindow().getVisibleFrame().getWidth(), 1.0);
+        assertEquals("The Window height is not set to " + h, h, getGame().getWindow().getVisibleFrame().getHeight(), 1.0);
     }
 
     @And("the window title is {string}")
     public void andTheTitleIsString(String title) {
-        assertEquals("The window title is not set to" + title, title, game.getWindow().getFrame().getTitle());
+        assertEquals("The window title is not set to" + title, title, getGame().getWindow().getFrame().getTitle());
     }
 
     @Then("the Game is running")
     public void thenTheGameIsRunning() {
         try {
-            game.run(args);
+            getGame().run(args);
             logger.info("The game is running");
         } catch (Exception e) {
             logger.error("Unable to run the game", e);
@@ -80,7 +78,7 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("the Game raises exception")
     public void thenTheGameRaisesException() {
         try {
-            game.run(args);
+            getGame().run(args);
             fail("Bad argument does not raise exception");
         } catch (ArgumentUnknownException e) {
             logger.error("Unable to run the game", e);
@@ -136,8 +134,8 @@ public class GameDefSteps extends CommonDefSteps {
     @Then("I update {int} times the scene")
     public void iUpdateTimesTheScene(int nbUpdate) {
         for (int i = 0; i < nbUpdate; i++) {
-            long dt = (long) (1000.0 / game.getConfiguration().FPS);
-            game.update(dt);
+            long dt = (long) (1000.0 / getGame().getConfiguration().FPS);
+            getGame().update(dt);
         }
     }
 
@@ -231,8 +229,7 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Given("the Game is instantiated with config {string}")
     public void theGameIsInstantiatedWithConfig(String configFileName) {
-        game = new Game(configFileName);
-        game.testMode = true;
+        setGame(new Game(configFileName)).testMode = true;
     }
 
 
@@ -245,6 +242,24 @@ public class GameDefSteps extends CommonDefSteps {
 
     @Then("the Game has a Window.")
     public void theGameHasAWindow() {
-        assertNotNull("The game has no window !", game.getWindow());
+        assertNotNull("The game has no window !", getGame().getWindow());
+    }
+
+    @Then("the game can process input")
+    public void theGameCanProcessInput() {
+        boolean status = getGame().input();
+        assertTrue("Input processing has failed", status);
+    }
+
+    @And("the Game time is greater than {int}")
+    public void theGameTimeIsGreaterThan(int arg0) {
+        long gameTime = getGame().getInternalTime();
+        assertTrue("The internal time does not evolved, update has not happened", gameTime > 0);
+    }
+
+    @And("the Game has rendered its {int} graphics elements.")
+    public void theGameHasRenderedItsGraphicsElements(int nbObjects) {
+        int nbDrawnObjects = getGame().draw();
+        assertEquals("Objects have not been drawn by graphic render pipeline", nbObjects, nbDrawnObjects);
     }
 }

@@ -2,10 +2,7 @@ package fr.snapgames.fromclasstogame.core.entity;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
 import fr.snapgames.fromclasstogame.core.physic.Material;
@@ -24,6 +21,10 @@ import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
  * @since 0.0.1
  */
 public class GameObject extends AbstractEntity<GameObject> {
+
+    public enum GOType {
+        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
+    }
 
     /**
      * Geometric attributes
@@ -46,7 +47,6 @@ public class GameObject extends AbstractEntity<GameObject> {
      * Rendering attributes
      */
     public GOType objectType = GOType.RECTANGLE;
-    public Color color;
     public BufferedImage image;
     // define animation (if not null)
     Animation animations;
@@ -65,11 +65,7 @@ public class GameObject extends AbstractEntity<GameObject> {
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
     public boolean rendered;
     protected Map<String, Object> attributes = new HashMap<>();
-    /**
-     * Child objects.
-     */
-    protected List<GameObject> child = new ArrayList<>();
-    private boolean active = true;
+
     /**
      * debugging data
      */
@@ -176,17 +172,6 @@ public class GameObject extends AbstractEntity<GameObject> {
         return this;
     }
 
-    public GameObject setColor(Color c) {
-        this.color = c;
-        return this;
-    }
-
-    public GameObject setSize(double w, double h) {
-        this.width = w;
-        this.height = h;
-        box.update(this);
-        return this;
-    }
 
     public GameObject setImage(BufferedImage image) {
         this.image = image;
@@ -262,11 +247,6 @@ public class GameObject extends AbstractEntity<GameObject> {
         return this;
     }
 
-
-    public List<GameObject> getChild() {
-        return child;
-    }
-
     public GameObject setCollide(boolean collisionFlag) {
         this.collision = collisionFlag;
         return this;
@@ -278,8 +258,12 @@ public class GameObject extends AbstractEntity<GameObject> {
         return this;
     }
 
-    public enum GOType {
-        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
+    public GameObject setSize(double w, double h) {
+        super.setSize(w, h);
+        if (Optional.ofNullable(box).isPresent()) {
+            box.update(this);
+        }
+        return this;
     }
 
     public Animation getAnimations() {

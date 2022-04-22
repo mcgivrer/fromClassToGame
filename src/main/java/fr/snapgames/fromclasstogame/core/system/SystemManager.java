@@ -1,15 +1,15 @@
 package fr.snapgames.fromclasstogame.core.system;
 
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.config.Configuration;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 
 /**
  * The SystemManager will contain and manage all available System in te Game.
@@ -50,7 +50,7 @@ public class SystemManager {
      * @param g the parent Game the SystemManager is used for.
      * @return the initialized SystemManager.
      */
-    public static SystemManager initialize(Game g) {
+    public static SystemManager configure(Game g) {
         if (instance == null) {
             instance = new SystemManager(g);
         }
@@ -120,7 +120,7 @@ public class SystemManager {
      *
      * @param config the Configuration provided but the game to all systems for initialization purpose.
      */
-    public static void initialize(Configuration config) {
+    public static void configure(Configuration config) {
         Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
         if (oSystemInstances.isPresent()) {
             systemInstances.entrySet().forEach(e -> {

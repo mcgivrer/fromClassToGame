@@ -73,7 +73,7 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
         Configuration conf = renderer.getGame().getConfiguration();
 
         final Area ambientArea = new Area(new Rectangle2D.Double(cam.position.x, cam.position.y, conf.width, conf.height));
-        g.setColor(l.foregroundColor);
+        g.setColor(l.color);
         Composite c = g.getComposite();
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, l.intensity.floatValue()));
         g.fill(ambientArea);
@@ -81,16 +81,26 @@ public class LightObjectRenderHelper extends AbstractRenderHelper implements Ren
     }
 
     private void drawSphericalLight(Graphics2D g, LightObject l) {
-        l.foregroundColor = brighten(l.foregroundColor, l.intensity);
-        Color medColor = brighten(l.foregroundColor, l.intensity / 1.6f);
+        l.color = brighten(l.color, l.intensity);
+        Color medColor = brighten(l.color, l.intensity / 1.6f);
         Color endColor = new Color(0.0f, 0.0f, 0.0f, 0.01f);
 
-        l.colors = new Color[]{l.foregroundColor,
+        l.colors = new Color[]{l.color,
                 medColor,
                 endColor};
         l.dist = new float[]{0.01f, 0.2f, 0.5f};
-        l.rgp = new RadialGradientPaint(new Point((int) (l.position.x + (10 * Math.random() * l.glitterEffect)),
-                (int) (l.position.y - (10 * Math.random() * l.glitterEffect))), (int) l.width, l.dist, l.colors);
+        // TODO start quick&dirty fix : find why Light.width/.height are 0
+        if (l.width == 0.0) {
+            l.width = 1.0;
+        }
+        // TODO end
+        l.rgp = new RadialGradientPaint(
+                new Point(
+                        (int) (l.position.x + (10 * Math.random() * l.glitterEffect)),
+                        (int) (l.position.y - (10 * Math.random() * l.glitterEffect))),
+                (int) l.width,
+                l.dist,
+                l.colors);
         g.setPaint(l.rgp);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, l.intensity.floatValue()));
         g.fill(new Ellipse2D.Double(l.position.x - l.width / 2, l.position.y - l.width / 2, l.width, l.width));

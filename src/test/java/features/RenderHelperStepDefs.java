@@ -2,7 +2,6 @@ package features;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.scenes.Scene;
@@ -23,10 +22,9 @@ public class RenderHelperStepDefs extends CommonDefSteps {
 
     @Given("The Game start with default config")
     public void theGameStartWithDefaultConfig() {
-        game = new Game("test-render");
-        game.testMode = true;
+        setGame(new Game("test-render")).testMode = true;
         try {
-            game.run(new String[]{});
+            getGame().run(new String[]{});
         } catch (ArgumentUnknownException e) {
             fail("Unable to start Game");
         }
@@ -34,13 +32,13 @@ public class RenderHelperStepDefs extends CommonDefSteps {
 
     @Then("the Render is ready")
     public void theRenderIsReady() {
-        assertNotNull("Render has not been initialized", game.getRenderer());
+        assertNotNull("Render has not been initialized", getGame().getRenderer());
     }
 
     @And("the RenderHelper for {string} is ready")
     public void theRenderHelperForIsReady(String objectName) {
         Renderer renderer = (Renderer) SystemManager.get(Renderer.class);
-        Map<String, RenderHelper<? extends GameObject>> renderHelpers = renderer.getRenderHelpers();
+        Map<String, RenderHelper<?>> renderHelpers = renderer.getRenderHelpers();
         RenderHelper<?> rh = renderHelpers.get(objectName);
         assertEquals("The '" + objectName + "' RenderHelper is not defined", objectName, rh.getType());
     }
@@ -51,7 +49,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
             Class<?> rhc = Class.forName(className);
 
             Renderer renderer = (Renderer) SystemManager.get(Renderer.class);
-            RenderHelper<? extends GameObject> rh = (RenderHelper<? extends GameObject>) rhc.getConstructors()[0].newInstance(renderer);
+            RenderHelper<?> rh = (RenderHelper<?>) rhc.getConstructors()[0].newInstance(renderer);
             renderer.addRenderHelper(rh);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             fail("Unable to add the RenderHelper named " + className + ": " + e.getMessage());
@@ -63,7 +61,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
 
         Renderer renderer = (Renderer) SystemManager.get(Renderer.class);
         Scene sc = ((SceneManager) SystemManager.get(SceneManager.class)).getCurrent();
-        renderer.draw(1);
+        renderer.draw();
         TestObject to = (TestObject) sc.getGameObject("test");
         assertTrue("The TestObject " + objectName + " has not been rendered", to.getFlag());
     }

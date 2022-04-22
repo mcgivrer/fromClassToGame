@@ -32,7 +32,7 @@ public class FileAttributes {
         int i = 0;
         while (i < f.size()) {
             l = f.get(i);
-            if (!l.startsWith("#")) {
+            if (l != null && !l.equals("") && !l.startsWith("#")) {
                 if (l.endsWith("\\")) {
                     while (l.endsWith("\\")) {
                         line += l.substring(0, l.length() - 1).trim();

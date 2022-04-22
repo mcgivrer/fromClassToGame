@@ -17,7 +17,7 @@ import java.util.List;
  * <ul>
  * <li><code>{@link LightObject#lightType}</code> the type of light (see
  * {@link LightType})</li>
- * <li><code>{@link LightObject#setForegroundColor(Color)}</code> the light
+ * <li><code>{@link LightObject#setColor(Color)}</code> the light
  * color , a {@link Color}</li>
  * <li><code>{@link LightObject#setIntensity(Double)}</code> the light intensity
  * , a double value from 0.0 to 1.0)</li>
@@ -29,7 +29,6 @@ import java.util.List;
  */
 public class LightObject extends GameObject {
     public LightType lightType;
-    public Color foregroundColor;
     public Double intensity;
     public Double glitterEffect;
 
@@ -43,6 +42,15 @@ public class LightObject extends GameObject {
         super(name, pos);
         setType(type);
         setDebug(3);
+        setRadius(10.0);
+        setColor(Color.WHITE);
+        setIntensity(1.0);
+        setGlitterEffect(0.0);
+    }
+
+    public LightObject setRadius(double radius) {
+        setSize(1.0, 1.0);
+        return this;
     }
 
     public LightObject setType(LightType type) {
@@ -60,11 +68,6 @@ public class LightObject extends GameObject {
         return this;
     }
 
-    public LightObject setForegroundColor(Color fgc) {
-        this.foregroundColor = fgc;
-        return this;
-    }
-
     public LightObject setIntensity(Double i) {
         this.intensity = i;
         return this;
@@ -77,6 +80,11 @@ public class LightObject extends GameObject {
 
     public LightObject setTarget(Vector2d target) {
         this.target = target;
+        return this;
+    }
+
+    public LightObject setColor(Color c) {
+        super.setColor(c);
         return this;
     }
 

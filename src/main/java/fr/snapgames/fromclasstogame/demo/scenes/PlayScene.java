@@ -102,7 +102,7 @@ public class PlayScene extends AbstractScene {
 
         try {
 
-            GameObject player = tm.getObject("player");
+            GameObject player = tm.getGameObject("player");
 
             // Define the camera following the player object.
             Dimension vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());

@@ -165,12 +165,12 @@ public class DemoScene extends AbstractScene {
         g.getCollisionSystem().addResponse("player", new OnEntityCollision());
 
         LightObject la = new LightObject("ambiant_light_01", player.position, LightType.LIGHT_AMBIANT)
-                .setForegroundColor(new Color(0.2f, 0.1f, 0.1f, 0.1f))
+                .setColor(new Color(0.2f, 0.1f, 0.1f, 0.1f))
                 .setIntensity(0.998);
         add(la);
 
         LightObject lo = new LightObject("sphere_light_01", new Vector2d(320, 200), LightType.LIGHT_SPHERE)
-                .setForegroundColor(new Color(0.5f, 0.2f, 0.1f, 0.2f))
+                .setColor(new Color(0.5f, 0.2f, 0.1f, 0.2f))
                 .setIntensity(1.0)
                 .setGlitterEffect(0.05);
         lo.add(new CopyObjectPosition(player, new Vector2d(+8, +8))).setSize(64.0, 64.0);
