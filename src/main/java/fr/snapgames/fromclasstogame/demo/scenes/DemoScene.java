@@ -319,7 +319,7 @@ public class DemoScene extends AbstractScene {
             getEntityPool().get("player").addAttribute("score", 0);
             GameObject wlcmsg = getEntityPool().get("welcomeMsg");
             wlcmsg.setDuration(5000).setActive(true);
-        } catch (UnkownGameObject e) {
+        } catch (UnknownGameObject e) {
             logger.warn("unbale to find a GameObject ", e);
         }
 
@@ -380,7 +380,7 @@ public class DemoScene extends AbstractScene {
             score++;
             scoreTO.setScore(score);
             player.addAttribute("score", score);
-        } catch (UnkownGameObject e) {
+        } catch (UnknownGameObject e) {
             logger.error("unable to retrieve GameObject from EntityPool", e);
         }
     }

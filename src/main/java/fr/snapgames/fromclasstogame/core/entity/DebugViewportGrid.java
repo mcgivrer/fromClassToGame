@@ -5,35 +5,56 @@ import fr.snapgames.fromclasstogame.core.physic.World;
 
 import java.util.List;
 
+/**
+ * Define a Debug viewport grid visualizer for debug purpose only.
+ *
+ * @author Frédéric Delorme
+ * @since 0.0.3
+ */
 public class DebugViewportGrid extends GameObject {
     public int gridX;
     public int gridY;
-    private final World w;
+    private World world;
 
 
-    public DebugViewportGrid(String objectName, World w) {
+    /**
+     * Create a DebugViewport object to display invisible information on debug mode.
+     *
+     * @param objectName
+     */
+    public DebugViewportGrid(String objectName) {
         super(objectName);
-        this.physicType = PEType.STATIC;
-        this.w = w;
-        this.gridX = 16;
-        this.gridY = 16;
+        setGridSize(16, 16);
         this.setDebug(1);
+        setPhysicType(PEType.STATIC);
     }
 
     public DebugViewportGrid(String objectName, World w, int gridX, int gridY) {
-        this(objectName, w);
-        this.gridX = gridX;
-        this.gridY = gridY;
+        this(objectName);
+        setWorld(w);
+        setGridSize(gridX, gridY);
     }
 
     @Override
     public List<String> getDebugInfo() {
         List<String> info = super.getDebugInfo();
-        info.add(String.format("world: %fx%f", w.width, w.height));
+        info.add(String.format("world: %fx%f", world.width, world.height));
         return info;
     }
 
+    public DebugViewportGrid setWorld(World w) {
+        this.world = w;
+        return this;
+
+    }
+
+    public DebugViewportGrid setGridSize(int width, int height) {
+        this.gridX = width;
+        this.gridY = height;
+        return this;
+    }
+
     public World getWorld() {
-        return w;
+        return world;
     }
 }

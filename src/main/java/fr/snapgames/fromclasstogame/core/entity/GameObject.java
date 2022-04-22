@@ -285,4 +285,16 @@ public class GameObject extends AbstractEntity<GameObject> {
     public Animation getAnimations() {
         return this.animations;
     }
+
+    /**
+     * Define the Physic type for this object
+     *
+     * @param type
+     * @return
+     * @see PEType
+     */
+    public GameObject setPhysicType(PEType type) {
+        this.physicType = type;
+        return this;
+    }
 }

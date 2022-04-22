@@ -110,16 +110,16 @@ public class EntityPool {
      *
      * @param name the name of the GameObject to be retrieved.
      * @return the corresponding GameObject.
-     * @throws UnkownGameObject
+     * @throws UnknownGameObject
      */
-    public GameObject get(String name) throws UnkownGameObject {
+    public GameObject get(String name) throws UnknownGameObject {
         for (int i = 0; i < goArray.length; i++) {
             GameObject g = goArray[i];
             if (g!=null && g.getName().equals(name)) {
                 return g;
             }
         }
-        throw new UnkownGameObject(name);
+        throw new UnknownGameObject(name);
     }
 
     /**

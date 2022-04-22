@@ -127,7 +127,7 @@ public abstract class AbstractScene implements Scene {
     public GameObject getGameObject(String name) {
         try {
             return ep.get(name);
-        } catch (UnkownGameObject e) {
+        } catch (UnknownGameObject e) {
             e.printStackTrace();
         }
         return null;
