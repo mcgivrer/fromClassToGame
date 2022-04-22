@@ -18,7 +18,7 @@ public class AbstractEntity<T> implements Entity<T> {
     public double width;
     public double height;
 
-    public BoundingBox bbox = new BoundingBox();
+    public BoundingBox box = new BoundingBox();
     /**
      * Debug level to activate the debug display output for this object.
      */
@@ -28,6 +28,7 @@ public class AbstractEntity<T> implements Entity<T> {
     public int debugOffsetX = -40;
     public int debugOffsetY = 10;
     protected Color debugColor;
+    public boolean rendered;
 
     public AbstractEntity() {
         id = index++;

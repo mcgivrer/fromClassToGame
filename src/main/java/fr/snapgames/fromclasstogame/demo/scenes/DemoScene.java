@@ -274,31 +274,35 @@ public class DemoScene extends AbstractScene {
     private void generateEnemies(int nbEnemies) throws UnknownResource {
         for (int i = 0; i < nbEnemies; i++) {
             // create an enemy
-            GameObject e = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
+            GameObject enemy = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
                     .setObjectType(GameObject.GOType.IMAGE)
                     .setPosition(Utils.rand(0, game.getPhysicEngine().getWorld().width),
                             Utils.rand(0, game.getPhysicEngine().getWorld().height))
-                    .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
+                    .setColor(Color.ORANGE)
+                    .setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
                     .setMaterial(DefaultMaterial.RUBBER.getMaterial()).setMass(Utils.rand(-8, 13)).setLayer(10)
                     .setPriority(3)
                     .setSize(8, 8);
             // add a ParticleSystem
-            ParticleSystem ps = new ParticleSystem("PS_test_" + GameObject.getIndex(), e.position);
+            ParticleSystem ps = new ParticleSystem(
+                    enemy.name + "_ps_" + GameObject.getIndex(),
+                    enemy.position);
             ps.addParticleBehavior(
                             new FireParticleBehavior(ps, 1200, true)
                                     .setColor(Color.YELLOW))
                     .create(10)
                     .setFeeding(2)
                     .setEmitFrequency(1200)
-                    .add(new CopyObjectPosition(e, new Vector2d(7, -4)))
+                    .add(new CopyObjectPosition(enemy, new Vector2d(7, -4)))
                     .setDebug(4)
                     .setLayer(1)
                     .setDebugOffset(-100, -100)
                     .setPriority(1);
-            e.getChild().add(ps);
+            // add the particle system as a child of enemy entity.
+            enemy.addChild(ps);
 
-            randomizePosAndAccGameObject(e);
-            add(e);
+            randomizePosAndAccGameObject(enemy);
+            add(enemy);
         }
     }
 

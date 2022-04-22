@@ -11,6 +11,9 @@ import java.util.List;
  * The {@link ParticleSystem} is a dedicated {@link GameObject} than can manage a bunch of child objects, applying the same Behavior's
  * on all its children.
  * Children object are {@link Particle} extending {@link GameObject}.
+ *
+ * @author Frédéric Delorme
+ * @since 0.0.2
  */
 public class ParticleSystem extends GameObject {
 
