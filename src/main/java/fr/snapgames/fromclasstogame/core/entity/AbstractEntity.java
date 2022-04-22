@@ -15,18 +15,23 @@ public class AbstractEntity<T> implements Entity<T> {
     public Color color;
 
     public String name = "entity_" + id;
+
+
+    protected boolean active = true;
+
+    /**
+     * Geometric attributes
+     */
     public Vector2d position = new Vector2d();
+    public double width;
+    public double height;
+    public BoundingBox bbox = new BoundingBox();
+
     /**
      * Child objects.
      */
     protected java.util.List<GameObject> child = new ArrayList<>();
 
-    protected boolean active = true;
-
-    public double width;
-    public double height;
-
-    public BoundingBox bbox = new BoundingBox();
     /**
      * Debug level to activate the debug display output for this object.
      */

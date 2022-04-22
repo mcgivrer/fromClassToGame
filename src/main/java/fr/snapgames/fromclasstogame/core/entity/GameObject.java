@@ -26,44 +26,55 @@ public class GameObject extends AbstractEntity<GameObject> {
         POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
     }
 
-    /**
-     * Geometric attributes
-     */
-    public double width;
-    public double height;
     public BoundingBox box = new BoundingBox();
 
     /**
      * Physic and mechanic attributes
      */
+    public PEType physicType = PEType.DYNAMIC;
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
     public List<Vector2d> forces = new ArrayList<>();
     public Material material;
     public double mass = 1;
     public Vector2d gravity = new Vector2d();
-    public PEType physicType = PEType.DYNAMIC;
     /**
      * Rendering attributes
      */
     public GOType objectType = GOType.RECTANGLE;
     public BufferedImage image;
-    // define animation (if not null)
+
+    /**
+     * defined animation (if not null)
+     */
     Animation animations;
     public int layer;
     public int priority;
+    /**
+     * If this flag is true, the object may stick to camera position.
+     */
     public boolean relativeToCamera;
+    /**
+     * Flag set to true as soon as this object is rendered by {@link fr.snapgames.fromclasstogame.core.gfx.Renderer}.
+     */
+    public boolean rendered;
     /**
      * life duration of this object (default is -1 = infinite).
      */
     public long life = -1;
+    /**
+     * Life at start if need to reset.
+     */
     public long lifeStart = -1;
+    /**
+     * Does this object is alive ?
+     */
     public boolean alive = true;
     /**
      * List of behaviors to be applied on this GameObject
      */
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
-    public boolean rendered;
+
     protected Map<String, Object> attributes = new HashMap<>();
 
     /**
