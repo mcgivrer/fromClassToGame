@@ -115,7 +115,7 @@ public class EntityPool {
     public GameObject get(String name) throws UnkownGameObject {
         for (int i = 0; i < goArray.length; i++) {
             GameObject g = goArray[i];
-            if (g!=null && g.name.equals(name)) {
+            if (g!=null && g.getName().equals(name)) {
                 return g;
             }
         }

@@ -1,16 +1,17 @@
 package fr.snapgames.fromclasstogame.core.physic;
 
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.config.Configuration;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.system.System;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.system.System;
 
 /**
  * <p>
@@ -66,14 +67,22 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0.0
  */
 public class PhysicEngine extends System {
-    private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
-
     /**
      * Flag to activate/deactivate internal computation for debug purpose.
      */
     public static final String DEBUG_FLAG_INFLUENCERS = "flagInfluencers";
     public static final String DEBUG_FLAG_GRAVITY = "flagGravity";
-
+    /**
+     * Ingternal logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
+    /**
+     * The current World object managed by the PhysicEngine.
+     */
+    private World world = new World(0, 0);
+    /**
+     * PhysicEngine debug flags to activate or not features.
+     */
     private Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
 
     /**
@@ -92,7 +101,7 @@ public class PhysicEngine extends System {
     /**
      * return the System name.
      *
-     * @return
+     * @return the internal name for the PhysicEngine.
      */
     @Override
     public String getName() {
@@ -140,7 +149,6 @@ public class PhysicEngine extends System {
                     for (GameObject co : go.getChild()) {
                         update(co, dt);
                     }
-                    ;
                 });
             }
         } catch (ConcurrentModificationException e) {
@@ -218,7 +226,7 @@ public class PhysicEngine extends System {
 
         // if the GameObject is touching anything, apply some friction !
         boolean touching = (boolean) go.getAttribute("touching", false);
-        if (touching && Math.abs(go.acceleration.x) < 0.5 && Math.abs(go.acceleration.y) < 0.5) {
+        if (touching && Math.abs(go.acceleration.x) < 0.1 && Math.abs(go.acceleration.y) < 0.1) {
             double dynFriction = go.material != null ? go.material.dynFriction : 1;
             go.velocity = go.velocity.multiply(dynFriction);
         }
@@ -248,7 +256,7 @@ public class PhysicEngine extends System {
             acc = acc.add(f);
         }
         if (debugFlags.containsKey(DEBUG_FLAG_INFLUENCERS) && debugFlags.get(DEBUG_FLAG_INFLUENCERS)) {
-            acc.add(applyWorldInfluenceArea2dList(go));
+            acc = acc.add(applyWorldInfluenceList(go));
         }
         go.acceleration = go.acceleration.add(acc);
 
@@ -284,9 +292,10 @@ public class PhysicEngine extends System {
      *
      * @param go the {@link GameObject} to apply constraint and computation to.
      */
-    private Vector2d applyWorldInfluenceArea2dList(GameObject go) {
+    private Vector2d applyWorldInfluenceList(GameObject go) {
         Vector2d acc = new Vector2d();
         if (!world.influencers.isEmpty() && !go.relativeToCamera) {
+
             for (Influencer area : world.influencers) {
                 if (area.box.intersect(go.box)) {
                     double influence = area.getInfluenceAtPosition(go.position);
@@ -316,7 +325,7 @@ public class PhysicEngine extends System {
      * @param x   the value to be constrained between min and max.
      * @param min minimum for the x value.
      * @param max maximum for the x value.
-     * @return
+     * @return the ceil value between min and max range.
      */
     private double ceilMinMaxValue(double x, double min, double max) {
         return ceilValue(Math.copySign((Math.abs(x) > max ? max : x), x), min);
@@ -334,7 +343,7 @@ public class PhysicEngine extends System {
             go.position.x = 0;
             go.velocity.x = -go.velocity.x * bounciness;
         }
-        if (go.position.x + go.width >= world.width) {
+        if (go.position.x + go.width > world.width) {
             go.position.x = world.width - go.width;
             go.velocity.x = -go.velocity.x * bounciness;
         }
@@ -342,7 +351,7 @@ public class PhysicEngine extends System {
             go.position.y = 0;
             go.velocity.y = -go.velocity.y * bounciness;
         }
-        if (go.position.y + go.height >= world.height) {
+        if (go.position.y + go.height > world.height) {
             go.position.y = world.height - go.height;
             go.velocity.y = -go.velocity.y * bounciness;
         }
@@ -366,8 +375,8 @@ public class PhysicEngine extends System {
     /**
      * retrieve debug flag status for this debugFlagKey service.
      *
-     * @param debugFlagKey
-     * @return
+     * @param debugFlagKey the debug flag parameter to be retrieved.
+     * @return the value for this debug flag.
      */
     public Boolean getDebugFlag(String debugFlagKey) {
         return debugFlags.get(debugFlagKey);
@@ -376,17 +385,17 @@ public class PhysicEngine extends System {
     /**
      * set debug flag status for this debugFlagKey service.
      *
-     * @param debugFlagKey
-     * @param value
+     * @param debugFlagKey the debug flag parameter to be set.
+     * @param value        the value for this debug flag
      */
     public void setDebugFlag(String debugFlagKey, Boolean value) {
         debugFlags.put(debugFlagKey, value);
     }
 
     /**
-     * retrieve values for the
+     * retrieve values for the debug display
      *
-     * @return
+     * @return the map of debug flags info to be displayed.
      */
     public Map<String, Boolean> getDebugInfo() {
         return debugFlags;

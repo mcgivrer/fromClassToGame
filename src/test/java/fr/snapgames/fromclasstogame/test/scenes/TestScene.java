@@ -6,7 +6,6 @@ import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
-import fr.snapgames.fromclasstogame.core.system.SystemManager;
 
 
 public class TestScene extends AbstractScene {

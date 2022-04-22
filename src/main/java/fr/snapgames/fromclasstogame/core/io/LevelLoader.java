@@ -1,20 +1,6 @@
 package fr.snapgames.fromclasstogame.core.io;
 
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.config.Configuration;
-import fr.snapgames.fromclasstogame.core.entity.tilemap.Tile;
-import fr.snapgames.fromclasstogame.core.entity.tilemap.TileLayer;
-import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
-import fr.snapgames.fromclasstogame.core.entity.tilemap.TileSet;
-import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.scenes.Scene;
-import fr.snapgames.fromclasstogame.core.system.System;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +8,24 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.Tile;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileLayer;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileSet;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.system.System;
+
+/**
+ * LevelLoader load a level properties file and convert it to a TileMap object.
+ *
+ * @author Frédéric Delorme
+ * @since 0.0.3
+ */
 public class LevelLoader extends System {
     private static final Logger logger = LoggerFactory.getLogger(LevelLoader.class);
     /**

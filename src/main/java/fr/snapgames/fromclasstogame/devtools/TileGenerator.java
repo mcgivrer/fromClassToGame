@@ -1,19 +1,15 @@
 package fr.snapgames.fromclasstogame.devtools;
 
-import fr.snapgames.fromclasstogame.core.config.Configuration;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+
 import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 import fr.snapgames.fromclasstogame.core.gfx.ImageUtilities;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
-import org.w3c.dom.css.CSS2Properties;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * This class is a Tile template generator.

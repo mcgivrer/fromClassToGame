@@ -42,14 +42,21 @@ Added some valuable features like:
 - A evolution of the  `PhysicEngine` by adding `InfluenceArea2d` bringing some perturbation to the `World`,
 - Adding `Particle` and `ParticleSystem` to create special effects like rain and fire,
 - Replace the good old `InputHandler` by an `ActionHandler` (WIP) to support input command mapping,
+- Implement virtual `Influencer`'s object to activate PhysicEngine specific behaviors,
+- Add a `World Display debug mode` in the rendering process.
+- Add a new AbstractEntity object to deliver commons attributes to `GameObject` and `Influencer` (for physic engine
+  computation and debug world rendering)
 - Add a `DebugViewportGrid` object and its rendering helper.
-- Just added the `SoundClip` support to load OGG sound and music.
-- Start implementing the `TileMap` and add a DevTools named `TileGenerator` via the tilegen.sh script.
-## More to come
 
-- A `CollisionSystem` is a work in progress
+## Work In Progress
+
+- Just added the `SoundClip` support to load OGG sound and music.
 - Some `TileMap` object to display beautiful game level graphic set and all its dependencies (`Tile`, `TileSet`
   and `TileLayer`) are also work in progress !
+- A `CollisionSystem` is a work in progress
+
+## More to come
+
 - A Mouse and Gamepad events integration to rules'em all !
 
 ## Build, Run and See
@@ -81,6 +88,7 @@ mvn exec:java
 You will get the current display:
 
 ![screenshot - DemoScene with objects](docs/images/figure-demo-scene-structure.png "a screenshot of the current demo scene")
+_figure 1 - The Screen diagram_
 
 This sample demo will show :
 
@@ -89,11 +97,14 @@ This sample demo will show :
 3. the `LifeObject` showing the remaining number of life,
 4. the `InventoryObject`, showing a quick inventory to select an available item.
 
-The latest demo integrate the Fire `ParticleSystem` and the `InfluenceArea2d` world perturbation
+The latest demo integrate the Fire `ParticleSystem` and the `Influencer` world perturbation
 
 ![screenshot - the latest evolution of the game framework with ParticleSystem and World Influencer](docs/images/capture-022.png "ParticleSystem simulating fire, and under World perturbation")
+_figure 2 - Fun with particles_
 
-
+![screenshot - An Influencer as wind (blue area) moves GameObjects](docs/images/capture-008.png
+"GameObject under World Influencer' perturbations like wind (blue area)")
+_figure 3 - GameObject and particles under World Influencer' perturbations like wind (blue area)_
 Have Fun !
 
 McG.

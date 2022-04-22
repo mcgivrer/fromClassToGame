@@ -271,8 +271,9 @@ public class Game implements ActionHandler.ActionListener {
      * Draw the things from the game.
      */
     private void draw() {
-        renderer.draw();
+        renderer.draw(window.getDebug());
         sceneManager.draw(renderer);
+
         window.draw(realFPS, renderer.getBuffer());
     }
 

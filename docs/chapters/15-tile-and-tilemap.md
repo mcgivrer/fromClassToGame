@@ -72,10 +72,6 @@ So the basic graphic element we need to use in our worlds levels are tiles.
 A Tile is a small graphic element with attributes describing the nature of the tile, its graphics part, and if it is
 animated. Yes, if you want to see beautiful coin swinging on itself in the level, w<e need a way to animate it.
 
-![A Tile set is a simple image with small tile of 16x16 pixels](../images/illustrations/images/tiles01-640x256.png "A Simple Tile Set")
-
-_fig. 3 - A Tile set is a simple image with small tile of 16x16 pixels_
-
 A Tile is:
 
 - a code to identify it,

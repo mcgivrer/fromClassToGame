@@ -1,7 +1,6 @@
 package fr.snapgames.fromclasstogame.core.entity.tilemap;
 
 import java.awt.image.BufferedImage;
-import java.nio.charset.StandardCharsets;
 
 public class TileLayer {
     private double offsetX, offsetY;

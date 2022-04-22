@@ -1,13 +1,13 @@
 package fr.snapgames.fromclasstogame.core.config;
 
-import fr.snapgames.fromclasstogame.core.config.cli.*;
-import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import fr.snapgames.fromclasstogame.core.config.cli.CliManager;
+import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
 
 public abstract class AbstractConfiguration {
 

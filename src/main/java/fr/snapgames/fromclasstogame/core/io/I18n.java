@@ -1,6 +1,5 @@
 package fr.snapgames.fromclasstogame.core.io;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 /**

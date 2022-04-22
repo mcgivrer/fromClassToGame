@@ -2,9 +2,12 @@ package fr.snapgames.fromclasstogame.core.gfx;
 
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.AbstractEntity;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.gfx.renderer.*;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
 import fr.snapgames.fromclasstogame.core.physic.Influencer;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.Box;
@@ -14,16 +17,15 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -56,29 +58,21 @@ public class Renderer extends System {
     /**
      * The list of available camera.
      */
-    private List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
+    private final List<GameObject> objectsRelativeToCamera = new CopyOnWriteArrayList<>();
     /**
      * Internal ist of Render helpers
      */
+
     private Map<String, RenderHelper<? extends GameObject>> renderHelpers = new HashMap<>();
 
     /**
      * debug color to display debug information
      */
-    private Color debugColor = Color.ORANGE;
+    private final Color debugColor = Color.ORANGE;
     /**
      * Debug level.
      */
     private int debug = 0;
-    /**
-     * font used to display debug information.
-     */
-    private Font debugFont;
-
-    /**
-     * The Font used to render pause message.
-     */
-    private Font pauseFont;
 
     /**
      * Flag to gather a screenshot of the rendering buffer.
@@ -98,44 +92,43 @@ public class Renderer extends System {
      * the initialization of the system from the {@link Configuration} information.
      *
      * @param config The Configuration object to initialize the {@link Renderer} on.
-     * @return
+     * @return initialization status (O is ok, negative values are error)
      */
     public int initialize(Configuration config) {
         setViewport(config.width, config.height);
-        /**
+        /*
          * Add the core Render helpers for {@link GameObject}.
          */
         addRenderHelper(new GameObjectRenderHelper(this));
-        /**
+        /*
          * Add the Render helper for the {@link TextObject}.
          */
         addRenderHelper(new TextRenderHelper(this));
-        /**
-         * Add the Render helper to draw debug information about viewport.
-         */
-        addRenderHelper(new DebugViewportGridRenderHelper(this));
-
-        /**
-         * Add the Render helper for the Influencer (only for debug mode)).
-         */
-        addRenderHelper(new InfluencerRenderHelper(this));
 
         Graphics2D gri = (Graphics2D) buffer.getGraphics();
-        debugFont = gri.getFont().deriveFont(0.8f);
-        pauseFont = gri.getFont().deriveFont(1.8f);
+        /*
+         * font used to display debug information.
+         */
+        Font debugFont = gri.getFont().deriveFont(0.8f);
+        /*
+         * The Font used to render pause message.
+         */
+        Font pauseFont = gri.getFont().deriveFont(1.8f);
         return 0;
     }
 
     /**
      * Render all the objects declared.
      */
-    public void draw() {
+    public void draw(int debug) {
+        this.debug = debug;
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
 
         moveFocusToCamera(g, camera, -1);
         drawObjectList(g, objects);
+        drawWorld(g, world);
         moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
         drawPauseText(g);
@@ -145,6 +138,50 @@ public class Renderer extends System {
             saveScreenshot();
             renderScreenshot = false;
         }
+    }
+
+    /**
+     * Draw World influencer list to screen for debug purpose
+     *
+     * @param g     the Graphics2D api
+     * @param world the World object to be drawn for debug purpose (only if debug d <1)
+     */
+    private void drawWorld(Graphics2D g, World world) {
+        if (debug > 1) {
+            for (Influencer i : world.influencers) {
+                if (debug >= i.debugLevel) {
+                    switch (i.box.type) {
+                        case RECTANGLE:
+                            drawRectangle(g, i.debugLineColor, i.debugFillColor, i.box.shape);
+                            break;
+                        case CIRCLE:
+                            drawEllipse(g, i.debugLineColor, i.debugFillColor, i.box.ellipse);
+                            break;
+                        default:
+                            break;
+                    }
+                    drawTextWithBackground(g, i.name,
+                            i.debugLineColor, i.debugFillColor,
+                            i.position.x + i.debugOffsetX, i.position.y + i.debugOffsetY);
+                }
+            }
+            g.setColor(Color.DARK_GRAY);
+            for (int y = 0; y < world.height; y += 16) {
+                g.drawRect(0, y, (int) world.width, 16);
+            }
+            for (int x = 0; x < world.width; x += 16) {
+                g.drawRect(x, 0, 16, (int) world.height);
+            }
+        }
+    }
+
+    private void drawEllipse(Graphics2D g, Color borderColor, Color fillColor, Ellipse2D.Double ellipse) {
+        if (Optional.ofNullable(fillColor).isPresent()) {
+            g.setColor(fillColor);
+            g.fill(ellipse);
+        }
+        g.setColor(borderColor);
+        g.draw(ellipse);
     }
 
     public void drawRectangle(Graphics2D g, Color borderColor, Color fillColor, Box shape) {
@@ -167,23 +204,25 @@ public class Renderer extends System {
 
             drawTextWithBackground(g,
                     "Game Paused",
+                    Color.WHITE,
                     new Color(0.1f, 0.1f, 0.4f, 0.8f),
-                    (this.buffer.getWidth()) / 2,
-                    ((this.buffer.getHeight() / 3) * 2));
+                    (this.buffer.getWidth()) / 2.0,
+                    ((this.buffer.getHeight() / 3.0) * 2.0));
         }
     }
 
     /**
      * draw text with a border background.
      *
-     * @param g         the Graphics API
-     * @param pauseText the text of the pause message
-     * @param color     the color to render text
-     * @param x         horizontal position
-     * @param y         vertical position.
+     * @param g               the Graphics API
+     * @param pauseText       the text of the pause message
+     * @param backgroundColor the color to fill background text
+     * @param textColor       the color to render text
+     * @param x               horizontal position
+     * @param y               vertical position.
      */
-    private void drawTextWithBackground(Graphics2D g, String pauseText, Color color, double x, double y) {
-        g.setColor(color);
+    private void drawTextWithBackground(Graphics2D g, String pauseText, Color textColor, Color backgroundColor, double x, double y) {
+        g.setColor(backgroundColor);
         g.setFont(g.getFont().deriveFont(16.0f));
         int txtWidth = g.getFontMetrics().stringWidth(pauseText);
         int txtHeight = g.getFontMetrics().getHeight();
@@ -192,14 +231,14 @@ public class Renderer extends System {
                 (int) (y - txtHeight),
                 this.buffer.getWidth(),
                 txtHeight + 4);
-        g.setColor(Color.WHITE);
-        g.drawString("Game Paused", (int) (x - (txtWidth / 2)), (int) y);
+        g.setColor(textColor);
+        g.drawString(pauseText, (int) (x - (txtWidth / 2)), (int) y);
     }
 
     /**
      * Set the default Graphics2D API configuration for rendering purpose.
      *
-     * @param g
+     * @param g the Graphics2D API for drawing things on rendering buffer
      */
     private void setRenderingHintsList(Graphics2D g) {
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -227,13 +266,13 @@ public class Renderer extends System {
      * @param objects the list of GameObject to be rendered.
      */
     private void drawObjectList(Graphics2D g, List<GameObject> objects) {
-        objects.stream().filter(f -> f.isActive())
+        objects.stream().filter(AbstractEntity::isActive)
                 .collect(Collectors.toList())
                 .forEach(go -> {
                     draw(g, go);
                     // process child
                     go.getChild().stream()
-                            .filter(c -> c.isActive())
+                            .filter(AbstractEntity::isActive)
                             .collect(Collectors.toList())
                             .forEach(co -> draw(g, co));
                 });
@@ -280,9 +319,7 @@ public class Renderer extends System {
     private void addAndSortObjectToList(List<GameObject> listObjects, GameObject go) {
         if (!listObjects.contains(go)) {
             listObjects.add(go);
-            listObjects.sort((a, b) -> {
-                return a.layer < b.layer ? 1 : a.priority < b.priority ? 1 : -1;
-            });
+            listObjects.sort((a, b) -> b.layer <= a.layer ? a.priority < b.priority ? 1 : -1 : 1);
         }
     }
 
@@ -306,26 +343,31 @@ public class Renderer extends System {
      * Save a screenshot of the current buffer.
      */
     private void saveScreenshot() {
-        final String path = this.getClass().getResource("/").getPath().substring(1);
+        final String path;//.substring(1);
+        path = Objects.requireNonNull(this.getClass().getResource("/")).getPath();
+        if (Optional.ofNullable(path).isPresent()) {
+            Path targetDir = Paths.get(path + "/screenshots");
+            int i = screenShotIndex++;
+            String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
 
-        Path targetDir = Paths.get(path + "/screenshots");
-        int i = screenShotIndex++;
-        String filename = String.format("%sscreenshots/%s-%d.png", path, java.lang.System.nanoTime(), i);
+            try {
+                if (!Files.exists(targetDir)) {
+                    Files.createDirectory(targetDir);
+                }
+                File out = new File(filename);
+                ImageIO.write(getBuffer(), "PNG", out);
 
-        try {
-            if (!Files.exists(targetDir)) {
-                Files.createDirectory(targetDir);
+                ImageUtilities.save(filename, getBuffer());
+            } catch (IOException e) {
+                logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
             }
-            ImageUtilities.save(filename, getBuffer());
-        } catch (IOException e) {
-            logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
         }
     }
 
     /**
      * Add a RenderHelper to te Render to extend its rendering capabilities to other specific Objects.
      *
-     * @param rh
+     * @param rh The {@link RenderHelper} implementation for a dedicated Object type to be added to {@link Renderer} system.
      */
     public void addRenderHelper(RenderHelper<? extends GameObject> rh) {
         renderHelpers.put(rh.getType(), rh);

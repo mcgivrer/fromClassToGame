@@ -1,6 +1,5 @@
 package fr.snapgames.fromclasstogame.core.entity.tilemap;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
