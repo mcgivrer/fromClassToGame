@@ -88,6 +88,7 @@ mvn exec:java
 You will get the current display:
 
 ![screenshot - DemoScene with objects](docs/images/figure-demo-scene-structure.png "a screenshot of the current demo scene")
+
 _figure 1 - The Screen diagram_
 
 This sample demo will show :
@@ -100,11 +101,14 @@ This sample demo will show :
 The latest demo integrate the Fire `ParticleSystem` and the `Influencer` world perturbation
 
 ![screenshot - the latest evolution of the game framework with ParticleSystem and World Influencer](docs/images/capture-022.png "ParticleSystem simulating fire, and under World perturbation")
+
 _figure 2 - Fun with particles_
 
 ![screenshot - An Influencer as wind (blue area) moves GameObjects](docs/images/capture-008.png
 "GameObject under World Influencer' perturbations like wind (blue area)")
+
 _figure 3 - GameObject and particles under World Influencer' perturbations like wind (blue area)_
+
 Have Fun !
 
 McG.
