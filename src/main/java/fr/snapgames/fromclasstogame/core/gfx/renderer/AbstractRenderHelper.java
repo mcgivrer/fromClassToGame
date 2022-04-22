@@ -3,7 +3,9 @@ package fr.snapgames.fromclasstogame.core.gfx.renderer;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
@@ -148,7 +150,7 @@ public class AbstractRenderHelper {
      * @param c       the {@link Color} to use
      */
     public void drawRect(Graphics2D g, Vector2d pos, double width, double height, double marginX, double marginY,
-            Color c) {
+                         Color c) {
         g.setColor(c);
         g.drawRect((int) (pos.x - marginX), (int) (pos.y - marginY),
                 (int) (width + (2 * marginX)), (int) (height + (2 * marginY)));
@@ -230,7 +232,14 @@ public class AbstractRenderHelper {
             drawText(g, "#" + go.id, pos.x, pos.y);
 
             setColor(g, go.getDebugColor());
-            drawRect(g, go.bbox.position, go.bbox.shape.width - 1, go.bbox.shape.height - 1, 1, 1, debugBoxColor);
+            switch (go.objectType) {
+                case CIRCLE:
+                    drawCircle(g, go.box.position, go.box.shape.width - 1, 1, 1, debugBoxColor, null);
+                    break;
+                default:
+                    drawRect(g, go.box.position, go.box.shape.width - 1, go.box.shape.height - 1, 1, 1, debugBoxColor);
+                    break;
+            }
 
             if (go.getDebug() >= 1) {
                 double offsetY = go.debugOffsetX;
@@ -266,6 +275,19 @@ public class AbstractRenderHelper {
         }
     }
 
+    private void drawCircle(Graphics2D g, Vector2d pos, double radius, double marginX, double marginY, Color borderColor, Color fillColor) {
+        double radius2 = radius;
+        g.setColor(borderColor);
+        //create ellipse
+        Ellipse2D ellipse = new Ellipse2D.Double((int) (pos.x - marginX), (int) (pos.y - marginY),
+                (int) (radius + (2 * marginX)), (int) (radius2 + (2 * marginY)));
+        g.draw(ellipse);
+        if (Optional.ofNullable(fillColor).isPresent()) {
+            g.setColor(fillColor);
+            g.fill(ellipse);
+        }
+    }
+
     /**
      * draw debug gauge on screen at (x,y)
      * spread on (width x height) rectangle,
@@ -282,7 +304,7 @@ public class AbstractRenderHelper {
      * @param height height of the rectangle containing the gauge
      */
     private void drawGauge(Graphics2D g, double x, double y, double min, double max, double value, double width,
-            double height) {
+                           double height) {
         double lifeValue = width * ((min + value) / max);
         drawRect(g, new Vector2d(x - 1, y - 1), width, height, 0, 0, debugBackgroundColor);
         fillRect(g, new Vector2d(x, y), lifeValue, height - 1, 0, 0, Color.ORANGE);

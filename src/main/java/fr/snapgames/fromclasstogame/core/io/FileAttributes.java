@@ -1,14 +1,12 @@
 package fr.snapgames.fromclasstogame.core.io;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * File Attributes reader.
@@ -30,9 +28,26 @@ public class FileAttributes {
         FileAttributes fa = new FileAttributes();
 
         List<String> f = ResourceManager.getFile(fileName);
-        for (String l : f) {
-            String[] values = l.split(":");
-            attributes.put(values[0], values[1]);
+        String line = "", l = "";
+        int i = 0;
+        while (i < f.size()) {
+            l = f.get(i);
+            if (!l.startsWith("#")) {
+                if (l.endsWith("\\")) {
+                    while (l.endsWith("\\")) {
+                        line += l.substring(0, l.length() - 1).trim();
+                        i++;
+                        l = f.get(i);
+                    }
+                    line += l.trim();
+                } else {
+                    line = l;
+                }
+                String[] values = line.split(":");
+                attributes.put(values[0], values[1]);
+                line = "";
+            }
+            i++;
         }
         return fa;
     }
@@ -52,9 +67,10 @@ public class FileAttributes {
         assert (attributes != null);
         String[] subAttrs = attributes.get(key).split(";");
         Map<String, String> subAttrsMap = new HashMap<>();
-        subAttrsMap = (Map<String, String>) Arrays.stream(subAttrs).flatMap(s -> {
-            return Stream.of(s.split("="));
-        });
+        for (String s : subAttrs) {
+            String[] vals = s.split("=");
+            subAttrsMap.put(vals[0], vals[1]);
+        }
         return subAttrsMap.get(subKey);
     }
 

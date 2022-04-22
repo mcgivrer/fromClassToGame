@@ -16,7 +16,6 @@ import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.physic.Influencer;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 import fr.snapgames.fromclasstogame.core.physic.World;
-import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
 import fr.snapgames.fromclasstogame.demo.entity.InventoryObject;
@@ -88,20 +87,17 @@ public class PlayScene extends AbstractScene {
     public void create(Game g) throws UnknownResource {
         super.create(g);
         // Declare World playground
-        World world = new World(800, 600);
+        World world = new World(800, 400);
         // create a basic wind all over the play area
-        Influencer iArea = new Influencer("wind",
-                new Vector2d(0.475, 0),
-                new BoundingBox(Vector2d.ZERO, 800, 600,
-                        BoundingBox.BoundingBoxType.RECTANGLE),
-                3);
-        world.addInfluenceArea(iArea);
-        g.setWorld(world);
-
+        Influencer iWindArea = (Influencer) new Influencer("wind")
+                .setEnergy(1.0).setPosition(new Vector2d(2.0, 0.0))
+                .setSize(world.width / 2, world.height);
+        world.add(iWindArea);
+        add(iWindArea);
 
 
         // add a TileMap object
-        TileMap tm = tmLoader.load(this, "./levels/lvl0101.properties");
+        TileMap tm = tmLoader.loadFrom("./levels/lvl0101.properties");
         add(tm);
 
         try {

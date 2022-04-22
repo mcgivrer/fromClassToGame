@@ -1,12 +1,13 @@
 package features;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import fr.snapgames.fromclasstogame.core.entity.EntityPool;
 import fr.snapgames.fromclasstogame.core.entity.EntityPoolManager;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import io.cucumber.java8.En;
-import org.junit.Assert;
-
-import static org.junit.Assert.*;
 
 public class EntityPoolStepdefs extends CommonDefSteps implements En {
     EntityPoolManager epm;

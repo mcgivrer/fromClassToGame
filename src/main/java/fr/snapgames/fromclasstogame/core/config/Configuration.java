@@ -1,15 +1,27 @@
 package fr.snapgames.fromclasstogame.core.config;
 
-import fr.snapgames.fromclasstogame.core.config.cli.*;
-import fr.snapgames.fromclasstogame.core.config.cli.exception.ArgumentUnknownException;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+import java.util.ResourceBundle;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import fr.snapgames.fromclasstogame.core.config.cli.BooleanArgParser;
+import fr.snapgames.fromclasstogame.core.config.cli.CliManager;
+import fr.snapgames.fromclasstogame.core.config.cli.DoubleArgParser;
+import fr.snapgames.fromclasstogame.core.config.cli.FloatArgParser;
+import fr.snapgames.fromclasstogame.core.config.cli.IntegerArgParser;
+import fr.snapgames.fromclasstogame.core.config.cli.StringArgParser;
+import fr.snapgames.fromclasstogame.core.config.cli.Vector2dArgParser;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
-public class Configuration {
+/**
+ * THe Game Configuration implementation of {@link AbstractConfiguration} will defined specific needs for our Game.
+ *
+ * @author Frédéric Delorme
+ * @see AbstractConfiguration
+ * @since 0.0.1
+ */
+public class Configuration extends AbstractConfiguration {
     /**
      * path to the default configuration file
      */
@@ -62,7 +74,6 @@ public class Configuration {
      */
     private static final String CFG_KEY_WIDTH = "width";
 
-
     /**
      * Audio mute parameter.
      */
@@ -94,11 +105,6 @@ public class Configuration {
 
 
     private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
-    public ResourceBundle defaultValues;
-    /**
-     * Parameters cli configuration
-     */
-    public CliManager cm;
 
     public String title = "fromClassToGame";
 
@@ -138,25 +144,14 @@ public class Configuration {
      * Debug level
      */
     public int debugLevel;
-    /**
-     * path to configuration file.
-     */
-    private String configPath;
 
 
     public Configuration(String configurationPath) {
-        try {
-            cm = new CliManager();
-            this.configPath = configurationPath;
-            initializeArgParser(configurationPath);
-            logger.info("** > Configuration file '{}' loaded [@ {}]", configurationPath,
-                    System.currentTimeMillis());
-        } catch (Exception e) {
-            logger.error("Unable to read configuration", e);
-        }
+        super(configurationPath);
     }
 
-    private void initializeArgParser(String configurationPath) {
+    @Override
+    public void initializeArgParser(String configurationPath) {
 
         /*---- Debug level mode activation ----*/
         cm.add(new IntegerArgParser(CFG_KEY_DEBUG, "dbg", CFG_KEY_DEBUG,
@@ -208,39 +203,25 @@ public class Configuration {
                 "game.setup.world.height", 800));
     }
 
-    /**
-     * Parse configuration file key by key and set the corresponding values in the
-     * configuration attributes.
-     */
-    public void readValuesFromFile() {
 
-        ResourceBundle.clearCache(this.getClass().getClassLoader());
-        ResourceBundle config = ResourceBundle.getBundle(this.configPath, Locale.ROOT,
-                this.getClass().getClassLoader());
-        this.defaultValues = config;
-        if (config != null) {
-            cm.parseConfigFile(config);
-            getValuesFromCM();
-        } else {
-            logger.error("unable to set configuration from {}", this.configPath);
-        }
-    }
-
-    /**
-     * After parsing the CLI, retrieve the extracted values and set the
-     * Configuration attributes.
-     */
-    private void getValuesFromCM() {
+    @Override
+    public void getValuesFromCM() {
         this.debugLevel = (Integer) cm.getValue(CFG_KEY_DEBUG);
         this.title = (String) cm.getValue(CFG_KEY_TITLE);
+
         this.width = (Integer) cm.getValue(CFG_KEY_WIDTH);
         this.height = (Integer) cm.getValue(CFG_KEY_HEIGHT);
         this.scale = (Double) cm.getValue(CFG_KEY_SCALE);
+
         this.defaultScreen = (Integer) cm.getValue(CFG_KEY_DISPLAY);
         this.FPS = (Integer) cm.getValue(CFG_KEY_FPS);
+
         this.defaultScene = (String) cm.getValue(CFG_KEY_SCENE);
         this.scenes = (String) cm.getValue(CFG_KEY_SCENES);
+
         this.configPath = (String) cm.getValue(CFG_KEY_CONFIG);
+
+        this.mute = (Boolean) cm.getValue(CFG_KEY_AUDIO_MUTE);
         this.soundVolume = (Float) cm.getValue(CFG_KEY_AUDIO_SOUND_VOLUME);
         this.musicVolume = (Float) cm.getValue(CFG_KEY_AUDIO_MUSIC_VOLUME);
 
@@ -248,18 +229,5 @@ public class Configuration {
         this.worldHeight = (Integer) cm.getValue(CFG_KEY_WORLD_HEIGHT);
         this.gravity = (Vector2d) cm.getValue(CFG_KEY_WORLD_GRAVITY);
 
-    }
-
-    public Configuration parseArgs(String[] argv) throws ArgumentUnknownException {
-        // parse argument a first time to detect a different config file is provided
-        cm.parseArguments(argv);
-        getValuesFromCM();
-        // read default values from config files
-        readValuesFromFile();
-        // reparse args to override the mandatory attributes
-        cm.parseArguments(argv);
-        // retrieve the final values and set the useful config.
-        getValuesFromCM();
-        return this;
     }
 }

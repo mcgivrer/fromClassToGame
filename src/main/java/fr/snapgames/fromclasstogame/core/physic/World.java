@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The World Object is a GameObject that will never be rendered but used by others to.
  */
-public class World extends GameObject{
+public class World extends GameObject {
 
     /**
      * Max velocity for ény object in this world.
@@ -17,7 +17,7 @@ public class World extends GameObject{
     /**
      * default gravity in this world.
      */
-    public Vector2d gravity = new Vector2d(0, 0.981);
+    public Vector2d gravity = new Vector2d(0.0, 0.0);
 
     /**
      * Possible influence areas in this world (wind, magnetic, water flow, other ?)
@@ -33,6 +33,7 @@ public class World extends GameObject{
      */
     public World(double width, double height) {
         super("world");
+        this.physicType = PEType.STATIC;
         this.width = width;
         this.height = height;
     }
@@ -54,7 +55,7 @@ public class World extends GameObject{
      * @param area the InfluenceArea to add to the World.
      * @return this updated World
      */
-    public World addInfluenceArea(Influencer area) {
+    public World add(Influencer area) {
         influencers.add(area);
         return this;
     }

@@ -9,7 +9,19 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * The {@link DebugSwitcherBehavior} will allow the debug log level management
+ * during development phase.
+ * 
+ * @author Frédéric Delorme
+ * @since 0.0.2
+ */
 public class DebugSwitcherBehavior implements Behavior<Scene> {
+
+    /**
+     * Internal Logger.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DebugSwitcherBehavior.class);
 
     // new action defined for all scenes.
     public static final int DEBUG_ACTIVE_FLAG = ActionHandler.ACTIONS_INTERNAL + 0;
@@ -19,7 +31,6 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
     public static final int DEBUG_LEVEL_MINUS = ActionHandler.ACTIONS_INTERNAL + 4;
     public static final int DEBUG_FLAG_PE_INFLUENCERS = ActionHandler.ACTIONS_INTERNAL + 5;
     public static final int DEBUG_FLAG_PE_GRAVITY = ActionHandler.ACTIONS_INTERNAL + 6;
-    private static final Logger logger = LoggerFactory.getLogger(DebugSwitcherBehavior.class);
     private static int cpt = 0;
     int objIdx = 0;
     int debugLevel = 2;
@@ -29,15 +40,14 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
      */
     public DebugSwitcherBehavior() {
         ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
-        ah.registerAction(this.DEBUG_ACTIVE_FLAG, KeyEvent.VK_D);
-        ah.registerAction(this.DEBUG_NEXT_ELEMENT, KeyEvent.VK_TAB);
-        ah.registerAction(this.DEBUG_PREV_ELEMENT, KeyEvent.VK_BACK_SPACE);
-        ah.registerAction(this.DEBUG_LEVEL_PLUS, KeyEvent.VK_N);
-        ah.registerAction(this.DEBUG_LEVEL_MINUS, KeyEvent.VK_B);
-        ah.registerAction(this.DEBUG_FLAG_PE_INFLUENCERS, KeyEvent.VK_I);
-        ah.registerAction(this.DEBUG_FLAG_PE_GRAVITY, KeyEvent.VK_G);
+        ah.registerAction(DEBUG_ACTIVE_FLAG, KeyEvent.VK_D);
+        ah.registerAction(DEBUG_NEXT_ELEMENT, KeyEvent.VK_TAB);
+        ah.registerAction(DEBUG_PREV_ELEMENT, KeyEvent.VK_BACK_SPACE);
+        ah.registerAction(DEBUG_LEVEL_PLUS, KeyEvent.VK_N);
+        ah.registerAction(DEBUG_LEVEL_MINUS, KeyEvent.VK_B);
+        ah.registerAction(DEBUG_FLAG_PE_INFLUENCERS, KeyEvent.VK_I);
+        ah.registerAction(DEBUG_FLAG_PE_GRAVITY, KeyEvent.VK_G);
     }
-
 
     @Override
     public void onAction(Scene scene, Integer action) {
@@ -66,7 +76,8 @@ public class DebugSwitcherBehavior implements Behavior<Scene> {
             default:
                 break;
         }
-        scene.getGame().getWindow().addDebugStatusElement("actDbgElt", "[" + objIdx + "]" + scene.getObjectsList().get(objIdx).name);
+        scene.getGame().getWindow().addDebugStatusElement("actDbgElt",
+                "[" + objIdx + "]" + scene.getObjectsList().get(objIdx).name);
         // add debug info about PhysicEngine.
         PhysicEngine pe = (PhysicEngine) SystemManager.get(PhysicEngine.class);
         pe.getDebugInfo().forEach((k, v) -> scene.getGame().getWindow().addDebugStatusElement(k, v.toString()));

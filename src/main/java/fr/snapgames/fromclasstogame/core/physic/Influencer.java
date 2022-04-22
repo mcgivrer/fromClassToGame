@@ -1,22 +1,24 @@
 package fr.snapgames.fromclasstogame.core.physic;
 
-import fr.snapgames.fromclasstogame.core.entity.AbstractEntity;
-import fr.snapgames.fromclasstogame.core.entity.Entity;
-import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
-import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox.BoundingBoxType;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
+
 /**
- * An Influencer is an area in the world applying some influence to the intersecting GameObject.
- *
+ * An {@link Influencer} is an area in the {@link World} applying some influence
+ * to the intersecting {@link GameObject}.
+ * <p>
+ * This {@link Influencer} can apply a {@link Influencer#force} to the contained
+ * {@link GameObject} of apply
+ * the effect of a {@link Influencer#material}.
+ * 
  * @author Frédéric Delorme
+ * @see PhysicEngine
  * @since 0.0.3
  */
-public class Influencer extends AbstractEntity<Influencer>{
-    public BoundingBox area;
+public class Influencer extends GameObject {
     /**
      * Default energy factor for the force.
      */
@@ -27,32 +29,22 @@ public class Influencer extends AbstractEntity<Influencer>{
     public Vector2d force = new Vector2d();
 
     /**
-     * Bounding Box type for this Influencer.
-     */
-    private BoundingBoxType type = BoundingBoxType.RECTANGLE;
-
-
-    /**
-     * Create a new Influencer name, applying force to the area with a level of energy.
+     * Create a new Influencer name, applying force to the area with a level of
+     * energy.
      *
-     * @param name   Name for this Influencer
-     * @param force  a Vector2D force to be applied to any intersecting GameObject
-     * @param area   area of influence where to apply effect
-     * @param energy the energy factor to be applied to the intersecting object.
+     * @param name Name for this Influencer
      */
-    public Influencer(String name, Vector2d force, BoundingBox area, double energy) {
-        this.name = name;
-        this.force = force;
-        this.area = area;
-        this.energy = energy;
-        this.position = Utils.add(area.position, new Vector2d(area.shape.width / 2.0, area.shape.height / 2.0));
+    public Influencer(String name) {
+        super(name);
+        physicType = PEType.STATIC;
     }
 
-
     /**
-     * Compute energy influence for the otherPosition object according to energy of this {@link Influencer}.
+     * Compute energy influence for the otherPosition object according to energy of
+     * this {@link Influencer}.
      *
-     * @param otherPosition Position of the other object to define influence of this force.
+     * @param otherPosition Position of the other object to define influence of this
+     *                      force.
      * @return value of the resulting influence on the object.
      */
     public double getInfluenceAtPosition(Vector2d otherPosition) {
@@ -60,7 +52,7 @@ public class Influencer extends AbstractEntity<Influencer>{
             double dx = this.position.x - otherPosition.x;
             double dy = this.position.y - otherPosition.y;
             double distance = Math.sqrt(dx * dx + dy * dy);
-            double factor = 100.0 / distance;
+            double factor = 100 / ((this.box.shape.width / 2) - distance);
 
             return factor;
         } else {
@@ -71,7 +63,8 @@ public class Influencer extends AbstractEntity<Influencer>{
     /**
      * Return debug information for debug display mode.
      *
-     * @return
+     * @return List of String containing debug information to be displayed in debug
+     *         mode.
      */
     public List<String> getDebugInfo() {
         int debug = this.debugLevel;
@@ -83,7 +76,7 @@ public class Influencer extends AbstractEntity<Influencer>{
             debugInfo.add("dbgLvl:" + debug);
             if (debug > 2) {
                 debugInfo.add("pos:" + position.toString());
-                debugInfo.add("type:" + type);
+                debugInfo.add("type:" + this.box.type);
             }
             debugInfo.add(String.format("force:%s", force));
             debugInfo.add(String.format("energy:%f", energy));
@@ -91,18 +84,52 @@ public class Influencer extends AbstractEntity<Influencer>{
         return debugInfo;
     }
 
-    public Influencer setInfluenceAreaType(BoundingBoxType type) {
-        this.type = type;
+    public Influencer setInfluencerAreaType(BoundingBox.BoundingBoxType type) {
+        this.box.type = type;
         return this;
     }
 
-    public Influencer setDebugFillColor(Color dfc) {
-        this.debugFillColor = dfc;
+    /**
+     * Define the Material applied to all object in this area.
+     *
+     * @param m The {@link Material} to be applied.
+     * @return this {@link Influencer} updated.
+     */
+    public Influencer setMaterial(Material m) {
+        return (Influencer) super.setMaterial(m);
+    }
+
+    /**
+     * Apply the force f to all objets in the Influencer area.
+     *
+     * @param f the force to be applied.
+     * @return the {@link Influencer} updated.
+     */
+    public Influencer setForce(Vector2d f) {
+        this.force = f;
         return this;
     }
 
-    public Influencer setDebugLineColor(Color dlc) {
-        this.debugLineColor = dlc;
+    /**
+     * Define the energy applied to the force applied to the objects in the
+     * influencer area.
+     *
+     * @param e a double factor value to be applied.
+     * @return The updated Influencer.
+     */
+    public Influencer setEnergy(double e) {
+        this.energy = e;
         return this;
+    }
+
+    /**
+     * Override setPosition to transtype the returned object (for convience purpose)
+     * 
+     * @param position the new position of this object.
+     * @return the updated Influencer
+     */
+    @Override
+    public Influencer setPosition(Vector2d position) {
+        return (Influencer) super.setPosition(position);
     }
 }

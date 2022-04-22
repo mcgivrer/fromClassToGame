@@ -62,7 +62,8 @@ public class Renderer extends System {
     /**
      * Internal ist of Render helpers
      */
-    private final Map<String, RenderHelper<?>> renderHelpers = new HashMap<>();
+
+    private Map<String, RenderHelper<? extends GameObject>> renderHelpers = new HashMap<>();
 
     /**
      * debug color to display debug information
@@ -73,10 +74,6 @@ public class Renderer extends System {
      */
     private int debug = 0;
 
-    /**
-     * the world object to be used by the Render
-     */
-    private World world;
     /**
      * Flag to gather a screenshot of the rendering buffer.
      */
@@ -153,12 +150,12 @@ public class Renderer extends System {
         if (debug > 1) {
             for (Influencer i : world.influencers) {
                 if (debug >= i.debugLevel) {
-                    switch (i.area.type) {
+                    switch (i.box.type) {
                         case RECTANGLE:
-                            drawRectangle(g, i.debugLineColor, i.debugFillColor, i.area.shape);
+                            drawRectangle(g, i.debugLineColor, i.debugFillColor, i.box.shape);
                             break;
                         case CIRCLE:
-                            drawEllipse(g, i.debugLineColor, i.debugFillColor, i.area.ellipse);
+                            drawEllipse(g, i.debugLineColor, i.debugFillColor, i.box.ellipse);
                             break;
                         default:
                             break;
@@ -360,7 +357,7 @@ public class Renderer extends System {
                 File out = new File(filename);
                 ImageIO.write(getBuffer(), "PNG", out);
 
-                logger.info("Write screenshot to {}", filename);
+                ImageUtilities.save(filename, getBuffer());
             } catch (IOException e) {
                 logger.error("Unable to write screenshot to {}:{}", filename, e.getMessage());
             }
@@ -372,7 +369,7 @@ public class Renderer extends System {
      *
      * @param rh The {@link RenderHelper} implementation for a dedicated Object type to be added to {@link Renderer} system.
      */
-    public void addRenderHelper(RenderHelper<?> rh) {
+    public void addRenderHelper(RenderHelper<? extends GameObject> rh) {
         renderHelpers.put(rh.getType(), rh);
     }
 
@@ -381,7 +378,7 @@ public class Renderer extends System {
      *
      * @return the {@link RenderHelper} list.
      */
-    public Map<String, RenderHelper<?>> getRenderHelpers() {
+    public Map<String, RenderHelper<? extends GameObject>> getRenderHelpers() {
         return renderHelpers;
     }
 
@@ -436,10 +433,6 @@ public class Renderer extends System {
         return this.debugColor;
     }
 
-    public void setWorld(World w) {
-        this.world = w;
-    }
-
     public void setDebugLevel(int dl) {
         this.debug = dl;
     }
@@ -453,4 +446,7 @@ public class Renderer extends System {
         return this.camera;
     }
 
+    public int getDebugLevel() {
+        return debug;
+    }
 }

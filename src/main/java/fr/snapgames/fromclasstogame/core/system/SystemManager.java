@@ -1,15 +1,15 @@
 package fr.snapgames.fromclasstogame.core.system;
 
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.config.Configuration;
-import fr.snapgames.fromclasstogame.core.entity.GameObject;
-import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.scenes.SceneManager;
 
 /**
  * The SystemManager will contain and manage all available System in te Game.
@@ -23,6 +23,8 @@ public class SystemManager {
      * THe map hosting all the systems
      */
     private static Map<Class<? extends System>, System> systemInstances;
+
+    private static Map<String, Object> context = new ConcurrentHashMap<>();
     /**
      * the singleton instance for this SystemManager.
      */
@@ -118,7 +120,7 @@ public class SystemManager {
      *
      * @param config the Configuration provided but the game to all systems for initialization purpose.
      */
-    public static void configure(Configuration config) {
+    public static void initialize(Configuration config) {
         Optional<Map> oSystemInstances = Optional.ofNullable(systemInstances);
         if (oSystemInstances.isPresent()) {
             systemInstances.entrySet().forEach(e -> {
@@ -187,5 +189,13 @@ public class SystemManager {
      */
     public static int getNbObjects() {
         return get(SceneManager.class).objects.size();
+    }
+
+    public static void addToContext(String key, Object value) {
+        context.put(key, value);
+    }
+
+    public static Object getFromContext(String key) {
+        return context.get(key);
     }
 }

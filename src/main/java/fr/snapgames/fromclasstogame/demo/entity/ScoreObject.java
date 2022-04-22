@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.demo.entity;
 
 import fr.snapgames.fromclasstogame.core.entity.TextObject;
+import fr.snapgames.fromclasstogame.core.physic.PEType;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
 
 import java.awt.*;
@@ -11,15 +12,14 @@ public class ScoreObject extends TextObject {
 
     @Deprecated
     public ScoreObject(String name, double x, double y) {
-        super(name, x, y);
-        score = 0;
-        this.color = Color.WHITE;
+        this(name, new Vector2d(x, y));
     }
 
     public ScoreObject(String name, Vector2d position) {
         super(name, position);
         score = 0;
         this.color = Color.WHITE;
+        physicType = PEType.STATIC;
     }
 
     public ScoreObject setScore(int s) {

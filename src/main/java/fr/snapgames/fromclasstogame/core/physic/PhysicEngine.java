@@ -1,17 +1,17 @@
 package fr.snapgames.fromclasstogame.core.physic;
 
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.system.System;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -72,12 +72,18 @@ public class PhysicEngine extends System {
      */
     public static final String DEBUG_FLAG_INFLUENCERS = "flagInfluencers";
     public static final String DEBUG_FLAG_GRAVITY = "flagGravity";
+    /**
+     * Ingternal logger
+     */
     private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
-    private final Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
     /**
      * The current World object managed by the PhysicEngine.
      */
     private World world = new World(0, 0);
+    /**
+     * PhysicEngine debug flags to activate or not features.
+     */
+    private Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
 
     /**
      * Initialization of the {@link PhysicEngine} System with its parent
@@ -158,30 +164,53 @@ public class PhysicEngine extends System {
      */
     private void update(GameObject go, long dt) {
         double dtCorrected = dt * 0.01;
-        if (go != null) {
+        if (go != null && !(go instanceof Influencer)) {
             go.acceleration = new Vector2d();
-            if (!go.relativeToCamera) {
-                // Acceleration is not already used in velocity & position computation
-                computeAccelerationForGameObject(go);
-                // Compute velocity
-                computeVelocity(go, dtCorrected);
-                // Compute position
-                go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.599, world.maxVelocity);
-                go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.599, world.maxVelocity);
-                // test World space constrained
-                verifyGameConstraint(go);
-                // update Bounding box for this GameObject.
-                if (Optional.ofNullable(go.bbox).isPresent()) {
-                    go.bbox.update(go);
-                }
-                go.forces.clear();
+            switch (go.physicType) {
+                case STATIC:
+                    updateStatic(go, dt, dtCorrected);
+                    break;
+                case DYNAMIC:
+                    updateDynamic(go, dt, dtCorrected);
+                    break;
             }
-            // apply Object behaviors computations
-            if (!go.behaviors.isEmpty()) {
-                go.behaviors.forEach(b -> b.onUpdate(go, dt));
+        }
+        // Update the Object itself
+        go.update(dt);
+    }
+
+    private void updateStatic(GameObject go, long dt, double dtCorrected) {
+        // Nothing to fo now.
+    }
+
+    private void updateDynamic(GameObject go, long dt, double dtCorrected) {
+        if (!go.relativeToCamera) {
+
+            // Acceleration is not already used in velocity & position computation
+            computeAccelerationForGameObject(go);
+
+            // Compute velocity
+            computeVelocity(go, dtCorrected);
+            // Compute position
+            go.position.x += ceilMinMaxValue(go.velocity.x * dtCorrected, 0.599, world.maxVelocity);
+            go.position.y += ceilMinMaxValue(go.velocity.y * dtCorrected, 0.599, world.maxVelocity);
+
+            // test World space constrained
+            verifyGameConstraint(go);
+
+
+            // update Bounding box for this GameObject.
+            if (go.box != null) {
+                go.box.update(go);
             }
-            // Update the Object itself
-            go.update(dt);
+            go.forces.clear();
+        }
+
+        // apply Object behaviors computations
+        if (!go.behaviors.isEmpty()) {
+            go.behaviors.forEach(b -> {
+                b.onUpdate(go, dt);
+            });
         }
     }
 
@@ -266,11 +295,13 @@ public class PhysicEngine extends System {
     private Vector2d applyWorldInfluenceList(GameObject go) {
         Vector2d acc = new Vector2d();
         if (!world.influencers.isEmpty() && !go.relativeToCamera) {
-            for (Influencer i : world.influencers) {
-                if (i.area.intersect(go.bbox)) {
-                    double influence = i.getInfluenceAtPosition(go.position);
-                    Vector2d accIA = i.force.multiply(influence).multiply(i.energy);
-                    acc = acc.add(accIA);
+
+            for (Influencer area : world.influencers) {
+                if (area.box.intersect(go.box)) {
+                    double influence = area.getInfluenceAtPosition(go.position);
+                    Vector2d accIA = new Vector2d();
+                    accIA.add(area.force).multiply(influence).multiply(area.energy);
+                    acc.add(accIA);
                 }
             }
         }
@@ -339,20 +370,6 @@ public class PhysicEngine extends System {
      */
     public World getWorld() {
         return world;
-    }
-
-    /**
-     * define the {@link World} to be applied to the {@link PhysicEngine} GameObject
-     * processing.
-     *
-     * @param w the {@link World} object to be used in {@link GameObject}
-     *          computations
-     * @return the {@link PhysicEngine} itself updated with the new {@link World}
-     * defined.
-     */
-    public PhysicEngine setWorld(World w) {
-        this.world = w;
-        return this;
     }
 
     /**

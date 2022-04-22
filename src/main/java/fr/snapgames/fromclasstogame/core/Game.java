@@ -147,7 +147,7 @@ public class Game implements ActionHandler.ActionListener {
         /*
          * And then configure ll those strange piece of code.
          */
-        SystemManager.configure(configuration);
+        SystemManager.initialize(configuration);
 
         renderer = (Renderer) SystemManager.get(Renderer.class);
         renderer.setDebugLevel(configuration.debugLevel);
@@ -334,13 +334,6 @@ public class Game implements ActionHandler.ActionListener {
 
     }
 
-    public Game setWorld(World world) {
-        this.pe.setWorld(world);
-        this.renderer.setWorld(world);
-        return this;
-    }
-
-
     @Override
     public void onAction(Integer action) {
         getSceneManager().onAction(action);
@@ -380,5 +373,10 @@ public class Game implements ActionHandler.ActionListener {
 
     public CollisionSystem getCollisionSystem() {
         return cs;
+    }
+
+    public void setWorld(World world) {
+        getPhysicEngine().setWorld(world);
+        getRenderer().setWorld(world);
     }
 }

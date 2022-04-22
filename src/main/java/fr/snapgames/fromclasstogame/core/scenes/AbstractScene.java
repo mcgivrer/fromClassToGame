@@ -34,15 +34,21 @@ public abstract class AbstractScene implements Scene {
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
 
     //TODO: replace objects and objectList by the corresponding Game System EntityPool.
+
+    EntityPool ep = ((EntityPoolManager) SystemManager.get(EntityPoolManager.class)).get(GameObject.class.getName());
+
     //protected Map<String, GameObject> objects = new HashMap<>();
     //protected List<GameObject> objectsList = new ArrayList<>();
     protected List<Behavior<Scene>> behaviors = new ArrayList<>();
+
     protected Map<String, Camera> cameras = new HashMap<>();
+
     protected Camera activeCamera;
+
     protected String sceneName;
+
     protected Game game;
     protected int debug = 0;
-    EntityPool ep = ((EntityPoolManager) SystemManager.get(EntityPoolManager.class)).get(GameObject.class.getName());
 
     public AbstractScene(Game g, String name) {
         game = g;
@@ -64,7 +70,6 @@ public abstract class AbstractScene implements Scene {
     public void activate() {
 
         logger.debug("Scene {} activated", this.sceneName);
-
     }
 
     @Override
@@ -206,14 +211,10 @@ public abstract class AbstractScene implements Scene {
         return sceneName;
     }
 
-    @Override
-    public void setName(String name) {
-        this.sceneName = name;
-    }
-
     public Game getGame() {
         return game;
     }
+
 
     public void draw(Renderer r) {
 
@@ -226,6 +227,14 @@ public abstract class AbstractScene implements Scene {
     protected EntityPool getEntityPool() {
         return this.ep;
     }
+
+
+    @Override
+    public void setName(String name) {
+        this.sceneName = name;
+    }
+
+
 }
 
 

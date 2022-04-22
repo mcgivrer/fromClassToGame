@@ -53,6 +53,7 @@ public class TitleScene extends AbstractScene {
             // Add the Debug switcher capability to this scene
             addBehavior(new DebugSwitcherBehavior());
         }
+
         // Define the camera following the player object.
         BufferedImage buffer = g.getRenderer().getBuffer();
         vp = new Dimension(buffer.getWidth(), buffer.getHeight());
@@ -60,7 +61,7 @@ public class TitleScene extends AbstractScene {
         // add a background image
         GameObject bckG = new GameObject("background", new Vector2d(0.0, 0.0))
                 .setImage(ResourceManager.getImage("images/backgrounds/volcano.png:background"))
-                .setType(GameObject.GOType.IMAGE)
+                .setObjectType(GameObject.GOType.IMAGE)
                 .setLayer(10)
                 .setPriority(1)
                 .setDebug(3);
@@ -71,7 +72,7 @@ public class TitleScene extends AbstractScene {
         GameObject logo = new GameObject("logo",
                 new Vector2d(10, 7.5 * (vp.getHeight() / 10)))
                 .setImage(ResourceManager.getImage("images/logo/sg-logo-image.png"))
-                .setType(GameObject.GOType.IMAGE)
+                .setObjectType(GameObject.GOType.IMAGE)
                 .setLayer(5)
                 .setPriority(5)
                 .setRelativeToCamera(true);

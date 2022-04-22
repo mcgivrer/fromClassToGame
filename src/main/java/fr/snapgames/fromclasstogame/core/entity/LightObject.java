@@ -1,6 +1,7 @@
 package fr.snapgames.fromclasstogame.core.entity;
 
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
 import java.awt.*;
 import java.util.List;
@@ -46,6 +47,11 @@ public class LightObject extends GameObject {
 
     public LightObject setType(LightType type) {
         this.lightType = type;
+        if (type.equals(LightType.LIGHT_SPOT) || type.equals(LightType.LIGHT_SPHERE)) {
+            this.objectType = GOType.CIRCLE;
+        } else {
+            this.objectType = GOType.RECTANGLE;
+        }
         return this;
     }
 
@@ -77,7 +83,7 @@ public class LightObject extends GameObject {
     @Override
     public void update(long dt) {
         super.update(dt);
-        bbox.update(this, new Vector2d(-width * 0.5, -height * 0.5));
+        box.update(this, new Vector2d(-width * 0.5, -height * 0.5));
     }
 
     @Override

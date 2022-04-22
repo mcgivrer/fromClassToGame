@@ -8,11 +8,11 @@ import java.awt.*;
 public class AbstractEntity<T> implements Entity<T> {
 
     private static int index = 0;
-    public int id;
+    public int id = index++;
 
 
-    public String name;
-    public Vector2d position;
+    public String name = "entity_" + id;
+    public Vector2d position = new Vector2d();
     public boolean active = true;
 
     public double width;

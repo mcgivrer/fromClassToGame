@@ -1,16 +1,17 @@
 package fr.snapgames.fromclasstogame.core.entity;
 
-import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
-import fr.snapgames.fromclasstogame.core.physic.Material;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
-import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
-
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
+import fr.snapgames.fromclasstogame.core.physic.Material;
+import fr.snapgames.fromclasstogame.core.physic.PEType;
+import fr.snapgames.fromclasstogame.core.physic.Vector2d;
+import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 
 /**
  * <p><code>GameObject</code> is the object managed by all the game systems.</p>
@@ -25,23 +26,30 @@ import java.util.Map;
 public class GameObject extends AbstractEntity<GameObject> {
 
     /**
+     * Geometric attributes
+     */
+    public double width;
+    public double height;
+    public BoundingBox box = new BoundingBox();
+
+    /**
      * Physic and mechanic attributes
      */
     public Vector2d velocity = new Vector2d();
     public Vector2d acceleration = new Vector2d();
-
     public List<Vector2d> forces = new ArrayList<>();
-
     public Material material;
     public double mass = 1;
     public Vector2d gravity = new Vector2d();
-
-    public GOType type = GOType.RECTANGLE;
+    public PEType physicType = PEType.DYNAMIC;
     /**
      * Rendering attributes
      */
+    public GOType objectType = GOType.RECTANGLE;
     public Color color;
     public BufferedImage image;
+    // define animation (if not null)
+    Animation animations;
     public int layer;
     public int priority;
     public boolean relativeToCamera;
@@ -87,6 +95,7 @@ public class GameObject extends AbstractEntity<GameObject> {
      */
     public GameObject(String objectName) {
         super(objectName);
+        this.physicType = PEType.DYNAMIC;
     }
 
     /**
@@ -119,7 +128,7 @@ public class GameObject extends AbstractEntity<GameObject> {
      * @param dt elapsed time since previous call.
      */
     public void update(long dt) {
-        bbox.update(this);
+        box.update(this);
         if (life > -1) {
             if (life - dt >= 0) {
                 life -= dt;
@@ -162,8 +171,8 @@ public class GameObject extends AbstractEntity<GameObject> {
         return debugInfo;
     }
 
-    public GameObject setType(GOType type) {
-        this.type = type;
+    public GameObject setObjectType(GOType objectType) {
+        this.objectType = objectType;
         return this;
     }
 
@@ -172,6 +181,12 @@ public class GameObject extends AbstractEntity<GameObject> {
         return this;
     }
 
+    public GameObject setSize(double w, double h) {
+        this.width = w;
+        this.height = h;
+        box.update(this);
+        return this;
+    }
 
     public GameObject setImage(BufferedImage image) {
         this.image = image;
@@ -258,8 +273,16 @@ public class GameObject extends AbstractEntity<GameObject> {
     }
 
 
+    public GameObject setBoundingBox(BoundingBox boundingBox) {
+        this.box = boundingBox;
+        return this;
+    }
+
     public enum GOType {
         POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
     }
 
+    public Animation getAnimations() {
+        return this.animations;
+    }
 }

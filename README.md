@@ -46,12 +46,14 @@ Added some valuable features like:
 - Add a `World Display debug mode` in the rendering process.
 - Add a new AbstractEntity object to deliver commons attributes to `GameObject` and `Influencer` (for physic engine
   computation and debug world rendering)
+- Add a `DebugViewportGrid` object and its rendering helper.
 
 ## Work In Progress
 
-- A `CollisionSystem` is a work in progress
+- Just added the `SoundClip` support to load OGG sound and music.
 - Some `TileMap` object to display beautiful game level graphic set and all its dependencies (`Tile`, `TileSet`
   and `TileLayer`) are also work in progress !
+- A `CollisionSystem` is a work in progress
 
 ## More to come
 
@@ -86,22 +88,23 @@ mvn exec:java
 You will get the current display:
 
 ![screenshot - DemoScene with objects](docs/images/figure-demo-scene-structure.png "a screenshot of the current demo scene")
+_figure 1 - The Screen diagram_
 
 This sample demo will show :
 
 1. Some `GameObject` as player (the red one), and some random spawning enemies (orange ones),
 2. the `ScoreObject`, displaying score (sic),
 3. the `LifeObject` showing the remaining number of life,
-4. the `InventoryObject`, showing a qick inventory to select an available item.
+4. the `InventoryObject`, showing a quick inventory to select an available item.
 
 The latest demo integrate the Fire `ParticleSystem` and the `Influencer` world perturbation
 
-![screenshot - the latest evolution of the game framework with ParticleSystem](docs/images/capture-006.png
-"ParticleSystem simulating fire")
+![screenshot - the latest evolution of the game framework with ParticleSystem and World Influencer](docs/images/capture-022.png "ParticleSystem simulating fire, and under World perturbation")
+_figure 2 - Fun with particles_
 
 ![screenshot - An Influencer as wind (blue area) moves GameObjects](docs/images/capture-008.png
 "GameObject under World Influencer' perturbations like wind (blue area)")
-
+_figure 3 - GameObject and particles under World Influencer' perturbations like wind (blue area)_
 Have Fun !
 
 McG.

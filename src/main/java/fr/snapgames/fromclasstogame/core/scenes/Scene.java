@@ -7,7 +7,9 @@ import fr.snapgames.fromclasstogame.core.entity.GameObject;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.physic.Influencer;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -55,4 +57,6 @@ public interface Scene extends ActionHandler.ActionListener {
     Game getGame();
 
     void setName(String name);
+
+    void addAll(Collection<? extends GameObject> objects);
 }

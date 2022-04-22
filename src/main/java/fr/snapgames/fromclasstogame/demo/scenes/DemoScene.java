@@ -8,15 +8,16 @@ import fr.snapgames.fromclasstogame.core.behaviors.PlayerActionBehavior;
 import fr.snapgames.fromclasstogame.core.behaviors.particle.FireParticleBehavior;
 import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.LightObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.ParticleSystemRenderHelper;
 import fr.snapgames.fromclasstogame.core.io.I18n;
+import fr.snapgames.fromclasstogame.core.io.LevelLoader;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
 import fr.snapgames.fromclasstogame.core.physic.*;
 import fr.snapgames.fromclasstogame.core.physic.Material.DefaultMaterial;
-import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import fr.snapgames.fromclasstogame.demo.behaviors.InventorySelectorBehavior;
@@ -59,6 +60,9 @@ public class DemoScene extends AbstractScene {
     @Override
     public void initialize(Game g) {
         super.initialize(g);
+        // add the Level Loader system.
+        SystemManager.add(LevelLoader.class);
+
         if (g.getConfiguration().debugLevel > 0) {
             // Add the Debug switcher capability to this scene
             addBehavior(new DebugSwitcherBehavior());
@@ -93,43 +97,55 @@ public class DemoScene extends AbstractScene {
         g.getRenderer().addRenderHelper(new ParticleSystemRenderHelper(g.getRenderer()));
         // - LightObject
         g.getRenderer().addRenderHelper(new LightObjectRenderHelper(g.getRenderer()));
+
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
         super.create(g);
-        // Declare World playground
-        int worldWidth = g.getConfiguration().worldWidth;
-        int worldHeight = g.getConfiguration().worldHeight;
 
-        World world = new World(worldWidth, worldHeight)
-                .setGravity(g.getConfiguration().gravity)
-                .addInfluenceArea(new Influencer("wind",
-                        new Vector2d(0.8, 0.0),
-                        new BoundingBox(
-                                new Vector2d(0.0, worldHeight * 0.5),
-                                worldWidth * 0.5, worldHeight * 0.5,
-                                BoundingBox.BoundingBoxType.RECTANGLE),
-                        5)
-                        .setDebugFillColor(new Color(0.0f, 0.5f, 0.9f, 0.25f))
-                        .setDebugLineColor(Color.CYAN)
-                )
-                .addInfluenceArea(new Influencer("magneticForce",
-                        new Vector2d(0.0, -2),
-                        new BoundingBox(
-                                new Vector2d(worldWidth * 0.65, worldHeight * 0.35),
-                                worldWidth * 0.25, worldHeight * 0.25,
-                                BoundingBox.BoundingBoxType.CIRCLE),
-                        15)
-                        .setDebugFillColor(new Color(0.5f, 0.9f, 0.2f, 0.25f))
-                        .setDebugLineColor(Color.GREEN)
-                );
-        g.setWorld(world);
+        LevelLoader lm = (LevelLoader) SystemManager.get(LevelLoader.class);
+
+
+        // Declare World playground
+
+        World world = new World(800.0, 400.0)
+                .setGravity(new Vector2d(0.0, 0.981));
+
+        // create a basic wind all over the play area
+        Influencer iWindArea = (Influencer) new Influencer("wind")
+                .setEnergy(1.0)
+                .setForce(new Vector2d(2.0, 0.0))
+                .setPosition(0.0, 0.0)
+                .setSize(world.width / 2, world.height)
+                .setColor(new Color(0.2f, 0.2f, 0.9f, 0.6f));
+        world.add(iWindArea);
+
+        // create a basic magnetic all area up of the game area.
+        Influencer iMagneticArea = (Influencer) new Influencer("Mag")
+                .setEnergy(1.0)
+                .setForce(new Vector2d(0.0, -3))
+                .setPosition(0.0, 0.0)
+                .setSize(world.width, world.height / 2.0)
+                .setColor(new Color(0.9f, 0.2f, 0.2f, 0.6f));
+        world.add(iMagneticArea);
+
+
+        // add Viewport Grid debug view
+        DebugViewportGrid dvg = (DebugViewportGrid) new DebugViewportGrid("vpgrid", world, 32, 32)
+                .setDebug(1)
+                .setLayer(11)
+                .setPriority(2);
+        add(dvg);
+
+        // load a level as TileMap
+        TileMap map = lm.loadFrom("/levels/lvl0101.properties");
+        add(map);
 
         // add main character (player)
         Material m = DefaultMaterial.newMaterial("playerMaterial", 0.25, 0.3, 0.80, 0.98);
         GameObject player = new GameObject("player", new Vector2d(160, 100))
-                .setType(GameObject.GOType.IMAGE)
+                .setObjectType(GameObject.GOType.IMAGE)
                 .setColor(Color.RED)
                 .setLayer(1)
                 .setPriority(2)
@@ -174,7 +190,7 @@ public class DemoScene extends AbstractScene {
         // add a background image
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/forest.jpg:background"))
-                .setType(GameObject.GOType.IMAGE)
+                .setObjectType(GameObject.GOType.IMAGE)
                 .setLayer(100)
                 .setPriority(100);
         add(bckG);
@@ -214,7 +230,7 @@ public class DemoScene extends AbstractScene {
         // create the Inventory to store the created item
         InventoryObject inventory = (InventoryObject) new InventoryObject("inventory",
                 new Vector2d(vp.getWidth() - 2, vp.getHeight() - 4))
-                .setNbPlace(6)
+                .setNbPlace(3)
                 .setSelectedIndex(1)
                 .setRelativeToCamera(true)
                 .setDebug(1)
@@ -243,6 +259,9 @@ public class DemoScene extends AbstractScene {
                 .setDebug(3);
         add(welcome);
 
+        // Set the newly created world and generate it !
+        g.setWorld(world);
+        addAll(world.influencers);
     }
 
     /**
@@ -256,7 +275,7 @@ public class DemoScene extends AbstractScene {
         for (int i = 0; i < nbEnemies; i++) {
             // create an enemy
             GameObject e = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
-                    .setType(GameObject.GOType.IMAGE)
+                    .setObjectType(GameObject.GOType.IMAGE)
                     .setPosition(Utils.rand(0, game.getPhysicEngine().getWorld().width),
                             Utils.rand(0, game.getPhysicEngine().getWorld().height))
                     .setColor(Color.ORANGE).setImage(ResourceManager.getImage("images/tiles01.png:orangeBall"))
