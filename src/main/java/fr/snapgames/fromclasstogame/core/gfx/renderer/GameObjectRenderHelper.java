@@ -33,7 +33,7 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
                     break;
                 case IMAGE:
                     // retrieve the active image through Animation class or as internal fixed image.
-                    BufferedImage img = go.getAnimations() != null ? go.getAnimations().getCurrentFrame() : go.image;
+                    BufferedImage img = go.getAnimation() != null ? go.getAnimation().getCurrentFrame() : go.image;
                     if (img != null) {
                         drawImage(g, img, go.position, go.width, go.height);
                     } else {

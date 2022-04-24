@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.snapgames.fromclasstogame.core.behaviors.Behavior;
+import fr.snapgames.fromclasstogame.core.entity.particles.ParticleSystem;
 import fr.snapgames.fromclasstogame.core.physic.Material;
 import fr.snapgames.fromclasstogame.core.physic.PEType;
 import fr.snapgames.fromclasstogame.core.physic.Vector2d;
@@ -26,11 +27,11 @@ import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
 public class GameObject extends AbstractEntity<GameObject> {
 
     /**
-     * Geometric attributes
+     * THe Type of Object to be rendered
      */
-    public double width;
-    public double height;
-    public BoundingBox box = new BoundingBox();
+    public enum GOType {
+        POINT, RECTANGLE, CIRCLE, IMAGE, ANIMATION, OTHER
+    }
 
     /**
      * Physic and mechanic attributes
@@ -42,17 +43,19 @@ public class GameObject extends AbstractEntity<GameObject> {
     public double mass = 1;
     public Vector2d gravity = new Vector2d();
     public PEType physicType = PEType.DYNAMIC;
+
     /**
      * Rendering attributes
      */
-    public GOType objectType = GOType.RECTANGLE;
-    public Color color;
-    public BufferedImage image;
-    // define animation (if not null)
-    Animation animations;
     public int layer;
     public int priority;
     public boolean relativeToCamera;
+    public GOType objectType = GOType.RECTANGLE;
+    public Color color;
+    // define animation (if not null)
+    Animation animation;
+    public BufferedImage image;
+
     /**
      * life duration of this object (default is -1 = infinite).
      */
@@ -63,13 +66,11 @@ public class GameObject extends AbstractEntity<GameObject> {
      * List of behaviors to be applied on this GameObject
      */
     public List<Behavior<GameObject>> behaviors = new ArrayList<>();
-    public boolean rendered;
     protected Map<String, Object> attributes = new HashMap<>();
     /**
      * Child objects.
      */
     protected List<GameObject> child = new ArrayList<>();
-    private boolean active = true;
     /**
      * debugging data
      */
@@ -128,7 +129,6 @@ public class GameObject extends AbstractEntity<GameObject> {
      * @param dt elapsed time since previous call.
      */
     public void update(long dt) {
-        box.update(this);
         if (life > -1) {
             if (life - dt >= 0) {
                 life -= dt;
@@ -205,32 +205,68 @@ public class GameObject extends AbstractEntity<GameObject> {
         return this;
     }
 
+    /**
+     * Define the rendering priority.
+     *
+     * @param priority
+     * @return
+     */
     public GameObject setPriority(int priority) {
         this.priority = priority;
         return this;
     }
 
+    /**
+     * Define the layer for this GameObject
+     *
+     * @param layer the layer number (0 to n where 0 is in front of camera)
+     * @return The updated GameObject.
+     */
     public GameObject setLayer(int layer) {
         this.layer = layer;
         return this;
     }
 
+    /**
+     * Define if this Object must stick to the Camera viewport.
+     *
+     * @param rtc if true, this object will be stick to Camera viewport.
+     * @return the updated GameObject.
+     */
     public GameObject setRelativeToCamera(boolean rtc) {
         this.relativeToCamera = rtc;
         return this;
     }
 
-    public GameObject setMaterial(Material mat) {
-        this.material = mat;
-        return this;
-    }
-
+    /**
+     * Define the mass for this GameObject.
+     *
+     * @param mass mass in Kg for this GameObject.
+     * @return the updated GameObject.
+     */
     public GameObject setMass(double mass) {
         this.mass = mass;
         return this;
     }
 
+    /**
+     * Define the Material for this GameObject.
+     *
+     * @param mat
+     * @return
+     */
+    public GameObject setMaterial(Material mat) {
+        this.material = mat;
+        return this;
+    }
 
+
+    /**
+     * Add a behavior to this GameObject.
+     *
+     * @param b the Behavior implementation to be added.
+     * @return the updated GameObject.
+     */
     public GameObject add(Behavior<GameObject> b) {
         if (!behaviors.contains(b)) {
             behaviors.add(b);
@@ -238,31 +274,72 @@ public class GameObject extends AbstractEntity<GameObject> {
         return this;
     }
 
+    /**
+     * Add an attribute attrName with value attrValue.
+     *
+     * @param attrName  the name for this attribute.
+     * @param attrValue the value of this attribute.
+     * @return
+     */
     public GameObject addAttribute(String attrName, Object attrValue) {
         this.attributes.put(attrName, attrValue);
         return this;
     }
 
+    /**
+     * Retrieve an attribute name, or return the defaultValue.
+     *
+     * @param name         the name of the attribute to be retrieved.
+     * @param defaultValue the default value for this attribute.
+     * @return
+     */
     public Object getAttribute(String name, Object defaultValue) {
         return attributes.getOrDefault(name, defaultValue);
     }
 
+    /**
+     * Retrieve all the attributes for this GameObject.
+     *
+     * @return a Map of String,Object of attributes.
+     */
     public Map<String, Object> getAttributes() {
         return attributes;
     }
 
+    /**
+     * Define the GameObject life duration in ms.
+     *
+     * @param ms the life duration in milliseconds
+     * @return the updated GameObject.
+     */
     public GameObject setDuration(int ms) {
         this.lifeStart = ms;
         this.life = ms;
         return this;
     }
 
+    /**
+     * Define a specific Gravity for this GameObject.
+     *
+     * @param gravity the Vector2d corresponding to the applied Gravity for this GameObject
+     * @return the updated GameObject.
+     */
     public GameObject setGravity(Vector2d gravity) {
         this.gravity = gravity;
         return this;
     }
 
+    public GameObject addChild(GameObject ps) {
+        child.add(ps);
+        return this;
+    }
 
+
+    /**
+     * Retrieve child object for this GameObject.
+     *
+     * @return the list of child GameObject
+     */
     public List<GameObject> getChild() {
         return child;
     }
@@ -278,11 +355,24 @@ public class GameObject extends AbstractEntity<GameObject> {
         return this;
     }
 
-    public enum GOType {
-        POINT, RECTANGLE, CIRCLE, IMAGE, OTHER
+    /**
+     * Retrieve the current animation
+     *
+     * @return the current {@link Animation} object.
+     */
+    public Animation getAnimation() {
+        return this.animation;
     }
 
-    public Animation getAnimations() {
-        return this.animations;
+    /**
+     * Define the Physic type for this object
+     *
+     * @param type
+     * @return
+     * @see PEType
+     */
+    public GameObject setPhysicType(PEType type) {
+        this.physicType = type;
+        return this;
     }
 }

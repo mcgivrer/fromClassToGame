@@ -73,7 +73,7 @@ public class PhysicEngine extends System {
     public static final String DEBUG_FLAG_INFLUENCERS = "flagInfluencers";
     public static final String DEBUG_FLAG_GRAVITY = "flagGravity";
     /**
-     * Ingternal logger
+     * Internal logger
      */
     private static final Logger logger = LoggerFactory.getLogger(PhysicEngine.class);
     /**
@@ -84,6 +84,8 @@ public class PhysicEngine extends System {
      * PhysicEngine debug flags to activate or not features.
      */
     private Map<String, Boolean> debugFlags = new ConcurrentHashMap<>();
+
+    private double timeCorrection = 0.01;
 
     /**
      * Initialization of the {@link PhysicEngine} System with its parent
@@ -146,9 +148,7 @@ public class PhysicEngine extends System {
             if (!game.isPause()) {
                 getObjects().forEach(go -> {
                     update(go, dt);
-                    for (GameObject co : go.getChild()) {
-                        update(co, dt);
-                    }
+                    go.getChild().forEach(co -> update(co, dt));
                 });
             }
         } catch (ConcurrentModificationException e) {
@@ -163,9 +163,8 @@ public class PhysicEngine extends System {
      * @param dt elapsed time since previous call.
      */
     private void update(GameObject go, long dt) {
-        double dtCorrected = dt * 0.01;
+        double dtCorrected = dt * timeCorrection;
         if (go != null && !(go instanceof Influencer)) {
-            go.acceleration = new Vector2d();
             switch (go.physicType) {
                 case STATIC:
                     updateStatic(go, dt, dtCorrected);
@@ -175,8 +174,11 @@ public class PhysicEngine extends System {
                     break;
             }
         }
-        // Update the Object itself
-        go.update(dt);
+
+        // update Bounding box for this GameObject.
+        if (go.box != null) {
+            go.box.update(go);
+        }
     }
 
     private void updateStatic(GameObject go, long dt, double dtCorrected) {
@@ -184,6 +186,7 @@ public class PhysicEngine extends System {
     }
 
     private void updateDynamic(GameObject go, long dt, double dtCorrected) {
+        go.acceleration = new Vector2d();
         if (!go.relativeToCamera) {
 
             // Acceleration is not already used in velocity & position computation
@@ -198,11 +201,6 @@ public class PhysicEngine extends System {
             // test World space constrained
             verifyGameConstraint(go);
 
-
-            // update Bounding box for this GameObject.
-            if (go.box != null) {
-                go.box.update(go);
-            }
             go.forces.clear();
         }
 
