@@ -103,10 +103,6 @@ public class DemoScene extends AbstractScene {
     @Override
     public void create(Game g) throws UnknownResource {
         super.create(g);
-
-        LevelLoader lm = (LevelLoader) SystemManager.get(LevelLoader.class);
-
-
         // Declare World playground
 
         World world = new World(800.0, 400.0)
@@ -130,7 +126,6 @@ public class DemoScene extends AbstractScene {
                 .setColor(new Color(0.9f, 0.2f, 0.2f, 0.6f));
         world.add(iMagneticArea);
 
-
         // add Viewport Grid debug view
         DebugViewportGrid dvg = (DebugViewportGrid) new DebugViewportGrid("vpgrid", world, 32, 32)
                 .setDebug(1)
@@ -139,8 +134,9 @@ public class DemoScene extends AbstractScene {
         add(dvg);
 
         // load a level as TileMap
-        TileMap map = lm.loadFrom("/levels/lvl0101.properties");
-        add(map);
+        // LevelLoader lm = (LevelLoader) SystemManager.get(LevelLoader.class);
+        // TileMap map = lm.loadFrom("/levels/lvl0101.properties");
+        // add(map);
 
         // add main character (player)
         Material m = DefaultMaterial.newMaterial("playerMaterial", 0.25, 0.3, 0.80, 0.98);
