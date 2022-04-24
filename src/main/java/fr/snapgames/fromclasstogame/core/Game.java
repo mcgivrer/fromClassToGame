@@ -8,6 +8,7 @@ import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.gfx.Window;
 import fr.snapgames.fromclasstogame.core.io.ResourceManager;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler.ActionListener;
 import fr.snapgames.fromclasstogame.core.physic.PhysicEngine;
 import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.physic.collision.CollisionSystem;
@@ -26,7 +27,7 @@ import java.awt.event.KeyEvent;
  * @author Frédéric Delorme
  * @since 0.0.1
  */
-public class Game implements ActionHandler.ActionListener {
+public class Game implements ActionListener {
 
     /**
      * Internal logger.
@@ -44,6 +45,11 @@ public class Game implements ActionHandler.ActionListener {
      * The default Frame per seconds rate for rendering purpose.
      */
     private long realFPS = 60;
+
+    /**
+     * Internal game time
+     */
+    private long internalTime = 0;
     /**
      * The Window where all fun things happened.
      */
@@ -131,7 +137,7 @@ public class Game implements ActionHandler.ActionListener {
      * Initialization of the display window and everything the game will need.
      */
     public void initialize(String[] argv) throws ArgumentUnknownException {
-        SystemManager.initialize(this);
+        SystemManager.configure(this);
         configuration.parseArgs(argv);
         /*
          * Why not initializing a bunch of systems to start this funky piece of game ?
@@ -147,7 +153,7 @@ public class Game implements ActionHandler.ActionListener {
         /*
          * And then configure ll those strange piece of code.
          */
-        SystemManager.initialize(configuration);
+        SystemManager.configure(configuration);
 
         renderer = (Renderer) SystemManager.get(Renderer.class);
         renderer.setDebugLevel(configuration.debugLevel);
@@ -210,6 +216,7 @@ public class Game implements ActionHandler.ActionListener {
         while (!exit && !testMode) {
             start = System.currentTimeMillis();
             dt = start - previous;
+            internalTime += dt;
             if (sceneManager.getCurrent() != null) {
                 input();
                 update(dt);
@@ -249,8 +256,9 @@ public class Game implements ActionHandler.ActionListener {
     /**
      * Manage the input
      */
-    private void input() {
+    public boolean input() {
         sceneManager.input(actionHandler);
+        return true;
     }
 
     /**
@@ -270,11 +278,11 @@ public class Game implements ActionHandler.ActionListener {
     /**
      * Draw the things from the game.
      */
-    private void draw() {
-        renderer.draw(window.getDebug());
+    public int draw() {
+        int nbObj = renderer.draw(configuration.debugLevel);
         sceneManager.draw(renderer);
-
         window.draw(realFPS, renderer.getBuffer());
+        return nbObj;
     }
 
     /**
@@ -334,49 +342,105 @@ public class Game implements ActionHandler.ActionListener {
 
     }
 
+    /**
+     * set the current action to the current active Scene.
+     *
+     * @param action the action to be transmitted to the current active Scene.
+     */
     @Override
     public void onAction(Integer action) {
         getSceneManager().onAction(action);
     }
 
-    public SceneManager getSceneManager() {
-        return (SceneManager) SystemManager.get(SceneManager.class);
-    }
-
-    public Configuration getConfiguration() {
-        return this.configuration;
-    }
-
-    public PhysicEngine getPhysicEngine() {
-        return (PhysicEngine) SystemManager.get(PhysicEngine.class);
-    }
-
-    public Window getWindow() {
-        return window;
-    }
-
-    public Renderer getRenderer() {
-        return (Renderer) SystemManager.get(Renderer.class);
-    }
-
+    /**
+     * Return true if the game is in pause mode, else false.
+     *
+     * @return
+     */
     public boolean isPause() {
         return this.pause;
     }
 
+    /**
+     * Set the game in pause mode.
+     *
+     * @param p the pause state true if pause mode must be activated, or else false.
+     */
     public void setPause(boolean p) {
         this.pause = p;
     }
 
+    /**
+     * Retrieve the internal game time (in milliseconds)
+     *
+     * @return
+     */
+    public long getInternalTime() {
+        return internalTime;
+    }
+
+    /**
+     * Retrieve the Game's SceneManager instance.
+     *
+     * @return
+     */
+    public SceneManager getSceneManager() {
+        return (SceneManager) SystemManager.get(SceneManager.class);
+    }
+
+    /**
+     * Retrieve the Game's Configuration instance.
+     *
+     * @return
+     */
+    public Configuration getConfiguration() {
+        return this.configuration;
+    }
+
+    /**
+     * Retrueve the Game's PhysicEngine instance.
+     *
+     * @return
+     */
+    public PhysicEngine getPhysicEngine() {
+        return (PhysicEngine) SystemManager.get(PhysicEngine.class);
+    }
+
+    /**
+     * Retrieve Game's Window instance.
+     *
+     * @return
+     */
+    public Window getWindow() {
+        return window;
+    }
+
+    /**
+     * Retrieve the Game's Renderer instance.
+     *
+     * @return
+     */
+    public Renderer getRenderer() {
+        return (Renderer) SystemManager.get(Renderer.class);
+    }
+
+    /**
+     * Retrieve the Game's EntityPoolManager instance.
+     *
+     * @return
+     */
     public EntityPoolManager getEPM() {
         return this.epm;
     }
 
+    /**
+     * Retrieve the Game's CollisionSystem instance.
+     *
+     * @return
+     */
     public CollisionSystem getCollisionSystem() {
         return cs;
     }
 
-    public void setWorld(World world) {
-        getPhysicEngine().setWorld(world);
-        getRenderer().setWorld(world);
-    }
+
 }

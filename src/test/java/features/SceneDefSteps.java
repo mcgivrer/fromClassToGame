@@ -23,19 +23,19 @@ public class SceneDefSteps extends CommonDefSteps {
 
     @Given("the Game is started with config {string}")
     public void theGameIsStartedWithConfig(String configFile) {
-        game = new Game(configFile);
+        setGame(new Game(configFile));
         try {
-            game.initialize(null);
+            getGame().initialize(null);
         } catch (ArgumentUnknownException e) {
             System.err.println("Error parsing args " + e.getMessage());
         }
-        game.testMode = true;
+        getGame().testMode = true;
     }
 
     @Then("the title is {string}")
     public void theTitleIs(String title) {
         try {
-            game.run(new String[]{"title=" + title});
+            getGame().run(new String[]{"title=" + title});
         } catch (ArgumentUnknownException uae) {
             fail("Uknown Argument");
         }
@@ -52,13 +52,13 @@ public class SceneDefSteps extends CommonDefSteps {
 
     @Given("I add a {string} named {string}")
     public void iAddANamed(String sceneClassName, String sceneName) {
-        SceneManager sc = game.getSceneManager();
+        SceneManager sc = getGame().getSceneManager();
         sc.addScene(sceneName + ":" + sceneClassName);
     }
 
     @Then("the SceneManager has {int} scene\\(s)")
     public void theSceneManagerHasScenes(Integer nbScene) {
-        SceneManager sc = game.getSceneManager();
+        SceneManager sc = getGame().getSceneManager();
         assertEquals("The number of scene does not match the configuration set", nbScene.intValue(),
                 sc.getScenes().size());
     }
@@ -70,7 +70,7 @@ public class SceneDefSteps extends CommonDefSteps {
 
     @Then("I can dispose all scenes.")
     public void iCanDisposeAllScenes() {
-        SceneManager sc = game.getSceneManager();
+        SceneManager sc = getGame().getSceneManager();
         sc.dispose();
         assertEquals("All scene definition have not been cleared", 0, sc.getScenes().size());
         assertEquals("All scene instance have not been cleared", 0, sc.getScenesInstances().size());
@@ -90,7 +90,7 @@ public class SceneDefSteps extends CommonDefSteps {
 
     @And("the Camera {string} position is centered on the {string} position.")
     public void theCameraPositionIsCenteredOnTargetPosition(String cameraName, String targetName) {
-        Dimension viewport = game.getRenderer().getViewport();
+        Dimension viewport = getGame().getRenderer().getViewport();
         Camera cam = getCurrentScene().getCamera(cameraName);
         GameObject target = getCurrentScene().getGameObject(targetName);
         double camX = cam.position.x + (viewport.width * 0.5) - (target.width);
@@ -105,7 +105,7 @@ public class SceneDefSteps extends CommonDefSteps {
 
     @And("I add a Scene named {string};")
     public void iAddASceneNamed(String sceneName) {
-        TestScene ts = new TestScene(game, sceneName);
+        TestScene ts = new TestScene(getGame(), sceneName);
         addScene(sceneName, ts);
     }
 
@@ -124,7 +124,7 @@ public class SceneDefSteps extends CommonDefSteps {
         Scene s = getScene(sceneName);
         GameObject target = s.getGameObject(targetName);
         Camera cam = new Camera(cameraName).setTarget(target).setTweenFactor(tweenFactor);
-        cam.setViewport(game.getRenderer().getViewport());
+        cam.setViewport(getGame().getRenderer().getViewport());
         s.add(cam);
     }
 
@@ -141,7 +141,7 @@ public class SceneDefSteps extends CommonDefSteps {
     public void iUpdateTimesTheScene(String sceneName, int nbUpdate) {
         Scene scene = getScene(sceneName);
         for (int i = 0; i < nbUpdate; i++) {
-            scene.update((long) (1000.0 / game.getConfiguration().FPS));
+            scene.update((long) (1000.0 / getGame().getConfiguration().FPS));
         }
     }
 

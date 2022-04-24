@@ -1,6 +1,6 @@
-Feature: A Scene can handle multiple lights
+Feature: U2300 - A Scene can handle multiple lights
 
-  Scenario: Add an ambient light to the scene
+  Scenario: U2301 - Add an ambient light to the scene
     Given the Game is started with config "test-light"
     And I add the LightObjectRenderHelper
     And I activate the scene "testLight"
@@ -10,7 +10,7 @@ Feature: A Scene can handle multiple lights
     Then the game renders the scene
     And The LightObject "light01" is rendered
 
-  Scenario: Add an spherical light to the scene
+  Scenario: U2302 - Add an spherical light to the scene
     Given the Game is started with config "test-light"
     And I add the LightObjectRenderHelper
     And I activate the scene "testLight"

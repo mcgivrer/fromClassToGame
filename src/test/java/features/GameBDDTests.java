@@ -10,18 +10,17 @@ import io.cucumber.junit.CucumberOptions;
  *
  * @author Frédéric Delorme
  * @since 0.0.1
- * <p>
- * "html:target/cucumber-html-report",
- * "json:target/cucumber.json",
- * "pretty:target/cucumber-pretty.txt",
- * "usage:target/cucumber-usage.json",
- * "junit:target/cucumber-results.xml"
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features",
-        glue = {"features"},
-        plugin = {"pretty"},
-        tags = "not @ignore")
+    features = "src/test/resources/features", 
+    glue = { "features" }, 
+    plugin = {
+        "html:target/cucumber-html-report", 
+        "json:target/cucumber.json", 
+        "pretty:target/cucumber-pretty.txt",
+        "usage:target/cucumber-usage.json", 
+        "junit:target/cucumber-results.xml" },
+    tags = "not @ignore")
 class GameBDDTests {
 }

@@ -196,6 +196,26 @@ public class AbstractRenderHelper {
     }
 
     /**
+     * Draw an image <code>img</code> (see {@link BufferedImage}) at
+     * <code>pos</code> {@link Vector2d}.
+     *
+     * @param g      the Graphics 2D interface
+     * @param img    the image to be drawn
+     * @param pos    the position where to draw
+     * @param width  the width of the image to be drawn to
+     * @param height the height of the image to be drawn to
+     */
+    public void drawImage(Graphics2D g, BufferedImage img, Vector2d pos, double width, double height, int direction) {
+        if(direction>0){
+            g.drawImage(img, (int) pos.x, (int) pos.y, (int) width, (int) height, null);
+        }else{
+            g.drawImage(img,(int)pos.x,(int)pos.y,(int)width,(int)height,
+                    (int)(pos.x-width),(int)pos.y, (int)-width,(int)height,null );
+        }
+    }
+
+
+    /**
      * Draw a 2D point at position {@link Vector2d} with a defined size using the
      * right {@link Color}.
      *

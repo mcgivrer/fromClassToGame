@@ -13,7 +13,7 @@ import fr.snapgames.fromclasstogame.core.physic.collision.BoundingBox;
  * This {@link Influencer} can apply a {@link Influencer#force} to the contained
  * {@link GameObject} of apply
  * the effect of a {@link Influencer#material}.
- * 
+ *
  * @author Frédéric Delorme
  * @see PhysicEngine
  * @since 0.0.3
@@ -37,6 +37,7 @@ public class Influencer extends GameObject {
     public Influencer(String name) {
         super(name);
         physicType = PEType.STATIC;
+        this.debugLevel = 2;
     }
 
     /**
@@ -64,7 +65,7 @@ public class Influencer extends GameObject {
      * Return debug information for debug display mode.
      *
      * @return List of String containing debug information to be displayed in debug
-     *         mode.
+     * mode.
      */
     public List<String> getDebugInfo() {
         int debug = this.debugLevel;
@@ -124,7 +125,7 @@ public class Influencer extends GameObject {
 
     /**
      * Override setPosition to transtype the returned object (for convience purpose)
-     * 
+     *
      * @param position the new position of this object.
      * @return the updated Influencer
      */

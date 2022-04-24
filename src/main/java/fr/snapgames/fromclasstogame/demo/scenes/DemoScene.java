@@ -44,7 +44,7 @@ import java.util.Optional;
  * @author Frédéric Delorme
  * @since 0.0.1
  */
-public class DemoScene extends AbstractScene {
+public class DemoScene extends AbstractScene<DemoScene> {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoScene.class);
 
@@ -129,8 +129,9 @@ public class DemoScene extends AbstractScene {
         // add Viewport Grid debug view
         DebugViewportGrid dvg = (DebugViewportGrid) new DebugViewportGrid("vpgrid", world, 32, 32)
                 .setDebug(1)
-                .setLayer(11)
-                .setPriority(2);
+                .setColor(Color.BLUE)
+                .setLayer(1)
+                .setPriority(1);
         add(dvg);
 
         // load a level as TileMap
@@ -176,7 +177,7 @@ public class DemoScene extends AbstractScene {
         Dimension vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
         Camera camera = new Camera("cam01")
                 .setTarget(player)
-                .setTweenFactor(0.02)
+                .setTweenFactor(0.005)
                 .setViewport(vp);
         add(camera);
 
@@ -187,8 +188,9 @@ public class DemoScene extends AbstractScene {
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
                 .setImage(ResourceManager.getImage("images/backgrounds/forest.jpg:background"))
                 .setObjectType(GameObject.GOType.IMAGE)
-                .setLayer(100)
-                .setPriority(100);
+                .setPhysicType(PEType.STATIC)
+                .setLayer(10)
+                .setPriority(10);
         add(bckG);
 
         // add score display.
@@ -256,8 +258,7 @@ public class DemoScene extends AbstractScene {
         add(welcome);
 
         // Set the newly created world and generate it !
-        g.setWorld(world);
-        addAll(world.influencers);
+        setWorld(world);
     }
 
     /**

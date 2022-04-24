@@ -17,7 +17,6 @@ public class TextObject extends GameObject {
         this.color = Color.WHITE;
         objectType = GOType.OTHER;
         physicType = PEType.STATIC;
-        physicType = PEType.STATIC;
     }
 
     public TextObject(String name, Vector2d position) {

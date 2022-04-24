@@ -23,10 +23,9 @@ public class RenderHelperStepDefs extends CommonDefSteps {
 
     @Given("The Game start with default config")
     public void theGameStartWithDefaultConfig() {
-        game = new Game("test-render");
-        game.testMode = true;
+        setGame(new Game("test-render")).testMode = true;
         try {
-            game.run(new String[]{});
+            getGame().run(new String[]{});
         } catch (ArgumentUnknownException e) {
             fail("Unable to start Game");
         }
@@ -34,7 +33,7 @@ public class RenderHelperStepDefs extends CommonDefSteps {
 
     @Then("the Render is ready")
     public void theRenderIsReady() {
-        assertNotNull("Render has not been initialized", game.getRenderer());
+        assertNotNull("Render has not been initialized", getGame().getRenderer());
     }
 
     @And("the RenderHelper for {string} is ready")

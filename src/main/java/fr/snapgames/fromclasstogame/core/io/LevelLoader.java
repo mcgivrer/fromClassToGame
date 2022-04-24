@@ -1,6 +1,22 @@
 package fr.snapgames.fromclasstogame.core.io;
 
+import fr.snapgames.fromclasstogame.core.Game;
+import fr.snapgames.fromclasstogame.core.config.Configuration;
+import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.Tile;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileLayer;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
+import fr.snapgames.fromclasstogame.core.entity.tilemap.TileSet;
+import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
+import fr.snapgames.fromclasstogame.core.scenes.Scene;
+import fr.snapgames.fromclasstogame.core.system.System;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,24 +24,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import fr.snapgames.fromclasstogame.core.Game;
-import fr.snapgames.fromclasstogame.core.config.Configuration;
-import fr.snapgames.fromclasstogame.core.entity.tilemap.Tile;
-import fr.snapgames.fromclasstogame.core.entity.tilemap.TileLayer;
-import fr.snapgames.fromclasstogame.core.entity.tilemap.TileMap;
-import fr.snapgames.fromclasstogame.core.entity.tilemap.TileSet;
-import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
-import fr.snapgames.fromclasstogame.core.system.System;
-
-/**
- * LevelLoader load a level properties file and convert it to a TileMap object.
- *
- * @author Frédéric Delorme
- * @since 0.0.3
- */
 public class LevelLoader extends System {
     private static final Logger logger = LoggerFactory.getLogger(LevelLoader.class);
     /**
@@ -47,17 +45,115 @@ public class LevelLoader extends System {
         TileMap tm = new TileMap();
         FileAttributes fa = FileAttributes.read(fileName);
         tm.name = fa.get("name");
+        tm.addAttribute("id", fa.get("id"));
         tm.addAttribute("title", fa.get("title"));
-        tm.addAttribute("world", fa.get("world"));
-        tm.addAttribute("level", fa.get("level"));
+        tm.addAttribute("world", Integer.parseInt(fa.get("world")));
+        tm.addAttribute("level", Integer.parseInt(fa.get("level")));
         tm.addAttribute("description", fa.get("description"));
         List<TileSet> ts = parseTileSet(fa);
         tm.setTileSets(ts);
         List<TileLayer> tl = parseLayers(fa);
         tm.setLayers(tl);
+        List<GameObject> ol = parseGameObjects(fa);
+        tm.addObjectList(ol);
         return tm;
     }
 
+    /**
+     * Parse the {@link FileAttributes} file and retrieve all {@link GameObject} definition to feed a List of GameObject.
+     *
+     * @param fa the FileAttributes file to parse
+     * @return a list of loaded GameObjects
+     * @see GameObject
+     */
+    private List<GameObject> parseGameObjects(FileAttributes fa) {
+        List<GameObject> gameObjectList = new ArrayList<>();
+
+        List<String> objList = fa.find("object");
+        objList.forEach(o -> {
+            GameObject go = createImageFromFA(fa, o);
+            gameObjectList.add(go);
+        });
+        return gameObjectList;
+    }
+
+    /**
+     * Parse the {@link FileAttributes} at o attribute to create an entire {@link GameObject}
+     * to be added to the {@link TileMap#mapObjects} and {@link TileMap#child} list.
+     *
+     * <pre>
+     * <code>
+     * object.P:\
+     *    code=P;\                        # The Map code for this entity
+     *    type=image;\                    # the GOType of GameObject
+     *    name=player;\                   # the name for this entity
+     *    layer=0;\                       # the parent layer
+     *    priority=1;\                    # the rendering priority in the layer
+     *    color=#00FF0000;\               # the frond color for this entity
+     *    material=title(playerMaterial)\ \
+     *        .bounciness(0.25)\           |
+     *        .density(0.3)\                > # A Material object with its attributes
+     *        .dynamicFriction(0.80)\      |
+     *        .staticFriction(0.98);\     /
+     *    image=images/tiles01.png:player;\ # the BufferedImage to be set on this entity.
+     *    mass=10.0;\                     # the mass for this entity
+     *    debug=3;\                       # the required debug level to display debug info
+     *    attributes=\
+     *         jumping(false)\              \
+     *        .accelStep(10.0)\              |
+     *        .jumpAccel(-20.0)\             |
+     *        .maxHorizontalVelocity(20.0)\  |
+     *        .maxVerticalVelocity(30.0)\     >  # the list of attributes for this entity
+     *        .energy(100)\                  |
+     *        .mana(100)\                    |
+     *        .score(0)\                     |
+     *        .life(5);\                    /
+     *    behaviors={PlayerActionBehavior} # the declared Behaviors for this entity.
+     * </code>
+     * </pre>
+     *
+     * @param fa the current {@ink FileAttributes} parsing a Level properties file.
+     * @param o  the current GameObject identified into the {@link FileAttributes} "object." list.
+     * @return a generated GameObject corresponding to the set attributes.
+     */
+    private GameObject createImageFromFA(FileAttributes fa, String o) {
+        String goName = fa.getSubAttribute(o, "name");
+        String goCode = fa.getSubAttribute(o, "code");
+        String goType = fa.getSubAttribute(o, "type");
+
+        int layer = Integer.parseInt(fa.getSubAttribute(o, "layer"));
+        int priority = Integer.parseInt(fa.getSubAttribute(o, "priority"));
+
+        String color = fa.getSubAttribute(o, "color");
+        int goDebug = Integer.parseInt(fa.getSubAttribute(o, "debug"));
+        double goMass = Double.parseDouble(fa.getSubAttribute(o, "mass"));
+        String image = fa.getSubAttribute(o, "image");
+        BufferedImage img = null;
+        try {
+            img = ResourceManager.getImage(image);
+        } catch (UnknownResource e) {
+            logger.error("Unable to retrieve the image for {}", image, e);
+        }
+
+        GameObject go = new GameObject(goName)
+                .setCode(goCode)
+                .setObjectType(GameObject.GOType.valueOf(goType.toUpperCase()))
+                .setLayer(layer)
+                .setPriority(priority)
+                .setColor(Color.getColor(color))
+                .setDebug(goDebug)
+                .setMass(goMass)
+                .setImage(img);
+        return go;
+    }
+
+    /**
+     * Parse the {@link FileAttributes} fa to retrieve all {@link TileSet} definition.
+     *
+     * @param fa the FileAttributes file to parse
+     * @return a list of loaded {]link TileSet}
+     * @see TileSet
+     */
     private List<TileSet> parseTileSet(FileAttributes fa) {
         List<TileSet> tileSets = new ArrayList<>();
         List<String> tsList = fa.find("tileset");
@@ -141,6 +237,13 @@ public class LevelLoader extends System {
         return value;
     }
 
+    /**
+     * Parse the {@link FileAttributes} fa to retrieve all {@link TileLayer} definition.
+     *
+     * @param fa the FileAttributes file to parse
+     * @return a list of loaded {]link TileLayer}
+     * @see TileLayer
+     */
     private List<TileLayer> parseLayers(FileAttributes fa) {
         List<TileLayer> layers = new ArrayList<>();
         List<String> strLayers = fa.find("layer");
@@ -208,6 +311,5 @@ public class LevelLoader extends System {
     public void dispose() {
 
     }
-
-
 }
+

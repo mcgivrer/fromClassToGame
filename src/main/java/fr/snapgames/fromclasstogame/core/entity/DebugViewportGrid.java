@@ -25,14 +25,30 @@ public class DebugViewportGrid extends GameObject {
     public DebugViewportGrid(String objectName) {
         super(objectName);
         setGridSize(16, 16);
-        this.setDebug(1);
+        this.setDebug(3);
         setPhysicType(PEType.STATIC);
+        setObjectType(GOType.OTHER);
     }
 
     public DebugViewportGrid(String objectName, World w, int gridX, int gridY) {
         this(objectName);
         setWorld(w);
         setGridSize(gridX, gridY);
+    }
+
+    public DebugViewportGrid setWorld(World w) {
+        this.world = w;
+        return this;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public DebugViewportGrid setGridSize(int width, int height) {
+        this.gridX = width;
+        this.gridY = height;
+        return this;
     }
 
     @Override
@@ -42,19 +58,4 @@ public class DebugViewportGrid extends GameObject {
         return info;
     }
 
-    public DebugViewportGrid setWorld(World w) {
-        this.world = w;
-        return this;
-
-    }
-
-    public DebugViewportGrid setGridSize(int width, int height) {
-        this.gridX = width;
-        this.gridY = height;
-        return this;
-    }
-
-    public World getWorld() {
-        return world;
-    }
 }

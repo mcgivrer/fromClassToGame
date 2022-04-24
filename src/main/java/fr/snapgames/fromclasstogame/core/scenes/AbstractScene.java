@@ -6,6 +6,7 @@ import fr.snapgames.fromclasstogame.core.entity.*;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.gfx.Renderer;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
+import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * </ul>
  * <p>Any new custom action can bee added to the {@link ActionHandler} with an action code from ACTION_CUSTOM (= 200).</p>
  */
-public abstract class AbstractScene implements Scene {
+public abstract class AbstractScene<T> implements Scene {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
 
@@ -81,16 +82,20 @@ public abstract class AbstractScene implements Scene {
 
     public void add(GameObject go) {
         if (go.getClass().getName().equals(Camera.class.getName())) {
-            if (!cameras.containsKey(go.name)) {
-                cameras.put(go.name, (Camera) go);
-                game.getRenderer().moveFocusToCamera((Camera) go);
-            }
-            if (activeCamera == null) {
-                activeCamera = (Camera) go;
-            }
+            addCamera((Camera) go);
         } else if (!ep.contains(go)) {
             ep.add(go);
             SystemManager.add(go);
+        }
+    }
+
+    private void addCamera(Camera go) {
+        if (!cameras.containsKey(go.name)) {
+            cameras.put(go.name, (Camera) go);
+            game.getRenderer().moveFocusToCamera((Camera) go);
+        }
+        if (activeCamera == null) {
+            activeCamera = (Camera) go;
         }
     }
 
@@ -235,6 +240,12 @@ public abstract class AbstractScene implements Scene {
     }
 
 
+    public T setWorld(World world) {
+        getGame().getPhysicEngine().setWorld(world);
+        getGame().getRenderer().setWorld(world);
+        addAll(world.influencers);
+        return (T) this;
+    }
 }
 
 

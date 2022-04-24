@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 
 public class GameObjectRenderHelper extends AbstractRenderHelper implements RenderHelper<GameObject> {
     private static final Logger logger = LoggerFactory.getLogger(GameObjectRenderHelper.class);
@@ -17,7 +18,7 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
 
     @Override
     public void draw(Graphics2D g, GameObject go) {
-        if (go != null) {
+        if (Optional.ofNullable(go).isPresent()) {
             switch (go.objectType) {
                 case POINT:
                     g.setColor(go.color);
@@ -34,11 +35,16 @@ public class GameObjectRenderHelper extends AbstractRenderHelper implements Rend
                 case IMAGE:
                     // retrieve the active image through Animation class or as internal fixed image.
                     BufferedImage img = go.getAnimation() != null ? go.getAnimation().getCurrentFrame() : go.image;
-                    if (img != null) {
+
+                    if (Optional.ofNullable(img).isPresent()) {
                         drawImage(g, img, go.position, go.width, go.height);
                     } else {
                         logger.error("GameObject named {} : image attribute is not defined", go.name);
                     }
+                    break;
+                case OTHER:
+                case ANIMATION:
+                    logger.info("GameObject named {} : type attribute {} not implemented", go.name, go.objectType);
                     break;
                 default:
                     logger.error("GameObject named {} : type attribute is unknown", go.name);
