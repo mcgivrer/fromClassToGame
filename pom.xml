@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>core</groupId>
     <artifactId>fromclasstogame</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>FromClassToGame</name>
     <description>Journey from a simple class to a Game, with the Java language</description>
     <inceptionYear>2021</inceptionYear>
@@ -38,7 +38,7 @@
         <url>https://github.com/mcgivrer/fromClassToGame</url>
         <connection>scm:git:git@github.com:mcgivrer/fromClassToGame.git</connection>
         <developerConnection>scm:git:https://github.com/mcgivrer/fromClassToGame.git</developerConnection>
-        <tag>v1.0.2-SNAPSHOT</tag>
+        <tag>v${project.version}</tag>
     </scm>
     <issueManagement>
         <system>GitHub</system>
