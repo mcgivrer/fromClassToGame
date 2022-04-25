@@ -34,6 +34,7 @@ public class World extends GameObject {
     public World(double width, double height) {
         super("world");
         this.physicType = PEType.STATIC;
+        this.objectType = GOType.OTHER;
         this.width = width;
         this.height = height;
     }
@@ -50,13 +51,13 @@ public class World extends GameObject {
     }
 
     /**
-     * Add an Influence area to the world.
+     * Add a child object to the world.
      *
-     * @param area the InfluenceArea to add to the World.
+     * @param go the child object to be added to the World.
      * @return this updated World
      */
-    public World add(Influencer area) {
-        influencers.add(area);
+    public World add(GameObject go) {
+        addChild(go);
         return this;
     }
 }

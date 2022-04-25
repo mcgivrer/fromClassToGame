@@ -97,7 +97,7 @@ public class ParticleSystem extends GameObject {
         for (int i = 0; i < nb; i++) {
             Particle p = new Particle();
             onCreateParticle(p);
-            child.add(p);
+            addChild(p);
         }
     }
 

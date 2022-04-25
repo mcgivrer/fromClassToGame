@@ -89,6 +89,12 @@ public class EntityPool {
         int i = getIndexNextFree();
         if (i != -1) {
             goArray[i] = go;
+            for (GameObject childGo : go.getChild()) {
+                i = getIndexNextFree();
+                if (i != -1) {
+                    goArray[i] = childGo;
+                }
+            }
         }
         return i;
     }
@@ -115,7 +121,7 @@ public class EntityPool {
     public GameObject get(String name) throws UnknownGameObject {
         for (int i = 0; i < goArray.length; i++) {
             GameObject g = goArray[i];
-            if (g!=null && g.getName().equals(name)) {
+            if (g != null && g.getName().equals(name)) {
                 return g;
             }
         }

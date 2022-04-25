@@ -132,7 +132,7 @@ public class DemoScene extends AbstractScene<DemoScene> {
                 .setColor(Color.BLUE)
                 .setLayer(1)
                 .setPriority(1);
-        add(dvg);
+        world.add(dvg);
 
         // load a level as TileMap
         // LevelLoader lm = (LevelLoader) SystemManager.get(LevelLoader.class);
@@ -158,20 +158,20 @@ public class DemoScene extends AbstractScene<DemoScene> {
                 .addAttribute("score", 0)
                 .addAttribute("lifes", 5)
                 .add(new PlayerActionBehavior());
-        add(player);
+        world.add(player);
         g.getCollisionSystem().addResponse("player", new OnEntityCollision());
 
         LightObject la = new LightObject("ambiant_light_01", player.position, LightType.LIGHT_AMBIANT)
                 .setForegroundColor(new Color(0.2f, 0.1f, 0.1f, 0.1f))
                 .setIntensity(0.998);
-        add(la);
+        world.add(la);
 
         LightObject lo = new LightObject("sphere_light_01", new Vector2d(320, 200), LightType.LIGHT_SPHERE)
                 .setForegroundColor(new Color(0.5f, 0.2f, 0.1f, 0.2f))
                 .setIntensity(1.0)
-                .setGlitterEffect(0.05);
+                .setGlitterEffect(0.15);
         lo.add(new CopyObjectPosition(player, new Vector2d(+8, +8))).setSize(64.0, 64.0);
-        add(lo);
+        world.add(lo);
 
         // Define the camera following the player object.
         Dimension vp = new Dimension(g.getRenderer().getBuffer().getWidth(), g.getRenderer().getBuffer().getHeight());
@@ -182,7 +182,7 @@ public class DemoScene extends AbstractScene<DemoScene> {
         add(camera);
 
         // Add enemies(enemy_99)
-        generateEnemies(10);
+        generateEnemies(world, 10);
 
         // add a background image
         GameObject bckG = new GameObject("background", Vector2d.ZERO)
@@ -191,7 +191,7 @@ public class DemoScene extends AbstractScene<DemoScene> {
                 .setPhysicType(PEType.STATIC)
                 .setLayer(10)
                 .setPriority(10);
-        add(bckG);
+        world.add(bckG);
 
         // add score display.
         int score = (int) (player.getAttribute("score", 0));
@@ -203,7 +203,7 @@ public class DemoScene extends AbstractScene<DemoScene> {
                 .setLayer(1)
                 .setColor(Color.WHITE)
                 .setPriority(10);
-        add(scoreTO);
+        world.add(scoreTO);
 
         // Add a Life display
         int life = (int) player.getAttribute("lifes", 0);
@@ -212,7 +212,7 @@ public class DemoScene extends AbstractScene<DemoScene> {
                 new Vector2d(game.getConfiguration().width - 32, 4))
                 .setLive(life)
                 .setRelativeToCamera(true);
-        add(lifeTO);
+        world.add(lifeTO);
 
         // prepare the inventory item image
         BufferedImage keyItemImg = ResourceManager.getImage("images/tiles01.png:key");
@@ -236,7 +236,7 @@ public class DemoScene extends AbstractScene<DemoScene> {
         // add a first object (a key !)
         inventory.add(keyItem);
         inventory.add(potionItem);
-        add(inventory);
+        world.add(inventory);
 
         // Shuffle `enemy_*`'s object's position and acceleration
         randomizeFilteredGameObject("enemy_", true);
@@ -255,7 +255,9 @@ public class DemoScene extends AbstractScene<DemoScene> {
                 .setPriority(1)
                 .setRelativeToCamera(true)
                 .setDebug(3);
-        add(welcome);
+        world.add(welcome);
+
+        add(world);
 
         // Set the newly created world and generate it !
         setWorld(world);
@@ -268,7 +270,7 @@ public class DemoScene extends AbstractScene<DemoScene> {
      * @throws UnknownResource thrown in case the requested Enemy resources is not
      *                         detected.
      */
-    private void generateEnemies(int nbEnemies) throws UnknownResource {
+    private void generateEnemies(World w, int nbEnemies) throws UnknownResource {
         for (int i = 0; i < nbEnemies; i++) {
             // create an enemy
             GameObject enemy = new GameObject("enemy_" + GameObject.getIndex(), new Vector2d(0, 0))
@@ -299,7 +301,7 @@ public class DemoScene extends AbstractScene<DemoScene> {
             enemy.addChild(ps);
 
             randomizePosAndAccGameObject(enemy);
-            add(enemy);
+            w.add(enemy);
         }
     }
 
@@ -409,13 +411,13 @@ public class DemoScene extends AbstractScene<DemoScene> {
         // Getting the ActionHandler to access any input states.
         ActionHandler ah = (ActionHandler) SystemManager.get(ActionHandler.class);
         int nbEnemies = getNbEnemiesToAdd(ah);
-
+        World world = (World) getGameObject("world");
         switch (e.getKeyCode()) {
 
             case KeyEvent.VK_PAGE_UP:
                 // Create new enemies
                 try {
-                    generateEnemies(nbEnemies);
+                    generateEnemies(world, nbEnemies);
                 } catch (UnknownResource ex) {
                     logger.error("Unable to generate enemies", ex);
                 }
@@ -439,8 +441,6 @@ public class DemoScene extends AbstractScene<DemoScene> {
             case KeyEvent.VK_G:
                 if (Optional.ofNullable(ah).isPresent() && ah.getShift()) {
                     // inverse Gravity on this world !
-                    Optional<PhysicEngine> ope = Optional.of((PhysicEngine) Objects.requireNonNull(SystemManager.get(PhysicEngine.class)));
-                    World world = ope.get().getWorld();
                     if (Optional.ofNullable(world).isPresent()) {
                         world.gravity.multiply(-1);
                     }

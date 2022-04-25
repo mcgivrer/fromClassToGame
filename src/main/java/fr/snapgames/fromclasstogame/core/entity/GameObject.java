@@ -107,7 +107,8 @@ public class GameObject extends AbstractEntity<GameObject> {
      * @param position   position at initialization of this object.
      */
     public GameObject(String objectName, Vector2d position) {
-        super(objectName, position);
+        this(objectName);
+        setPosition(position);
         this.active = true;
         setDebugColor(Color.YELLOW);
         life = -1;
@@ -382,5 +383,15 @@ public class GameObject extends AbstractEntity<GameObject> {
     public GameObject setCode(String code) {
         this.code = code;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "GameObject{" +
+                "name='" + name + '\'' +
+                ", life=" + life +
+                ", alive=" + alive +
+                ", code='" + code + '\'' +
+                '}';
     }
 }

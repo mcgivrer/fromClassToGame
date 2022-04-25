@@ -130,9 +130,8 @@ public class Renderer extends System {
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
-        moveFocusToCamera(g, camera, -1);
+
         drawObjectList(g, objects);
-        moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
         drawPauseText(g);
 
@@ -240,10 +239,10 @@ public class Renderer extends System {
                 .forEach(go -> {
                     draw(g, go);
                     // process child
-                    go.getChild().stream()
+                    /*go.getChild().stream()
                             .filter(AbstractEntity::isActive)
                             .collect(Collectors.toList())
-                            .forEach(co -> draw(g, co));
+                            .forEach(co -> draw(g, co));*/
                 });
     }
 
@@ -254,6 +253,9 @@ public class Renderer extends System {
      * @param go The GameObject to be rendered.
      */
     private void draw(Graphics2D g, GameObject go) {
+        if (!go.relativeToCamera) {
+            moveFocusToCamera(g, camera, -1);
+        }
         String goClazzName = go.getClass().getName();
         if (renderHelpers.containsKey(goClazzName)) {
             RenderHelper rh = renderHelpers.get(goClazzName);
@@ -262,6 +264,9 @@ public class Renderer extends System {
         } else {
             g.setColor(go.color);
             g.drawRect((int) (go.position.x), (int) (go.position.y), (int) (go.width), (int) (go.height));
+        }
+        if (!go.relativeToCamera) {
+            moveFocusToCamera(g, camera, 1);
         }
     }
 
@@ -288,6 +293,11 @@ public class Renderer extends System {
     private void addAndSortObjectToList(List<GameObject> listObjects, GameObject go) {
         if (!listObjects.contains(go)) {
             listObjects.add(go);
+            for (GameObject childGo : go.getChild()) {
+                if (childGo.isActive()) {
+                    addAndSortObjectToList(listObjects, childGo);
+                }
+            }
             listObjects.sort((a, b) -> b.layer <= a.layer ? a.priority < b.priority ? 1 : -1 : 1);
         }
     }

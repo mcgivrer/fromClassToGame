@@ -82,6 +82,9 @@ public abstract class System {
     public synchronized void add(GameObject o) {
         if (!objects.contains(o)) {
             objects.add(o);
+            for (GameObject childGo : o.getChild()) {
+                add(o);
+            }
         }
     }
 

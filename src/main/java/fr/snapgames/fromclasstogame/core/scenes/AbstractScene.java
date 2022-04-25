@@ -75,17 +75,19 @@ public abstract class AbstractScene<T> implements Scene {
 
     @Override
     public void update(long dt) {
-        if (activeCamera != null) {
+        if (Optional.ofNullable(activeCamera).isPresent()) {
             activeCamera.update(dt);
         }
     }
 
     public void add(GameObject go) {
-        if (go.getClass().getName().equals(Camera.class.getName())) {
-            addCamera((Camera) go);
-        } else if (!ep.contains(go)) {
-            ep.add(go);
-            SystemManager.add(go);
+        switch (go) {
+            case Camera c -> addCamera(c);
+            default -> {
+                if (!ep.contains(go))
+                    ep.add(go);
+                SystemManager.add(go);
+            }
         }
     }
 
@@ -94,7 +96,7 @@ public abstract class AbstractScene<T> implements Scene {
             cameras.put(go.name, (Camera) go);
             game.getRenderer().moveFocusToCamera((Camera) go);
         }
-        if (activeCamera == null) {
+        if (Optional.ofNullable(activeCamera).isEmpty()) {
             activeCamera = (Camera) go;
         }
     }
