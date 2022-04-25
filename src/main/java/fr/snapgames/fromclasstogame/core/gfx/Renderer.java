@@ -5,6 +5,7 @@ import fr.snapgames.fromclasstogame.core.config.Configuration;
 import fr.snapgames.fromclasstogame.core.entity.AbstractEntity;
 import fr.snapgames.fromclasstogame.core.entity.Camera;
 import fr.snapgames.fromclasstogame.core.entity.GameObject;
+import fr.snapgames.fromclasstogame.core.gfx.renderer.DebugViewportGridRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.GameObjectRenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.RenderHelper;
 import fr.snapgames.fromclasstogame.core.gfx.renderer.TextRenderHelper;
@@ -104,6 +105,10 @@ public class Renderer extends System {
          * Add the Render helper for the {@link TextObject}.
          */
         addRenderHelper(new TextRenderHelper(this));
+        /**
+         * Add the Render helper to draw debug information about viewport.
+         */
+        addRenderHelper(new DebugViewportGridRenderHelper(this));
 
         Graphics2D gri = (Graphics2D) buffer.getGraphics();
         /*
@@ -120,15 +125,13 @@ public class Renderer extends System {
     /**
      * Render all the objects declared.
      */
-    public void draw(int debug) {
+    public int draw(int debug) {
         this.debug = debug;
         Graphics2D g = this.buffer.createGraphics();
         g.clearRect(0, 0, this.buffer.getWidth(), this.buffer.getHeight());
         setRenderingHintsList(g);
-
         moveFocusToCamera(g, camera, -1);
         drawObjectList(g, objects);
-        drawWorld(g, world);
         moveFocusToCamera(g, camera, 1);
         drawObjectList(g, objectsRelativeToCamera);
         drawPauseText(g);
@@ -138,44 +141,10 @@ public class Renderer extends System {
             saveScreenshot();
             renderScreenshot = false;
         }
+        return objects.size() + objectsRelativeToCamera.size();
     }
 
-    /**
-     * Draw World influencer list to screen for debug purpose
-     *
-     * @param g     the Graphics2D api
-     * @param world the World object to be drawn for debug purpose (only if debug d <1)
-     */
-    private void drawWorld(Graphics2D g, World world) {
-        if (debug > 1) {
-            for (Influencer i : world.influencers) {
-                if (debug >= i.debugLevel) {
-                    switch (i.box.type) {
-                        case RECTANGLE:
-                            drawRectangle(g, i.debugLineColor, i.debugFillColor, i.box.shape);
-                            break;
-                        case CIRCLE:
-                            drawEllipse(g, i.debugLineColor, i.debugFillColor, i.box.ellipse);
-                            break;
-                        default:
-                            break;
-                    }
-                    drawTextWithBackground(g, i.name,
-                            i.debugLineColor, i.debugFillColor,
-                            i.position.x + i.debugOffsetX, i.position.y + i.debugOffsetY);
-                }
-            }
-            g.setColor(Color.DARK_GRAY);
-            for (int y = 0; y < world.height; y += 16) {
-                g.drawRect(0, y, (int) world.width, 16);
-            }
-            for (int x = 0; x < world.width; x += 16) {
-                g.drawRect(x, 0, 16, (int) world.height);
-            }
-        }
-    }
-
-    private void drawEllipse(Graphics2D g, Color borderColor, Color fillColor, Ellipse2D.Double ellipse) {
+    public void drawEllipse(Graphics2D g, Color borderColor, Color fillColor, Ellipse2D.Double ellipse) {
         if (Optional.ofNullable(fillColor).isPresent()) {
             g.setColor(fillColor);
             g.fill(ellipse);
@@ -221,7 +190,7 @@ public class Renderer extends System {
      * @param x               horizontal position
      * @param y               vertical position.
      */
-    private void drawTextWithBackground(Graphics2D g, String pauseText, Color textColor, Color backgroundColor, double x, double y) {
+    public void drawTextWithBackground(Graphics2D g, String pauseText, Color textColor, Color backgroundColor, double x, double y) {
         g.setColor(backgroundColor);
         g.setFont(g.getFont().deriveFont(16.0f));
         int txtWidth = g.getFontMetrics().stringWidth(pauseText);

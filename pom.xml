@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>core</groupId>
     <artifactId>fromclasstogame</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>FromClassToGame</name>
     <description>Journey from a simple class to a Game, with the Java language</description>
-    <inceptionYear>2021</inceptionYear>
+    <inceptionYear>2022</inceptionYear>
 
     <!-- Project License -->
     <licenses>
@@ -344,11 +344,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.0.0-M5</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
                     <includes>
-                        <exclude>**/*BDDTests.java</exclude>
+                        <include>**/*BDDTests.java</include>
                     </includes>
                     <argLine>
                         --illegal-access=permit
@@ -421,6 +421,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>3.0.0-M6</version>
+
             </plugin>
             <!-- Code coverage -->
             <plugin>

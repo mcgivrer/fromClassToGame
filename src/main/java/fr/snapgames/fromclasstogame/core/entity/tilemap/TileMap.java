@@ -56,17 +56,28 @@ public class TileMap extends GameObject {
         tileSets.add(ts);
     }
 
+    public TileMap addMapObject(GameObject go) {
+        mapObjects.put(go.name, go);
+        addChild(go);
+        return this;
+    }
+
     /**
      * Retrieve an object loaded in the tilemap.
      *
      * @param name
      * @return
      */
-    public GameObject getObject(String name) throws UnkownGameObjectException {
+    public GameObject getMapObject(String name) throws UnkownGameObjectException {
         if (mapObjects.containsKey(name)) {
             return mapObjects.get(name);
         } else {
             throw new UnkownGameObjectException(name);
         }
     }
+
+    public void addObjectList(List<GameObject> ol) {
+        ol.stream().forEach(o -> addMapObject(o));
+    }
 }
+

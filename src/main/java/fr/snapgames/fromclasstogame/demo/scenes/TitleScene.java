@@ -17,7 +17,7 @@ import fr.snapgames.fromclasstogame.core.system.SystemManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class TitleScene extends AbstractScene {
+public class TitleScene extends AbstractScene<TitleScene> {
 
     Font screenFont;
     BufferedImage bckImage;

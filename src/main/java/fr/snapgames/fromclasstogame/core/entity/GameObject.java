@@ -71,15 +71,16 @@ public class GameObject extends AbstractEntity<GameObject> {
      * Child objects.
      */
     protected List<GameObject> child = new ArrayList<>();
-    /**
-     * debugging data
-     */
-    private List<String> debugData = new ArrayList<>();
 
     /**
      * true if this object collides with something.
      */
     private boolean collision;
+
+    /**
+     * an internal identification code for this object (mainly used in tilemap)
+     */
+    private String code;
 
     /**
      * Initialize a GameObject with a default generated name "noname_999"
@@ -129,6 +130,7 @@ public class GameObject extends AbstractEntity<GameObject> {
      * @param dt elapsed time since previous call.
      */
     public void update(long dt) {
+        box.update(this);
         if (life > -1) {
             if (life - dt >= 0) {
                 life -= dt;
@@ -373,6 +375,12 @@ public class GameObject extends AbstractEntity<GameObject> {
      */
     public GameObject setPhysicType(PEType type) {
         this.physicType = type;
+        return this;
+    }
+
+
+    public GameObject setCode(String code) {
+        this.code = code;
         return this;
     }
 }

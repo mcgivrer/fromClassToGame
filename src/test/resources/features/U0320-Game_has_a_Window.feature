@@ -1,15 +1,15 @@
-Feature: The Game has a Window
+Feature: U0320 - The Game has a Window
 
   Any Game object has a window attribute to display thing.
 
   @Window @System
-  Scenario: 01 - A Game has a Window
+  Scenario: U0321 - A Game has a Window
     Given the Game is instantiated
     And the Game is running
     Then the Game has a Window.
 
   @Window @System
-  Scenario: 02 - The Window gets its presets from config file
+  Scenario: U0322 - The Window gets its presets from config file
     Given the Game is instantiated with config "test-window"
     And the Game is running
     Then the Window is get from the Game
@@ -18,7 +18,7 @@ Feature: The Game has a Window
     And the Window height is set to 400
 
   @Window @System
-  Scenario: 03 - The Window can draw a content from Render.
+  Scenario: U0323 - The Window can draw a content from Render.
     Given the Game is instantiated with config "test-window"
     And the Game is running
     And the Window is get from the Game

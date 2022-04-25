@@ -408,4 +408,13 @@ public class Window extends JPanel {
     public void setConfiguration(Configuration configuration) {
         this.config = configuration;
     }
+
+    /**
+     * Retrieve the visible Frame Dimension.
+     *
+     * @return The Dimension object corresponding to the visible part of the frame.
+     */
+    public Dimension getVisibleFrame() {
+        return frame.getContentPane().getPreferredSize();
+    }
 }

@@ -3,39 +3,36 @@ package fr.snapgames.fromclasstogame.test.scenes;
 import fr.snapgames.fromclasstogame.core.Game;
 import fr.snapgames.fromclasstogame.core.exceptions.io.UnknownResource;
 import fr.snapgames.fromclasstogame.core.io.actions.ActionHandler;
-import fr.snapgames.fromclasstogame.core.physic.Vector2d;
-import fr.snapgames.fromclasstogame.core.physic.World;
 import fr.snapgames.fromclasstogame.core.scenes.AbstractScene;
+import fr.snapgames.fromclasstogame.test.entity.TestObject;
 
+public class TestRenderObjectsScene extends AbstractScene {
 
-public class TestScene extends AbstractScene {
-
-    public TestScene(Game g) {
-        super(g, "test");
+    public TestRenderObjectsScene(Game g) {
+        super(g, "testrender");
     }
 
-    public TestScene(Game g, String name) {
-        super(g, name);
+    @Override
+    public void initialize(Game g) {
+        super.initialize(g);
     }
 
     @Override
     public void create(Game g) throws UnknownResource {
-        super.create(g);
-        World w = new World(800, 600);
-        w.setGravity(new Vector2d(0.0, 0.0));
-        setWorld(w);
+        for (int i = 0; i < 10; i++) {
+            TestObject to = new TestObject("test_" + i, 0, 0);
+            add(to);
+        }
     }
 
     @Override
     public void input(ActionHandler actionHandler) {
         // Nothing to do there for test only purpose
-
     }
 
     @Override
     public void dispose() {
         // Nothing to do there for test only purpose
-
     }
 
 }

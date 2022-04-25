@@ -179,6 +179,7 @@ public class PhysicEngine extends System {
         if (go.box != null) {
             go.box.update(go);
         }
+        go.update(dt);
     }
 
     private void updateStatic(GameObject go, long dt, double dtCorrected) {
